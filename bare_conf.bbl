@@ -1,0 +1,63 @@
+\begin{thebibliography}{10}
+
+\bibitem{Asaduzzaman:2013df}
+M.~Asaduzzaman, C.~K. Roy, K.~A. Schneider, and M.~Di~Penta.
+\newblock {LHDiff: A Language-Independent Hybrid Approach for Tracking Source
+  Code Lines.}
+\newblock {\em ICSM}, pages 230--239, 2013.
+
+\bibitem{Barr14fse}
+E.~T. Barr, Y.~Brun, P.~Devanbu, M.~Harman, and F.~Sarro.
+\newblock The plastic surgery hypothesis.
+\newblock In {\em FSE}, pages 306--317, 2014.
+
+\bibitem{nopol}
+F.~DeMarco, J.~Xuan, D.~Le~Berre, and M.~Monperrus.
+\newblock Automatic repair of buggy if conditions and missing preconditions
+  with smt.
+\newblock In {\em CSTVA}, 2014.
+
+\bibitem{dyer2013}
+R.~Dyer, H.~A. Nguyen, H.~Rajan, and T.~N. Nguyen.
+\newblock Boa: A language and infrastructure for analyzing ultra-large-scale
+  software repositories.
+\newblock In {\em ICSE}, pages 422--431, 2013.
+
+\bibitem{kim2013}
+D.~Kim, J.~Nam, J.~Song, and S.~Kim.
+\newblock Automatic patch generation learned from human-written patches.
+\newblock In {\em ICSE}, pages 802--811, 2013.
+
+\bibitem{legoues2012}
+C.~Le~Goues, T.~Nguyen, S.~Forrest, and W.~Weimer.
+\newblock Genprog: A generic method for automatic software repair.
+\newblock {\em IEEE Transactions on Software Engineering}, 38(1):54--72, 2012.
+
+\bibitem{Long2016}
+F.~Long and M.~Rinard.
+\newblock Automatic patch generation by learning correct code.
+\newblock In {\em POPL}, 2016.
+
+\bibitem{Martinez:2015ez}
+M.~Martinez and M.~Monperrus.
+\newblock {Mining software repair models for reasoning on the search space of
+  automated program fixing.}
+\newblock {\em Empirical Software Engineering}, 20(1):176--205, 2015.
+
+\bibitem{Mechtaev15}
+S.~Mechtaev, J.~Yi, and A.~Roychoudhury.
+\newblock {DirectFix}: {Looking} for simple program repairs.
+\newblock In {\em ICSE}, 2015.
+
+\bibitem{Qi15}
+Z.~Qi, F.~Long, S.~Achour, and M.~Rinard.
+\newblock An analysis of patch plausibility and correctness for
+  generate-and-validate patch generation systems.
+\newblock In {\em ISSTA}, pages 24--36, 2015.
+
+\bibitem{zhong2015}
+H.~Zhong and Z.~Su.
+\newblock An empirical study on real bug fixes.
+\newblock In {\em ICSE}, pages 913--923, 2015.
+
+\end{thebibliography}
