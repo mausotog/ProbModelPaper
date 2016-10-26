@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2014.9.8)  25 OCT 2016 10:47
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2014.9.8)  25 OCT 2016 21:09
 entering extended mode
 **bare_conf.tex
 (C:\Users\msotogon\Desktop\ProbModelPaper\bare_conf.tex
@@ -168,18 +168,18 @@ Package graphics Info: Driver file: pdftex.def on input line 91.
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 (C:\Users\msotogon\Desktop\ProbModelPaper\bare_conf.aux)
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 317.
-LaTeX Font Info:    ... okay on input line 317.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 317.
-LaTeX Font Info:    ... okay on input line 317.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 317.
-LaTeX Font Info:    ... okay on input line 317.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 317.
-LaTeX Font Info:    ... okay on input line 317.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 317.
-LaTeX Font Info:    ... okay on input line 317.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 317.
-LaTeX Font Info:    ... okay on input line 317.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 318.
+LaTeX Font Info:    ... okay on input line 318.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 318.
+LaTeX Font Info:    ... okay on input line 318.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 318.
+LaTeX Font Info:    ... okay on input line 318.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 318.
+LaTeX Font Info:    ... okay on input line 318.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 318.
+LaTeX Font Info:    ... okay on input line 318.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 318.
+LaTeX Font Info:    ... okay on input line 318.
 
 -- Lines per column: 56 (exact).
 ("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
@@ -196,17 +196,17 @@ LaTeX Font Info:    ... okay on input line 317.
 \makeMPintoPDFobject=\count100
 \everyMPtoPDFconversion=\toks17
 )
-Underfull \hbox (badness 1939) in paragraph at lines 408--414
+Underfull \hbox (badness 1939) in paragraph at lines 409--415
 \OT1/ptm/m/n/10 In or-der to tackle this prob-lem we have de-vel-oped a
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 408--414
+Underfull \hbox (badness 10000) in paragraph at lines 409--415
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 516--517
+Underfull \hbox (badness 10000) in paragraph at lines 517--518
 
  []
 
@@ -214,10 +214,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 516--517
 File: images/Picture1.jpg Graphic file (type jpg)
 
 <use images/Picture1.jpg>
-Package pdftex.def Info: images/Picture1.jpg used on input line 520.
+Package pdftex.def Info: images/Picture1.jpg used on input line 521.
 (pdftex.def)             Requested size: 254.8264pt x 156.02pt.
 
-Overfull \hbox (2.8264pt too wide) in paragraph at lines 520--521
+Overfull \hbox (2.8264pt too wide) in paragraph at lines 521--522
  [][] 
  []
 
@@ -226,12 +226,64 @@ Overfull \hbox (2.8264pt too wide) in paragraph at lines 520--521
 
  <C:/Users/msotogon/Desktop/ProbModelPaper/images/Picture1.jpg>]
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 612.
+(Font)              <7> on input line 537.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 612.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 612.
+(Font)              <5> on input line 537.
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 563.
 
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd"
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+)
+Overfull \hbox (120.0pt too wide) in paragraph at lines 565--565
+[]    \OT1/pcr/m/n/10 $[Ff]ix(ed|es|ing)?(\s)*([Bb]ug|[Ii]ssue|[Pp]roblem)?(s)?
+$[] 
+ []
+
+
+Underfull \hbox (badness 1371) in paragraph at lines 566--576
+\OT1/ptm/m/n/10 The in-tu-ition be-hind this reg-u-lar ex-pres-sion is to fil-t
+er
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 566--576
+
+ []
+
+[2] <images/Picture2.jpg, id=14, 623.931pt x 246.1998pt>
+File: images/Picture2.jpg Graphic file (type jpg)
+
+<use images/Picture2.jpg>
+Package pdftex.def Info: images/Picture2.jpg used on input line 579.
+(pdftex.def)             Requested size: 249.56798pt x 98.47816pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 585--587
+
+ []
+
+
+Underfull \hbox (badness 2744) in paragraph at lines 590--594
+\OT1/ptm/m/n/10 We an-a-lyzed 22 dif-fer-ent kinds of state-ment and the
+ []
+
+
+Underfull \hbox (badness 1694) in paragraph at lines 590--594
+\OT1/ptm/m/n/10 re-place a While loop, or the prob-a-bil-ity that a Break
+ []
+
+
+Underfull \hbox (badness 1838) in paragraph at lines 590--594
+\OT1/ptm/m/n/10 re-cip-ro-cal, mean-ing that the prob-a-bil-ity of a For loop
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 590--594
+
+ []
+
+(C:\Users\msotogon\Desktop\ProbModelPaper\bare_conf.bbl [3 <C:/Users/msotogon/D
+esktop/ProbModelPaper/images/Picture2.jpg>])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -243,25 +295,26 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[2
+[4
 
 ] (C:\Users\msotogon\Desktop\ProbModelPaper\bare_conf.aux) ) 
 Here is how much of TeX's memory you used:
- 2295 strings out of 493921
- 36758 string characters out of 3147274
- 98481 words of memory out of 3000000
- 5601 multiletter control sequences out of 15000+200000
- 38757 words of font info for 72 fonts, out of 3000000 for 9000
+ 2334 strings out of 493921
+ 37451 string characters out of 3147274
+ 105521 words of memory out of 3000000
+ 5638 multiletter control sequences out of 15000+200000
+ 35765 words of font info for 66 fonts, out of 3000000 for 9000
  844 hyphenation exceptions out of 8191
  26i,8n,24p,871b,244s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/M
 iKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<C:/Program Files/MiKTeX 2.9/fonts/ty
-pe1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utm
-bi8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Prog
-ram Files/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
-Output written on bare_conf.pdf (2 pages, 193652 bytes).
+pe1/urw/courier/ucrr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/u
+tmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmbi8a.pfb><C:/Pr
+ogram Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Program Files/MiKTe
+X 2.9/fonts/type1/urw/times/utmri8a.pfb>
+Output written on bare_conf.pdf (4 pages, 264444 bytes).
 PDF statistics:
- 27 PDF objects out of 1000 (max. 8388607)
+ 38 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 11 words of extra memory for PDF output out of 10000 (max. 10000000)
 

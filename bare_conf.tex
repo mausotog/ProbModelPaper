@@ -59,6 +59,7 @@
 % manually specify the path to it like:
 % \documentclass[conference]{../sty/IEEEtran}
 
+
 \usepackage[usenames,dvipsnames]{color}
 \newcommand{\todo}[1]
   {{\scriptsize \textbf{\color{red} {#1}}}}
@@ -522,23 +523,74 @@ One of the most well known approaches to automatic program repair is the generat
   \label{fig:generateandvalidate}
 \end{figure}
 
-The first step of this process is to localize the error to a particular statement. There is an extense list of possible approaches to take in order to perform this tasks \todo{List several fault loc papers}, but this paper will not focus on this.
+The first step of this process is to localize the error to a particular statement. There is an extensive list of possible approaches in literature in order to perform this tasks \todo{List several fault loc papers}, but this paper will not focus on this particular step. Out main focus will be the next step: Generating candidate patches.\\
+Once we know where the fault is located we proceed to create what we call "Candidate patches". Candidate patches are variations of the original program which may or may not be a patch for the bug(s) we are trying to fix. In order to create candidate patches we need to apply one or several mutation operators to the fault location. \\
+There are several possible mutation operators that can be applied to a location in order to modify the behavior of a program. In order to analyze this we have taken mutation operators from two of the most successful approaches in program repair that use generate and validate methodology: Genprog \todo{reference to Genprog paper} is a very well known and widely used tool that modifies statements in order to create candidate patches.   PAR \todo{PAR Reference} is a successful approach that bases their patch generation technique in creating a list of commonly used templates of the most used changes that human programmers perform in order to fix bugs in their source code. We have denominated these two techniques: General mutations \todo{not sure if this is the best name for this} and Template based mutations.
 
 
 \subsection{General mutations}
-Subsection text here.
+Claire Le Goues et al. have created a very successful approach which they denominate GenProg \todo{reference to genprog}, which is a tool that modifies statements of source code in order to repair programs. A statement is the smallest standalone element that expresses some action to be carried out in a programming language. This tool is able to delete, append or replace statements in order to create candidate patches.\\
+Once the tool has a set of candidate patches, it will run the test suite on each of those candidate patches. If it is able to find a candidate patch that can pass all the test cases in the test suite, that candidate patch will be considered a patch of the bug. If it is not able to pass all the test cases in the test suite, then it will go back to creating more candidate patches and will continue to do so until it reaches a stopping point, which may be a certain user defined number of generations or a user defined clock time limit.
 
 
 \subsection{Template based mutations}
-Subsection text here.
+Dongsun Kim et al. have created the approach which they denominate Pattern-based Automatic program Repair(PAR), in which they examined a large number of human created patches and have abstracted 16 different templates to be the most commonly used changes that human programmers do in order to fix their code: \url{https://sites.google.com/site/autofixhkust/home/fix-templates}
+The 16 templates which we consider in this category are the following:
+\begin{enumerate}
+\item Null Checker
+\item Parameter Replacer
+\item Method Replacer
+\item Parameter Adder and Remover
+\item Object Initializer
+\item Sequence Exchanger
+\item Range Checker
+\item Collection Size Checker
+\item Lower Bound Setter
+\item Upper Bound Setter
+\item Off-by-one Mutator
+\item Class Cast Checker
+\item Caster Mutator
+\item Castee Mutator
+\item Expression Changer
+\item Expression Adder
+\end{enumerate}
+
+\section{Building the model}
+The first model we built was created based on the 200 Java projects in Github with the most stars. When users star a project they are creating a bookmark for easier access, and showing appreciation to the repository maintainer for their work. Projects with more stars are more popular among the developers of Github and therefore more likely to be reviewed by other developers and have higher standards of code quality than projects with less stars.\\
+Once we have checked out the 200 Java projects with the most stars, we checkout the last 100 bug fixing commits per each project. \\
+In order to tell apart a bug fixing commit from a non bug fixing commit we filter them by applying a regular expression to the commit message:
+\todo{fix this text}
+\begin{verbatim}
+    $[Ff]ix(ed|es|ing)?(\s)*([Bb]ug|[Ii]ssue|[Pp]roblem)?(s)?$
+\end{verbatim}
+The intuition behind this regular expression is to filter commits where their commit message includes phrases such as: "Fixed issue with variable x", "Fix for problem discussed in meeting", "Error fixed", "Fixing file bug", etc.\\
+We also added two extra filters to our search: First we had commits that only modify java source code. This is with the intention of looking only into human fixing commits that fix java source code. Developers may also fix bugs in other sections of their projects, for example they may fix bugs in bash files, or xml code or any other kind of bug, and this wouldn't be relevant to our purpose of building a model that looks into the ways in which human developers fix their java code.\\
+The last filter we applied to our search is to look only for the fixing commits that modify a maximum of 3 files per commit. This is for two reasons: first, we want to filter out big merges of code such as pull requests or initial commits where the commit is doing much more than just fixing a bug, which are the cases that we are interested in; and second, because these approaches usually work better when the fault is localized in a small number of locations.\\
+For each of these bug fixing commits, we then checked the version of the code before the fix was performed and after the fix was performed. We refer to these versions as the "before-fix" version and the "after-fix" version.\\
+We then need to know what changes are happening from the before-fix version to the after-fix version, and we need to be able to analyze how often these changes performed match the mutation operators we are analyzing in order to see what are the probabilities of each of them to happen.\\
+In order to do this we used two different widely used tools for mapping changes between two versions of code: Gumtree and QACrashFix./todo{refereces to these two papers}\\
+These tools create an AST representation of the program files for both the before-fix and after-fix representations of the programs for each of the files of the commit, and then use a set of heuristics to match the before-fix version with the after-fix version. Once this is done, the program's output is a set of changes needed to be performed to get from version before-fix to version after-fix.\\
+We created two levels in the probabilistic model, the first one we will call the \textit{Mutation operator probabilistic model}, and the second level we will call the \textit{Replacements probabilistic model}.\\
+The \textit{Mutation operator probabilistic model} is a probabilistic model that describes the probabilities to choose between the several different mutation operators in a particular fault location.\\
+The \textit{Replacements probabilistic model} is the next level of the probabilistic model, which describes, if the "Replacement" mutation operator is picked, what are the probabilities of replacing one statement for another. We will explain this in detail below.\\
+
+\begin{figure}[!h]
+  \centering
+    \includegraphics[scale=0.4]{Picture2}
+  \caption{2 level probabilistic model}
+  \label{fig:probModel}
+\end{figure}
+
+\subsection{Mutation operator probabilistic model}
+In order to build the \textit{Mutation operator probabilistic model} we created a program (available at \todo{link to the github repo}) that goes through these changes and matches these changes with the mutation operators we described earlier.\\
+We sum the instances of each of the appearances of the mutation operators in the lists of changes created out of the differences between the before-fix and after-fix versions of each of the files in the 100 last bug fixing commits per each of the 200 projects; and these instance sums are the data we take to create our probabilistic model.\\  
 
 
-
-
-
-
-\section{Build the model}
-Section text here.
+\subsection{Replacements probabilistic model}
+In order to build the \textit{Replacements probabilistic model} we created a program similar to the one mentioned before (available at \todo{link to the github repo}) that goes through these changes and when it encounters a replacement mutation operator, then it looks at what kind of statement is being replaced and what kind of statement is replacing the other. We call these statements "replacee" and "replacer" accordingly.\\
+We analyzed 22 different kinds of statement and the probability in which each of them replaces another. For example, what is the probability that a For loop would replace a While loop, or the probability that a Break statement would replace a Continue statement, etc.\\
+Since there are 22 statement types that we analyzed and each of these 22 may replace each of these 22 statement types, we then have 484 combinations of replacement combinations. \\
+It is also worth noticing that these probabilities are not reciprocal, meaning that the probability of a For loop replacing a While loop is different from the probability of a While loop replacing a For loop, and the same applies to all the different statement types.\\
 
 \section{Sanity Check}
 Section text here.
@@ -553,6 +605,7 @@ Subsection text here.
 \section{Evaluation}
 Section text here.
 
+\section{Upgrading the model}
 
 \subsection{Single line bugs}
 Subsection text here.
@@ -606,14 +659,19 @@ The authors would like to thank...
 % <OR> manually copy in the resultant .bbl file
 % set second argument of \begin to the number of references
 % (used to reserve space for the reference number labels box)
-\begin{thebibliography}{1}
+%\begin{thebibliography}{1}
 
-\bibitem{IEEEhowto:kopka}
-H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
-  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
+%\bibitem{IEEEhowto:kopka}
 
-\end{thebibliography}
+%\end{thebibliography}
 
+\todo{Fix bibliography}
+\bibliographystyle{abbrv}
+\bibliography{sigproc}  % sigproc.bib is the name of the Bibliography in this case
+% You must have a proper ".bib" file
+%  and remember to run:
+% latex bibtex latex latex
+% to resolve all references
 
 
 
