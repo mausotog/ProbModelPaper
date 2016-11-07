@@ -406,12 +406,66 @@ The abstract goes here.
 
 \section{Introduction}
 % no \IEEEPARstart
-Automatic program repair has attracted a lot of attention in the last several years due to its ability to tackle complex and expensive tasks such as being able to localize errors and fixing code with minimal interaction with human programmers. One of the most well known approaches of automatic program repair is the generation and validation approach. In this approach we start with source code that has one or several bugs on it; and we have a test suite which has passing test cases and failing test cases. The passing test cases confirm the expected behavior of the program, and the failing test cases expose the deviation of the expected behavior with the actual behavior. \\
-These approaches have a wide variety of mutation operations, which are small changes that can be applied to the source code in order to modify its behavior. In order to pick which mutation operator will be used in a specific location, we first pick a fault location, which is a point in the code where we think the fault is located. This can be done in various ways and there is a whole set of possible approaches that can tell you with different levels of certainty what location to pick. This is not the step that we will be analyzing in this paper. We will be analyzing the next step: After we have a fault location, then it goes through a process in which it is analyzed which mutation operators can be applied to that specific location, or if the context of that location doesn't allow some mutation operators to be used in a particular location. \\
-Once this process is finished, we have a set of possible mutation operators that can be applied to a location. At this point, it is chosen at random which mutation operator will be used from the set of mutation operators that can be applied at this location. \\
-In order to pick the mutation operator, the probabilities of picking each of them are equally distributed; this means that from the set of mutations that can be applied to this location, all of them have the same probability of being chosen. Where, in reality, some mutation operators are much more common than others and the fact that we are choosing from them equally is making us often pick mutation operators that are less likely to actually fix the bug we are trying to fix.\\
+
+\todo{CLG says: OK, let's start at the top: Please fix the formatting issues,
+  and then work on the argument from the high level.  Please add citations where
+  necessary, or at least blank cite tags that you fill in at a later pass.}
+
+\todo{An introduction typically follows an outline along the lines of (1) there
+  is a Big Important Problem.  (2) previous work has attempted to tackle this
+  problem; high-level background on the general approaches.  (3) but, there is
+  some problem that remains, or a gap.  (4) we have an intuition or novel
+  contribution or observation that allows us to tackle the problem left by that
+  gap, it is backed up by X, Y, or Z previous work or initial studies, etc, (5)
+  we propose a technique that builds on it in the following high-level way.}
+
+\todo{Please reformulate this intro accordingly.}
+
+Automatic program repair has attracted a lot of attention in the last several
+years due to its ability to tackle complex and expensive tasks such as being
+able to localize errors and fixing code with minimal interaction with human
+programmers. One of the most well known approaches of automatic program repair
+is the generation and validation approach.\todo{The typical phrase is
+  ``generate-and-validate''.}  In this approach we start with source
+code that has one or several bugs on it; and we have a test suite which has
+passing test cases and failing test cases.\todo{Note that test suite guidance is
+  not unique to generate and validate, and thus this characterization is inaccurate; please reference the literature and
+  rephrase this appropriately to reference generate and validate.  Please also
+  add a sentence contrasting it with the other broad type of program repair
+  approaches, and comment on the fact that that's not what we're looking at.}  The passing test cases confirm the
+expected behavior of the program, and the failing test cases expose the
+deviation of the expected behavior with the actual behavior. 
+
+
+These approaches have a wide variety of mutation operations, which are small
+changes that can be applied to the source code in order to modify its
+behavior.\todo{Where do the mutation oeprators come in in your explanation?} In
+order to pick which mutation operator will be used in a specific location, we
+first pick a fault location, which is a point in the code where we think the
+fault is located. This can be done in various ways and there is a whole set of
+possible approaches that can tell you with different levels of certainty what
+location to pick.\todo{such as?} This is not the step that we will be analyzing in this
+paper. We will be analyzing the next step: After we have a fault location, then
+it goes through a process in which it is analyzed which mutation operators can
+be applied to that specific location, or if the context of that location doesn't
+allow some mutation operators to be used in a particular location. 
+
+Once this process is finished, we have a set of possible mutation operators that
+can be applied to a location. At this point, it is chosen at random\todo{Leading
+  question: Which technique are we talking about here?  There are many
+  techniques for program repair, even g-and-v repair, and they do not all select
+  mutations at random.  Thus, this is imprecise.  Please expand to appropriately
+  characterize the previous work.{  which mutation operator will be used from the set of mutation operators that can be applied at this location. \\
+In order to pick the mutation operator, the probabilities of picking each of
+them are equally distributed\todo{Again, this is not true of the previous work.}; this means that from the set of mutations that can be applied to this location, all of them have the same probability of being chosen. Where, in reality, some mutation operators are much more common than others and the fact that we are choosing from them equally is making us often pick mutation operators that are less likely to actually fix the bug we are trying to fix.\\
 In order to tackle this problem we have developed a probabilistic model which entails different probabilities for each of the mutation operators based on empirical data that describes how to human programmers fix their code.\\
-With the probabilistic model we are able to chose from the set of possible mutation operators that can be applied to a particular location using the probabilities which describe how often do each of the mutation operators is able to fix bugs when used in real projects. If human programmers are more likely to use a particular mutation operator, then that mutation operator will have a higher probability of being picked than other mutation operators.\\
+With the probabilistic model we are able to chose from the set of possible
+mutation operators that can be applied to a particular location using the
+probabilities which describe how often do each of the mutation operators is able
+to fix bugs when used in real projects. If human programmers are more likely to
+use a particular mutation operator, then that mutation operator will have a
+higher probability of being picked than other mutation operators.\todo{Why do we
+  think that's a good idea?}\\
 
 
 % An example of a floating figure using the graphicx package.
@@ -510,11 +564,30 @@ With the probabilistic model we are able to chose from the set of possible mutat
 
 
 
+\todo{The most glaring problem with the exposition that I see so far is its
+  failure to acknowledge, reference, or contrast with SPR or Prophet, the latter of which does use a
+  probabilistic model.}
+
+\todo{Please fill in: ``The primary contributions of this paper thus are:
+  itemized list''}
+
+
+
+\todo{Please fill in: ``The rest of this paper proceeds as follows...''}
 
 \section{Background}
 
 
-One of the most well known approaches to automatic program repair is the generate and validate approach which is detailed in Figure \ref{fig:generateandvalidate}. In this approach we start with source code that has one or various bugs to be fixed, and a test suite which contains passing test cases to assure the expected behavior of the program, and failing test cases which expose the behavior of the program that is expected but the output of the expected behavior does not match the output of the source code as is.\\
+One of the most well known approaches to automatic program repair is the
+generate and validate approach which is detailed in Figure
+\ref{fig:generateandvalidate}. In this approach we start with source code that
+has one or various bugs to be fixed, and a test suite which contains passing
+test cases to assure the expected behavior\todo{please rephrase; test cases do
+  not assure correctness.} of the program, and failing test 
+cases which expose the behavior of the program that is expected but the output
+of the expected behavior does not match the output of the source code as is.
+
+
 
 \begin{figure}[!h]
   \centering
@@ -529,7 +602,7 @@ There are several possible mutation operators that can be applied to a location 
 
 
 \subsection{General mutations}
-Claire Le Goues et al. have created a very successful approach which they denominate GenProg \todo{reference to genprog}, which is a tool that modifies statements of source code in order to repair programs. A statement is the smallest standalone element that expresses some action to be carried out in a programming language. This tool is able to delete, append or replace statements in order to create candidate patches.\\
+Claire Le Goues\todo{Refer to authors by last name only} et al. have created a very successful approach which they denominate GenProg \todo{reference to genprog}, which is a tool that modifies statements of source code in order to repair programs. A statement is the smallest standalone element that expresses some action to be carried out in a programming language. This tool is able to delete, append or replace statements in order to create candidate patches.\\
 Once the tool has a set of candidate patches, it will run the test suite on each of those candidate patches. If it is able to find a candidate patch that can pass all the test cases in the test suite, that candidate patch will be considered a patch of the bug. If it is not able to pass all the test cases in the test suite, then it will go back to creating more candidate patches and will continue to do so until it reaches a stopping point, which may be a certain user defined number of generations or a user defined clock time limit.
 
 
