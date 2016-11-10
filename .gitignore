@@ -1,3 +1,6 @@
 *.log
 *.aux
 *.pdf
+*.out
+*.synctex
+*.md

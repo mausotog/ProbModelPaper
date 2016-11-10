@@ -455,7 +455,7 @@ can be applied to a location. At this point, it is chosen at random\todo{Leading
   question: Which technique are we talking about here?  There are many
   techniques for program repair, even g-and-v repair, and they do not all select
   mutations at random.  Thus, this is imprecise.  Please expand to appropriately
-  characterize the previous work.{  which mutation operator will be used from the set of mutation operators that can be applied at this location. \\
+  characterize the previous work.}  which mutation operator will be used from the set of mutation operators that can be applied at this location. \\
 In order to pick the mutation operator, the probabilities of picking each of
 them are equally distributed\todo{Again, this is not true of the previous work.}; this means that from the set of mutations that can be applied to this location, all of them have the same probability of being chosen. Where, in reality, some mutation operators are much more common than others and the fact that we are choosing from them equally is making us often pick mutation operators that are less likely to actually fix the bug we are trying to fix.\\
 In order to tackle this problem we have developed a probabilistic model which entails different probabilities for each of the mutation operators based on empirical data that describes how to human programmers fix their code.\\
