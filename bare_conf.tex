@@ -636,7 +636,7 @@ In order to tell apart a bug fixing commit from a non bug fixing commit we filte
 \begin{verbatim}
     $[Ff]ix(ed|es|ing)?(\s)*([Bb]ug|[Ii]ssue|[Pp]roblem)?(s)?$
 \end{verbatim}
-The intuition behind this regular expression is to filter commits where their commit message includes phrases such as: "Fixed issue with variable x", "Fix for problem discussed in meeting", "Error fixed", "Fixing file bug", etc.\\
+The intuition behind this regular expression is to filter commits where their commit message includes phrases such as: "Fixed issue with variable x", "Fix for problem discussed in meeting", "Fixing file bug", etc.\\
 We also added two extra filters to our search: First we had commits that only modify java source code. This is with the intention of looking only into human fixing commits that fix java source code. Developers may also fix bugs in other sections of their projects, for example they may fix bugs in bash files, or xml code or any other kind of bug, and this wouldn't be relevant to our purpose of building a model that looks into the ways in which human developers fix their java code.\\
 The last filter we applied to our search is to look only for the fixing commits that modify a maximum of 3 files per commit. This is for two reasons: first, we want to filter out big merges of code such as pull requests or initial commits where the commit is doing much more than just fixing a bug, which are the cases that we are interested in; and second, because these approaches usually work better when the fault is localized in a small number of locations.\\
 For each of these bug fixing commits, we then checked the version of the code before the fix was performed and after the fix was performed. We refer to these versions as the "before-fix" version and the "after-fix" version.\\
@@ -666,25 +666,26 @@ Since there are 22 statement types that we analyzed and each of these 22 may rep
 It is also worth noticing that these probabilities are not reciprocal, meaning that the probability of a For loop replacing a While loop is different from the probability of a While loop replacing a For loop, and the same applies to all the different statement types.\\
 
 \section{Sanity Check}
-Section text here.
+Sanity check text here.
 
 \subsection{10 fold cross validation}
-Subsection text here.
+10 fold cross validation of the 200 projects by ranking the predictions
 
 \subsection{Small Example}
-Subsection text here.
-
-
-\section{Evaluation}
-Section text here.
+Talk about running it in SimpleExample
 
 \section{Upgrading the model}
+Creating model from 500 projects
+
+\section{Evaluation}
+Evaluation text here.
+
 
 \subsection{Single line bugs}
-Subsection text here.
+First 15 bugs tried, from which 5 were able to find a fix
 
 \subsection{Multi line bugs}
-Subsection text here.
+Last evaluation with the bugs we found had a fix
 
 \section{Discussion}
 Section text here.
@@ -702,8 +703,6 @@ The conclusion goes here.
 
 % use section* for acknowledgment
 \section*{Acknowledgment}
-
-
 The authors would like to thank...
 
 
