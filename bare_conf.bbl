@@ -1,53 +1,62 @@
 \begin{thebibliography}{10}
 
-\bibitem{Asaduzzaman:2013df}
-M.~Asaduzzaman, C.~K. Roy, K.~A. Schneider, and M.~Di~Penta.
-\newblock {LHDiff: A Language-Independent Hybrid Approach for Tracking Source
-  Code Lines.}
-\newblock {\em ICSM}, pages 230--239, 2013.
+\bibitem{Chen02}
+M.~Y. Chen, E.~Kiciman, E.~Fratkin, A.~Fox, and E.~Brewer.
+\newblock Pinpoint: Problem determination in large, dynamic internet services.
+\newblock {\em International Conference on Dependable Systems and Networks},
+  2002.
 
-\bibitem{Barr14fse}
-E.~T. Barr, Y.~Brun, P.~Devanbu, M.~Harman, and F.~Sarro.
-\newblock The plastic surgery hypothesis.
-\newblock In {\em FSE}, pages 306--317, 2014.
+\bibitem{jin11}
+G.~Jin, L.~Song, W.~Zhang, S.~Lu, and B.~Liblit.
+\newblock Automated atomicity-violation fixing.
+\newblock {\em PLDI’11}, 2011.
 
-\bibitem{nopol}
-F.~DeMarco, J.~Xuan, D.~Le~Berre, and M.~Monperrus.
-\newblock Automatic repair of buggy if conditions and missing preconditions
-  with smt.
-\newblock In {\em CSTVA}, 2014.
+\bibitem{Jones05}
+J.~A. Jones and M.~J. Harrold.
+\newblock Empirical evaluation of the tarantula automatic fault-localization
+  technique.
+\newblock In {\em 20th IEEE/ACM international Conference on Automated software
+  engineering}, pages 273--282, 2005.
 
-\bibitem{dyer2013}
-R.~Dyer, H.~A. Nguyen, H.~Rajan, and T.~N. Nguyen.
-\newblock Boa: A language and infrastructure for analyzing ultra-large-scale
-  software repositories.
-\newblock In {\em ICSE}, pages 422--431, 2013.
+\bibitem{Jones02}
+J.~A. Jones, M.~J. Harrold, and J.~Stasko.
+\newblock Visualization of test information to assist fault localization.
+\newblock {\em ICSE 02}, 2002.
 
 \bibitem{kim2013}
 D.~Kim, J.~Nam, J.~Song, and S.~Kim.
 \newblock Automatic patch generation learned from human-written patches.
 \newblock In {\em ICSE}, pages 802--811, 2013.
 
-\bibitem{legoues2012}
-C.~Le~Goues, T.~Nguyen, S.~Forrest, and W.~Weimer.
-\newblock Genprog: A generic method for automatic software repair.
-\newblock {\em IEEE Transactions on Software Engineering}, 38(1):54--72, 2012.
-
-\bibitem{Long2016}
+\bibitem{long15}
 F.~Long and M.~Rinard.
-\newblock Automatic patch generation by learning correct code.
-\newblock In {\em POPL}, 2016.
+\newblock Prophet: Automatic patch generation via learning from successful
+  patches.
+\newblock {\em Computer Science and Artificial Intelligence Laboratory
+  Technical Report}, 2015.
 
-\bibitem{Martinez:2015ez}
-M.~Martinez and M.~Monperrus.
-\newblock {Mining software repair models for reasoning on the search space of
-  automated program fixing.}
-\newblock {\em Empirical Software Engineering}, 20(1):176--205, 2015.
+\bibitem{fan15}
+F.~Long and M.~Rinard.
+\newblock Staged program repair with condition synthesis.
+\newblock {\em ESEC/FSE’15}, 2015.
 
-\bibitem{Mechtaev15}
-S.~Mechtaev, J.~Yi, and A.~Roychoudhury.
-\newblock {DirectFix}: {Looking} for simple program repairs.
-\newblock In {\em ICSE}, 2015.
+\bibitem{pei14}
+Y.~Pei, C.~A. Furia, M.~Nordio, Y.~Wei, B.~Meyer, and A.~Zeller.
+\newblock Automated fixing of programs with contracts.
+\newblock {\em IEEE TRANSACTIONS ON SOFTWARE ENGINEERING}, 40(5), 2014.
+
+\bibitem{Qi13}
+Y.~Qi, X.~Mao, and Y.~Lei.
+\newblock Efficient automated program repair through fault-recorded testing
+  prioritization.
+\newblock In {\em International Conference on Software Maintenance (ICSM)},
+  pages 180--189, Sept. 2013.
+
+\bibitem{QiYuhua13}
+Y.~Qi, X.~Mao, and Y.~Lei.
+\newblock Efficient automated program repair through fault-recorded testing
+  prioritization.
+\newblock {\em IEEE}, 2013.
 
 \bibitem{Qi15}
 Z.~Qi, F.~Long, S.~Achour, and M.~Rinard.
@@ -55,9 +64,23 @@ Z.~Qi, F.~Long, S.~Achour, and M.~Rinard.
   generate-and-validate patch generation systems.
 \newblock In {\em ISSTA}, pages 24--36, 2015.
 
-\bibitem{zhong2015}
-H.~Zhong and Z.~Su.
-\newblock An empirical study on real bug fixes.
-\newblock In {\em ICSE}, pages 913--923, 2015.
+\bibitem{smith15}
+E.~K. Smith, E.~T. Barr, C.~Le~Goues, and Y.~Brun.
+\newblock Is the cure worse than the disease? overfitting in automated program
+  repair.
+\newblock {\em ESEC/FSE’15}, 2015.
+
+\bibitem{legoues12}
+W.~Weimer, M.~Dewey-Vogt, C.~Le~Goues, and S.~Forrest.
+\newblock A systematic study of automated program repair: fixing 55 out of 105
+  bugs for \$8 each.
+\newblock ICSE, 2012.
+
+\bibitem{Weimer13}
+W.~Weimer, Z.~P. Fry, and S.~Forrest.
+\newblock Leveraging program equivalence for adaptive program repair: {Models}
+  and first results.
+\newblock In {\em IEEE/ACM International Conference on Automated Software
+  Engineering (ASE)}, Palo Alto, CA, USA, 2013.
 
 \end{thebibliography}

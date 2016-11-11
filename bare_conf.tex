@@ -1,4 +1,3 @@
-
 %% bare_conf.tex
 %% V1.4b
 %% 2015/08/26
@@ -45,11 +44,9 @@
 % *** Authors should verify (and, if needed, correct) their LaTeX system  ***
 % *** with the testflow diagnostic prior to trusting their LaTeX platform ***
 % *** with production work. The IEEE's font choices and paper sizes can   ***
-% *** trigger bugs that do not appear when using other class files.       ***                          ***
+% *** trigger bugs that do not appear when using other class files.       ***                          
 % The testflow support page is at:
 % http://www.michaelshell.org/tex/testflow/
-
-
 
 \documentclass[conference]{IEEEtran}
 % Some Computer Society conferences also require the compsoc mode option,
@@ -58,7 +55,6 @@
 % If IEEEtran.cls has not been installed into the LaTeX system files,
 % manually specify the path to it like:
 % \documentclass[conference]{../sty/IEEEtran}
-
 
 \usepackage[usenames,dvipsnames]{color}
 \newcommand{\todo}[1]
@@ -95,7 +91,7 @@
 
 % *** CITATION PACKAGES ***
 %
-%\usepackage{cite}
+\usepackage{cite}
 % cite.sty was written by Donald Arseneau
 % V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
 % \cite{} output to follow that of the IEEE. Loading the cite package will
@@ -321,8 +317,7 @@
 % Titles are generally capitalized except for words such as a, an, and, as,
 % at, but, by, for, in, nor, of, on, or, the, to and up, which are usually
 % not capitalized unless they are the first or last word of the title.
-% Linebreaks 
- can be used within to get better formatting as desired.
+% Linebreaks  can be used within to get better formatting as desired.
 % Do not put math or special symbols in the title.
 \title{Using a probabilistic model to predict bug fixes}
 
@@ -331,17 +326,13 @@
 % use a multiple column layout for up to three different
 % affiliations
 \author{\IEEEauthorblockN{Mauricio Soto}
-\IEEEauthorblockA{Carnegie Mellon University
-
-Pittsburgh PA
-
+\IEEEauthorblockA{Carnegie Mellon University\\
+Pittsburgh PA\\
 mauriciosoto@cmu.edu}
 \and
 \IEEEauthorblockN{Claire Le Goues}
-\IEEEauthorblockA{Carnegie Mellon University
-
-Pittsburgh PA
-
+\IEEEauthorblockA{Carnegie Mellon University\\
+Pittsburgh PA\\
 clegoues@cs.cmu.edu}
 %\and
 %\IEEEauthorblockN{James Kirk\\ and Montgomery Scott}
@@ -430,40 +421,52 @@ Automatic program repair has attracted a lot of attention in the last several
 years due to its ability to tackle complex and expensive tasks such as being
 able to localize errors and fixing code with minimal interaction with human
 programmers. One of the most well known approaches of automatic program repair
-is the generation and validation approach.\todo{The typical phrase is
-  ``generate-and-validate''.}  In this approach we start with source
-code that has one or several bugs on it; and we have a test suite which has
-passing test cases and failing test cases.\todo{Note that test suite guidance is
-  not unique to generate and validate, and thus this characterization is inaccurate; please reference the literature and
-  rephrase this appropriately to reference generate and validate.  Please also
-  add a sentence contrasting it with the other broad type of program repair
-  approaches, and comment on the fact that that's not what we're looking at.}  The passing test cases confirm the
+is the generate-and-validate approach. 
+
+According to Qi et al: "The prominent generate-and-validate approach starts with a test suite of inputs, at least one of which exposes a defect in the software.
+The patch generation system applies program modifications
+to generate a space of candidate patches, then
+searches the generated patch space to find plausible patches
+— i.e., patches that produce correct outputs for all inputs
+in the test suite." \cite{Qi15}
+
+
+%\todo{Note that test suite guidance is
+%  not unique to generate and validate, and thus this characterization is inaccurate; please %reference the literature and
+%  rephrase this appropriately to reference generate and validate.  Please also
+%  add a sentence contrasting it with the other broad type of program repair
+%  approaches, and comment on the fact that that's not what we're looking at.}  
+  
+The passing test cases confirm the
 expected behavior of the program, and the failing test cases expose the
-deviation of the expected behavior with the actual behavior. 
+deviation of the expected behavior with the actual behavior. In contrast to generate-and-validate there exist other techniques used for automatic program repair such as Synthesis-Based \cite{jin11,pei14} program repair which "uses constraints to build correct-by-construction patches via formal verification or inferred or programmer-provided contracts
+or specifications" \cite{smith15}. We will be focusing on the former of these two.
 
 
-These approaches have a wide variety of mutation operations, which are small
-changes that can be applied to the source code in order to modify its
-behavior.\todo{Where do the mutation oeprators come in in your explanation?} In
-order to pick which mutation operator will be used in a specific location, we
-first pick a fault location, which is a point in the code where we think the
-fault is located. This can be done in various ways and there is a whole set of
-possible approaches that can tell you with different levels of certainty what
-location to pick.\todo{such as?} This is not the step that we will be analyzing in this
-paper. We will be analyzing the next step: After we have a fault location, then
+In order to modify the behavior of the source code and be able to repair the errors entailed by the test suite, it is needed a set of possible changes that can be applied to the source code which will allow for program variations; this set of possible operations are called "Mutation operators". 
+
+There have been a variety of approaches that use generate-and-validate for program repair. \cite{legoues12,kim2013,Weimer13,fan15,long15} These approaches have a wide variety of mutation operations with which they vary the source code in different using different techniques. 
+
+In
+order to pick which mutation operator will be used in a specific location, the first step is to pick a fault location, which is a point in the code where the
+fault is suspected to be located. This can be done in various ways and there is a whole set of
+possible approaches that can analyze with different levels of certainty what
+location to pick \cite{Jones05,Jones02,Chen02,legoues12,Qi13}. This is not the step that we will be analyzing in this
+paper. We will be analyzing the step that follows: After we have a fault location, then
 it goes through a process in which it is analyzed which mutation operators can
 be applied to that specific location, or if the context of that location doesn't
 allow some mutation operators to be used in a particular location. 
 
-Once this process is finished, we have a set of possible mutation operators that
-can be applied to a location. At this point, it is chosen at random\todo{Leading
-  question: Which technique are we talking about here?  There are many
-  techniques for program repair, even g-and-v repair, and they do not all select
-  mutations at random.  Thus, this is imprecise.  Please expand to appropriately
-  characterize the previous work.}  which mutation operator will be used from the set of mutation operators that can be applied at this location. 
+Once this process is finished, as a result of this, there is set of possible mutation operators that
+can be applied to a location. At this point, most of the well known and highly used approaches that use generate-and-validate such as GenProg \cite{legoues12}, Par \cite{kim2013}, TrpAutoRepair \cite{QiYuhua13} and SPR \cite{fan15} choose at random   which mutation operator will be used from the set of mutation operators that can be applied at this location. 
+% \todo{Leading
+%  question: Which technique are we talking about here?  There are many
+%  techniques for program repair, even g-and-v repair, and they do not all select
+%  mutations at random.  Thus, this is imprecise.  Please expand to appropriately
+%  characterize the previous work.}
 
 In order to pick the mutation operator, the probabilities of picking each of
-them are equally distributed\todo{Again, this is not true of the previous work.}; this means that from the set of mutations that can be applied to this location, all of them have the same probability of being chosen. Where, in reality, some mutation operators are much more common than others and the fact that we are choosing from them equally is making us often pick mutation operators that are less likely to actually fix the bug we are trying to fix.
+them are equally distributed; this means that from the set of mutations that can be applied to this location, all of them have the same probability of being chosen. Where, in reality, some mutation operators are much more common than others and the fact that we are choosing from them equally is making us often pick mutation operators that are less likely to actually fix the bug we are trying to fix.
 
 In order to tackle this problem we have developed a probabilistic model which entails different probabilities for each of the mutation operators based on empirical data that describes how to human programmers fix their code.
 
@@ -472,8 +475,7 @@ mutation operators that can be applied to a particular location using the
 probabilities which describe how often do each of the mutation operators is able
 to fix bugs when used in real projects. If human programmers are more likely to
 use a particular mutation operator, then that mutation operator will have a
-higher probability of being picked than other mutation operators.\todo{Why do we
-  think that's a good idea?}
+higher probability of being picked than other mutation operators. This way we are simulating the way in which human programmers patch their code, which has being evaluated to create patches that are easier to understand by humans and therefore it increases the maintainability of the patches. %\todo{Why do we think that's a good idea?}
 
 
 
@@ -577,12 +579,29 @@ higher probability of being picked than other mutation operators.\todo{Why do we
   failure to acknowledge, reference, or contrast with SPR or Prophet, the latter of which does use a
   probabilistic model.}
 
-\todo{Please fill in: ``The primary contributions of this paper thus are:
-  itemized list''}
+%\todo{Please fill in: ``The primary contributions of this paper thus are:
+%  itemized list''}
 
 
 
-\todo{Please fill in: ``The rest of this paper proceeds as follows...''}
+%\todo{Please fill in: ``The rest of this paper proceeds as follows...''}
+
+The primary contributions of this paper thus are:
+\begin{itemize}
+  \item Development of a probabilistic model to improve the likelihood of picking mutation operators that are more likely to be picked by human developers
+  \item Evaluation of \todo{something else}
+\end{itemize}
+
+The rest of this paper proceeds as follows:
+\begin{itemize}
+  \item Background
+  \item Building the model
+  \item Sanity Check
+  \item Upgrading the model
+  \item Evaluation
+  \item Discussion
+  \item Conclusion
+\end{itemize}
 
 \section{Background}
 
@@ -600,7 +619,7 @@ of the expected behavior does not match the output of the source code as is.
 
 \begin{figure}[!h]
   \centering
-    \includegraphics[scale=0.25]{Picture1}
+%    \includegraphics[scale=0.25]{Picture1}
   \caption{Generate and validate approach}
   \label{fig:generateandvalidate}
 \end{figure}
@@ -746,7 +765,7 @@ will explain this in detail below.
 
 \begin{figure}[!h]
   \centering
-    \includegraphics[scale=0.4]{Picture2}
+%    \includegraphics[scale=0.4]{Picture2}
   \caption{2 level probabilistic model}
   \label{fig:probModel}
 \end{figure}
@@ -860,7 +879,6 @@ The authors would like to thank...
 
 %\end{thebibliography}
 
-\todo{Fix bibliography}
 \bibliographystyle{abbrv}
 \bibliography{sigproc}  % sigproc.bib is the name of the Bibliography in this case
 % You must have a proper ".bib" file

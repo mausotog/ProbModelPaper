@@ -5,3 +5,7 @@
 *.synctex
 *.md
 *.gz
+*.bbl
+*.blg
+*.dvi
+*.ps
