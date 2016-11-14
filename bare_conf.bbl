@@ -6,6 +6,12 @@ M.~Y. Chen, E.~Kiciman, E.~Fratkin, A.~Fox, and E.~Brewer.
 \newblock {\em International Conference on Dependable Systems and Networks},
   2002.
 
+\bibitem{dyer2013}
+R.~Dyer, H.~A. Nguyen, H.~Rajan, and T.~N. Nguyen.
+\newblock Boa: A language and infrastructure for analyzing ultra-large-scale
+  software repositories.
+\newblock In {\em ICSE}, pages 422--431, 2013.
+
 \bibitem{jin11}
 G.~Jin, L.~Song, W.~Zhang, S.~Lu, and B.~Liblit.
 \newblock Automated atomicity-violation fixing.
@@ -69,6 +75,12 @@ E.~K. Smith, E.~T. Barr, C.~Le~Goues, and Y.~Brun.
 \newblock Is the cure worse than the disease? overfitting in automated program
   repair.
 \newblock {\em ESEC/FSE’15}, 2015.
+
+\bibitem{Soto15}
+M.~Soto, F.~Thung, C.-P. Wong, C.~Le~Goues, and D.~Lo.
+\newblock A deeper look into bug fixes: Patterns, replacements, deletions, and
+  additions.
+\newblock {\em MSR}, 2015.
 
 \bibitem{legoues12}
 W.~Weimer, M.~Dewey-Vogt, C.~Le~Goues, and S.~Forrest.
