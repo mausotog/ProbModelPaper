@@ -473,10 +473,12 @@ allow some mutation operators to be used in a particular location.
 Once this process is finalized, as a result, there is a set of possible 
 mutation operators that
 can be applied to a location. At this point, most of the well known and highly 
-used approaches that use generate-and-validate such as GenProg \cite{legoues12}, 
-Par \cite{kim2013}, TrpAutoRepair \cite{QiYuhua13} and SPR \cite{fan15} choose 
+used approaches that use generate-and-validate such as GenProg \cite{legoues12}, \todo{Please add non-breaking spaces beween words and citations}
+Par \cite{kim2013}, TrpAutoRepair \cite{QiYuhua13} and SPR \cite{fan15} choose \todo{Please check the SPR claim, I'm not sure it's true}
 at random   which mutation operator will be used from the set of mutation 
 operators that can be applied at this location. 
+\todo{Why is this bad?  Why is random not good enough?}
+
 % \todo{Leading
 %  question: Which technique are we talking about here?  There are many
 %  techniques for program repair, even g-and-v repair, and they do not all 
@@ -498,7 +500,7 @@ where we built a probabilistic model of the replace mutation operator based in
 an instance count of statements of each type using the platform BOA, \cite{dyer2013} and making an initial model of the replacement mutation operator only. Also Rinard 
 and Long \cite{long15} have done previous work in this area, where they built a 
 probabilistic model for a subset of the mutation operators, with a training set 
-of 8 different projects, while our current study trains with 500 projects, and 
+of 8 different projects, while our current study trains with 500 projects, and
 handles, compares and contrasts a full set of mutation operators, taking into 
 account the full set of currently used mutation operators by categorizing them in two different groups. 
 
