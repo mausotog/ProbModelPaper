@@ -416,6 +416,7 @@ The abstract goes here.
 %  we propose a technique that builds on it in the following high-level way.}
 
 %\todo{Please reformulate this intro accordingly.}
+Repairing errors is one of the most expensive and resource consuming tasks in the software development process; especially for large projects in modern object-oriented languages that have to comply with standards of scalability and maintainability.
 
 Automatic program repair has attracted a lot of attention in the last several
 years due to its ability to tackle complex and expensive tasks such as being
@@ -428,7 +429,7 @@ The patch generation system applies program modifications
 to generate a space of candidate patches, then
 searches the generated patch space to find plausible patches
 — i.e., patches that produce correct outputs for all inputs
-in the test suite." \cite{Qi15} The passing test cases confirm the
+in the test suite."~\cite{Qi15} The passing test cases confirm the
 expected behavior of the program, and the failing test cases expose the
 deviation of the expected behavior with the actual behavior.
 
@@ -442,9 +443,9 @@ deviation of the expected behavior with the actual behavior.
   
  In contrast to generate-and-validate there exist other techniques used for 
 automatic program repair such as Synthesis-Based program 
-repair  \cite{jin11,pei14} which "uses constraints to build correct-by-construction patches via 
+repair~\cite{jin11,pei14} which "uses constraints to build correct-by-construction patches via 
 formal verification or inferred or programmer-provided contracts
-or specifications" \cite{smith15}. We will be focusing on the former of these 
+or specifications"~\cite{smith15}. We will be focusing on the former of these 
 two.
 
 
@@ -454,7 +455,7 @@ can be applied to the source code which will allow for program variations; this
 set of possible operations are called "Mutation operators". 
 
 There is a wide a variety of approaches that use generate-and-validate for 
-program repair. \cite{legoues12,kim2013,Weimer13,fan15,long15} These approaches 
+program repair.~\cite{legoues12,kim2013,Weimer13,fan15,long15} These approaches 
 have a wide variety of mutation operations with which they vary the source code 
 in different ways using different techniques. 
 
@@ -463,7 +464,7 @@ order to pick which mutation operator will be used, the
 first step is to define where the fault is located, which is the section of code where the
 fault is suspected to be located. This can be calculated in various ways and there is 
 a whole set of
-possible approaches that can analyze this with different levels of certainty and requiring different characteristics from the source code and/or test suite \cite{Jones05,Jones02,Chen02,legoues12,Qi13}. This is not the 
+possible approaches that can analyze this with different levels of certainty and requiring different characteristics from the source code and/or test suite~\cite{Jones05,Jones02,Chen02,legoues12,Qi13}. This is not the 
 step that we will be analyzing in this
 paper. We will be analyzing the step that follows: After the particular tool being analyzed has a fault location, then
 it goes through a process in which it is analyzed which mutation operators can
@@ -473,8 +474,9 @@ allow some mutation operators to be used in a particular location.
 Once this process is finalized, as a result, there is a set of possible 
 mutation operators that
 can be applied to a location. At this point, most of the well known and highly 
-used approaches that use generate-and-validate such as GenProg \cite{legoues12}, \todo{Please add non-breaking spaces beween words and citations}
-Par \cite{kim2013}, TrpAutoRepair \cite{QiYuhua13} and SPR \cite{fan15} choose \todo{Please check the SPR claim, I'm not sure it's true}
+used approaches that use generate-and-validate such as GenProg~\cite{legoues12}, 
+%\todo{Please add non-breaking spaces beween words and citations}
+Par~\cite{kim2013}, TrpAutoRepair~\cite{QiYuhua13} and SPR~\cite{fan15} choose \todo{Please check the SPR claim, I'm not sure it's true}
 at random   which mutation operator will be used from the set of mutation 
 operators that can be applied at this location. 
 \todo{Why is this bad?  Why is random not good enough?}
@@ -494,19 +496,18 @@ others and the fact that the mutation operators are being chosen with equally di
 picking mutation operators that are less likely to actually fix the bug we are 
 trying to fix.
 
-There have been previous efforts in this direction by Soto et al. \cite{Soto15} 
+There have been previous efforts in this direction by Soto et al.~\cite{Soto15} 
 where we built a probabilistic model of the replace mutation operator based in 
-an instance count of statements of each type using the platform BOA, \cite{dyer2013} and making an initial model of the replacement mutation operator only. Also Rinard 
-and Long \cite{long15} have done previous work in this area, where they built a 
+an instance count of statements of each type using the platform BOA,~\cite{dyer2013} and making an initial model of the replacement mutation operator only. Also Rinard 
+and Long~\cite{long15} have done previous work in this area, where they built a 
 probabilistic model for a subset of the mutation operators, with a training set 
 of 8 different projects, while our current study trains with 500 projects, and 
 handles, compares and contrasts a full set of mutation operators, taking into
 account the full set of currently used mutation operators by categorizing them in two different groups. 
 
 We denominate Template-Based mutation operators to the mutation operators that use predefined templates to guide their creation process; this is seen in approaches such 
-as PAR \cite{kim2013}, SPR \cite{fan15}, and Prophet \cite{long15}; and 
-Statement-Edition mutation operators to the mutation operators that edit statements within the source code but do not create new code as opposed to Template-Based approaches. Statement-Edition mutation operators can be found in tools such as GenProg 
-\cite{legoues12}, TrpAutoRepair \cite{QiYuhua13} and AE \cite{Weimer13}.
+as PAR~\cite{kim2013}, SPR~\cite{fan15}, and Prophet~\cite{long15}; and 
+Statement-Edition mutation operators to the mutation operators that edit statements within the source code but do not create new code as opposed to Template-Based approaches. Statement-Edition mutation operators can be found in tools such as GenProg~\cite{legoues12}, TrpAutoRepair~\cite{QiYuhua13} and AE~\cite{Weimer13}.
 
 In order to tackle this problem we have developed a probabilistic model mined from the 500 most popular Github projects, which 
 entails different probabilities for each of the mutation operators based on 
@@ -635,10 +636,11 @@ therefore it increases the maintainability of the patches.
 
 The primary contributions of this paper thus are:
 \begin{itemize}
-  \item Development of a probabilistic model based on Github mining of the 500 most populalr projects to improve the likelihood of selecting mutation operators that are more likely to be picked by human developers which improves maintainability.
-  \item Sanity checking and evaluation of the probabilistic model in several different benchmarks, including a large number of real life bugs from well known projects.
-  \item Generalization and categorization of the mutation operators found in the state of the art approaches that use generation-and-validation.
-  \item A deeper understanding of what mutation operators are used by programmers to fix errors in source code, and the frequency of each of the mutation operators analyzed.  
+  \item \textbf{New Approach:} Incorporates the different mutation operators from different state of the art approaches to define a new methodology which uses a probabilistic model to choose mutation operators, assigning a higher probability to the most used operations. It is, to the best of our knowledge, the first study that compares and contrasts directly and using the same platform, the different mutation operators from most well known state of the art approaches. 
+  \item \textbf{Implementation:} Development of a probabilistic model specifically for Java, based on the results of mining the 500 most popular projects from Github to improve the likelihood of selecting mutation operators that are more likely to be picked by human developers which improves maintainability.
+  \item \textbf{Evidence:} Evaluation of the probabilistic model in several different benchmarks, including a large number of real life bugs from well known open source projects.
+  \item \textbf{Cross-platform mutation operator categorization:} Generalization and categorization of the mutation operators found in the state of the art approaches that use generation-and-validation.
+  \item \textbf{Patch generation based in human behavior:} A deeper understanding of which mutation operators are used by programmers to fix errors in source code, and the frequency of each of the mutation operators analyzed.  
 \end{itemize}
 
 The rest of this paper proceeds as follows:
@@ -667,7 +669,7 @@ of the expected behavior does not match the output of the source code as is.
 
 The first step of this process is to localize the error to a particular 
 statement. There is an extensive list of possible approaches in literature in 
-order to perform this tasks \cite{Jones05,Jones02,Chen02,legoues12,Qi13}, but this paper 
+order to perform this tasks~\cite{Jones05,Jones02,Chen02,legoues12,Qi13}, but this paper 
 will not focus on this particular step. Out main focus will be the next step: 
 Generating candidate patches.
 
@@ -680,8 +682,8 @@ the fault location.
 There are several possible mutation operators that can be applied to a location 
 in order to modify the behavior of a program. In order to analyze this we have 
 taken mutation operators from two of the most successful approaches in program 
-repair that use generate and validate methodology: Genprog \cite{legoues12} is a very well known and widely used tool that modifies 
-statements in order to create candidate patches. PAR \cite{kim2013} is a 
+repair that use generate and validate methodology: Genprog~\cite{legoues12} is a very well known and widely used tool that modifies 
+statements in order to create candidate patches. PAR~\cite{kim2013} is a 
 successful approach that bases their patch generation technique in creating a 
 list of commonly used templates of the most used changes that human programmers 
 perform in order to fix bugs in their source code. We have denominated these two 
@@ -692,7 +694,7 @@ and \textit{Template-Based} mutations.
 
 \subsection{General mutations}
 Le Goues et al. have created a 
-very successful approach which they denominate GenProg, \cite{legoues12} which is a tool that modifies statements of source code in order to 
+very successful approach which they denominate GenProg,~\cite{legoues12} which is a tool that modifies statements of source code in order to 
 repair programs. A statement is the smallest standalone element that expresses 
 some action to be carried out in a programming language. This tool is able to 
 delete, append or replace statements in order to create candidate patches.
@@ -890,44 +892,47 @@ probability}
   \label{fig:exPredReturn}
 \end{figure}
 
-To illustrate the point, let's take a simple example. Imagine we have a 
+To illustrate the point, let's take a simple example. Assume we have a 
 distribution in fold 1 that describes how many times each statement is replaced 
 by other kinds of statements in this fold 
-only, this is what we denominate test data; and we have a sub-model created from 
-folds 2-10 inclusive, that describes how often each statement is replaced by 
-other kinds of statements, this is what we call the training data. In 
-particular, let's say we are analyzing the Return statement. We want to predict 
+only, this is what we denominate testing data and we represent it with $E_{n,m}$ where $n$ is the statement being replaced (replacee) and $m$ the statement it is replaced by (replacer); likewise we have a probabilistic sub-model created from 
+folds 2-10 inclusive $TP_{n,m}$ where $\forall n,m: 1<=n<=22 \land 1<=m<=22$, that describes how often each statement is replaced by 
+other kinds of statements, this is what we call the training data. 
+
+In 
+particular, assume we are analyzing the Return statement (Row 13). We want to predict 
 how well the sub-model created from folds 2-10 is able to predict the testing 
 data; in this particular case, how well is the section of the sub-model that 
-describes the Return Statement is able to predict the instance count of the 
+describes the Return Statement able to predict the instance count of the 
 statements that replace a Return Statement in the testing data.
 
-Let's say that the training data is a sub-model as the one shown in Figure 
-\ref{fig:exPredReturn} A, and the testing data is a distribution that describes 
+Assume the training data is a sub-model $TP_{n,m}$ which contains a row $TP_{13,m}$ as the one shown in Figure 
+\ref{fig:exPredReturn}A, and the testing data is a distribution that describes 
 how many instances of returns were replaced by different statements as follows: 
-A return statement was replaced by a Expression Statement 4 times; by an If 
-Statement 2 times; by a Continue Statement 2 times; by a Do Statement 1 time; 
-and by a Try Statement 1 time. As a clarification, this is a fictional example 
+A return statement was replaced by a Expression Statement 4 times $E_{13,9} = 4$; by an If 
+Statement 2 times $E_{13,11} = 2$; by a Continue Statement 2 times $E_{13,5} = 2$; by a Do Statement 1 time $E_{13,6} = 1$;
+and by a Try Statement 1 time $E_{13,19} = 1$. As a clarification, this is a 
+fictional example 
 to explain how the prediction is being analyzed.
 
 For each of the statements we would take the top five guesses from each row in 
 the sub-model and see how many instances of the testing data were correctly 
 predicted. In this example, the top five guesses in this row would be: The most 
 likely statement chosen to replace a Return Statement according to this row in 
-this fictional sub-model would be a Expression Statement (Ex) in Column 9 with a 
-43\% of probability to replace a Return Statement. The second most likely would 
-be an If Statement (If) in Column 11 with a 22\% chance to get chosen to replace 
-a Return statement. Following, the next most likely statements chosen by the 
-sub-model would be Variable Declaration (VD) in Column 21 with a 19\% 
-probability, next is Continue Statement (Co) in Column 5 with a 5\% of the 
-instances, and last of the five top guesses would be Throw Statement (Th) in 
-Column 18 with a 3\% probability of replacing a Return Statement.
+this fictional sub-model would be a Expression Statement (Ex) $TP_{13,9} = 43\%$ 
+which means that there is a 43\% of probability to replace a Return Statement. 
+The second most likely would be an If Statement (If) $TP_{13,11} = 22\%$ this 
+means there is a 22\% chance to get chosen to replace a Return statement. 
+Following, the next most likely statements chosen by the 
+sub-model would be  Variable Declaration (VD)  $TP_{13,21} = 19\%$, next is 
+Continue Statement (Co)  $TP_{13,5} = 5\%$, and last of the five top guesses would 
+be Throw Statement (Th) $TP_{13,18} = 3\%$.
 
 We then compare how many instances of the testing data were correctly predicted 
 by these top five guesses of this row in the sub-model. In this example, we will 
 look at the instances that match the top five guesses in the testing data, which 
-would be: Expression Statement, If Statement, and Continue Statement. Since Do 
-Statement and Try Statement were not within the top five guesses, then the 
+would be: Expression Statement $E_{13,9} = 4$, If Statement $E_{13,11} = 2$, and Continue Statement $E_{13,5} = 2$. Since Do 
+Statement $E_{13,6} = 1$ and Try Statement $E_{13,19} = 1$ were not within the top five guesses, then the 
 instances in these two categories won't be considered a successful match, but 
 the former three would. 
 
@@ -942,27 +947,27 @@ predicted 8 out of 10 instances, we say that the sub-model correctly predicted
 
 In order to contrast this with the equally distributed approach used currently, 
 we assign all the statements, the same probability of being chosen to replace 
-the statement being analyzed, Return Statement in this particular example, as 
-detailed in Figure \ref{fig:exPredReturn} B. To get the top five choices of the 
+the statement being analyzed. We denominate the equally distributed approach $TE_{n,m}$ where $\forall n,m: 1<=n<=22 \land 1<=m<=22 \land TE_{n,m} = 4.54\%$. We have been analyzing the Return Statement in this particular example, as 
+detailed in Figure \ref{fig:exPredReturn}B. To get the top five choices of the 
 equally distributed schema we just pick five choices at random, since all of 
 them have the same probability, which is how the current approach handles what 
 statement to pick.
 
-For example, if the approach picks at random the statements: Assert Statement, 
-Do Statement, Expression Statement, Throw Statement and Try Statement. Then we 
+For example, if the approach picks at random the statements: Assert Statement $TE_{13,1}$, 
+Do Statement $TE_{13,6}$, Expression Statement $TE_{13,9}$, Throw Statement $TE_{13,18}$ and Try Statement $TE_{13,19}$. Then we 
 would match how many of the instances in the testing data were correctly 
 predicted by this equally distributed schema.
 
-In this example, the 4 instances of Expression Statement, the instance of Do 
-Statement, and the instance of Try Statement would be considered to be correctly 
-predicted; while the 2 instances of If Statement, and the 2 instances of 
-Continue Statement would be considered to be incorrectly predicted. Since the 
+In this example, the 4 instances of Expression Statement $E_{13,9} = 4$, the instance of Do 
+Statement  $E_{13,6} = 1$, and the instance of Try Statement $E_{13,19} = 1$ would be considered to be correctly 
+predicted; while the 2 instances of If Statement $E_{13,11} = 2$, and the 2 instances of 
+Continue Statement $E_{13,5} = 2$ would be considered to be incorrectly predicted. Since the 
 equally distributed approach in this example correctly guessed 6 out of 10 
 instances of the testing data, we would then say that in this particular case, 
 the equally distributed approach correctly predicted 60\% of the instances in 
 the testing set.  
 
-We ran this experiment with all the rows in the sub-model for each of the 10 
+We ran this experiment with all the rows $n$ in the sub-model $TE_{n,m}$ and $TP_{n,m}$ for each of the 10 
 folds. The results are detailed in Figure \ref{fig:results10fcv}. As we can see 
 in this graph, the red bars represent the results of the percentage of correctly 
 predicted instances of the testing data in each particular fold; while the blue 
@@ -982,8 +987,9 @@ through the different folds when using the probabilistic model.
 \end{figure}
 
 \subsection{Initial Example}
-Talk about running it in SimpleExample
+After performing the 10 fold cross validation, we know that the model built from gathering cases from mined from Github predicts with very high accuracy all the subsets of the data gathered, which implies that the data is consistent among the folds and outperforms the current equally distributed model in every case. 
 
+The natural next step would be to try the model with an example taken from outside of the collected cases from Github. Therefore we evaluated our model with an example of a basic bug in a method as shown in figure \ref{fig:initialExample}. The purpose of this method is to calculate the median of three numbers, and there is a bug as indicated by the highlighted text where instead of $ret = z;$ it should be $ret = x;$ in order to have a correct output for all cases.
 
 \begin{figure}[!h]
   \centering
@@ -992,17 +998,30 @@ Talk about running it in SimpleExample
   \label{fig:initialExample}
 \end{figure}
 
+In order to be able to do this, we restructured the code of the tool "GenProg4J" \todo{or GenProg4Java, I don't know what Claire prefers} (available at https://bitbucket.org/clegoues/genprog4java/), which is the Java version of the well known tool Genprog \cite{legoues12}. This tool provides all the work-flow for any generate-and-validate approach to be implemented. We restructured the tool in order to be able to select the mutation operators between a probabilistic model, and the default (equally distributed).
+
+We then ran the tool with the code in figure \ref{fig:initialExample} using both the probabilistic model and the equally distributed model. Since this is an initial example for sanity checking, we start by evaluating it on a subset of the mutation operators. We first evaluate it with$ Replace only$ and $Append, Remove and Replace$. The results are detailed in figures \ref{fig:resultsReplace} and \ref{fig:resultsARR}. 
+
+Generate-and-validate, as explained before, works by creating variants of the source code by applying mutation operators to the original source code. Therefore, a large number of variants created before finding a patch means that it takes longer to find a patch, than a small number of variants. Which means that in these graphs, the smaller number of variants in each case, means that the patch was found faster, than with a larger number of variants. It is also noticeable that this tool uses genetic programming in its workflow, therefore we run the tool with 10 different seeds in order to be able to abstract the results and not focus on a particular seed.
+
+In figure \ref{fig:resultsReplace} we consider only the mutation operator $Replace$, which means, that the tool will disregard all other mutation operators and will only apply Replace operations using the probabilistic model of Replacements. This is because at this step we are evaluating our model in a subset of the mutation operators to see if it makes sense to move forward and continue implementing the rest of the mutation operators.
+
+In this graph we can see the runs with 10 different seeds, contrasting the number of variants it takes to find a patch using the probabilistic approach (blue bar), with the number of variants it takes to find a patch using the equally distributed approach (green bar). 
+
+As we can derive from the graph, the probabilistic approach was able to find a patch faster than the equally distributed for all the seeds tested. In some cases as seed 5, 7 and 10, the patch using the probabilistic approach was found in one of the first variants, therefore the number is so low that it doesn't show in the graph. In average, we found that using the probabilistic model we could find a patch in 23.8 variants, while it took an average of 60.5 variants to find a patch using the equally distributed model.
 
 \begin{figure}[!h]
   \centering
-   % \includegraphics[scale=0.27]{sanity3}
+    \includegraphics[scale=0.26]{sanity3}
   \caption{Using replace to guide the search for a patch of the initial example}
   \label{fig:resultsReplace}
 \end{figure}
 
+In figure \ref{fig:resultsARR}, we consider three mutation operators: Append, Remove and Replace. In this case we can also notice that in seeds 7 and 10 the number of variants it takes to find a patch using the probabilistic model is close to 1 therefore it is hard to notice it in the graph. In this case the data shows that using the probabilistic model model we get a mean of 22.6 variants before finding the patch, while it takes an average of 41.4 variants to find the patch using the equally distributed approach.
+
 \begin{figure}[!h]
   \centering
-%    \includegraphics[scale=0.27]{sanity4}
+    \includegraphics[scale=0.26]{sanity4}
   \caption{Using append, remove and replace to guide the search for a patch of the initial example}
   \label{fig:resultsARR}
 \end{figure}
