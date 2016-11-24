@@ -416,7 +416,17 @@ The abstract goes here.
 %  we propose a technique that builds on it in the following high-level way.}
 
 %\todo{Please reformulate this intro accordingly.}
-Repairing errors is one of the most expensive and resource consuming tasks in the software development process; especially for large projects in modern object-oriented languages that have to comply with standards of scalability and maintainability.
+Repairing errors is one of the most expensive and resource consuming tasks in 
+the software development process; especially for large projects in modern 
+object-oriented languages that have to comply with standards of scalability and 
+maintainability. There have been efforts to automate this complex task by 
+building automatic program repair tools. One of the most challenging tasks that 
+these tools have to face is to reason about the vast search space of possible 
+edits that can be applied to the different sections of the source code. Since 
+there are so many possible edits and so many possible locations, to reason about 
+what are the correct edits to apply in the correct locations makes this problem 
+very difficult to solve, specially since every bug is different and every 
+program is different.
 
 Automatic program repair has attracted a lot of attention in the last several
 years due to its ability to tackle complex and expensive tasks such as being
@@ -424,7 +434,8 @@ able to localize errors and fixing code with minimal interaction with human
 programmers. One of the most well known approaches of automatic program repair
 is the generate-and-validate approach. 
 
-According to Qi et al: "The prominent generate-and-validate approach starts with a test suite of inputs, at least one of which exposes a defect in the software.
+According to Qi et al: "The prominent generate-and-validate approach starts with 
+a test suite of inputs, at least one of which exposes a defect in the software.
 The patch generation system applies program modifications
 to generate a space of candidate patches, then
 searches the generated patch space to find plausible patches
@@ -443,8 +454,9 @@ deviation of the expected behavior with the actual behavior.
   
  In contrast to generate-and-validate there exist other techniques used for 
 automatic program repair such as Synthesis-Based program 
-repair~\cite{jin11,pei14} which "uses constraints to build correct-by-construction patches via 
-formal verification or inferred or programmer-provided contracts
+repair~\cite{jin11,pei14} which "uses constraints to build 
+correct-by-construction patches via formal verification or inferred or 
+programmer-provided contracts
 or specifications"~\cite{smith15}. We will be focusing on the former of these 
 two.
 
@@ -461,12 +473,17 @@ in different ways using different techniques.
 
 In
 order to pick which mutation operator will be used, the 
-first step is to define where the fault is located, which is the section of code where the
-fault is suspected to be located. This can be calculated in various ways and there is 
+first step is to define where the fault is located, which is the section of code 
+where the
+fault is suspected to be located. This can be calculated in various ways and 
+there is 
 a whole set of
-possible approaches that can analyze this with different levels of certainty and requiring different characteristics from the source code and/or test suite~\cite{Jones05,Jones02,Chen02,legoues12,Qi13}. This is not the 
+possible approaches that can analyze this with different levels of certainty and 
+requiring different characteristics from the source code and/or test 
+suite~\cite{Jones05,Jones02,Chen02,legoues12,Qi13}. This is not the 
 step that we will be analyzing in this
-paper. We will be analyzing the step that follows: After the particular tool being analyzed has a fault location, then
+paper. We will be analyzing the step that follows: After the particular tool 
+being analyzed has a fault location, then
 it goes through a process in which it is analyzed which mutation operators can
 be applied to that specific location; or if the context of that location doesn't
 allow some mutation operators to be used in a particular location. 
@@ -476,7 +493,8 @@ mutation operators that
 can be applied to a location. At this point, most of the well known and highly 
 used approaches that use generate-and-validate such as GenProg~\cite{legoues12}, 
 %\todo{Please add non-breaking spaces beween words and citations}
-Par~\cite{kim2013}, TrpAutoRepair~\cite{QiYuhua13} and SPR~\cite{fan15} choose \todo{Please check the SPR claim, I'm not sure it's true}
+Par~\cite{kim2013}, TrpAutoRepair~\cite{QiYuhua13} and SPR~\cite{fan15} choose 
+\todo{Please check the SPR claim, I'm not sure it's true}
 at random   which mutation operator will be used from the set of mutation 
 operators that can be applied at this location. 
 \todo{Why is this bad?  Why is random not good enough?}
@@ -492,26 +510,38 @@ In order to pick the mutation operator, the probabilities of picking each of
 them are equally distributed; this means that from the set of mutations that can 
 be applied to this location, all of them have the same probability of being 
 chosen. Where, in reality, some mutation operators are much more common than 
-others and the fact that the mutation operators are being chosen with equally distributed probability results in often 
+others and the fact that the mutation operators are being chosen with equally 
+distributed probability results in often 
 picking mutation operators that are less likely to actually fix the bug we are 
 trying to fix.
 
 There have been previous efforts in this direction by Soto et al.~\cite{Soto15} 
 where we built a probabilistic model of the replace mutation operator based in 
-an instance count of statements of each type using the platform BOA,~\cite{dyer2013} and making an initial model of the replacement mutation operator only. Also Rinard 
+an instance count of statements of each type using the platform 
+BOA,~\cite{dyer2013} and making an initial model of the replacement mutation 
+operator only. Also Rinard 
 and Long~\cite{long15} have done previous work in this area, where they built a 
 probabilistic model for a subset of the mutation operators, with a training set 
 of 8 different projects, while our current study trains with 500 projects, and 
 handles, compares and contrasts a full set of mutation operators, taking into
-account the full set of currently used mutation operators by categorizing them in two different groups. 
+account the full set of currently used mutation operators by categorizing them 
+in two different groups. 
 
-We denominate Template-Based mutation operators to the mutation operators that use predefined templates to guide their creation process; this is seen in approaches such 
+We denominate Template-Based mutation operators to the mutation operators that 
+use predefined templates to guide their creation process; this is seen in 
+approaches such 
 as PAR~\cite{kim2013}, SPR~\cite{fan15}, and Prophet~\cite{long15}; and 
-Statement-Edition mutation operators to the mutation operators that edit statements within the source code but do not create new code as opposed to Template-Based approaches. Statement-Edition mutation operators can be found in tools such as GenProg~\cite{legoues12}, TrpAutoRepair~\cite{QiYuhua13} and AE~\cite{Weimer13}.
+Statement-Edition mutation operators to the mutation operators that edit 
+statements within the source code but do not create new code as opposed to 
+Template-Based approaches. Statement-Edition mutation operators can be found in 
+tools such as GenProg~\cite{legoues12}, TrpAutoRepair~\cite{QiYuhua13} and 
+AE~\cite{Weimer13}.
 
-In order to tackle this problem we have developed a probabilistic model mined from the 500 most popular Github projects, which 
+In order to tackle this problem we have developed a probabilistic model mined 
+from the 500 most popular Github projects, which 
 entails different probabilities for each of the mutation operators based on 
-empirical data that describes how human programmers fix their code; and we have evaluated this 
+empirical data that describes how human programmers fix their code; and we have 
+evaluated this 
 
 With the probabilistic model we are able to chose from the set of possible
 mutation operators that can be applied to a particular location using the
@@ -523,6 +553,7 @@ are simulating the way in which human programmers patch their code, which has
 being evaluated to create patches that are easier to understand by humans and 
 therefore it increases the maintainability of the patches. 
 
+We evaluated this approach in four different ways. First, we perform a 10 fold cross validation of the instances found by mining the projects with most stars in Github. Second, we run the probabilistic model with a subset of the mutation operators in a simple example from a basic function. Third, we implemented all the mutation operators and ran a comparison of the equally distributed approach and the probabilistic approach. For this we used Defects4j~\cite{just14}, a database and framework of reproducible real-life bugs found in large scale open source projects. In this third step we evaluate our model with bugs that require one line to be modified in order to patch them. Fourth, we evaluated on bugs that require multiple lines of code and/or multiple files to be edited in order to fix the bug.
 %\todo{Why do we think that's a good idea?}
 
 
@@ -1144,26 +1175,29 @@ single line edit. Therefore we analyze the bugs that met this criteria: Chart 1,
 Chart 8, Chart 20, Closure 10, Closure 14, Closure 18, Lang 6, Lang 16, Lang 21, 
 Math 2, Math 5, Math 10, Time 4, Time 16 and Time 19.
 
+From these 15 bugs we were able to find patches for 5 of them as described in table \ref{tab:singleLineBugs}. It is also worth mentioning that the numbers shown in the table are the mean from the solutions found running the tool with 20 different seeds. 
+
+In the first row (Closure \#10) we can see that in all three comparisons (Statement-Edition Only, Template-Based Only, and All mutations), the approach using the Probabilistic model performs better than its counterpart using the equally distributed model. This happens as well in all cases of bugs Math \#2 and Time \#19 except for the cases where no patch was found. Different from this, in bugs Chart \#1 and Closure \#18 the equally distributed approach finds a patch faster in average. This is due to the fact that removal mutations such as Deletion and Expression Changer are more likely to be picked by the equally distributed model than the probabilistic model since developers use these editions less often than others. But these editions have been seen in the past to make the test cases pass even if the edition did not fixed the bug as per the opinion of developers as indicated in~\cite{kim2013}.
+
 \begin{table*}
 	\centering
 	\resizebox{\textwidth}{!}{
-\begin{tabular}{|r|r|r|r|r|r|r|}
+\begin{tabular}{|r||rr|rr|rr|}
 \hline 
-  & Equally Dist & Probabilistic & Equally Dist & Probabilistic & Equally Dist & 
-Probabilistic \\
+  &\multicolumn{2}{c|}{\textbf{Stmt-Edition}} & \multicolumn{2}{c|}{\textbf{Temp-Based}} & \multicolumn{2}{c|}{\textbf{All mutations}} \\  
+ \hline
+ \textbf{Bug Name}  & \textbf{Equally Dist} & \textbf{Probabilistic} & \textbf{Equally Dist} & \textbf{Probabilistic} & \textbf{Equally Dist} & 
+\textbf{Probabilistic} \\
  \hline 
- Bug & Stmt-Ed Mut & Temp-Ba Mut & Stmt-Ed Mut & Temp-Ba Mut & Stmt-Ed Mut & 
-Temp-Ba Mut \\  
+ Closure \#10 & 221.0 & 179.5 & 183.1 & 121.3 & 163.3 & 157.4 \\
  \hline
- Closure Bug & 221.0 & 179.5 & 183.1 & 121.3 & 163.3 & 157.4 \\
+ Closure \#18 & Not found & Not found & 36.2 & 197.5 & 45.0 & 139.0 \\
  \hline
- Closure Bug & Not found & Not found & 36.2 & 197.5 & 45.0 & 139.0 \\
+ Math \#2 & Not found & Not found & 109.4 & 39.6 & 109.4 & 39.6 \\
  \hline
- Math Bug & Not found & Not found & 109.4 & 39.6 & 109.4 & 39.6 \\
+ Time \#19 & 94.1 & 80.7 & Not found & Not found & 135.1 & 91.9 \\
  \hline
- Time Bug & 94.1 & 80.7 & Not found & Not found & 135.1 & 91.9 \\
- \hline
- Chart Bug & 1.8 & 7.3 & 4.9 & 19.0 & 2.2 & 4.8 \\
+ Chart \#1 & 1.8 & 7.3 & 4.9 & 19.0 & 2.2 & 4.8 \\
  \hline 
 \end{tabular}
 }
@@ -1174,6 +1208,8 @@ Temp-Ba Mut \\
 
 \subsection{Multi line bugs}
 Last evaluation with the bugs we found had a fix
+
+\todo{Under construction...}
 
 \section{Discussion}
 Section text here.
