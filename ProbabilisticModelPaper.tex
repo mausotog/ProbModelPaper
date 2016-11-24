@@ -692,7 +692,7 @@ and \textit{Template-Based} mutations.
 
 
 
-\subsection{General mutations}
+\subsection{Statement-Edition mutations}
 Le Goues et al. have created a 
 very successful approach which they denominate GenProg,~\cite{legoues12} which is a tool that modifies statements of source code in order to 
 repair programs. A statement is the smallest standalone element that expresses 
@@ -708,7 +708,7 @@ continue to do so until it reaches a stopping point, which may be a certain user
 defined number of generations or a user defined clock time limit.
 
 
-\subsection{Template based mutations}
+\subsection{Template-based mutations}
 Dongsun Kim et al. have created the approach which they denominate Pattern-based 
 Automatic program Repair(PAR), in which they examined a large number of human 
 created patches and have abstracted 16 different templates to be the most 
@@ -895,22 +895,29 @@ probability}
 To illustrate the point, let's take a simple example. Assume we have a 
 distribution in fold 1 that describes how many times each statement is replaced 
 by other kinds of statements in this fold 
-only, this is what we denominate testing data and we represent it with $E_{n,m}$ where $n$ is the statement being replaced (replacee) and $m$ the statement it is replaced by (replacer); likewise we have a probabilistic sub-model created from 
-folds 2-10 inclusive $TP_{n,m}$ where $\forall n,m: 1<=n<=22 \land 1<=m<=22$, that describes how often each statement is replaced by 
+only, this is what we denominate testing data and we represent it with $E_{n,m}$ 
+where $n$ is the statement being replaced (replacee) and $m$ the statement it is 
+replaced by (replacer); likewise we have a probabilistic sub-model created from 
+folds 2-10 inclusive $TP_{n,m}$ where $\forall n,m: 1<=n<=22 \land 1<=m<=22$, 
+that describes how often each statement is replaced by 
 other kinds of statements, this is what we call the training data. 
 
 In 
-particular, assume we are analyzing the Return statement (Row 13). We want to predict 
+particular, assume we are analyzing the Return statement (Row 13). We want to 
+predict 
 how well the sub-model created from folds 2-10 is able to predict the testing 
 data; in this particular case, how well is the section of the sub-model that 
 describes the Return Statement able to predict the instance count of the 
 statements that replace a Return Statement in the testing data.
 
-Assume the training data is a sub-model $TP_{n,m}$ which contains a row $TP_{13,m}$ as the one shown in Figure 
+Assume the training data is a sub-model $TP_{n,m}$ which contains a row 
+$TP_{13,m}$ as the one shown in Figure 
 \ref{fig:exPredReturn}A, and the testing data is a distribution that describes 
 how many instances of returns were replaced by different statements as follows: 
-A return statement was replaced by a Expression Statement 4 times $E_{13,9} = 4$; by an If 
-Statement 2 times $E_{13,11} = 2$; by a Continue Statement 2 times $E_{13,5} = 2$; by a Do Statement 1 time $E_{13,6} = 1$;
+A return statement was replaced by a Expression Statement 4 times $E_{13,9} = 
+4$; by an If 
+Statement 2 times $E_{13,11} = 2$; by a Continue Statement 2 times $E_{13,5} = 
+2$; by a Do Statement 1 time $E_{13,6} = 1$;
 and by a Try Statement 1 time $E_{13,19} = 1$. As a clarification, this is a 
 fictional example 
 to explain how the prediction is being analyzed.
@@ -925,14 +932,17 @@ The second most likely would be an If Statement (If) $TP_{13,11} = 22\%$ this
 means there is a 22\% chance to get chosen to replace a Return statement. 
 Following, the next most likely statements chosen by the 
 sub-model would be  Variable Declaration (VD)  $TP_{13,21} = 19\%$, next is 
-Continue Statement (Co)  $TP_{13,5} = 5\%$, and last of the five top guesses would 
+Continue Statement (Co)  $TP_{13,5} = 5\%$, and last of the five top guesses 
+would 
 be Throw Statement (Th) $TP_{13,18} = 3\%$.
 
 We then compare how many instances of the testing data were correctly predicted 
 by these top five guesses of this row in the sub-model. In this example, we will 
 look at the instances that match the top five guesses in the testing data, which 
-would be: Expression Statement $E_{13,9} = 4$, If Statement $E_{13,11} = 2$, and Continue Statement $E_{13,5} = 2$. Since Do 
-Statement $E_{13,6} = 1$ and Try Statement $E_{13,19} = 1$ were not within the top five guesses, then the 
+would be: Expression Statement $E_{13,9} = 4$, If Statement $E_{13,11} = 2$, and 
+Continue Statement $E_{13,5} = 2$. Since Do 
+Statement $E_{13,6} = 1$ and Try Statement $E_{13,19} = 1$ were not within the 
+top five guesses, then the 
 instances in these two categories won't be considered a successful match, but 
 the former three would. 
 
@@ -947,27 +957,36 @@ predicted 8 out of 10 instances, we say that the sub-model correctly predicted
 
 In order to contrast this with the equally distributed approach used currently, 
 we assign all the statements, the same probability of being chosen to replace 
-the statement being analyzed. We denominate the equally distributed approach $TE_{n,m}$ where $\forall n,m: 1<=n<=22 \land 1<=m<=22 \land TE_{n,m} = 4.54\%$. We have been analyzing the Return Statement in this particular example, as 
+the statement being analyzed. We denominate the equally distributed approach 
+$TE_{n,m}$ where $\forall n,m: 1<=n<=22 \land 1<=m<=22 \land TE_{n,m} = 4.54\%$. 
+We have been analyzing the Return Statement in this particular example, as 
 detailed in Figure \ref{fig:exPredReturn}B. To get the top five choices of the 
 equally distributed schema we just pick five choices at random, since all of 
 them have the same probability, which is how the current approach handles what 
 statement to pick.
 
-For example, if the approach picks at random the statements: Assert Statement $TE_{13,1}$, 
-Do Statement $TE_{13,6}$, Expression Statement $TE_{13,9}$, Throw Statement $TE_{13,18}$ and Try Statement $TE_{13,19}$. Then we 
+For example, if the approach picks at random the statements: Assert Statement 
+$TE_{13,1}$, 
+Do Statement $TE_{13,6}$, Expression Statement $TE_{13,9}$, Throw Statement 
+$TE_{13,18}$ and Try Statement $TE_{13,19}$. Then we 
 would match how many of the instances in the testing data were correctly 
 predicted by this equally distributed schema.
 
-In this example, the 4 instances of Expression Statement $E_{13,9} = 4$, the instance of Do 
-Statement  $E_{13,6} = 1$, and the instance of Try Statement $E_{13,19} = 1$ would be considered to be correctly 
-predicted; while the 2 instances of If Statement $E_{13,11} = 2$, and the 2 instances of 
-Continue Statement $E_{13,5} = 2$ would be considered to be incorrectly predicted. Since the 
+In this example, the 4 instances of Expression Statement $E_{13,9} = 4$, the 
+instance of Do 
+Statement  $E_{13,6} = 1$, and the instance of Try Statement $E_{13,19} = 1$ 
+would be considered to be correctly 
+predicted; while the 2 instances of If Statement $E_{13,11} = 2$, and the 2 
+instances of 
+Continue Statement $E_{13,5} = 2$ would be considered to be incorrectly 
+predicted. Since the 
 equally distributed approach in this example correctly guessed 6 out of 10 
 instances of the testing data, we would then say that in this particular case, 
 the equally distributed approach correctly predicted 60\% of the instances in 
 the testing set.  
 
-We ran this experiment with all the rows $n$ in the sub-model $TE_{n,m}$ and $TP_{n,m}$ for each of the 10 
+We ran this experiment with all the rows $n$ in the sub-model $TE_{n,m}$ and 
+$TP_{n,m}$ for each of the 10 
 folds. The results are detailed in Figure \ref{fig:results10fcv}. As we can see 
 in this graph, the red bars represent the results of the percentage of correctly 
 predicted instances of the testing data in each particular fold; while the blue 
@@ -987,9 +1006,18 @@ through the different folds when using the probabilistic model.
 \end{figure}
 
 \subsection{Initial Example}
-After performing the 10 fold cross validation, we know that the model built from gathering cases from mined from Github predicts with very high accuracy all the subsets of the data gathered, which implies that the data is consistent among the folds and outperforms the current equally distributed model in every case. 
+After performing the 10 fold cross validation, we know that the model built from 
+gathering cases from mined from Github predicts with very high accuracy all the 
+subsets of the data gathered, which implies that the data is consistent among 
+the folds and outperforms the current equally distributed model in every case. 
 
-The natural next step would be to try the model with an example taken from outside of the collected cases from Github. Therefore we evaluated our model with an example of a basic bug in a method as shown in figure \ref{fig:initialExample}. The purpose of this method is to calculate the median of three numbers, and there is a bug as indicated by the highlighted text where instead of $ret = z;$ it should be $ret = x;$ in order to have a correct output for all cases.
+The natural next step would be to try the model with an example taken from 
+outside of the collected cases from Github. Therefore we evaluated our model 
+with an example of a basic bug in a method as shown in figure 
+\ref{fig:initialExample}. The purpose of this method is to calculate the median 
+of three numbers, and there is a bug as indicated by the highlighted text where 
+instead of $ret = z;$ it should be $ret = x;$ in order to have a correct output 
+for all cases.
 
 \begin{figure}[!h]
   \centering
@@ -998,17 +1026,50 @@ The natural next step would be to try the model with an example taken from outsi
   \label{fig:initialExample}
 \end{figure}
 
-In order to be able to do this, we restructured the code of the tool "GenProg4J" \todo{or GenProg4Java, I don't know what Claire prefers} (available at https://bitbucket.org/clegoues/genprog4java/), which is the Java version of the well known tool Genprog \cite{legoues12}. This tool provides all the work-flow for any generate-and-validate approach to be implemented. We restructured the tool in order to be able to select the mutation operators between a probabilistic model, and the default (equally distributed).
+In order to be able to do this, we restructured the code of the tool "GenProg4J" 
+\todo{or GenProg4Java, I don't know what Claire prefers} (available at 
+https://bitbucket.org/clegoues/genprog4java/), which is the Java version of the 
+well known tool Genprog.~\cite{legoues12} This tool provides all the work-flow 
+for any generate-and-validate approach to be implemented. We restructured the 
+tool in order to be able to select the mutation operators between a 
+probabilistic model, and the default (equally distributed).
 
-We then ran the tool with the code in figure \ref{fig:initialExample} using both the probabilistic model and the equally distributed model. Since this is an initial example for sanity checking, we start by evaluating it on a subset of the mutation operators. We first evaluate it with$ Replace only$ and $Append, Remove and Replace$. The results are detailed in figures \ref{fig:resultsReplace} and \ref{fig:resultsARR}. 
+We then ran the tool with the code in figure \ref{fig:initialExample} using both 
+the probabilistic model and the equally distributed model. Since this is an 
+initial example for sanity checking, we start by evaluating it on a subset of 
+the mutation operators. We first evaluate it with$ Replace only$ and $Append, 
+Remove and Replace$. The results are detailed in figures 
+\ref{fig:resultsReplace} and \ref{fig:resultsARR}. 
 
-Generate-and-validate, as explained before, works by creating variants of the source code by applying mutation operators to the original source code. Therefore, a large number of variants created before finding a patch means that it takes longer to find a patch, than a small number of variants. Which means that in these graphs, the smaller number of variants in each case, means that the patch was found faster, than with a larger number of variants. It is also noticeable that this tool uses genetic programming in its workflow, therefore we run the tool with 10 different seeds in order to be able to abstract the results and not focus on a particular seed.
+Generate-and-validate, as explained before, works by creating variants of the 
+source code by applying mutation operators to the original source code. 
+Therefore, a large number of variants created before finding a patch means that 
+it takes longer to find a patch, than a small number of variants. Which means 
+that in these graphs, the smaller number of variants in each case, means that 
+the patch was found faster, than with a larger number of variants. It is also 
+noticeable that this tool uses genetic programming in its workflow, therefore we 
+run the tool with 10 different seeds in order to be able to abstract the results 
+and not focus on a particular seed.
 
-In figure \ref{fig:resultsReplace} we consider only the mutation operator $Replace$, which means, that the tool will disregard all other mutation operators and will only apply Replace operations using the probabilistic model of Replacements. This is because at this step we are evaluating our model in a subset of the mutation operators to see if it makes sense to move forward and continue implementing the rest of the mutation operators.
+In figure \ref{fig:resultsReplace} we consider only the mutation operator 
+$Replace$, which means, that the tool will disregard all other mutation 
+operators and will only apply Replace operations using the probabilistic model 
+of Replacements. This is because at this step we are evaluating our model in a 
+subset of the mutation operators to see if it makes sense to move forward and 
+continue implementing the rest of the mutation operators.
 
-In this graph we can see the runs with 10 different seeds, contrasting the number of variants it takes to find a patch using the probabilistic approach (blue bar), with the number of variants it takes to find a patch using the equally distributed approach (green bar). 
+In this graph we can see the runs with 10 different seeds, contrasting the 
+number of variants it takes to find a patch using the probabilistic approach 
+(blue bar), with the number of variants it takes to find a patch using the 
+equally distributed approach (green bar). 
 
-As we can derive from the graph, the probabilistic approach was able to find a patch faster than the equally distributed for all the seeds tested. In some cases as seed 5, 7 and 10, the patch using the probabilistic approach was found in one of the first variants, therefore the number is so low that it doesn't show in the graph. In average, we found that using the probabilistic model we could find a patch in 23.8 variants, while it took an average of 60.5 variants to find a patch using the equally distributed model.
+As we can derive from the graph, the probabilistic approach was able to find a 
+patch faster than the equally distributed for all the seeds tested. In some 
+cases as seed 5, 7 and 10, the patch using the probabilistic approach was found 
+in one of the first variants, therefore the number is so low that it doesn't 
+show in the graph. In average, we found that using the probabilistic model we 
+could find a patch in 23.8 variants, while it took an average of 60.5 variants 
+to find a patch using the equally distributed model.
 
 \begin{figure}[!h]
   \centering
@@ -1017,24 +1078,99 @@ As we can derive from the graph, the probabilistic approach was able to find a p
   \label{fig:resultsReplace}
 \end{figure}
 
-In figure \ref{fig:resultsARR}, we consider three mutation operators: Append, Remove and Replace. In this case we can also notice that in seeds 7 and 10 the number of variants it takes to find a patch using the probabilistic model is close to 1 therefore it is hard to notice it in the graph. In this case the data shows that using the probabilistic model model we get a mean of 22.6 variants before finding the patch, while it takes an average of 41.4 variants to find the patch using the equally distributed approach.
+In figure \ref{fig:resultsARR}, we consider three mutation operators: Append, 
+Remove and Replace. In this case we can also notice that in seeds 7 and 10 the 
+number of variants it takes to find a patch using the probabilistic model is 
+close to 1 therefore it is hard to notice it in the graph. In this case the data 
+shows that using the probabilistic model model we get a mean of 22.6 variants 
+before finding the patch, while it takes an average of 41.4 variants to find the 
+patch using the equally distributed approach.
 
 \begin{figure}[!h]
   \centering
     \includegraphics[scale=0.26]{sanity4}
-  \caption{Using append, remove and replace to guide the search for a patch of the initial example}
+  \caption{Using append, remove and replace to guide the search for a patch of 
+the initial example}
   \label{fig:resultsARR}
 \end{figure}
 
 \section{Upgrading the model}
-Creating model from 500 projects
+After having very successful results in the sanity checking process, we decided 
+to improve our model by building it from the 500 projects in Github with more 
+stars. This is the model generated from the largest code base so far to the best 
+of our knowledge, surpassing all the previous state of the 
+art.~\cite{long15,Soto15}
+
+Since this idea seems promising at this point we decided to implement the rest 
+of the mutation operators. There are several different template-based approaches 
+\cite{kim2013,fan15,long15} which are constituted by mining common behaviors 
+that developers usually perform to patch errors in their code. Since these 
+templates in the different approaches tend to be very similar, we considered the 
+approach that seems to be representative of the template-based category due to 
+the diversity of the templates it encounters. 
+
+Kim et al.~\cite{kim2013} describe in their paper 10 different templates that 
+developers use very commonly to patch their code. Besides these 10 templates 
+published, they define other extra 6 templates in the research site 
+https://sites.google.com/site/autofixhkust/home/fix-templates that we have 
+considered as a representation of the template-based mutation operators.
+
+We implemented these 16 templates in GenProg4J, and generated the functionality 
+to be able to select which subset of mutation operators to apply in a particular 
+run.
 
 \section{Evaluation}
-Evaluation text here.
+We are interested in evaluating our new approach with real life bugs taken from 
+open source projects that have a long history of maintainability and 
+scalability. For these reasons, we chose Defects4j~\cite{just14} as our 
+evaluation platform. Defects4j~\cite{just14} is "a database and extensible 
+framework providing real bugs to enable reproducible studies in software testing 
+research."~\cite{just14} This database bugs contains 357 real bugs from 5 
+real-world open source programs, and each of these cases is accompanied by a 
+comprehensive test suite that can expose the bug. This database also provides 
+the corresponding human-generated patch, which is the edits performed by a human 
+developer to patch the bug.
+
+For this evaluation we tested the mutation operators using three different sets 
+of operations: 1) Statement-Edition mutations only 2) Template-based mutations 
+only 3) All mutations.
 
 
 \subsection{Single line bugs}
-First 15 bugs tried, from which 5 were able to find a fix
+Since historically automatic program repair has worked better with single line 
+patches, we decided to first test bugs that required a single line edit to get 
+patched. We analyzed the first 3 bugs from each of the projects that required a 
+single line edit. Therefore we analyze the bugs that met this criteria: Chart 1, 
+Chart 8, Chart 20, Closure 10, Closure 14, Closure 18, Lang 6, Lang 16, Lang 21, 
+Math 2, Math 5, Math 10, Time 4, Time 16 and Time 19.
+
+\begin{table*}
+	\centering
+	\resizebox{\textwidth}{!}{
+\begin{tabular}{|r|r|r|r|r|r|r|}
+\hline 
+  & Equally Dist & Probabilistic & Equally Dist & Probabilistic & Equally Dist & 
+Probabilistic \\
+ \hline 
+ Bug & Stmt-Ed Mut & Temp-Ba Mut & Stmt-Ed Mut & Temp-Ba Mut & Stmt-Ed Mut & 
+Temp-Ba Mut \\  
+ \hline
+ Closure Bug & 221.0 & 179.5 & 183.1 & 121.3 & 163.3 & 157.4 \\
+ \hline
+ Closure Bug & Not found & Not found & 36.2 & 197.5 & 45.0 & 139.0 \\
+ \hline
+ Math Bug & Not found & Not found & 109.4 & 39.6 & 109.4 & 39.6 \\
+ \hline
+ Time Bug & 94.1 & 80.7 & Not found & Not found & 135.1 & 91.9 \\
+ \hline
+ Chart Bug & 1.8 & 7.3 & 4.9 & 19.0 & 2.2 & 4.8 \\
+ \hline 
+\end{tabular}
+}
+		\caption{Single line bugs}\label{tab:singleLineBugs}
+\end{table*}
+
+
 
 \subsection{Multi line bugs}
 Last evaluation with the bugs we found had a fix
