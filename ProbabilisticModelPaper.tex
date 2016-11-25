@@ -380,7 +380,7 @@ clegoues@cs.cmu.edu}
 % As a general rule, do not put math, special symbols or citations
 % in the abstract
 \begin{abstract}
-The abstract goes here.
+\todo{The abstract goes here.}
 \end{abstract}
 
 % no keywords
@@ -493,11 +493,18 @@ mutation operators that
 can be applied to a location. At this point, most of the well known and highly 
 used approaches that use generate-and-validate such as GenProg~\cite{legoues12}, 
 %\todo{Please add non-breaking spaces beween words and citations}
-Par~\cite{kim2013}, TrpAutoRepair~\cite{QiYuhua13} and SPR~\cite{fan15} choose 
-\todo{Please check the SPR claim, I'm not sure it's true}
+Par~\cite{kim2013}, TrpAutoRepair~\cite{QiYuhua13}, and AE~\cite{Weimer13} choose 
+%\todo{Please check the SPR claim, I'm not sure it's true}
+%For what I understand from the paper AE uses the same random mutation operator 
+%choosing methodology as Genprog, but they don't evaluate similar patches, 
+%therefore they are able to evaluate more and find more patches. But the way they 
+%choose the mutation operators is the same as Genprog.
 at random   which mutation operator will be used from the set of mutation 
 operators that can be applied at this location. 
-\todo{Why is this bad?  Why is random not good enough?}
+
+%\todo{Why is this bad?  Why is random not good enough?}
+%This is answered in the following paragraph
+
 % \todo{Leading
 %  question: Which technique are we talking about here?  There are many
 %  techniques for program repair, even g-and-v repair, and they do not all 
