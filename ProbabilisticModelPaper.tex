@@ -419,13 +419,15 @@ clegoues@cs.cmu.edu}
 Repairing errors is one of the most expensive and resource consuming tasks in 
 the software development process; especially for large projects in modern 
 object-oriented languages that have to comply with standards of scalability and 
-maintainability. There have been efforts to automate this complex task by 
+maintainability. 
+
+There have been efforts to automate this complex task by 
 building automatic program repair tools. One of the most challenging tasks that 
 these tools have to face is to reason about the vast search space of possible 
-edits that can be applied to the different sections of the source code. Since 
+edits that can be applied to the different sections of the source code.~\cite{long16} Since 
 there are so many possible edits and so many possible locations, to reason about 
 what are the correct edits to apply in the correct locations makes this problem 
-very difficult to solve, specially since every bug is different and every 
+very difficult to solve, specially when taking into account that every bug is different and every 
 program is different.
 
 Automatic program repair has attracted a lot of attention in the last several
@@ -457,7 +459,7 @@ automatic program repair such as Synthesis-Based program
 repair~\cite{jin11,pei14} which "uses constraints to build 
 correct-by-construction patches via formal verification or inferred or 
 programmer-provided contracts
-or specifications"~\cite{smith15}. We will be focusing on the former of these 
+or specifications".~\cite{smith15} We will be focusing on the former of these 
 two.
 
 
@@ -480,7 +482,7 @@ there is
 a whole set of
 possible approaches that can analyze this with different levels of certainty and 
 requiring different characteristics from the source code and/or test 
-suite~\cite{Jones05,Jones02,Chen02,legoues12,Qi13}. This is not the 
+suite.~\cite{Jones05,Jones02,Chen02,legoues12,Qi13,Qi2013} This is not the 
 step that we will be analyzing in this
 paper. We will be analyzing the step that follows: After the particular tool 
 being analyzed has a fault location, then
@@ -530,7 +532,7 @@ BOA,~\cite{dyer2013} and making an initial model of the replacement mutation
 operator only. Also Rinard 
 and Long~\cite{long15} have done previous work in this area, where they built a 
 probabilistic model for a subset of the mutation operators, with a training set 
-of 8 different projects, while our current study trains with 500 projects, and 
+of 8 different projects. A similar case is studied by Zhong and Su~\cite{zhong15} with an even smaller number of projects (6) and a smaller set of mutation operators (3). To the best of our knowledge a full set of mutation operators hasn't been studied and compared in the past. Our current study trains with 500 projects, and 
 handles, compares and contrasts a full set of mutation operators, taking into
 account the full set of currently used mutation operators by categorizing them 
 in two different groups. 
@@ -545,7 +547,7 @@ Template-Based approaches. Statement-Edition mutation operators can be found in
 tools such as GenProg~\cite{legoues12}, TrpAutoRepair~\cite{QiYuhua13} and 
 AE~\cite{Weimer13}.
 
-In order to tackle this problem we have developed a probabilistic model mined 
+In our approach we have developed a probabilistic model mined 
 from the 500 most popular Github projects, which 
 entails different probabilities for each of the mutation operators based on 
 empirical data that describes how human programmers fix their code; and we have 
@@ -708,9 +710,7 @@ of the expected behavior does not match the output of the source code as is.
 
 The first step of this process is to localize the error to a particular 
 statement. There is an extensive list of possible approaches in literature in 
-order to perform this tasks~\cite{Jones05,Jones02,Chen02,legoues12,Qi13}, but this paper 
-will not focus on this particular step. Out main focus will be the next step: 
-Generating candidate patches.
+order to perform this tasks~\cite{Jones05,Jones02,Chen02,legoues12,Qi13}, also there are several papers that have focused on the evaluation of the test suite;~\cite{QiICSM13,fan15} the main focus of this paper will be the step between these two, as highlighted in figure~\ref{fig:generateandvalidate} our main focus will be Generating patch candidates.
 
 Once we know where the fault is located we proceed to create what we call 
 "Candidate patches". Candidate patches are variations of the original program 
