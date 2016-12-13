@@ -762,10 +762,10 @@ defined number of generations or a user defined clock time limit.
 
 
 \subsection{Template-based mutations}
-Dongsun Kim et al. have created the approach which they denominate Pattern-based 
+A group of researchers have created the approach which they denominate Pattern-based 
 Automatic program Repair(PAR), in which they examined a large number of human 
 created patches and have abstracted 10 different templates to be the most 
-commonly used changes that human programmers perform in order to fix their code~\cite{kim2013}
+commonly used changes that human programmers perform in order to fix their code~\cite{kim2013}.
 The 10 templates which they considered in their approach are the following:
 \begin{enumerate}
  \item Null Checker
@@ -791,7 +791,38 @@ On top of that, in an effort to provide completeness, we also include 6 extra te
 \item Off-by-one Mutator
 \end{enumerate}
 
-Due to this, we consider a total of 16 templates. \todo{Mention SPR}
+Due to this, we consider a total of 16 templates.
+
+Another well knownn approach in this domain is the SPR approach~\cite{fan15}, which is composed by a set of transformation schemas as follows:
+\begin{enumerate}
+\item Condition Introduction
+\item Condition Refinement
+\item Conditional Control Flow Introduction
+\item Insert Initialization
+\item Value Replacement
+\item Copy and Replace
+\end{enumerate}
+
+These transformation schemas can be seen as a generalization of some of the PAR 
+templates, for example, ``Condition Introduction" can be seen as a superset of 
+the corresponding templates in the PAR approach: Range Checker, Collection Size 
+Checker, Class Cast Checker, and Null Checker. ``Condition Refinement" can be 
+seen as a superset of 
+Expression Adder and Remover. ``Insert Initialization" can be 
+generalized from Object Initializer, Upper Bound Setter and Lower Bound Setter; ``Conditional Control Flow Introduction" can be 
+seen as a subset of Sequence Exchanger;
+``Value Replacement" can be seen as a superset of Method 
+Replacer, Parameter Replacer, Castee Mutator and Expression Changer; and ``Copy 
+and Replace" can be matched to Expression Adder.
+
+There is enough similarity between these approaches that they can be grouped 
+into one category. We have chosen the PAR templates to represent this category 
+since these templates provide a more concrete description of how the code is 
+being changed, in order for us to replicate it; also, all the SPR templates are represented by one or several of the PAR templates, but not viceversa; and also since the PAR templates 
+are written for the Java language, which is a common ground for the rest of the 
+approaches considered and the benchmarks to evaluate the approach on.
+
+
 
 \section{Building the model}
 The first model we built was created based on the 200 Java projects in Github 
@@ -1164,17 +1195,21 @@ After having very successful results in the sanity checking process, we decided
 to improve our model by building it from the 500 projects in Github with more 
 stars. This is the model generated from the largest code base so far to the best 
 of our knowledge, surpassing all the previous state of the 
-art~\cite{long15,Soto15,zhong15,matias15}. At this point, in our analyzed data, we found that the Template-Based mutations comprise 29.26\% of the corpus of instances found, while Statement-Edition mutations make up 70.74\% of the corpus.
+art~\cite{long15,Soto15,zhong15,matias15}. At this point, in our analyzed data, 
+we found that the Template-Based mutations comprise 29.26\% of the corpus of 
+instances found, while Statement-Edition mutations make up 70.74\% of the 
+corpus.
 
 Since this idea seems promising at this point we decided to implement the rest 
-of the mutation operators. There are several different template-based approaches 
+of the mutatio
+n operators. There are several different template-based approaches 
 \cite{kim2013,fan15,long15} which are constituted by mining common behaviors 
 that developers usually perform to patch errors in their code. Since these 
 templates in the different approaches tend to be very similar, we considered the 
 approach that seems to be representative of the template-based category due to 
 the diversity of the templates it encounters. 
 
-Kim et al~\cite{kim2013} describe in their paper 10 different templates that 
+``Automatic patch generation learned from human-written patches"~\cite{kim2013} describes 10 different templates that 
 developers use very commonly to patch their code. Besides these 10 templates 
 published, they define other extra 6 templates in the research site 
 https://sites.google.com/site/autofixhkust/home/fix-templates that we have 
