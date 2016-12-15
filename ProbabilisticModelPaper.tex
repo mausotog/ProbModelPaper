@@ -56,6 +56,9 @@
 % manually specify the path to it like:
 % \documentclass[conference]{../sty/IEEEtran}
 
+\usepackage{booktabs}
+\newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
+
 \usepackage[usenames,dvipsnames]{color}
 \newcommand{\todo}[1]
   {{\scriptsize \textbf{\color{red} {#1}}}}
@@ -498,14 +501,8 @@ Once this process is finalized, as a result, there is a set of possible
 mutation operators that
 can be applied to a location. At this point, most of the well known and highly 
 used approaches that use generate-and-validate such as GenProg~\cite{legoues12}, 
-%\todo{Please add non-breaking spaces beween words and citations}
-Par~\cite{kim2013}, TrpAutoRepair~\cite{QiYuhua13}, and AE~\cite{Weimer13} choose 
-%\todo{Please check the SPR claim, I'm not sure it's true}
-%Ii removed SPR and replaced it with AE: For what I understand 
-%from the paper AE uses the same random mutation operator 
-%choosing methodology as Genprog, but they don't evaluate similar patches, 
-%therefore they are able to evaluate more and find more patches. But the way they 
-%choose the mutation operators is the same as Genprog.
+Par~\cite{kim2013}, TrpAutoRepair~\cite{QiYuhua13}, and RSRepair~\cite{Qi14} choose 
+
 at random which mutation operator will be used from the set of mutation 
 operators that can be applied at this location. 
 
@@ -554,7 +551,7 @@ in two different groups.
 We denominate Template-Based mutation operators to the mutation operators that 
 use predefined templates to guide their creation process; this is seen in 
 approaches such 
-as PAR~\cite{kim2013}, SPR~\cite{fan15}, and Prophet~\cite{long15}; and 
+as PAR~\cite{kim2013}, SPR~\cite{fan15}, Kali~\cite{Qi15} and Prophet~\cite{long15}; and 
 Statement-Edition mutation operators to the mutation operators whose main purpose is to edit an identified statement within the source code but do not create new code as opposed to 
 Template-Based approaches. Statement-Edition mutation operators can be found in 
 tools such as GenProg~\cite{legoues12}, TrpAutoRepair~\cite{QiYuhua13} and 
@@ -693,7 +690,8 @@ The primary contributions of this paper thus are:
   \item \textbf{Implementation:} Development of a probabilistic model specifically for Java, based on the results of mining the 500 most popular projects from Github to improve the likelihood of selecting mutation operators that are more likely to be picked by human developers which improves maintainability.
   \item \textbf{Evidence:} Evaluation of the probabilistic model in several different benchmarks, including a large number of real life bugs from well known open source projects.
   \item \textbf{Cross-platform mutation operator categorization:} Generalization and categorization of the mutation operators found in the state of the art approaches that use generation-and-validation.
-  \item \textbf{Patch generation based in human behavior:} A deeper understanding of which mutation operators are used by programmers to fix errors in source code, and the frequency of each of the mutation operators analyzed.  
+  \item \textbf{Patch generation based in human behavior:} A deeper understanding of which mutation operators are used by programmers to fix errors in source code, and the frequency of each of the mutation operators analyzed.
+  \item \textbf{Multi-line repair aproach} Most of the successful repairs from current approaches patch the code by applying a single mutation to the original source code, patches that consist of several mutations are rare. In this study we provide an approach to deal with patches that consist of several mutations by applying association rules to the set of transactions analyzed in the corpus of this study.  
 \end{itemize}
 
 The rest of this paper proceeds as follows:
@@ -763,7 +761,7 @@ defined number of generations or a user defined clock time limit.
 
 \subsection{Template-based mutations}
 A group of researchers have created the approach which they denominate Pattern-based 
-Automatic program Repair(PAR), in which they examined a large number of human 
+Automatic program Repair (PAR), in which they examined a large number of human 
 created patches and have abstracted 10 different templates to be the most 
 commonly used changes that human programmers perform in order to fix their code~\cite{kim2013}.
 The 10 templates which they considered in their approach are the following:
@@ -813,20 +811,19 @@ generalized from Object Initializer, Upper Bound Setter and Lower Bound Setter; 
 seen as a subset of Sequence Exchanger;
 ``Value Replacement" can be seen as a superset of Method 
 Replacer, Parameter Replacer, Castee Mutator and Expression Changer; and ``Copy 
-and Replace" can be matched to Expression Adder.
+and Replace" can be matched to Expression Adder. Similarly with Kali~\cite{Qi15}, the templates from this approach can be seen as subsets of some of the PAR templates, for example Redirect Branch can be seen as a subset of ``Expression Changer", and Insert Remove and Remove Statement are subsets of ``Expression Adder and Remover" accordingly.
 
 There is enough similarity between these approaches that they can be grouped 
 into one category. We have chosen the PAR templates to represent this category 
 since these templates provide a more concrete description of how the code is 
-being changed, in order for us to replicate it; also, all the SPR templates are represented by one or several of the PAR templates, but not viceversa; and also since the PAR templates 
-are written for the Java language, which is a common ground for the rest of the 
+being changed, in order for us to replicate it; also, all the SPR and Kali templates are represented by one or several of the PAR templates, but not viceversa; and also the PAR templates represent templates specifically for the Java language, which is a common ground for the rest of the 
 approaches considered and the benchmarks to evaluate the approach on.
 
 
 
 \section{Building the model}
 The first model we built was created based on the 200 Java projects in Github 
-with the most stars. When users star a project they are creating a bookmark for 
+with the most stars (this was collected in June 2016). When users star a project they are creating a bookmark for 
 easier access, and showing appreciation to the repository maintainer for their 
 work. Projects with more stars are more popular among the developers of Github 
 and therefore more likely to be reviewed by other developers and have higher 
@@ -1193,7 +1190,7 @@ the initial example}
 \section{Upgrading the model}
 After having very successful results in the sanity checking process, we decided 
 to improve our model by building it from the 500 projects in Github with more 
-stars. This is the model generated from the largest code base so far to the best 
+stars (this was collected in August 2016). This is the model generated from the largest code base so far to the best 
 of our knowledge, surpassing all the previous state of the 
 art~\cite{long15,Soto15,zhong15,matias15}. At this point, in our analyzed data, 
 we found that the Template-Based mutations comprise 29.26\% of the corpus of 
@@ -1231,6 +1228,8 @@ comprehensive test suite that can expose the bug. This database also provides
 the corresponding human-generated patch, which is the edits performed by a human 
 developer to patch the bug.
 
+In order to get this results we ran our approach in a physical server that consists of 16 processors Intel(R) Xeon(R) CPU E5-2699 v3, with 2.30 GHz each processor, 46080 KB cache each, and 32 GB RAM memory, operating system Ubuntu 14.04.5 LTS.
+
 For this evaluation we tested the mutation operators using three different sets 
 of operations: 1) Statement-Edition mutations only 2) Template-based mutations 
 only 3) All mutations.
@@ -1248,28 +1247,32 @@ From these 15 bugs we were able to find patches for 5 of them as described in ta
 
 In the first row (Closure \#10) we can see that in all three comparisons (Statement-Edition Only, Template-Based Only, and All mutations), the approach using the Probabilistic model performs better than its counterpart using the equally distributed model. This happens as well in all cases of bugs Math \#2 and Time \#19 except for the cases where no patch was found. Different from this, in bugs Chart \#1 and Closure \#18 the equally distributed approach finds a patch faster in average. This is due to the fact that removal mutations such as Deletion and Expression Changer are more likely to be picked by the equally distributed model than the probabilistic model since developers use these editions less often than others. But these editions have been seen in the past to make the test cases pass even if the edition did not fixed the bug as per the opinion of developers as indicated in~\cite{kim2013}.
 
-\begin{table*}
-	\centering
+
+\begin{table*}\centering
+\ra{1.3}
 	\resizebox{\textwidth}{!}{
-\begin{tabular}{|r||rr|rr|rr|}
-\hline 
-  &\multicolumn{2}{c|}{\textbf{Stmt-Edition}} & \multicolumn{2}{c|}{\textbf{Temp-Based}} & \multicolumn{2}{c|}{\textbf{All mutations}} \\  
+\begin{tabular}{rcrrcrrcrr}
+\toprule 
+  &\multicolumn{3}{c}{\textbf{Stmt-Edition}} & \multicolumn{3}{c}{\textbf{Temp-Based}} & \multicolumn{3}{c}{\textbf{All mutations}} \\  
  \hline
- \textbf{Bug Name}  & \textbf{Equally Dist} & \textbf{Probabilistic} & \textbf{Equally Dist} & \textbf{Probabilistic} & \textbf{Equally Dist} & 
+ \textbf{Bug Name}  && \textbf{Equally Dist} & \textbf{Probabilistic} && \textbf{Equally Dist} & \textbf{Probabilistic} && \textbf{Equally Dist} & 
 \textbf{Probabilistic} \\
- \hline 
- Closure \#10 & 221.0 & 179.5 & 183.1 & 121.3 & 163.3 & 157.4 \\
- \hline
- Closure \#18 & Not found & Not found & 36.2 & 197.5 & 45.0 & 139.0 \\
- \hline
- Math \#2 & Not found & Not found & 109.4 & 39.6 & 109.4 & 39.6 \\
- \hline
- Time \#19 & 94.1 & 80.7 & Not found & Not found & 135.1 & 91.9 \\
- \hline
- Chart \#1 & 1.8 & 7.3 & 4.9 & 19.0 & 2.2 & 4.8 \\
- \hline 
+
+ Closure \#10 && 221.0 & 179.5 && 183.1 & 121.3 && 163.3 & 157.4 \\
+
+ Closure \#18 && Not found & Not found && 36.2 & 197.5 && 45.0 & 139.0 \\
+
+ Math \#2 && Not found & Not found && 109.4 & 39.6 && 109.4 & 39.6 \\
+
+ Time \#19 && 94.1 & 80.7 && Not found & Not found && 135.1 & 91.9 \\
+
+ Chart \#1 && 1.8 & 7.3 && 4.9 & 19.0 && 2.2 & 4.8 \\
+
+ \bottomrule
+ 
 \end{tabular}
 }
+\ra{1.3}
 		\caption{Single line bugs With Fault Injected Fault Localization}\label{tab:singleLineBugs}
 \end{table*}
 
@@ -1281,6 +1284,9 @@ Last evaluation with the bugs we found had a fix
 
 \subsection{Bugs fixed with a multi line edit within a function}
 Last evaluation with the bugs we found had a fix
+
+
+\section{Multiple mutation association rules}
 
 \section{Discussion}
 Section text here.
