@@ -572,7 +572,6 @@ consider such a vast diversity of projects to build a probabilistic model. In
 order to counter the 
 risk of overfitting to a small set of training projects as performed before, our 
 current study trains the model with 500 projects, which covers a vast diversity 
-
 of dominions and bug fixing styles. This study also 
 handles, compares and contrasts a full set of mutation operators, taking into
 account the full set of currently used mutation operators by categorizing them 
@@ -727,13 +726,13 @@ The primary contributions of this paper thus are:
 \end{itemize}
 
 The rest of this paper proceeds as follows:
-The following section (Background) entails the general terminology and background knowledge for the state of the art in automatic program repair, in particular generation-and-validation. Section III (Building the model) describes the process of how we gathered, analyzed and extracted the data necessary to build a first probabilistic model. Section IV (Sanity Check) illustrates the steps taken in order to confirm that the model works and is a good idea to work on. Section V (Upgrading the model) outlines the process to upgrade the model to mine information out of 500 projects. Section VI (Evaluation) defines our evaluation method and our benchmarks. Finally we have a section for Discussion (Section VII) and Conclusion (Section VIII).
+The following section (Background) entails the general terminology and background knowledge for the state of the art in automatic program repair, in particular generation-and-validation. Section III (Building the model) describes the process of how we gathered, analyzed and extracted the data necessary to build a initial smaller probabilistic model of 200 projects. Section IV (Sanity Check) illustrates the steps taken in order to confirm that the model works and is a good idea to work on. Section V (Upgrading the model) outlines the process to upgrade the model from 200 projects to 500 projects. Section VI (Evaluation) defines our evaluation method and our benchmarks. Finally we have a section for Discussion (Section VII) and Conclusion (Section VIII).
 
 
 \section{Background}
 
 
-One of the most well known approaches to automatic program repair is the
+One of the most well known approaches for automatic program repair is the
 generate-and-validate approach which is detailed in Figure
 \ref{fig:generateandvalidate}. This approach starts with source code that
 has one or various bugs to be fixed, and a test suite which contains passing
@@ -856,7 +855,7 @@ approaches considered and the benchmarks to evaluate the approach on.
 
 
 \section{Building the model}
-The first model we built was created based on the 200 Java projects in Github 
+The first model we built was a smaller model created based on the 200 Java projects in Github 
 with the most stars (this was collected in June 2016). When users star a project they are creating a bookmark for 
 easier access, and showing appreciation to the repository maintainer for their 
 work. Projects with more stars are more popular among the developers of Github 
@@ -922,7 +921,6 @@ We then created a program that goes through the list of changes and matches the 
 \begin{figure*}%[!h]
   \centering
 \ra{1.3}
-
 \begin{verbatim}
 var res = 0
 for (ac <- actions) {
@@ -1034,7 +1032,7 @@ our initial probabilistic model, built from 200 projects was segregated into 10
 different folds, each fold had 20 projects assigned at random. For each of the 
 folds we would take 1 fold for testing and the remaining 9 folds for training. 
 Afterwards we analyze how often do the training data is able to predict the 
-testing data. These is performed 10 times, one time per each fold and then it is 
+testing data. This is performed 10 times, one time per each fold and then it is 
 averaged to see how commonly is the training data able to predict the testing 
 data.
 
@@ -1081,47 +1079,43 @@ statements that replace a Return Statement in the testing data.
 Assume the training data is a sub-model $TP_{n,m}$ which contains a row 
 $TP_{13,m}$ as the one shown in Figure 
 \ref{fig:exPredReturn}A, and the testing data is a distribution that describes 
-how many instances of returns were replaced by different statements as follows: 
-A return statement was replaced by a Expression Statement 4 times $E_{13,9} = 
-4$; by an If 
-Statement 2 times $E_{13,11} = 2$; by a Continue Statement 2 times $E_{13,5} = 
-2$; by a Do Statement 1 time $E_{13,6} = 1$;
-and by a Try Statement 1 time $E_{13,19} = 1$. As a clarification, this is a 
-fictional example 
-to explain how the prediction is being analyzed.
-
+how many instances of returns were replaced by different statements.
+%as follows: 
+%A return statement was replaced by a Expression Statement 4 times $E_{13,9} = 
+%4$; by an If 
+%Statement 2 times $E_{13,11} = 2$; by a Continue Statement 2 times $E_{13,5} = 
+%2$; by a Do Statement 1 time $E_{13,6} = 1$;
+%and by a Try Statement 1 time $E_{13,19} = 1$. As a clarification, this is a 
+%fictional example 
+%to explain how the prediction is being analyzed.
 For each of the statements we would take the top five guesses from each row in 
-the sub-model and see how many instances of the testing data were correctly 
-predicted. In this example, the top five guesses in this row would be: The most 
+the sub-model and count the percentage of instances of the testing data that were correctly 
+predicted by the sub model. 
+
+In this example, the top five guesses in this row would be: The most 
 likely statement chosen to replace a Return Statement according to this row in 
 this fictional sub-model would be a Expression Statement (Ex) $TP_{13,9} = 43\%$ 
 which means that there is a 43\% of probability to replace a Return Statement. 
-The second most likely would be an If Statement (If) $TP_{13,11} = 22\%$ this 
-means there is a 22\% chance to get chosen to replace a Return statement. 
-Following, the next most likely statements chosen by the 
-sub-model would be  Variable Declaration (VD)  $TP_{13,21} = 19\%$, next is 
-Continue Statement (Co)  $TP_{13,5} = 5\%$, and last of the five top guesses 
-would 
-be Throw Statement (Th) $TP_{13,18} = 3\%$.
+The second and following most likely would be an If Statement (If) $TP_{13,11} = 22\%$, Variable Declaration (VD)  $TP_{13,21} = 19\%$, 
+Continue Statement (Co)  $TP_{13,5} = 5\%$, and Throw Statement (Th) $TP_{13,18} = 3\%$. We then compare how many instances of the testing data were correctly predicted 
+by these top five guesses of this row in the sub-model. 
+%In this example, we will 
+%look at the instances that match the top five guesses in the testing data, which 
+%would be: Expression Statement $E_{13,9} = 4$, If Statement $E_{13,11} = 2$, and 
+%Continue Statement $E_{13,5} = 2$. Since Do 
+%Statement $E_{13,6} = 1$ and Try Statement $E_{13,19} = 1$ were not within the 
+%top five guesses, then the 
+%instances in these two categories won't be considered a successful match, but 
+%the former three would. 
 
-We then compare how many instances of the testing data were correctly predicted 
-by these top five guesses of this row in the sub-model. In this example, we will 
-look at the instances that match the top five guesses in the testing data, which 
-would be: Expression Statement $E_{13,9} = 4$, If Statement $E_{13,11} = 2$, and 
-Continue Statement $E_{13,5} = 2$. Since Do 
-Statement $E_{13,6} = 1$ and Try Statement $E_{13,19} = 1$ were not within the 
-top five guesses, then the 
-instances in these two categories won't be considered a successful match, but 
-the former three would. 
-
-Based on this information, we can say that the 4 instances of Expression 
-Statement replacing a Return Statement in the testing data were correctly 
-predicted by the sub-model; the same with the 2 instances of the If Statement 
-and the 2 instances of the Continue Statement. The instance of the Do Statement, 
-and the instance of the Try Statement, would be considered as not correctly 
-predicted by the sub-model. In this case, since the sub-model correctly 
-predicted 8 out of 10 instances, we say that the sub-model correctly predicted 
-80\% of the instances in the testing data. 
+%Based on this information, we can say that the 4 instances of Expression 
+%Statement replacing a Return Statement in the testing data were correctly 
+%predicted by the sub-model; the same with the 2 instances of the If Statement 
+%and the 2 instances of the Continue Statement. The instance of the Do Statement, 
+%and the instance of the Try Statement, would be considered as not correctly 
+%predicted by the sub-model. In this case, since the sub-model correctly 
+%predicted 8 out of 10 instances, we say that the sub-model correctly predicted 
+%80\% of the instances in the testing data. 
 
 In order to contrast this with the equally distributed approach used currently, 
 we assign all the statements, the same probability of being chosen to replace 
@@ -1133,31 +1127,38 @@ equally distributed schema we just pick five choices at random, since all of
 them have the same probability, which is how the current approach handles what 
 statement to pick.
 
-For example, if the approach picks at random the statements: Assert Statement 
-$TE_{13,1}$, 
-Do Statement $TE_{13,6}$, Expression Statement $TE_{13,9}$, Throw Statement 
-$TE_{13,18}$ and Try Statement $TE_{13,19}$. Then we 
-would match how many of the instances in the testing data were correctly 
-predicted by this equally distributed schema.
+%For example, if the approach picks at random the statements: Assert Statement 
+%$TE_{13,1}$, 
+%Do Statement $TE_{13,6}$, Expression Statement $TE_{13,9}$, Throw Statement 
+%$TE_{13,18}$ and Try Statement $TE_{13,19}$. Then we 
+%would match how many of the instances in the testing data were correctly 
+%predicted by this equally distributed schema.
 
-In this example, the 4 instances of Expression Statement $E_{13,9} = 4$, the 
-instance of Do 
-Statement  $E_{13,6} = 1$, and the instance of Try Statement $E_{13,19} = 1$ 
-would be considered to be correctly 
-predicted; while the 2 instances of If Statement $E_{13,11} = 2$, and the 2 
-instances of 
-Continue Statement $E_{13,5} = 2$ would be considered to be incorrectly 
-predicted. Since the 
-equally distributed approach in this example correctly guessed 6 out of 10 
-instances of the testing data, we would then say that in this particular case, 
-the equally distributed approach correctly predicted 60\% of the instances in 
-the testing set.  
+%In this example, the 4 instances of Expression Statement $E_{13,9} = 4$, the 
+%instance of Do 
+%Statement  $E_{13,6} = 1$, and the instance of Try Statement $E_{13,19} = 1$ 
+%would be considered to be correctly 
+%predicted; while the 2 instances of If Statement $E_{13,11} = 2$, and the 2 
+%instances of 
+%Continue Statement $E_{13,5} = 2$ would be considered to be incorrectly 
+%predicted. Since the 
+%equally distributed approach in this example correctly guessed 6 out of 10 
+%instances of the testing data, we would then say that in this particular case, 
+%the equally distributed approach correctly predicted 60\% of the instances in 
+%the testing set.  
+
+\begin{figure}[!h]
+  \centering
+    \includegraphics[scale=0.33]{sanity1}
+  \caption{Results 10 fold cross validation}
+  \label{fig:results10fcv}
+\end{figure}
 
 We ran this experiment with all the rows $n$ in the sub-model $TE_{n,m}$ and 
 $TP_{n,m}$ for each of the 10 
 folds. The results are detailed in Figure \ref{fig:results10fcv}. As we can see 
 in this graph, the red bars represent the results of the percentage of correctly 
-predicted instances of the testing data in each particular fold; while the blue 
+predicted instances of the testing data in each particular fold by the top 5 guesses of the Equally Distributed approach; while the blue 
 bars represent the percentage of correctly predicted instances using the top 5 
 guesses of the sub-model of each of the folds. We have a mean of 19.79\% 
 correctly predicted instances through the different folds when using the equally 
@@ -1166,12 +1167,7 @@ through the different folds when using the probabilistic model.
 
 
 
-\begin{figure}[!h]
-  \centering
-    \includegraphics[scale=0.33]{sanity1}
-  \caption{Results 10 fold cross validation}
-  \label{fig:results10fcv}
-\end{figure}
+
 
 \subsection{Initial Example}
 After performing the 10 fold cross validation, we know that the model built from 
@@ -1264,8 +1260,8 @@ the initial example}
 
 \section{Upgrading the model}
 After having very successful results in the sanity checking process, we decided 
-to improve our model by building it from the 500 projects in Github with more 
-stars (this was collected in August 2016), mining the last 100 bug fixing-commits from each of these projects. This is the model generated from the largest code base so far to the best 
+to increase our data by building the model in the same way the initial 200-projects model was build, but now with the 500 projects in Github with more 
+stars (collected in August 2016), mining the last 100 bug fixing-commits from each of these projects. This is in order to generate the largest code base so far to the best 
 of our knowledge, surpassing all the previous state of the 
 art~\cite{long15,Soto15,zhong15,matias15,xuan16}. At this point, in our analyzed data, 
 we found that the Template-Based mutations comprise 29.26\% of the corpus of 
@@ -1273,8 +1269,7 @@ instances found, while Statement-Edition mutations make up 70.74\% of the
 corpus.
 
 Since this idea seems promising at this point we decided to implement the rest 
-of the mutatio
-n operators. There are several different template-based approaches 
+of the mutation operators. There are several different template-based approaches 
 \cite{kim2013,fan15,long15} which are constituted by mining common behaviors 
 that developers usually perform to patch errors in their code. Since these 
 templates in the different approaches tend to be very similar, we considered the 
@@ -1478,7 +1473,7 @@ The conclusion goes here.
 
 % use section* for acknowledgment
 \section*{Acknowledgment}
-The authors would like to thank...
+The acknowledgments section will be added for the camera ready version. 
 
 
 
