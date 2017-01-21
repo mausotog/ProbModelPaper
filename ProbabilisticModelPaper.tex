@@ -396,8 +396,24 @@
 % As a general rule, do not put math, special symbols or citations
 % in the abstract
 \begin{abstract}
-Automatic Software Repair has gained a lot of attention in the last several years due to its ability to imitate and succeed in complex processes such as fixing errors in source code; tasks that has been historically very expensive and resource consuming. Most well known state of the art generate-and-validate approaches used for automatic error repair determine which mutation operators to use at a particular fault location by applying an equal distribution to the selection process of these edits. When in reality, mutation operators have very different probabilities of being applied; some mutation operators are far more common than others and are also dependent of the context. Because of this, we have created a probabilistic model that describes the distribution of feasibility when applying each of the different mutation operators. In this study we categorize, compare and evaluate the different mutation operators in the state of the art approaches, we create a model mined from the largest dataset to date, and we create association rules to analyze the context when dealing with multi-edit source code changes, a field that has been understudied in the past and covers the majority of the source code changes in existence. 
+Automatic Software Repair has gained a lot of attention in the last several 
+years due to its ability to imitate and succeed in complex processes such as 
+fixing errors in source code; tasks that has been historically very expensive 
+and resource consuming. Most well known state of the art generate-and-validate 
+approaches used for automatic error repair determine which mutation operators to 
+use at a particular fault location by applying an equal distribution to the 
+selection process of these edits. When in reality, mutation operators have very 
+different probabilities of being applied; some mutation operators are far more 
+common than others and are also dependent of the context. Because of this, we 
+have created a probabilistic model that describes the distribution of 
+feasibility when applying each of the different mutation operators. In this 
+study we categorize, compare and evaluate the different mutation operators in 
+the state of the art approaches, we create a model mined from the largest 
+dataset to date, and we create association rules to analyze the context when 
+dealing with multi-edit source code changes, a field that has been understudied 
+in the past and covers the majority of the source code changes in existence. 
 \end{abstract}
+
 
 % no keywords
 
@@ -457,11 +473,11 @@ able to localize errors and fixing code with minimal interaction with human
 programmers. One of the most well known approaches of automatic program repair
 is the generate-and-validate approach. 
 
-This approach takes in a test suite with at least one test cases that exposes 
+This approach takes in a test suite with at least one test case that exposes 
 the defect that needs to be fixed, and the corresponding source code to be 
 tested and modified. The passing test cases confirm the
 expected behavior of the program, while the failing test cases expose the
-deviation of the expected behavior with the actual behavior. 
+deviation from the expected behavior. 
 Generate-and-validate then generates a patch candidate space by applying 
 mutation operators to the original source code, and finally tests these patch 
 candidates until it finds one that passes all test cases or meets a stopping 
@@ -477,10 +493,10 @@ condition (such as a determined amount of time or generations).
   
  In contrast to generate-and-validate there exist other techniques used for 
 automatic program repair such as Synthesis-Based program 
-repair~\cite{jin11,pei14} which ``uses constraints to build 
-correct-by-construction patches via formal verification or inferred or 
-programmer-provided contracts
-or specifications"~\cite{smith15}. We will be focusing on the former of these 
+repair~\cite{jin11,pei14} which uses constraints to build 
+correct-by-construction patches via formal verification, inferred or 
+programmer-provided contracts,
+or specifications~\cite{smith15}. We will be focusing on the former of these 
 two. Also in contrast to search based approaches, there exist semantic based approaches such as SemFix~\cite{nguyen13}, DirectFix~\cite{mechtaev15} and SearchRepair~\cite{ke15} which use semantic analysis in order to create patches for buggy code.
 
 
@@ -493,29 +509,27 @@ There is a wide a variety of approaches that use generate-and-validate for
 program 
 repair~\cite{legoues12,kim2013,Weimer13,fan15,long15,debroy10,perkins09,wei10}. 
 These approaches 
-have a wide variety of mutation operations with which they vary the source code 
-in different ways using different techniques. 
+have a wide range of mutation operations with which they modify the source code 
+in different ways by using a large collection of techniques. 
 
 In
-order to pick which mutation operator will be used, the 
-first step is to define where the fault is located, which is the section of code 
-where the
-fault is suspected to be located. This can be calculated in various ways and 
+order to select which mutation operator will be used, the 
+first step is to define in what section of the code the fault is located. This can be determined in various ways, and 
 there is 
 a whole set of
-possible approaches that can analyze this with different levels of certainty and 
+possible approaches that can analyze this segment with different levels of certainty and 
 requiring different characteristics from the source code and/or test 
 suite~\cite{Jones05,Jones02,Chen02,legoues12,Qi13,Qi2013,Abreu07,wong09}. This is not the 
-step that we will be analyzing in this
-paper. We will be analyzing the step that follows: After the particular tool 
-being analyzed has a fault location, then
-it goes through a process in which it is analyzed which mutation operators can
+step we will be analyzing in this
+paper. We will be analyzing the following step: After the particular tool 
+acquires a fault location, then
+it goes through a process in which it analyzes which mutation operators can
 be applied to that specific location; or if the context of that location doesn't
 allow some mutation operators to be used in a particular location. 
 
 Once this process is finalized, as a result, there is a set of possible 
 mutation operators that
-can be applied to a location. At this point, most of the well known and highly 
+can be applied to the chosen location. At this point, most of the well known and highly 
 used approaches that use generate-and-validate such as GenProg~\cite{legoues12}, 
 Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13}, and RSRepair~\cite{Qi14} 
 choose at random which mutation operator will be used from the set of mutation 
@@ -535,24 +549,20 @@ operators that can be applied at this location.
 In order to pick the mutation operator, the probabilities of picking each of
 them are equally distributed; this means that from the set of mutations that can 
 be applied to this location, all of them have the same probability of being 
-chosen. This may lead to generating plausible patches that pass all provided 
+chosen. This leads to the tools often applying mutation operators that will not fix the bug, or will create plausible patches that pass all provided 
 test cases, but are not really fixing the problem when judged by an informed 
 programmer~\cite{Qi15, kim2013}. 
 
 In reality, human developers choose some mutation operators 
 much more often than 
-others and in this study we simulate the behavior of human developers in order 
+others and in this study we simulate this behavior of human developers in order 
 to create patches the closest way to what real developers do, which will 
-maximize the quality of the patches; and reduce the fact that the mutation 
-operators are being chosen with equally 
-distributed probability, which results in often 
-picking mutation operators that are less likely to actually fix the bug we are 
-trying to fix.
+maximize the quality of the patches.
 
 There have been previous efforts in this direction by Soto et al~\cite{Soto15} 
 where the researchers built a probabilistic model of the replace mutation 
 operator based in 
-an instance count of statements of each type using the platform 
+an instance count of each statement type using the platform 
 BOA,~\cite{dyer2013} and making an initial model of the replacement mutation 
 operator only. HDRepair~\cite{xuan16} has also tried to tackle this problem by 
 creating a variation of GenProg in which instead of using previous fixes to
@@ -574,37 +584,48 @@ risk of overfitting to a small set of training projects as performed before, our
 current study trains the model with 500 projects, which covers a vast diversity 
 of dominions and bug fixing styles. This study also 
 handles, compares and contrasts a full set of mutation operators, taking into
-account the full set of currently used mutation operators by categorizing them 
-in two different groups. 
+account the full set of mutation operators currently used in the most widely used state of the art approaches.
 
 
 We denominate Template-Based mutation operators to the mutation operators that 
 use predefined templates to guide their creation process; this is seen in 
 approaches such 
-as PAR~\cite{kim2013}, SPR~\cite{fan15}, Kali~\cite{Qi15} and Prophet~\cite{Long2016}; and 
-Statement-Edition mutation operators to the mutation operators whose main purpose is to edit an identified statement within the source code but do not create new code as opposed to 
+as PAR~\cite{kim2013}, SPR~\cite{fan15}, Kali~\cite{Qi15} and 
+Prophet~\cite{Long2016}; and 
+Statement-Edition mutation operators to the mutation operators whose main 
+purpose is to edit an identified statement within the source code but do not 
+create new code as opposed to 
 Template-Based approaches. Statement-Edition mutation operators can be found in 
 tools such as GenProg~\cite{legoues2012}, TrpAutoRepair~\cite{Qi13} and 
 AE~\cite{Weimer13}.
-
-There are several other techniques using randomized search
-for patch generation~\cite{arcuri08,bradbury10,Qi14,Weimer13}. In our approach we have developed a probabilistic model mined 
+These and several other techniques use randomized search
+for patch generation~\cite{arcuri08,bradbury10,Qi14,Weimer13}. In our approach 
+we have developed a probabilistic model mined 
 from the 500 most popular Github projects, which 
 entails different probabilities for each of the mutation operators based on 
 empirical data that describes how human programmers fix their code.
 
-With the probabilistic model we are able to chose from the set of possible
-mutation operators that can be applied to a particular location using the
-probabilities which describe how often do each of the mutation operators is able
-to fix bugs when used in real projects. If human programmers are more likely to
+With this probabilistic model we are able to chose from the set of possible
+mutation operators that can be applied to a particular location, by using the
+probabilities which describe how often each mutation operators is applied
+to fix bugs when used in real world projects. If human programmers are more likely to
 use a particular mutation operator, then that mutation operator will have a
-higher probability of being picked than other mutation operators. This way we 
-are simulating the way in which human programmers patch their code, which has 
-being evaluated to create patches that are easier to understand by humans and 
+higher probability of being selected than other mutation operators. This way we 
+are simulating the manner in which human programmers patch their code, which has 
+being evaluated to create patches that are easier to understand by humans~\cite{kim2013} and 
 therefore it increases the maintainability of the patches. 
 
-We evaluated this approach in four different ways. First, we perform a 10 fold cross validation of the instances found by mining the projects with most stars in Github. Second, we run the probabilistic model with a subset of the mutation operators in a simple example from a basic function. Third, we implemented all the mutation operators and ran a comparison of the equally distributed approach and the probabilistic approach. For this we used Defects4j~\cite{just14}, a database and framework of reproducible real-life bugs found in large scale open source projects. In this third step we evaluate our model with bugs that require one line to be modified in order to patch them. Fourth, we evaluated on bugs that require multiple lines of code and/or multiple files to be edited in order to fix the bug.
+We evaluated this approach in three different ways. First, we perform a 10 fold 
+cross validation of the instances found by mining the projects with most stars 
+in Github. Second, we run the probabilistic model with a subset of the mutation 
+operators in a simple example from a basic function. Third, we implemented all 
+the mutation operators and ran a comparison of the equally distributed approach 
+and the probabilistic approach. For this we used Defects4j~\cite{just14}, a 
+database and framework of reproducible real-life bugs found in large scale open 
+source projects. In this third step we evaluate our model with bugs that require 
+one line to be modified in order to patch them.
 %\todo{Why do we think that's a good idea?}
+
 
 
 
