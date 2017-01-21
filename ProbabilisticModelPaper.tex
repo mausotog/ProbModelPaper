@@ -738,16 +738,16 @@ one line to be modified in order to patch them.
 
 The primary contributions of this paper thus are:
 \begin{itemize}
-  \item \textbf{New Approach:} Incorporates the different mutation operators from different state of the art approaches to define a new methodology which uses a probabilistic model to choose mutation operators, assigning a higher probability to the most used operations. It is, to the best of our knowledge, the first study that compares and contrasts directly and using the same platform, the different mutation operators from most well known state of the art approaches. 
+  \item \textbf{New Approach:} Incorporates the different mutation operators from different state of the art approaches to define a new methodology which uses a probabilistic model to choose mutation operators, assigning a higher probability to the most used operations. It is, to the best of our knowledge, the first study that compares and contrasts directly and using the same platform, all the different mutation operators from the most well known state of the art approaches. 
   \item \textbf{Implementation:} Development of a probabilistic model specifically for Java, based on the results of mining the 500 most popular projects from Github to improve the likelihood of selecting mutation operators that are more likely to be picked by human developers which improves maintainability.
   \item \textbf{Evidence:} Evaluation of the probabilistic model in several different benchmarks, including a large number of real life bugs from well known open source projects.
   \item \textbf{Cross-platform mutation operator categorization:} Generalization and categorization of the mutation operators found in the state of the art approaches that use generation-and-validation.
   \item \textbf{Patch generation based in human behavior:} A deeper understanding of which mutation operators are used by programmers to fix errors in source code, and the frequency of each of the mutation operators analyzed.
-  \item \textbf{Multi-edit repair aproach} Most of the successful repairs from current approaches patch the code by applying a single mutation to the original source code, patches that consist of several mutations are rare. In this study we provide an approach to deal with patches that consist of several mutations by applying association rules to the set of transactions analyzed in the corpus of this study.  
+  \item \textbf{Multi-edit repair approach} Most of the successful repairs from current approaches patch the code by applying a single-edit mutations to the original source code, patches that consist of several mutations have being understudied even when the vast majority of patches in existence are multi-edit changes. In this study we provide an technique to handle patches that require several mutations by applying association rules to the set of transactions analyzed in the corpus of this study.  
 \end{itemize}
 
 The rest of this paper proceeds as follows:
-The following section (Background) entails the general terminology and background knowledge for the state of the art in automatic program repair, in particular generation-and-validation. Section III (Building the model) describes the process of how we gathered, analyzed and extracted the data necessary to build a initial smaller probabilistic model of 200 projects. Section IV (Sanity Check) illustrates the steps taken in order to confirm that the model works and is a good idea to work on. Section V (Upgrading the model) outlines the process to upgrade the model from 200 projects to 500 projects. Section VI (Evaluation) defines our evaluation method and our benchmarks. Finally we have a section for Discussion (Section VII) and Conclusion (Section VIII).
+The following section (Background) entails the general terminology and background knowledge for the state of the art in automatic program repair, in particular generation-and-validation. Section III (Building the model) describes the process of how we gathered, analyzed and extracted the data necessary to build a initial smaller probabilistic model of 200 projects. Section IV (Sanity Check) illustrates the steps taken in order to confirm that the model works and is a good idea to work on. Section V (Upgrading the model) outlines the process to upgrade the model from 200 projects to 500 projects. Section VI (Evaluation) defines our evaluation method and our benchmarks. Section VII(Multiple edit association rule mining) is a pioneering work that discusses a new methodology to handle patches that require various edits to patch the code. Finally we have a section for Discussion (Section VIII) and Conclusion (Section IX).
 
 
 \section{Background}
@@ -770,7 +770,7 @@ of the expected behavior does not match the output of the source code as is.
   \label{fig:generateandvalidate}
 \end{figure}
 
-The first step of this process is to localize the error to a particular 
+The first step of this process is to localize the error in a particular 
 statement. There is an extensive list of possible approaches in literature in 
 order to perform this tasks~\cite{Jones05,Jones02,Chen02,legoues12,Qi13}, also there are several papers that have focused on the evaluation of the test suite;~\cite{Qi13,fan15} the main focus of this paper will be the step between these two, as highlighted in figure~\ref{fig:generateandvalidate} our main focus will be Generating patch candidates.
 
@@ -781,21 +781,11 @@ create candidate patches we need to apply one or several mutation operators to
 the fault location. 
 
 There are several possible mutation operators that can be applied to a location 
-in order to modify the behavior of a program. In order to analyze this we have 
-taken mutation operators from two of the most successful approaches in program 
-repair that use generate and validate methodology: Genprog~\cite{legoues12} is a very well known and widely used tool that uses genetic programming~\cite{koza92} to modify 
-statements in order to create candidate patches. PAR~\cite{kim2013} is a 
-successful approach that bases their patch generation technique in creating a 
-list of commonly used templates of the most used changes that human programmers 
-perform in order to fix bugs in their source code. We have denominated these two 
-techniques: \textit{Statement-Edition} mutations 
-and \textit{Template-Based} mutations.
-
-
+in order to modify the behavior of a program. In order to analyze the broad spectrum of mutation operators we categorized them into two groups: Statement-Edition and Template-Based. 
 
 \subsection{Statement-Edition mutations}
-There is a family of well-known approaches such as GenProg~\cite{legoues12} and 
-TrpAutoRepair\cite{Qi13} which the main technique for creating candidate 
+There is a family of well-known approaches such as GenProg~\cite{legoues12}, 
+TrpAutoRepair\cite{Qi13} and AE~\cite{Weimer13} in which the main technique for creating candidate 
 patches is by applying low level mutation operators (such as append, delete, or 
 replace) which modify statements of source code in order to 
 repair programs. A statement is the smallest standalone element that expresses 
@@ -812,9 +802,11 @@ defined number of generations or a user defined clock time limit.
 
 
 \subsection{Template-based mutations}
-A group of researchers have created the approach which they denominate Pattern-based 
-Automatic program Repair (PAR), in which they examined a large number of human 
-created patches and have abstracted 10 different templates to be the most 
+Template-based mutation operators is the family of approaches that have predetermined templates to apply to specific sections of the code in order to modify the behavior of the program to make it possibly fix the error in the code. In this family we have well known techniques such as PAR~\cite{kim2013}, SPR~\cite{fan15}, Kali~\cite{Qi15} and 
+Prophet~\cite{Long2016}.
+
+In particular, let's first analyze PAR. PAR is the product of a study in which researchers examined a large number of human 
+created patches and abstracted 10 different templates to be the most 
 commonly used changes that human programmers perform in order to fix their code~\cite{kim2013}.
 The 10 templates which they considered in their approach are the following:
 \begin{enumerate}
@@ -830,7 +822,7 @@ The 10 templates which they considered in their approach are the following:
  \item Expression Adder and Remover
 \end{enumerate}
 
-On top of that, in an effort to provide completeness, we also include 6 extra templates that are mentioned in their website (\url{https://sites.google.com/site/autofixhkust/home/fix-templates}) but aren't mentioned in the paper\cite{kim2013}: 
+In an effort to provide completeness, we also include 6 extra templates that are mentioned in the website of this approach (\url{https://sites.google.com/site/autofixhkust/home/fix-templates}) but aren't mentioned in the paper\cite{kim2013}: 
 
 \begin{enumerate}
 \item Caster Mutator
@@ -841,9 +833,9 @@ On top of that, in an effort to provide completeness, we also include 6 extra te
 \item Off-by-one Mutator
 \end{enumerate}
 
-Due to this, we consider a total of 16 templates.
+Because of this, we consider a total of 16 PAR templates.
 
-Another well knownn approach in this domain is the SPR approach~\cite{fan15}, which is composed by a set of transformation schemas as follows:
+There are other well knownn techniques in this domain, such as the SPR approach~\cite{fan15}, which is composed by a set of transformation schemas as follows:
 \begin{enumerate}
 \item Condition Introduction
 \item Condition Refinement
@@ -870,9 +862,8 @@ Similarly with Kali~\cite{Qi15}, the templates from this approach can be seen as
 There is enough similarity between these approaches that they can be grouped 
 into one category. We have chosen the PAR templates to represent this category 
 since these templates provide a more concrete description of how the code is 
-being changed, in order for us to replicate it; also, all the SPR and Kali templates are represented by one or several of the PAR templates, but not viceversa; and also the PAR templates represent templates specifically for the Java language, which is a common ground for the rest of the 
+being changed, in order for us to replicate it; also, as mentioned before, all the SPR and Kali templates are represented by one or several of the PAR templates, but not viceversa; and also the PAR templates represent templates specifically for the Java language, which is a common ground for the rest of the 
 approaches considered and the benchmarks to evaluate the approach on.
-
 
 
 \section{Building the model}
@@ -1385,7 +1376,7 @@ Last evaluation with the bugs we found had a fix
 %Last evaluation with the bugs we found had a fix
 
 
-\section{Multiple mutation association rule mining}
+\section{Multiple edit association rule mining}
 
 Edits that apply a single mutation (also known as "Single-edit" source code changes) as the ones studied so far in this study, are historically the most common subject of analysis in bug fixing tools and have been by far the most studied edits in the state of the art approaches \cite{Qi15,fan15,kim2013,Long2016,legoues12,Qi13,Qi14,xuan16}.
 
