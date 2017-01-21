@@ -1030,18 +1030,17 @@ the different statement types.
 
 
 \section{Sanity Check}
-The first step in our effort to check if the probabilistic model is going in the 
-right direction is to perform a sanity check on the model.
+The first step in our effort to know if the probabilistic model is a promising idea, is to perform a sanity check on the model.
 
 We performed two different sanity checks, the first of which is a 10 fold cross 
 validation of the model; and second, a run on an initial example to check how 
 much faster we can find a patch with the probabilistic model vs the equally 
-distributed approach. Following, we will describe these two steps:
+distributed approach.
 
 \subsection{10 fold cross validation}
 
-Our initial sanity check was performed on the replacements model. At this point, 
-our initial probabilistic model, built from 200 projects was segregated into 10 
+%Our initial sanity check was performed on the replacements model. At this point, 
+Our initial probabilistic model, built from 200 projects was segregated into 10 
 different folds, each fold had 20 projects assigned at random. For each of the 
 folds we would take 1 fold for testing and the remaining 9 folds for training. 
 Afterwards we analyze how often do the training data is able to predict the 
@@ -1203,8 +1202,7 @@ for all cases.
   \label{fig:initialExample}
 \end{figure}
 
-In order to be able to do this, we restructured the code of the tool ``GenProg4J" 
-\todo{or GenProg4Java, I don't know what Claire prefers} (available at 
+In order to be able to do this, we restructured the code of the tool ``GenProg4J" (available at 
 https://bitbucket.org/clegoues/genprog4java/), which is the Java version of the 
 well known tool Genprog~\cite{legoues12}. This tool provides all the work-flow 
 for any generate-and-validate approach to be implemented. We restructured the 
@@ -1214,14 +1212,14 @@ probabilistic model, and the default (equally distributed).
 We then ran the tool with the code in figure \ref{fig:initialExample} using both 
 the probabilistic model and the equally distributed model. Since this is an 
 initial example for sanity checking, we start by evaluating it on a subset of 
-the mutation operators. We first evaluate it with$ Replace only$ and $Append, 
-Remove and Replace$. The results are detailed in figures 
+the mutation operators. We first evaluate it in two different sets: 1) Only using the $Replace$ mutation operator, and 2) Using only $Append,~
+Remove~and~Replace$ mutation operators. The results are detailed in figures 
 \ref{fig:resultsReplace} and \ref{fig:resultsARR}. 
 
 Generate-and-validate, as explained before, works by creating variants of the 
 source code by applying mutation operators to the original source code. 
 Therefore, a large number of variants created before finding a patch means that 
-it takes longer to find a patch, than a small number of variants. Which means 
+it takes longer to find a patch, than a small number of variants. We can imply by this 
 that in these graphs, the smaller number of variants in each case, means that 
 the patch was found faster, than with a larger number of variants. It is also 
 noticeable that this tool uses genetic programming in its workflow, therefore we 
@@ -1229,13 +1227,13 @@ run the tool with 10 different seeds in order to be able to abstract the results
 and not focus on a particular seed.
 
 In figure \ref{fig:resultsReplace} we consider only the mutation operator 
-$Replace$, which means, that the tool will disregard all other mutation 
+$Replace$, which means that the tool will disregard all other mutation 
 operators and will only apply Replace operations using the probabilistic model 
 of Replacements. This is because at this step we are evaluating our model in a 
-subset of the mutation operators to see if it makes sense to move forward and 
+subset of the mutation operators to understand if it makes sense to move forward and 
 continue implementing the rest of the mutation operators.
 
-In this graph we can see the runs with 10 different seeds, contrasting the 
+In this graph we can analyze the runs with 10 different seeds, contrasting the 
 number of variants it takes to find a patch using the probabilistic approach 
 (blue bar), with the number of variants it takes to find a patch using the 
 equally distributed approach (green bar). 
@@ -1244,7 +1242,7 @@ As we can derive from the graph, the probabilistic approach was able to find a
 patch faster than the equally distributed for all the seeds tested. In some 
 cases as seed 5, 7 and 10, the patch using the probabilistic approach was found 
 in one of the first variants, therefore the number is so low that it doesn't 
-show in the graph. In average, we found that using the probabilistic model we 
+show in the graph. In average, we found that by using the probabilistic model we 
 could find a patch in 23.8 variants, while it took an average of 60.5 variants 
 to find a patch using the equally distributed model.
 
@@ -1259,7 +1257,7 @@ In figure \ref{fig:resultsARR}, we consider three mutation operators: Append,
 Remove and Replace. In this case we can also notice that in seeds 7 and 10 the 
 number of variants it takes to find a patch using the probabilistic model is 
 close to 1 therefore it is hard to notice it in the graph. In this case the data 
-shows that using the probabilistic model model we get a mean of 22.6 variants 
+shows that using the probabilistic model we obtain a mean of 22.6 variants 
 before finding the patch, while it takes an average of 41.4 variants to find the 
 patch using the equally distributed approach.
 
