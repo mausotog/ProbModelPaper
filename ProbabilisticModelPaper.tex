@@ -868,7 +868,7 @@ approaches considered and the benchmarks to evaluate the approach on.
 
 \section{Building the model}
 The first model we built was a smaller model created based on the 200 Java projects in Github 
-with the most stars (this was collected in June 2016). When users star a project they are creating a bookmark for 
+with the most stars (collected in June 2016). When users star a project they are creating a bookmark for 
 easier access, and showing appreciation to the repository maintainer for their 
 work. Projects with more stars are more popular among the developers of Github 
 and therefore more likely to be reviewed by other developers and have higher 
@@ -890,7 +890,7 @@ $[Ff]ix(ed|es|ing)?(\backslash s)*([Bb]ug|[Ii]ssue|[Pp]roblem)?(s)?$
 \\
 The intuition behind this regular expression is to filter commits where their 
 commit message includes phrases such as: ``Fixed issue with variable x", ``Fix for 
-problem discussed in meeting", ``Fixing file bug", etc.
+problem discussed in meeting", ``I just fixed the script", etc.
 
 We also added two extra filters to our search: First we had commits that only 
 modify java source code. This is with the intention of looking only into human 
@@ -911,14 +911,12 @@ For each of these bug fixing commits, we then checked the version of the code
 before the fix was performed and after the fix was performed. We refer to these 
 versions as the ``before-fix" version and the ``after-fix" version.
 
-We then need to know what changes are happening from the before-fix version to 
-the after-fix version, and we need to be able to analyze how often these changes 
-performed match the mutation operators we are analyzing in order to see what are 
-the probabilities of each of them to happen.
+Next step is to know what changes are being performed from the before-fix version to 
+the after-fix version, and we need to be able to analyze how often these changes match the mutation operators we are analyzing in order to understand what are 
+the probabilities of each of them happening.
 
 In order to do this we used two different widely used tools for mapping changes 
 between two versions of code: Gumtree~\cite{falleri14} and QACrashFix~\cite{gao15}.
-
 These tools create an AST representation of the program files for both the 
 before-fix and after-fix representations of the programs for each of the files 
 of the commit, and then use a set of heuristics to match the before-fix version 
@@ -926,35 +924,40 @@ with the after-fix version. Once this is done, the program's output is a set of
 changes needed to be performed to get from version before-fix to version 
 after-fix.
 
-We then created a program that goes through the list of changes and matches the changes performed from the before-fix to the after-fix versions into the different mutation operators. As an example to explain this further, consider the example below where we analyze the simplest case: Null Checker.
+We then created a program that goes through the list of changes and matches the changes performed from the before-fix to the after-fix versions into the different mutation operators. As an example to explain this further, consider the example in Fig~\ref{fig:codeSnippet} where we analyze the simplest case: Null Checker.
 
 
 
-\begin{figure*}%[!h]
-  \centering
-\ra{1.3}
+
+
+\begin{figure}[!]
+
 \begin{verbatim}
 var res = 0
 for (ac <- actions) {
-  if(nodeClassName(ac.getNode) == "IfStatement"){
-    if (actionName(ac) == "Insert"){
-      if((nodeClassName(ac.getNode.getChildren.get(0)) == "InfixExpression") && 
-        (nodeClassName(ac.getNode.getChildren.get(0).getChildren.get(1)) == "NullLiteral")){
-          res += 1
+  if(nodeClassName(ac.getNode) 
+    == "IfStatement"){
+      if (actionName(ac) == "Insert"){
+        if((nodeClassName(ac
+          .getNode.getChildren.get(0)) 
+            == "InfixExpression") && 
+              (nodeClassName(ac
+                .getNode.getChildren
+                  .get(0).getChildren.get(1)) 
+                    == "NullLiteral")){
+                      res += 1
       }
     }
   }
 }
 \end{verbatim}
 \caption{Example of heuristic to spot the template Add Null Checker}\label{fig:codeSnippet}
-\end{figure*}
+\end{figure}
 
 
 
 
-
-
-In the example detailed in Fig~\ref{fig:codeSnippet} we go through all the actions performed to go from the before-fix to the after-fix versions; in each of the actions we ask if the node being manipulated is an If statement, then we ask if the action being performed is an Insertion of a node. After we know that it is an insertion of an If statement, we then ask if the first condition within the If statement is an InfixExpression. An InfixExpression as defined by the Eclipse JDT API specification has the following form:
+In this example we go through all the actions performed to go from the before-fix to the after-fix versions; in each of the actions we ask if the node being manipulated is an If statement, then we ask if the action being performed is an Insertion of a node. After we know that it is an insertion of an If statement, we then ask if the first condition within the If statement is an InfixExpression. An InfixExpression as defined by the Eclipse JDT API specification has the following form:
 \\
 \\
 $InfixExpression: \\
@@ -1013,14 +1016,12 @@ replaced and what kind of statement is replacing the other. We call these
 statements ``replacee" and ``replacer" accordingly.
 
 
-We analyzed 22 different kinds of statement and the probability in which each of 
-them replaces another. For example, what is the probability that a For loop 
+We analyzed the 22 different kinds of statement detailed by Eclipse JDT as Direct Known Subclasses of the class "Statement", and the probability in which each of 
+them replaces another.For example, what is the probability that a For loop 
 would replace a While loop, or the probability that a Break statement would 
-replace a Continue statement, etc.
-
-Since there are 22 statement types that we analyzed and each of these 22 may 
+replace a Continue statement, etc. Since there are 22 statement types and each of these 22 may 
 replace each of these 22 statement types, we then have 484 combinations of 
-replacement combinations. 
+replacement combinations. The 22 statement types mentioned above are the following: AssertStatement, Block, BreakStatement, ConstructorInvocation, ContinueStatement, DoStatement, EmptyStatement, EnhancedForStatement, ExpressionStatement, ForStatement, IfStatement, LabeledStatement, ReturnStatement, SuperConstructorInvocation, SwitchCase, SwitchStatement, SynchronizedStatement, ThrowStatement, TryStatement, TypeDeclarationStatement, VariableDeclarationStatement, WhileStatement.
 
 It is also worth noticing that these probabilities are not reciprocal, meaning 
 that the probability of a For loop replacing a While loop is different from the 
