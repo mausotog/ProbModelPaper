@@ -747,7 +747,7 @@ The primary contributions of this paper thus are:
 \end{itemize}
 
 The rest of this paper proceeds as follows:
-The following section (Background) entails the general terminology and background knowledge for the state of the art in automatic program repair, in particular generation-and-validation. Section III (Building the model) describes the process of how we gathered, analyzed and extracted the data necessary to build a initial smaller probabilistic model of 200 projects. Section IV (Sanity Check) illustrates the steps taken in order to confirm that the model works and is a good idea to work on. Section V (Upgrading the model) outlines the process to upgrade the model from 200 projects to 500 projects. Section VI (Evaluation) defines our evaluation method and our benchmarks. Section VII(Multiple edit association rule mining) is a pioneering work that discusses a new methodology to handle patches that require various edits to patch the code. Finally we have a section for Discussion (Section VIII) and Conclusion (Section IX).
+The following section (Background) entails the general terminology and background knowledge for the state of the art in automatic program repair, in particular generation-and-validation. Section III (Building the model) describes the process of how we gathered, analyzed and extracted the data necessary to build a initial smaller probabilistic model of 200 projects. Section IV (Sanity Check) illustrates the steps taken in order to confirm that the model works and is a good idea to work on. Section V (Upgrading the model and Evaluation) outlines the process to upgrade the model from 200 projects to 500 projects and defines our evaluation method and our benchmarks. Section VI(Multiple edit association rule mining) is a pioneering work that discusses a new methodology to handle patches that require various edits to patch the code. Finally we have a section for Discussion (Section VII) and Conclusion (Section VIII).
 
 
 \section{Background}
@@ -1269,48 +1269,34 @@ the initial example}
   \label{fig:resultsARR}
 \end{figure}
 
-\section{Upgrading the model}
+\section{Upgrading the model and Evaluation}
 After having very successful results in the sanity checking process, we decided 
 to increase our data by building the model in the same way the initial 200-projects model was build, but now with the 500 projects in Github with more 
 stars (collected in August 2016), mining the last 100 bug fixing-commits from each of these projects. This is in order to generate the largest code base so far to the best 
 of our knowledge, surpassing all the previous state of the 
-art~\cite{long15,Soto15,zhong15,matias15,xuan16}. At this point, in our analyzed data, 
+art~\cite{long15,Soto15,zhong15,matias15,xuan16}. 
+
+At this point, by analyzing our dataset, 
 we found that the Template-Based mutations comprise 29.26\% of the corpus of 
 instances found, while Statement-Edition mutations make up 70.74\% of the 
-corpus.
-
-Since this idea seems promising at this point we decided to implement the rest 
-of the mutation operators. There are several different template-based approaches 
-\cite{kim2013,fan15,long15} which are constituted by mining common behaviors 
-that developers usually perform to patch errors in their code. Since these 
-templates in the different approaches tend to be very similar, we considered the 
-approach that seems to be representative of the template-based category due to 
-the diversity of the templates it encounters. 
-
-``Automatic patch generation learned from human-written patches"~\cite{kim2013} describes 10 different templates that 
-developers use very commonly to patch their code. Besides these 10 templates 
-published, they define other extra 6 templates in the research site 
-https://sites.google.com/site/autofixhkust/home/fix-templates that we have 
-considered as a representation of the template-based mutation operators.
-
-We implemented these 16 templates in GenProg4J, and generated the functionality 
+corpus. Since this idea seems promising at this point we decided to implement the rest 
+of the mutation operators. We implemented these 16 templates in GenProg4J, and generated the functionality 
 to be able to select which subset of mutation operators to apply in a particular 
 run.
 
-\section{Evaluation}
 We are interested in evaluating our new approach with real life bugs taken from 
 open source projects that have a long history of maintainability and 
 scalability. For these reasons, we chose Defects4j~\cite{just14} as our 
-evaluation platform. Defects4j is ``a database and extensible 
+evaluation platform. Defects4j is a database and extensible 
 framework providing real bugs to enable reproducible studies in software testing 
-research"~\cite{just14}. This database bugs contains 357 real bugs from 5 
+research~\cite{just14}. This database of bugs contains 357 real bugs from 5 
 real-world open source programs, and each of these cases is accompanied by a 
-comprehensive test suite that can expose the bug. This database also provides 
-the corresponding human-generated patch, which is the edits performed by a human 
+comprehensive test suite with test cases that expose the bug. This database also provides 
+the corresponding human-generated patch, which is the version of the code written by a human 
 developer to patch the bug. Due to these features Defects4j has previously been 
 subject for evaluation of important APR approaches~\cite{Durieux15}.
 
-In order to get this results we ran our approach in a physical server that 
+In order to perform our evalutation, we ran our approach in a physical server that 
 consists of 16 processors Intel(R) Xeon(R) CPU E5-2699 v3, with 2.30 GHz each 
 processor, 46080 KB cache each, and 32 GB RAM memory, operating system Ubuntu 
 14.04.5 LTS. We set the size for each population to 40 for consistency with 
@@ -1318,19 +1304,19 @@ previous work~\cite{legoues12,kim2013} and a timeout of 4 hours since there is
 the need of several generations of mutant creations needed to assess the 
 performance of this approach~\cite{arcuri11}.
 
-
 For this evaluation we tested the mutation operators using three different sets 
 of operations: 1) Statement-Edition mutations only 2) Template-based mutations 
 only 3) All mutations.
-
 
 \subsection{Single line bugs with Human Injected Fault Localization}
 Since historically automatic program repair has worked better with single line 
 patches, we decided to first test bugs that required a single line edit to get 
 patched. We analyzed the first 3 bugs from each of the projects that required a 
-single line edit. Therefore we analyze the bugs that met this criteria: Chart 1, 
+single line edit. The bugs that met this criteria are the following: Chart 1, 
 Chart 8, Chart 20, Closure 10, Closure 14, Closure 18, Lang 6, Lang 16, Lang 21, 
 Math 2, Math 5, Math 10, Time 4, Time 16 and Time 19.
+
+In this cases we applied Human Injected Fault Localization, which is the process in which the researchers in charged of running the experiment, with the goal of minimizing randomness, select the faulty statement. In these cases we picked the faulty statements to be the statements which the human developers modified in order to patch the code.
 
 From these 15 bugs we were able to find patches for 5 of them as described in table \ref{tab:singleLineBugs}. It is also worth mentioning that the numbers shown in the table are the mean from the solutions found running the tool with 20 different seeds. 
 
@@ -1377,17 +1363,43 @@ Last evaluation with the bugs we found had a fix
 
 \section{Multiple edit association rule mining}
 
-Edits that apply a single mutation (also known as "Single-edit" source code changes) as the ones studied so far in this study, are historically the most common subject of analysis in bug fixing tools and have been by far the most studied edits in the state of the art approaches \cite{Qi15,fan15,kim2013,Long2016,legoues12,Qi13,Qi14,xuan16}.
+Edits that apply a single mutation (also known as "Single-edit" source code 
+changes) as the ones studied so far in this study, are historically the most 
+common subject of analysis in bug fixing tools and have been by far the most 
+studied edits in the state of the art approaches 
+\cite{Qi15,fan15,kim2013,Long2016,legoues12,Qi13,Qi14,xuan16}.
 
-In order to differentiate this study from the rest and take the analysis one step further, we have analyzed a field that has been very shallowly studied in the past, which is Multi-edit source code changes.
+In order to differentiate this study from the rest and take the analysis one 
+step further, we have analyzed a field that has been very shallowly studied in 
+the past and whose importance overpasses the former mentioned since the vast 
+majority of patches fall into this category, which is Multi-edit source code 
+changes.
 
-In the past, most studies and tools currently being used have focused on single edit source code changes; by far, most of the changes performed that result in successful patches are single edit changes, and this is ok for a initial stage of automatic program repair approach. This covers basic patches that humans perform, but the reality is that most bug fixes that humans perform in real software systems are much more complex and go a lot deeper than a single edit change. 
+In the past, most studies and tools currently being used have focused on single 
+edit source code changes. In these studies, by far most of the changes performed that result in 
+successful patches are single edit changes, and this is ok for a initial stage 
+of automatic program repair approach. This covers basic patches that humans 
+perform, but the truth is that most bug fixes that humans perform in real 
+software systems are much more complex and go a lot deeper than a single edit 
+change. 
 
-This study has gone one step further and gives a initial analysis of multi edit source code changes by extracting association rules between single edit changes in order to create chains of single edit changes the way humans create them.
+This study has gone one step further and gives a initial analysis of multi edit 
+source code changes by extracting association rules between single edit changes 
+in order to create chains of single edit changes the way humans create them.
 
-In order to extract association rules from the data gathered in our study, we have transformed each of the mutation operator count and replacement count from each of the commits studied and created a transaction to be analyzed. We use the well known association rule mining algorithm called Apriori~\cite{Agrawal94,Liu98,Zaki2000} in which we identify the frequent individual items in the set of transactions and then we extend these sets into larger sets as long as those item sets appear sufficiently often in the database of transactions, which in our case would be the database of transactions created by each of the commits studied.
+In order to extract association rules from the data gathered in our study, we 
+have transformed each of the mutation operator count and replacement count from 
+each of the commits studied and created a transaction to be analyzed. We use the 
+well known association rule mining algorithm called 
+Apriori~\cite{Agrawal94,Liu98,Zaki2000} in which we identify the frequent 
+individual items in the set of transactions and then we extend these sets into 
+larger sets as long as those item sets appear sufficiently often in the database 
+of transactions, which in our case would be the database of transactions created 
+by each of the commits studied.
 
-We have divided our association rule mining into the two different models as follows:
+We have divided our association rule mining into the two different models as 
+follows:
+
 
 \subsection{Mutation operators}
 
@@ -1407,7 +1419,8 @@ $supp(X) = \dfrac{|\{t \in T; X \subseteq t\}|}{|T|}$
 
 Where X is the itemset being analyzed and t is each individual transaction in the database of transactions T. 
 
-We show the 10 best association rules found for the mining of single edit mutation operators:
+These rules are ranked by their confidence; in this case, the top 5 rules shown below have a confidence of a 100\% which means that in 100\% of the cases studied, every transaction that showed the antecedent also shows the consequent; and they are obtained with a 1\% support, which means that each of these rules individually show in at least a 1\% of all the transactions of the overall corpus. We show the 5  top association rules found for the mining of single edit mutation operators.
+
 
 %Minimum support: 0 (1 instances)
 %Minimum metric <confidence>: 0.9
@@ -1418,16 +1431,14 @@ We show the 10 best association rules found for the mining of single edit mutati
 \item Replace \& SeqExchanger $\implies$ Append
 \item Replace \& ParamReplacer $\implies$ Append
 \item Delete \& CasteeMutator $\implies$ Append
-\item Replace \& Delete \& ParamReplacer $\implies$ Append
-\item Replace \& AddNullCheck $\implies$ Append
-\item Replace \& Delete \& SeqExchanger $\implies$ Append
-\item Delete \& ExpressionAdder $\implies$ Append
-\item Delete \& AddNullCheck \& ParamReplacer $\implies$ Append
+%\item Replace \& Delete \& ParamReplacer $\implies$ Append
+%\item Replace \& AddNullCheck $\implies$ Append
+%\item Replace \& Delete \& SeqExchanger $\implies$ Append
+%\item Delete \& ExpressionAdder $\implies$ Append
+%\item Delete \& AddNullCheck \& ParamReplacer $\implies$ Append
 \end{itemize}
 
-These rules are ranked by their confidence; in this case, these top 10 rules have a confidence of a 100\% which means that in 100\% of the cases studied, every transaction that showed the antecedent also shows the consequent; and they are obtained with a 1\% support, which means that each of these rules individually show in at least a 1\% of all the transactions of the overall corpus.
-
-Append is the most common single edit mutation operator. This behavior is reflected in the fact that it is the most common consequent. Being the consequent in 10 out of 10 of the top 10 association rules. The authors are showing the top 10 association rules to give an example of what the rules look like. If the reader would like to know the full list of association rules mined in this study, the authors have made available the full list with over 12.000 rules with over 90\% Confidence and 0.01\% Support in the following link: https://goo.gl/UT8QbI
+Append is the most common single edit mutation operator. This behavior is reflected in the fact that it is the most common consequent being the consequent in 5 out of 5 of the top 5 association rules. The authors are showing the top 5 association rules to give an example of what the rules look like. If the reader would like to know the full list of association rules mined in this study, the authors have made available the full list with over 12.000 rules with over 90\% Confidence and 0.01\% Support in the following link: https://goo.gl/UT8QbI
 %REPLACE FOR CAMERA READY: https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt
 
 
@@ -1464,18 +1475,57 @@ https://goo.gl/omk60t
 
 
 \section{Discussion}
-There still remain a vast set of challenges and limitations in the field of automatic program repair~\cite{Qi15}. In this paper we are tackling specific challenges regarding the way in which mutation operators are chosen, we provide a probabilistic model that describes the way in which humans give preference to some mutation operators over others, and have analyzed how these single edit source code changes can be chained together to form multi edit changes.
+There still remain a vast set of challenges and limitations in the field of 
+automatic program repair~\cite{Qi15}. In this paper we are tackling specific 
+challenges regarding the way in which mutation operators are chosen, we provide 
+a probabilistic model that describes the way in which humans give preference to 
+some mutation operators over others, and have analyzed how these single edit 
+source code changes can be chained together to form multi edit changes.
 
-In order to do this we have analyzed the way in which humans create single edit source code changes and we have created a set of association rules that describe how often different sets of mutation operators can predict the change that will come next and how often subsets of mutation operators are applied together.
+In order to do this we have analyzed the way in which humans create single edit 
+source code changes and we have created a set of association rules that describe 
+how often different sets of mutation operators can predict the change that will 
+come next and how often subsets of mutation operators are applied together.
 
-There is a tension between the Support and the Confidence in the transaction base, in particular the transaction base considered in this study, in which we evaluate the different mutation operators being applied to source code in bug fixing commits. 
+There is a tension between the Support and the Confidence in the transaction 
+base, in particular the transaction base considered in this study, in which we 
+evaluate the different mutation operators being applied to source code in bug 
+fixing commits. 
 
-If we increase the Confidence and decrease the Support we will obtain rules in which the priority is that every time that the antecedent happens, the consequent will happen as well. With this approach we may obtain rules that don't happen very often, but every time that they happen in the analyzed corpus, there is a high confidence that the rule will be correct. On the other hand, if we increase the Support and decrease the Confidence we would obtain rules that are guaranteed to happen in a certain percent of the corpus, which means, that the relationship described by the rules, happen often, but confidence is sacrificed, which means that there will be a higher percentage of the transactions in which the antecedent is present, but the consequent is not. 
+If we increase the Confidence and decrease the Support we will obtain rules in 
+which the priority is that every time that the antecedent happens, the 
+consequent will happen as well. With this approach we may obtain rules that 
+don't happen very often, but every time that they happen in the analyzed corpus, 
+there is a high confidence that the rule will be correct. On the other hand, if 
+we increase the Support and decrease the Confidence we would obtain rules that 
+are guaranteed to happen in a certain percent of the corpus, which means, that 
+the relationship described by the rules, happen often, but confidence is 
+sacrificed, which means that there will be a higher percentage of the 
+transactions in which the antecedent is present, but the consequent is not. 
 
 
 \section{Conclusion}
-The conclusion goes here.
+In this study we analyze the way in which current state of the art automatic 
+program repair approaches select mutation operators in order to create candidate 
+patches. We analyze, categorize and compare the mutation operators being used by 
+state of the art approaches. We analyzed the last 100 bug fixing commits from the
+500 projects in Github with most stars, which is the largest corpus analyzed to datet
+to the best of our knowledge, and we created a two level probabilistic model of
+the likelihood of mutation operators to be selected as humans select them.
 
+We evaluate our approach in several different ways: by performing 10 fold cross 
+validation, comparing the equally distributed model with the probabilistic model by running a 
+simple example and measuring the number of variants it takes to find the patch,
+and evaluating using the database of bugs and extensible 
+framework which contains 357 real bugs from 5 real-world open source programs Defects4j.
+\todo{talk about results of the evaluation}.
+
+Finally, we have analyzed a field that has been understudied in the past and which covers 
+the vast majority of bug fixes in software systems, which is Multi-edit source code changes. 
+We have created a set of association rules using Apriori, a state of the art
+methodology for association rule mining based on the analyzed corpus. The authors have
+made an initial analysis of how single-edit source code changes can be chained together 
+to become multi-edit source code changes the way humans do it.
 
 
 
