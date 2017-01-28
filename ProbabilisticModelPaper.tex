@@ -883,18 +883,18 @@ regularly for the analysis of empirical data by similar projects such as
 Once we have checked out the 200 Java projects with the most stars, we checkout 
 the last 100 bug fixing commits per each project. 
 
-Being able to tell apart a bug fixing commit from a non bug fixing commit is a difficult problem in repository mining~\cite{Bird09}. We filter these by applying the following regular expression to the commit message in each of the commits in each of the projects:
-\\
-\\
-$[Ff]ix(ed|es|ing)?(\backslash s)*([Bb]ug|[Ii]ssue|[Pp]roblem)?(s)?$
-\\
-\\
+Being able to tell apart a bug fixing commit from a non bug fixing commit is a difficult problem in repository mining~\cite{Bird09}. We filter these by applying a regular expression to the commit message in each of the commits in each of the projects that looks for words such as "fix", "bug", "issue", "problem", etc. following the guidelines by \cite{schroter06,Cubranic05,Fischer03}.
+%\\
+%\\
+%$[Ff]ix(ed|es|ing)?(\backslash s)*([Bb]ug|[Ii]ssue|[Pp]roblem)?(s)?$
+%\\
+%\\
 The intuition behind this regular expression is to filter commits where their 
 commit message includes phrases such as: ``Fixed issue with variable x", ``Fix for 
 problem discussed in meeting", ``I just fixed the script", etc.
 
 We also added two extra filters to our search: First we had commits that only 
-modify java source code. This is with the intention of looking only into human 
+modify java source code. This is with the intention of looking only into bug 
 fixing commits that fix java source code. Developers may also fix bugs in other 
 sections of their projects, for example they may fix bugs in bash files, or xml 
 code or any other kind of bug, and this wouldn't be relevant to our purpose of 
@@ -931,29 +931,28 @@ We then created a program that goes through the list of changes and matches the 
 
 
 
-\begin{figure}[!]
-
-\begin{verbatim}
-var res = 0
-for (ac <- actions) {
-  if(nodeClassName(ac.getNode) 
-    == "IfStatement"){
-      if (actionName(ac) == "Insert"){
-        if((nodeClassName(ac
-          .getNode.getChildren.get(0)) 
-            == "InfixExpression") && 
-              (nodeClassName(ac
-                .getNode.getChildren
-                  .get(0).getChildren.get(1)) 
-                    == "NullLiteral")){
-                      res += 1
-      }
-    }
-  }
-}
-\end{verbatim}
-\caption{Example of heuristic to spot the template Add Null Checker}\label{fig:codeSnippet}
-\end{figure}
+%\begin{figure}[!]
+%\begin{verbatim}
+%var res = 0
+%for (ac <- actions) {
+%  if(nodeClassName(ac.getNode) 
+%    == "IfStatement"){
+%      if (actionName(ac) == "Insert"){
+%        if((nodeClassName(ac
+%          .getNode.getChildren.get(0)) 
+%            == "InfixExpression") && 
+%              (nodeClassName(ac
+%                .getNode.getChildren
+%                  .get(0).getChildren.get(1)) 
+%                    == "NullLiteral")){
+%                      res += 1
+%      }
+%    }
+%  }
+%}
+%\end{verbatim}
+%\caption{Example of heuristic to spot the template Add Null Checker}\label{fig:codeSnippet}
+%\end{figure}
 
 
 
@@ -1030,7 +1029,7 @@ probability of a While loop replacing a For loop, and the same applies to all
 the different statement types.
 
 
-\section{Sanity Check} \label{sanityCheck}
+\section{Evaluation} \label{evaluation}
 The first step in our effort to know if the probabilistic model is a promising idea, is to perform a sanity check on the model.
 
 We performed two different sanity checks, the first of which is a 10 fold cross 
@@ -1267,7 +1266,7 @@ the initial example}
   \label{fig:resultsARR}
 \end{figure}
 
-\section{Upgrading the model and Evaluation} \label{evaluation}
+\subsection{Evaluating model in real bugs using Defects4j}
 After having very successful results in the sanity checking process, we decided 
 to increase our data by building the model in the same way the initial 200-projects model was build, but now with the 500 projects in Github with more 
 stars (collected in August 2016), mining the last 100 bug fixing-commits from each of these projects. This is in order to generate the largest code base so far to the best 
