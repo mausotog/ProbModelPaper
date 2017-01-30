@@ -396,8 +396,24 @@
 % As a general rule, do not put math, special symbols or citations
 % in the abstract
 \begin{abstract}
-\todo{The abstract goes here.}
+Automatic Software Repair has gained a lot of attention in the last several 
+years due to its ability to imitate and succeed in complex processes such as 
+fixing errors in source code; tasks that has been historically very expensive 
+and resource consuming. Most well known state of the art generate-and-validate 
+approaches used for automatic error repair determine which mutation operators to 
+use at a particular fault location by applying an equal distribution to the 
+selection process of these edits. When in reality, mutation operators have very 
+different probabilities of being applied; some mutation operators are far more 
+common than others and are also dependent of the context. Because of this, we 
+have created a probabilistic model that describes the distribution of 
+feasibility when applying each of the different mutation operators. In this 
+study we categorize, compare and evaluate the different mutation operators in 
+the state of the art approaches, we create a model mined from the largest 
+dataset to date, and we create association rules to analyze the context when 
+dealing with multi-edit source code changes, a field that has been understudied 
+in the past and covers the majority of the source code changes in existence. 
 \end{abstract}
+
 
 % no keywords
 
@@ -416,7 +432,7 @@
 
 
 
-\section{Introduction}
+\section{Introduction} \label{introduction}
 % no \IEEEPARstart
 
 %\todo{CLG says: OK, let's start at the top: Please fix the formatting issues,
@@ -457,11 +473,11 @@ able to localize errors and fixing code with minimal interaction with human
 programmers. One of the most well known approaches of automatic program repair
 is the generate-and-validate approach. 
 
-This approach takes in a test suite with at least one test cases that exposes 
+This approach takes in a test suite with at least one test case that exposes 
 the defect that needs to be fixed, and the corresponding source code to be 
 tested and modified. The passing test cases confirm the
 expected behavior of the program, while the failing test cases expose the
-deviation of the expected behavior with the actual behavior. 
+deviation from the expected behavior. 
 Generate-and-validate then generates a patch candidate space by applying 
 mutation operators to the original source code, and finally tests these patch 
 candidates until it finds one that passes all test cases or meets a stopping 
@@ -475,13 +491,7 @@ condition (such as a determined amount of time or generations).
 %  add a sentence contrasting it with the other broad type of program repair
 %  approaches, and comment on the fact that that's not what we're looking at.}  
   
- In contrast to generate-and-validate there exist other techniques used for 
-automatic program repair such as Synthesis-Based program 
-repair~\cite{jin11,pei14} which ``uses constraints to build 
-correct-by-construction patches via formal verification or inferred or 
-programmer-provided contracts
-or specifications"~\cite{smith15}. We will be focusing on the former of these 
-two. Also in contrast to search based approaches, there exist semantic based approaches such as SemFix~\cite{nguyen13}, DirectFix~\cite{mechtaev15} and SearchRepair~\cite{ke15} which use semantic analysis in order to create patches for buggy code.
+
 
 
 In order to modify the behavior of the source code and be able to repair the 
@@ -493,29 +503,16 @@ There is a wide a variety of approaches that use generate-and-validate for
 program 
 repair~\cite{legoues12,kim2013,Weimer13,fan15,long15,debroy10,perkins09,wei10}. 
 These approaches 
-have a wide variety of mutation operations with which they vary the source code 
-in different ways using different techniques. 
+have a wide range of mutation operations with which they modify the source code 
+in different ways by using a large collection of techniques. 
 
-In
-order to pick which mutation operator will be used, the 
-first step is to define where the fault is located, which is the section of code 
-where the
-fault is suspected to be located. This can be calculated in various ways and 
-there is 
-a whole set of
-possible approaches that can analyze this with different levels of certainty and 
-requiring different characteristics from the source code and/or test 
-suite~\cite{Jones05,Jones02,Chen02,legoues12,Qi13,Qi2013,Abreu07,wong09}. This is not the 
-step that we will be analyzing in this
-paper. We will be analyzing the step that follows: After the particular tool 
-being analyzed has a fault location, then
-it goes through a process in which it is analyzed which mutation operators can
+The automatic error fixing process starts by localizing where the fault is, this can be done in different ways as described in Section \ref{background}. After the particular tool 
+acquires a fault location, then
+it goes through a process in which it analyzes which mutation operators can
 be applied to that specific location; or if the context of that location doesn't
-allow some mutation operators to be used in a particular location. 
-
-Once this process is finalized, as a result, there is a set of possible 
+allow some mutation operators to be used. Once this process is finalized, as a result, there is a set of possible 
 mutation operators that
-can be applied to a location. At this point, most of the well known and highly 
+can be applied to the chosen location. At this point, most of the well known and highly 
 used approaches that use generate-and-validate such as GenProg~\cite{legoues12}, 
 Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13}, and RSRepair~\cite{Qi14} 
 choose at random which mutation operator will be used from the set of mutation 
@@ -535,24 +532,119 @@ operators that can be applied at this location.
 In order to pick the mutation operator, the probabilities of picking each of
 them are equally distributed; this means that from the set of mutations that can 
 be applied to this location, all of them have the same probability of being 
-chosen. This may lead to generating plausible patches that pass all provided 
+chosen. This leads to the tools often applying mutation operators that will not fix the bug, or will create plausible patches that pass all provided 
 test cases, but are not really fixing the problem when judged by an informed 
 programmer~\cite{Qi15, kim2013}. 
 
 In reality, human developers choose some mutation operators 
 much more often than 
-others and in this study we simulate the behavior of human developers in order 
-to create patches the closest way to what real developers do, which will 
-maximize the quality of the patches; and reduce the fact that the mutation 
-operators are being chosen with equally 
-distributed probability, which results in often 
-picking mutation operators that are less likely to actually fix the bug we are 
-trying to fix.
+others. In this study we simulate this behavior of human developers in order 
+to create patches the closest way to what real developers do, which increases understandability and maintainability.
 
-There have been previous efforts in this direction by Soto et al~\cite{Soto15} 
+ This study also 
+handles, compares and contrasts a full set of mutation operators, taking into
+account the full set of mutation operators currently used in the most widely used state of the art approaches.
+
+
+In our approach 
+we have developed a probabilistic model mined 
+from the 500 most popular Github projects, which 
+entails different probabilities for each of the mutation operators based on 
+empirical data that describes how human programmers fix their code.
+
+With this probabilistic model we are able to chose from the set of possible
+mutation operators that can be applied to a particular location, by using the
+probabilities which describe how often each mutation operators is applied
+to fix bugs when used in real world projects. If human programmers are more likely to
+use a particular mutation operator, then that mutation operator will have a
+higher probability of being selected than other mutation operators. This way we 
+are simulating the manner in which human programmers patch their code, which has 
+being evaluated to create patches that are easier to understand by humans~\cite{kim2013} and 
+therefore it increases the maintainability of the patches. 
+
+We evaluated this approach in three different ways. First, we perform a 10 fold 
+cross validation of the instances found by mining the projects with most stars 
+in Github. Second, we run the probabilistic model with a subset of the mutation 
+operators in a simple example from a basic function. Third, we implemented all 
+the mutation operators and ran a comparison of the equally distributed approach 
+and the probabilistic approach. For this we used Defects4j,~\cite{just14} a 
+database and framework of reproducible real-life bugs found in large scale open 
+source projects. In this third step we evaluate our model with bugs that require 
+one line to be modified in order to patch them. 
+
+Finally we introduce a new approach for multi-edit repairs. Most of the successful repairs from current approaches patch the code by applying single-edit mutations to the original source code. Patches that consist of several mutations have being understudied even when the vast majority of patches in existence are multi-edit changes. This approach takes single-edit mutation operators and predicts which operation should be applied next in order to create multi-edit patches.
+
+
+The primary contributions of this paper thus are:
+\begin{itemize}
+  \item \textbf{New Approach:} Incorporates the different mutation operators from different state of the art approaches to define a new methodology which uses a probabilistic model to choose mutation operators, assigning a higher probability to the most used operations. It is, to the best of our knowledge, the first study that, compares and contrasts directly using the same platform, all the different mutation operators from the most well known state of the art approaches. 
+  \item \textbf{Implementation:} Development of a probabilistic model specifically for Java, based on the results of mining the 500 most popular projects from Github to improve the likelihood of selecting mutation operators that are more likely to be picked by human developers which improves maintainability.
+  \item \textbf{Evidence:} Evaluation of the probabilistic model in several different benchmarks, including a large number of real life bugs from well known open source projects.
+  \item \textbf{Cross-platform mutation operator categorization:} Generalization and categorization of the mutation operators found in the state of the art approaches that use generation-and-validation.
+  \item \textbf{Patch generation based in human behavior:} A deeper understanding of which mutation operators are used by programmers to fix errors in source code, and the frequency of each of the mutation operators analyzed.
+  \item \textbf{Multi-edit repair approach} In this study we provide a technique to handle patches that require several mutations by applying association rules to the set of transactions analyzed in the corpus of this study.  
+\end{itemize}
+
+The rest of this paper proceeds as follows:
+The following section entails the state of the art, general terminology and background knowledge for automatic program repair, in particular generation-and-validation. Section \ref{categorization} discusses how we categorize and generalize the mutation operators used in state of the art approaches in an effort to compare them. Section \ref{buildingTheModel} describes the process of how we gathered, analyzed and extracted the data necessary to build the probabilistic model. Section \ref{evaluation} outlines our evaluation methodology and our benchmarks. Section \ref{multEdit} is a pioneering work that discusses a new methodology to handle patches that require various edits to patch the code. Finally we have a section for Discussion (Section \ref{discussion}) and Conclusion (Section \ref{conclusion}).
+
+\section{Background and Related Work} \label{background}
+
+One of the most well known approaches for automatic program repair is the
+generate-and-validate approach which is detailed in figure~\ref{fig:generateandvalidate}. This approach starts with source code that
+has one or various bugs to be fixed, and a test suite which contains passing
+test cases to guide the expected behavior of the program of the program, and failing test 
+cases which expose the behavior of the program that is expected but the output
+of the expected behavior does not match the output of the source code as is.
+
+
+
+\begin{figure}[!h]
+  \centering
+    \includegraphics[scale=0.25]{Picture1}
+  \caption{Generate and validate approach}
+  \label{fig:generateandvalidate}
+\end{figure}
+
+The first step of this process is to localize the error in a particular 
+statement. There is an extensive list of possible approaches in literature in 
+order to perform this tasks~\cite{Jones05,Jones02,Chen02,legoues12,Qi13}, also there are several papers that have focused on the evaluation of the test suite;~\cite{Qi13,fan15} the main focus of this paper will be the step between these two, as highlighted in figure~\ref{fig:generateandvalidate} our main focus will be Generating patch candidates.
+
+Once we know where the fault is located we proceed to create what we call 
+``Candidate patches". Candidate patches are variations of the original program 
+which may or may not be a patch for the bug(s) we are trying to fix. In order to 
+create candidate patches we need to apply one or several mutation operators to 
+the fault location. 
+
+Once the tool has a set of candidate patches, it will run the test suite on each 
+of those candidate patches. If it is able to find a candidate patch that can 
+pass all the test cases in the test suite, that candidate patch will be 
+considered a patch of the bug. If it is not able to pass all the test cases in 
+the test suite, then it will go back to creating more candidate patches and will 
+continue to do so until it reaches a stopping point, which may be a certain user 
+defined number of generations or a user defined clock time limit.
+
+
+In contrast to generate-and-validate there exist other techniques used for 
+automatic program repair such as Synthesis-Based program 
+repair~\cite{jin11,pei14} which uses constraints to build 
+correct-by-construction patches via formal verification, inferred or 
+programmer-provided contracts,
+or specifications~\cite{smith15}. Also in contrast to search based approaches, there exist semantic based approaches such as SemFix~\cite{nguyen13}, DirectFix~\cite{mechtaev15} and SearchRepair~\cite{ke15} which use semantic analysis to create patches for buggy code.
+
+Regarding generate-and-validate, in
+order to select which mutation operator will be used, the 
+first step is to define in what section of the code the fault is located. This can be determined in various ways, and 
+there is 
+a whole set of
+possible approaches that can analyze this segment with different levels of certainty and 
+requiring different characteristics from the source code and/or test 
+suite~\cite{Jones05,Jones02,Chen02,legoues12,Qi13,Qi2013,Abreu07,wong09}. In this study we will be using Human Injected Fault Localization to diminish the degree of randomness in the experiment as described in section \ref{evaluation}A.
+
+There have been previous efforts to create a model based on human behavior by Soto et al~\cite{Soto15} 
 where the researchers built a probabilistic model of the replace mutation 
-operator based in 
-an instance count of statements of each type using the platform 
+operator only, based in 
+an instance count of each statement type using the platform 
 BOA,~\cite{dyer2013} and making an initial model of the replacement mutation 
 operator only. HDRepair~\cite{xuan16} has also tried to tackle this problem by 
 creating a variation of GenProg in which instead of using previous fixes to
@@ -572,230 +664,41 @@ consider such a vast diversity of projects to build a probabilistic model. In
 order to counter the 
 risk of overfitting to a small set of training projects as performed before, our 
 current study trains the model with 500 projects, which covers a vast diversity 
+of dominions and bug fixing styles.
 
-of dominions and bug fixing styles. This study also 
-handles, compares and contrasts a full set of mutation operators, taking into
-account the full set of currently used mutation operators by categorizing them 
-in two different groups. 
-
-
-We denominate Template-Based mutation operators to the mutation operators that 
-use predefined templates to guide their creation process; this is seen in 
-approaches such 
-as PAR~\cite{kim2013}, SPR~\cite{fan15}, Kali~\cite{Qi15} and Prophet~\cite{Long2016}; and 
-Statement-Edition mutation operators to the mutation operators whose main purpose is to edit an identified statement within the source code but do not create new code as opposed to 
-Template-Based approaches. Statement-Edition mutation operators can be found in 
-tools such as GenProg~\cite{legoues2012}, TrpAutoRepair~\cite{Qi13} and 
-AE~\cite{Weimer13}.
-
-There are several other techniques using randomized search
-for patch generation~\cite{arcuri08,bradbury10,Qi14,Weimer13}. In our approach we have developed a probabilistic model mined 
-from the 500 most popular Github projects, which 
-entails different probabilities for each of the mutation operators based on 
-empirical data that describes how human programmers fix their code.
-
-With the probabilistic model we are able to chose from the set of possible
-mutation operators that can be applied to a particular location using the
-probabilities which describe how often do each of the mutation operators is able
-to fix bugs when used in real projects. If human programmers are more likely to
-use a particular mutation operator, then that mutation operator will have a
-higher probability of being picked than other mutation operators. This way we 
-are simulating the way in which human programmers patch their code, which has 
-being evaluated to create patches that are easier to understand by humans and 
-therefore it increases the maintainability of the patches. 
-
-We evaluated this approach in four different ways. First, we perform a 10 fold cross validation of the instances found by mining the projects with most stars in Github. Second, we run the probabilistic model with a subset of the mutation operators in a simple example from a basic function. Third, we implemented all the mutation operators and ran a comparison of the equally distributed approach and the probabilistic approach. For this we used Defects4j~\cite{just14}, a database and framework of reproducible real-life bugs found in large scale open source projects. In this third step we evaluate our model with bugs that require one line to be modified in order to patch them. Fourth, we evaluated on bugs that require multiple lines of code and/or multiple files to be edited in order to fix the bug.
-%\todo{Why do we think that's a good idea?}
-
-
-
-
-% An example of a floating figure using the graphicx package.
-% Note that \label must occur AFTER (or within) \caption.
-% For figures, \caption should occur after the \includegraphics.
-% Note that IEEEtran v1.7 and later has special internal code that
-% is designed to preserve the operation of \label within \caption
-% even when the captionsoff option is in effect. However, because
-% of issues like this, it may be the safest practice to put all your
-% \label just after \caption rather than within \caption{}.
-%
-% Reminder: the "draftcls" or "draftclsnofoot", not "draft", class
-% option should be used if it is desired that the figures are to be
-% displayed while in draft mode.
-%
-%\begin{figure}[!t]
-%\centering
-%\includegraphics[width=2.5in]{myfigure}
-% where an .eps filename suffix will be assumed under latex, 
-% and a .pdf suffix will be assumed for pdflatex; or what has been declared
-% via \DeclareGraphicsExtensions.
-%\caption{Simulation results for the network.}
-%\label{fig_sim}
-%\end{figure}
-
-% Note that the IEEE typically puts floats only at the top, even when this
-% results in a large percentage of a column being occupied by floats.
-
-
-% An example of a double column floating figure using two subfigures.
-% (The subfig.sty package must be loaded for this to work.)
-% The subfigure \label commands are set within each subfloat command,
-% and the \label for the overall figure must come after \caption.
-% \hfil is used as a separator to get equal spacing.
-% Watch out that the combined width of all the subfigures on a 
-% line do not exceed the text width or a line break will occur.
-%
-%\begin{figure*}[!t]
-%\centering
-%\subfloat[Case I]{\includegraphics[width=2.5in]{box}%
-%\label{fig_first_case}}
-%\hfil
-%\subfloat[Case II]{\includegraphics[width=2.5in]{box}%
-%\label{fig_second_case}}
-%\caption{Simulation results for the network.}
-%\label{fig_sim}
-%\end{figure*}
-%
-% Note that often IEEE papers with subfigures do not employ subfigure
-% captions (using the optional argument to \subfloat[]), but instead will
-% reference/describe all of them (a), (b), etc., within the main caption.
-% Be aware that for subfig.sty to generate the (a), (b), etc., subfigure
-% labels, the optional argument to \subfloat must be present. If a
-% subcaption is not desired, just leave its contents blank,
-% e.g., \subfloat[].
-
-
-% An example of a floating table. Note that, for IEEE style tables, the
-% \caption command should come BEFORE the table and, given that table
-% captions serve much like titles, are usually capitalized except for words
-% such as a, an, and, as, at, but, by, for, in, nor, of, on, or, the, to
-% and up, which are usually not capitalized unless they are the first or
-% last word of the caption. Table text will default to \footnotesize as
-% the IEEE normally uses this smaller font for tables.
-% The \label must come after \caption as always.
-%
-%\begin{table}[!t]
-%% increase table row spacing, adjust to taste
-%\renewcommand{\arraystretch}{1.3}
-% if using array.sty, it might be a good idea to tweak the value of
-% \extrarowheight as needed to properly center the text within the cells
-%\caption{An Example of a Table}
-%\label{table_example}
-%\centering
-%% Some packages, such as MDW tools, offer better commands for making tables
-%% than the plain LaTeX2e tabular which is used here.
-%\begin{tabular}{|c||c|}
-%\hline
-%One & Two\\
-%\hline
-%Three & Four\\
-%\hline
-%\end{tabular}
-%\end{table}
-
-
-% Note that the IEEE does not put floats in the very first column
-% - or typically anywhere on the first page for that matter. Also,
-% in-text middle ("here") positioning is typically not used, but it
-% is allowed and encouraged for Computer Society conferences (but
-% not Computer Society journals). Most IEEE journals/conferences use
-% top floats exclusively. 
-% Note that, LaTeX2e, unlike IEEE journals/conferences, places
-% footnotes above bottom floats. This can be corrected via the
-% \fnbelowfloat command of the stfloats package.
-
-
-
-%\todo{The most glaring problem with the exposition that I see so far is its
-%  failure to acknowledge, reference, or contrast with SPR or Prophet, the latter of which %does use a probabilistic model.}
-
-%\todo{Please fill in: ``The primary contributions of this paper thus are:
-%  itemized list''}
-
-
-
-%\todo{Please fill in: ``The rest of this paper proceeds as follows...''}
-
-The primary contributions of this paper thus are:
-\begin{itemize}
-  \item \textbf{New Approach:} Incorporates the different mutation operators from different state of the art approaches to define a new methodology which uses a probabilistic model to choose mutation operators, assigning a higher probability to the most used operations. It is, to the best of our knowledge, the first study that compares and contrasts directly and using the same platform, the different mutation operators from most well known state of the art approaches. 
-  \item \textbf{Implementation:} Development of a probabilistic model specifically for Java, based on the results of mining the 500 most popular projects from Github to improve the likelihood of selecting mutation operators that are more likely to be picked by human developers which improves maintainability.
-  \item \textbf{Evidence:} Evaluation of the probabilistic model in several different benchmarks, including a large number of real life bugs from well known open source projects.
-  \item \textbf{Cross-platform mutation operator categorization:} Generalization and categorization of the mutation operators found in the state of the art approaches that use generation-and-validation.
-  \item \textbf{Patch generation based in human behavior:} A deeper understanding of which mutation operators are used by programmers to fix errors in source code, and the frequency of each of the mutation operators analyzed.
-  \item \textbf{Multi-edit repair aproach} Most of the successful repairs from current approaches patch the code by applying a single mutation to the original source code, patches that consist of several mutations are rare. In this study we provide an approach to deal with patches that consist of several mutations by applying association rules to the set of transactions analyzed in the corpus of this study.  
-\end{itemize}
-
-The rest of this paper proceeds as follows:
-The following section (Background) entails the general terminology and background knowledge for the state of the art in automatic program repair, in particular generation-and-validation. Section III (Building the model) describes the process of how we gathered, analyzed and extracted the data necessary to build a first probabilistic model. Section IV (Sanity Check) illustrates the steps taken in order to confirm that the model works and is a good idea to work on. Section V (Upgrading the model) outlines the process to upgrade the model to mine information out of 500 projects. Section VI (Evaluation) defines our evaluation method and our benchmarks. Finally we have a section for Discussion (Section VII) and Conclusion (Section VIII).
-
-
-\section{Background}
-
-
-One of the most well known approaches to automatic program repair is the
-generate-and-validate approach which is detailed in Figure
-\ref{fig:generateandvalidate}. This approach starts with source code that
-has one or various bugs to be fixed, and a test suite which contains passing
-test cases to guide the expected behavior of the program of the program, and failing test 
-cases which expose the behavior of the program that is expected but the output
-of the expected behavior does not match the output of the source code as is.
-
-
-
-\begin{figure}[!h]
-  \centering
-    \includegraphics[scale=0.25]{Picture1}
-  \caption{Generate and validate approach}
-  \label{fig:generateandvalidate}
-\end{figure}
-
-The first step of this process is to localize the error to a particular 
-statement. There is an extensive list of possible approaches in literature in 
-order to perform this tasks~\cite{Jones05,Jones02,Chen02,legoues12,Qi13}, also there are several papers that have focused on the evaluation of the test suite;~\cite{Qi13,fan15} the main focus of this paper will be the step between these two, as highlighted in figure~\ref{fig:generateandvalidate} our main focus will be Generating patch candidates.
-
-Once we know where the fault is located we proceed to create what we call 
-``Candidate patches". Candidate patches are variations of the original program 
-which may or may not be a patch for the bug(s) we are trying to fix. In order to 
-create candidate patches we need to apply one or several mutation operators to 
-the fault location. 
+\section{Generalization and Categorization of mutation operators} 
+\label{categorization}
 
 There are several possible mutation operators that can be applied to a location 
-in order to modify the behavior of a program. In order to analyze this we have 
-taken mutation operators from two of the most successful approaches in program 
-repair that use generate and validate methodology: Genprog~\cite{legoues12} is a very well known and widely used tool that uses genetic programming~\cite{koza92} to modify 
-statements in order to create candidate patches. PAR~\cite{kim2013} is a 
-successful approach that bases their patch generation technique in creating a 
-list of commonly used templates of the most used changes that human programmers 
-perform in order to fix bugs in their source code. We have denominated these two 
-techniques: \textit{Statement-Edition} mutations 
-and \textit{Template-Based} mutations.
+in order to modify the behavior of a program. In order to analyze the broad 
+spectrum of mutation operators we categorized them into two groups: 
+Statement-Edit and Template-Based. 
 
-
-
-\subsection{Statement-Edition mutations}
-There is a family of well-known approaches such as GenProg~\cite{legoues12} and 
-TrpAutoRepair\cite{Qi13} which the main technique for creating candidate 
+\subsection{Statement-Edit mutations}
+There is a family of well-known approaches such as GenProg~\cite{legoues12}, 
+TrpAutoRepair\cite{Qi13} and AE~\cite{Weimer13} in which the main technique for 
+creating candidate 
 patches is by applying low level mutation operators (such as append, delete, or 
 replace) which modify statements of source code in order to 
 repair programs. A statement is the smallest standalone element that expresses 
-some action to be carried out in a programming language. This tool is able to 
-delete, append or replace statements in order to create candidate patches.
-
-Once the tool has a set of candidate patches, it will run the test suite on each 
-of those candidate patches. If it is able to find a candidate patch that can 
-pass all the test cases in the test suite, that candidate patch will be 
-considered a patch of the bug. If it is not able to pass all the test cases in 
-the test suite, then it will go back to creating more candidate patches and will 
-continue to do so until it reaches a stopping point, which may be a certain user 
-defined number of generations or a user defined clock time limit.
-
+some action to be carried out in a programming language. These tools are able to 
+apply these mutation operators to statements in the source code in order to 
+create candidate patches. These and several other techniques use randomized 
+search for patch generation~\cite{arcuri08,bradbury10,Qi14,Weimer13}. 
 
 \subsection{Template-based mutations}
-A group of researchers have created the approach which they denominate Pattern-based 
-Automatic program Repair (PAR), in which they examined a large number of human 
-created patches and have abstracted 10 different templates to be the most 
-commonly used changes that human programmers perform in order to fix their code~\cite{kim2013}.
+Template-based mutation operators is the family of approaches that have 
+predetermined templates to apply to specific sections of the code in order to 
+modify the behavior of the program to make it possibly fix the error in the 
+code. In this family we have well known techniques such as PAR~\cite{kim2013}, 
+SPR~\cite{fan15}, Kali~\cite{Qi15} and 
+Prophet~\cite{Long2016}.
+ 
+PAR is the product of a study in which researchers examined a large number of 
+human 
+created patches and abstracted 10 different templates to be the most 
+commonly used changes that human programmers perform in order to fix their 
+code~\cite{kim2013}.
 The 10 templates which they considered in their approach are the following:
 \begin{enumerate}
  \item Null Checker
@@ -810,7 +713,10 @@ The 10 templates which they considered in their approach are the following:
  \item Expression Adder and Remover
 \end{enumerate}
 
-On top of that, in an effort to provide completeness, we also include 6 extra templates that are mentioned in their website (\url{https://sites.google.com/site/autofixhkust/home/fix-templates}) but aren't mentioned in the paper\cite{kim2013}: 
+In an effort to provide completeness, we also include 6 extra templates that are 
+mentioned in the website of this 
+approach\footnote{\url{https://sites.google.com/site/autofixhkust/home/fix-templates}} 
+but aren't mentioned in the paper\cite{kim2013}: 
 
 \begin{enumerate}
 \item Caster Mutator
@@ -821,11 +727,14 @@ On top of that, in an effort to provide completeness, we also include 6 extra te
 \item Off-by-one Mutator
 \end{enumerate}
 
-Due to this, we consider a total of 16 templates.
+Because of this, we consider a total of 16 PAR templates.
 
-Another well knownn approach in this domain is the SPR approach~\cite{fan15}, which is composed by a set of transformation schemas as follows:
+There are other well knownn techniques in this domain, such as the SPR 
+approach~\cite{fan15}, which is composed by a set of transformation schemas as 
+follows:
 \begin{enumerate}
 \item Condition Introduction
+
 \item Condition Refinement
 \item Conditional Control Flow Introduction
 \item Insert Initialization
@@ -850,14 +759,13 @@ Similarly with Kali~\cite{Qi15}, the templates from this approach can be seen as
 There is enough similarity between these approaches that they can be grouped 
 into one category. We have chosen the PAR templates to represent this category 
 since these templates provide a more concrete description of how the code is 
-being changed, in order for us to replicate it; also, all the SPR and Kali templates are represented by one or several of the PAR templates, but not viceversa; and also the PAR templates represent templates specifically for the Java language, which is a common ground for the rest of the 
+being changed, in order for us to replicate it; also, as mentioned before, all the SPR and Kali templates are represented by one or several of the PAR templates, but not viceversa; and also the PAR templates represent templates specifically for the Java language, which is a common ground for the rest of the 
 approaches considered and the benchmarks to evaluate the approach on.
 
 
-
-\section{Building the model}
-The first model we built was created based on the 200 Java projects in Github 
-with the most stars (this was collected in June 2016). When users star a project they are creating a bookmark for 
+\section{Building the model} \label{buildingTheModel}
+We created a probabilistic model based on the 500 Java projects in Github 
+with the most stars (collected in August 2016). When users star a project they are creating a bookmark for 
 easier access, and showing appreciation to the repository maintainer for their 
 work. Projects with more stars are more popular among the developers of Github 
 and therefore more likely to be reviewed by other developers and have higher 
@@ -868,21 +776,21 @@ regularly for the analysis of empirical data by similar projects such as
 \cite{Ray14}. 
 
 
-Once we have checked out the 200 Java projects with the most stars, we checkout 
+Once we have checked out the 500 Java projects with the most stars, we checkout 
 the last 100 bug fixing commits per each project. 
 
-Being able to tell apart a bug fixing commit from a non bug fixing commit is a difficult problem in repository mining~\cite{Bird09}. We filter these by applying the following regular expression to the commit message in each of the commits in each of the projects:
-\\
-\\
-$[Ff]ix(ed|es|ing)?(\backslash s)*([Bb]ug|[Ii]ssue|[Pp]roblem)?(s)?$
-\\
-\\
-The intuition behind this regular expression is to filter commits where their 
+Being able to tell apart a bug fixing commit from a non bug fixing commit is a difficult problem in repository mining~\cite{Bird09}. We filter these by applying a regular expression to the commit message in each of the commits in each of the projects that looks for words such as "fix", "bug", "issue", "problem", etc. following the guidelines by \cite{schroter06,Cubranic05,Fischer03}.
+%\\
+%\\
+%$[Ff]ix(ed|es|ing)?(\backslash s)*([Bb]ug|[Ii]ssue|[Pp]roblem)?(s)?$
+%\\
+%\\
+The intuition behind the regular expression approach is to filter commits where their 
 commit message includes phrases such as: ``Fixed issue with variable x", ``Fix for 
-problem discussed in meeting", ``Fixing file bug", etc.
+problem discussed in meeting", ``I just fixed the script", etc.
 
 We also added two extra filters to our search: First we had commits that only 
-modify java source code. This is with the intention of looking only into human 
+modify java source code. This is with the intention of looking only into bug 
 fixing commits that fix java source code. Developers may also fix bugs in other 
 sections of their projects, for example they may fix bugs in bash files, or xml 
 code or any other kind of bug, and this wouldn't be relevant to our purpose of 
@@ -900,14 +808,12 @@ For each of these bug fixing commits, we then checked the version of the code
 before the fix was performed and after the fix was performed. We refer to these 
 versions as the ``before-fix" version and the ``after-fix" version.
 
-We then need to know what changes are happening from the before-fix version to 
-the after-fix version, and we need to be able to analyze how often these changes 
-performed match the mutation operators we are analyzing in order to see what are 
-the probabilities of each of them to happen.
+Next step is to know what changes are being performed from the before-fix version to 
+the after-fix version, and we need to be able to analyze how often these changes match the mutation operators we are analyzing in order to understand what are 
+the probabilities of each of them happening.
 
 In order to do this we used two different widely used tools for mapping changes 
 between two versions of code: Gumtree~\cite{falleri14} and QACrashFix~\cite{gao15}.
-
 These tools create an AST representation of the program files for both the 
 before-fix and after-fix representations of the programs for each of the files 
 of the commit, and then use a set of heuristics to match the before-fix version 
@@ -915,36 +821,7 @@ with the after-fix version. Once this is done, the program's output is a set of
 changes needed to be performed to get from version before-fix to version 
 after-fix.
 
-We then created a program that goes through the list of changes and matches the changes performed from the before-fix to the after-fix versions into the different mutation operators. As an example to explain this further, consider the example below where we analyze the simplest case: Null Checker.
-
-
-
-\begin{figure*}%[!h]
-  \centering
-\ra{1.3}
-
-\begin{verbatim}
-var res = 0
-for (ac <- actions) {
-  if(nodeClassName(ac.getNode) == "IfStatement"){
-    if (actionName(ac) == "Insert"){
-      if((nodeClassName(ac.getNode.getChildren.get(0)) == "InfixExpression") && 
-        (nodeClassName(ac.getNode.getChildren.get(0).getChildren.get(1)) == "NullLiteral")){
-          res += 1
-      }
-    }
-  }
-}
-\end{verbatim}
-\caption{Example of heuristic to spot the template Add Null Checker}\label{fig:codeSnippet}
-\end{figure*}
-
-
-
-
-
-
-In the example detailed in Fig~\ref{fig:codeSnippet} we go through all the actions performed to go from the before-fix to the after-fix versions; in each of the actions we ask if the node being manipulated is an If statement, then we ask if the action being performed is an Insertion of a node. After we know that it is an insertion of an If statement, we then ask if the first condition within the If statement is an InfixExpression. An InfixExpression as defined by the Eclipse JDT API specification has the following form:
+We then created a program that goes through the list of changes and matches the changes performed from the before-fix to the after-fix versions into the different mutation operators. For example, if we want to analyze the simplest case: Null Checker, we go through all the actions performed to go from the before-fix to the after-fix versions; in each of the actions we ask if the node being manipulated is an If statement, we then  ask if the action being performed is an Insertion of a node. After we know that it is an insertion of an If statement, we then ask if the first condition within the If statement is an InfixExpression. An InfixExpression as defined by the Eclipse JDT API specification has the following form:
 \\
 \\
 $InfixExpression: \\
@@ -952,7 +829,37 @@ Expression~InfixOperator~Expression
 $
 \\
 \\  
-We then ask if the Expression after the InfixOperator is a NullLiteral. Once we know all this information we know that a null checker template was applied to the code, so we count it as an instance of this template.
+Afterwards, we ask if the Expression following the InfixOperator is a NullLiteral. Once we know all this information we know that a null checker template was applied to the code, since we know that the developer added an If statement, whose conditional is conformed by an Expression being compared to a NullLiteral, so we count it as an instance of this template.
+
+
+
+
+%\begin{figure}[!]
+%\begin{verbatim}
+%var res = 0
+%for (ac <- actions) {
+%  if(nodeClassName(ac.getNode) 
+%    == "IfStatement"){
+%      if (actionName(ac) == "Insert"){
+%        if((nodeClassName(ac
+%          .getNode.getChildren.get(0)) 
+%            == "InfixExpression") && 
+%              (nodeClassName(ac
+%                .getNode.getChildren
+%                  .get(0).getChildren.get(1)) 
+%                    == "NullLiteral")){
+%                      res += 1
+%      }
+%    }
+%  }
+%}
+%\end{verbatim}
+%\caption{Example of heuristic to spot the template Add Null Checker}\label{fig:codeSnippet}
+%\end{figure}
+
+
+
+
 
 We created two levels in the probabilistic model, the first one we will call the 
 \textit{Mutation operator probabilistic model}, and the second level we will 
@@ -984,18 +891,18 @@ earlier.
 We sum the instances of each of the appearances of the mutation operators in the 
 lists of changes created out of the differences between the before-fix and 
 after-fix versions of each of the files in the 100 last bug fixing commits per 
-each of the 200 projects; and these instance sums are the data we take to create 
+each of the 500 projects; and these instance sums are the data we take to create 
 our probabilistic model.
   
 
 
 \subsection{Replacements probabilistic model}
 In order to build the \textit{Replacements probabilistic model} we created a 
-program similar to the one mentioned before (available at https://goo.gl/mMFbnQ
+program similar to the one mentioned before\footnote{https://goo.gl/mMFbnQ
 %REPLACE FOR CAMERA READY: https://github.com/mausotog/ReplacementsEmpiricalStudy
 Note to reviewer: This link has been aliased for the purposes of the double 
 blind review, the content is available, but the reviewer should notice that 
-following the link mentioned before will potentially show the identity of the authors) that 
+following the link mentioned before will potentially show the identity of the authors} that 
 goes through these 
 changes and when it encounters a  replacement mutation operator, then it looks 
 at what kind of statement is being 
@@ -1003,14 +910,12 @@ replaced and what kind of statement is replacing the other. We call these
 statements ``replacee" and ``replacer" accordingly.
 
 
-We analyzed 22 different kinds of statement and the probability in which each of 
-them replaces another. For example, what is the probability that a For loop 
+We analyzed the 22 different kinds of statement detailed by Eclipse JDT as Direct Known Subclasses of the class "Statement", and the probability in which each of 
+them replaces another.For example, what is the probability that a For loop 
 would replace a While loop, or the probability that a Break statement would 
-replace a Continue statement, etc.
-
-Since there are 22 statement types that we analyzed and each of these 22 may 
+replace a Continue statement, etc. Since there are 22 statement types and each of these 22 may 
 replace each of these 22 statement types, we then have 484 combinations of 
-replacement combinations. 
+replacement combinations.\footnote{The 22 statement types mentioned above are the following: AssertStatement, Block, BreakStatement, ConstructorInvocation, ContinueStatement, DoStatement, EmptyStatement, EnhancedForStatement, ExpressionStatement, ForStatement, IfStatement, LabeledStatement, ReturnStatement, SuperConstructorInvocation, SwitchCase, SwitchStatement, SynchronizedStatement, ThrowStatement, TryStatement, TypeDeclarationStatement, VariableDeclarationStatement, WhileStatement.} 
 
 It is also worth noticing that these probabilities are not reciprocal, meaning 
 that the probability of a For loop replacing a While loop is different from the 
@@ -1018,23 +923,20 @@ probability of a While loop replacing a For loop, and the same applies to all
 the different statement types.
 
 
-\section{Sanity Check}
-The first step in our effort to check if the probabilistic model is going in the 
-right direction is to perform a sanity check on the model.
-
-We performed two different sanity checks, the first of which is a 10 fold cross 
-validation of the model; and second, a run on an initial example to check how 
+\section{Evaluation} \label{evaluation}
+Building the model and evaluating it is a time consuming process. Therefore, the first step in our effort to know if the probabilistic model is a promising idea, is to perform an evaluation on a subsection of the model. We performed two different evaluations on a subsection of the model, and finally we performed a larger evaluation with the complete model. The first of these evaluations is a 10 fold cross 
+validation of the model; the second, a run on an initial example to check how 
 much faster we can find a patch with the probabilistic model vs the equally 
-distributed approach. Following, we will describe these two steps:
+distributed approach; and finally an evaluation on fifteen independent real life bugs.
 
-\subsection{10 fold cross validation}
+\subsection{Evaluating how the model will generalize to an independent data set}
 
-Our initial sanity check was performed on the replacements model. At this point, 
-our initial probabilistic model, built from 200 projects was segregated into 10 
-different folds, each fold had 20 projects assigned at random. For each of the 
+%Our initial sanity check was performed on the replacements model. At this point, 
+We segregated the projects into 10 
+different folds assigned at random. For each of the 
 folds we would take 1 fold for testing and the remaining 9 folds for training. 
 Afterwards we analyze how often do the training data is able to predict the 
-testing data. These is performed 10 times, one time per each fold and then it is 
+testing data. This is performed 10 times, one time per each fold and then it is 
 averaged to see how commonly is the training data able to predict the testing 
 data.
 
@@ -1048,15 +950,15 @@ Since the main focus of this step is to check whether the behavior of the
 current approaches would perform faster with the probabilistic model as opposed 
 to the current equally distributed scheme; we rank the first five choices each 
 of the models would take and see how many of the instances in the testing data 
-match those first five guesses.
+match those first five guesses. Five guesses is the point of inflection where the maximum difference between the two approaches happen. After five guesses, the slope starts to flatten; reason why we picked five guesses as our comparison point.
 
 \begin{figure}[!h]
   \centering
     \includegraphics[scale=0.25]{sanity5}
   \caption{A) Example of the Return Statement row of a sub-model created from 
 the 
-training data. B) Example of Return Statement with Equally Distributed 
-probability}
+training data. B) Example of return statement with equally distributed 
+probability. The acronyms represent the statement kinds detailed in footnote 3}
   \label{fig:exPredReturn}
 \end{figure}
 
@@ -1079,101 +981,94 @@ describes the Return Statement able to predict the instance count of the
 statements that replace a Return Statement in the testing data.
 
 Assume the training data is a sub-model $TP_{n,m}$ which contains a row 
-$TP_{13,m}$ as the one shown in Figure 
-\ref{fig:exPredReturn}A, and the testing data is a distribution that describes 
-how many instances of returns were replaced by different statements as follows: 
-A return statement was replaced by a Expression Statement 4 times $E_{13,9} = 
-4$; by an If 
-Statement 2 times $E_{13,11} = 2$; by a Continue Statement 2 times $E_{13,5} = 
-2$; by a Do Statement 1 time $E_{13,6} = 1$;
-and by a Try Statement 1 time $E_{13,19} = 1$. As a clarification, this is a 
-fictional example 
-to explain how the prediction is being analyzed.
-
+$TP_{13,m}$ as the one shown in figure~\ref{fig:exPredReturn}A, and the testing data is a distribution that describes 
+how many instances of returns were replaced by different statements.
+%as follows: 
+%A return statement was replaced by a Expression Statement 4 times $E_{13,9} = 
+%4$; by an If 
+%Statement 2 times $E_{13,11} = 2$; by a Continue Statement 2 times $E_{13,5} = 
+%2$; by a Do Statement 1 time $E_{13,6} = 1$;
+%and by a Try Statement 1 time $E_{13,19} = 1$. As a clarification, this is a 
+%fictional example 
+%to explain how the prediction is being analyzed.
 For each of the statements we would take the top five guesses from each row in 
-the sub-model and see how many instances of the testing data were correctly 
-predicted. In this example, the top five guesses in this row would be: The most 
+the sub-model and count the percentage of instances of the testing data that were correctly 
+predicted by the sub model. 
+
+In this example, the top five guesses in this row would be: The most 
 likely statement chosen to replace a Return Statement according to this row in 
 this fictional sub-model would be a Expression Statement (Ex) $TP_{13,9} = 43\%$ 
 which means that there is a 43\% of probability to replace a Return Statement. 
-The second most likely would be an If Statement (If) $TP_{13,11} = 22\%$ this 
-means there is a 22\% chance to get chosen to replace a Return statement. 
-Following, the next most likely statements chosen by the 
-sub-model would be  Variable Declaration (VD)  $TP_{13,21} = 19\%$, next is 
-Continue Statement (Co)  $TP_{13,5} = 5\%$, and last of the five top guesses 
-would 
-be Throw Statement (Th) $TP_{13,18} = 3\%$.
+The second and following most likely would be an If Statement (If) $TP_{13,11} = 22\%$, Variable Declaration (VD)  $TP_{13,21} = 19\%$, 
+Continue Statement (Co)  $TP_{13,5} = 5\%$, and Throw Statement (Th) $TP_{13,18} = 3\%$. We then compare how many instances of the testing data were correctly predicted 
+by these top five guesses of this row in the sub-model. 
+%In this example, we will 
+%look at the instances that match the top five guesses in the testing data, which 
+%would be: Expression Statement $E_{13,9} = 4$, If Statement $E_{13,11} = 2$, and 
+%Continue Statement $E_{13,5} = 2$. Since Do 
+%Statement $E_{13,6} = 1$ and Try Statement $E_{13,19} = 1$ were not within the 
+%top five guesses, then the 
+%instances in these two categories won't be considered a successful match, but 
+%the former three would. 
 
-We then compare how many instances of the testing data were correctly predicted 
-by these top five guesses of this row in the sub-model. In this example, we will 
-look at the instances that match the top five guesses in the testing data, which 
-would be: Expression Statement $E_{13,9} = 4$, If Statement $E_{13,11} = 2$, and 
-Continue Statement $E_{13,5} = 2$. Since Do 
-Statement $E_{13,6} = 1$ and Try Statement $E_{13,19} = 1$ were not within the 
-top five guesses, then the 
-instances in these two categories won't be considered a successful match, but 
-the former three would. 
-
-Based on this information, we can say that the 4 instances of Expression 
-Statement replacing a Return Statement in the testing data were correctly 
-predicted by the sub-model; the same with the 2 instances of the If Statement 
-and the 2 instances of the Continue Statement. The instance of the Do Statement, 
-and the instance of the Try Statement, would be considered as not correctly 
-predicted by the sub-model. In this case, since the sub-model correctly 
-predicted 8 out of 10 instances, we say that the sub-model correctly predicted 
-80\% of the instances in the testing data. 
+%Based on this information, we can say that the 4 instances of Expression 
+%Statement replacing a Return Statement in the testing data were correctly 
+%predicted by the sub-model; the same with the 2 instances of the If Statement 
+%and the 2 instances of the Continue Statement. The instance of the Do Statement, 
+%and the instance of the Try Statement, would be considered as not correctly 
+%predicted by the sub-model. In this case, since the sub-model correctly 
+%predicted 8 out of 10 instances, we say that the sub-model correctly predicted 
+%80\% of the instances in the testing data. 
 
 In order to contrast this with the equally distributed approach used currently, 
 we assign all the statements, the same probability of being chosen to replace 
 the statement being analyzed. We denominate the equally distributed approach 
 $TE_{n,m}$ where $\forall n,m: 1<=n<=22 \land 1<=m<=22 \land TE_{n,m} = 4.54\%$. 
 We have been analyzing the Return Statement in this particular example, as 
-detailed in Figure \ref{fig:exPredReturn}B. To get the top five choices of the 
+detailed in figure~\ref{fig:exPredReturn}B. To get the top five choices of the 
 equally distributed schema we just pick five choices at random, since all of 
 them have the same probability, which is how the current approach handles what 
 statement to pick.
 
-For example, if the approach picks at random the statements: Assert Statement 
-$TE_{13,1}$, 
-Do Statement $TE_{13,6}$, Expression Statement $TE_{13,9}$, Throw Statement 
-$TE_{13,18}$ and Try Statement $TE_{13,19}$. Then we 
-would match how many of the instances in the testing data were correctly 
-predicted by this equally distributed schema.
+%For example, if the approach picks at random the statements: Assert Statement 
+%$TE_{13,1}$, 
+%Do Statement $TE_{13,6}$, Expression Statement $TE_{13,9}$, Throw Statement 
+%$TE_{13,18}$ and Try Statement $TE_{13,19}$. Then we 
+%would match how many of the instances in the testing data were correctly 
+%predicted by this equally distributed schema.
 
-In this example, the 4 instances of Expression Statement $E_{13,9} = 4$, the 
-instance of Do 
-Statement  $E_{13,6} = 1$, and the instance of Try Statement $E_{13,19} = 1$ 
-would be considered to be correctly 
-predicted; while the 2 instances of If Statement $E_{13,11} = 2$, and the 2 
-instances of 
-Continue Statement $E_{13,5} = 2$ would be considered to be incorrectly 
-predicted. Since the 
-equally distributed approach in this example correctly guessed 6 out of 10 
-instances of the testing data, we would then say that in this particular case, 
-the equally distributed approach correctly predicted 60\% of the instances in 
-the testing set.  
+%In this example, the 4 instances of Expression Statement $E_{13,9} = 4$, the 
+%instance of Do 
+%Statement  $E_{13,6} = 1$, and the instance of Try Statement $E_{13,19} = 1$ 
+%would be considered to be correctly 
+%predicted; while the 2 instances of If Statement $E_{13,11} = 2$, and the 2 
+%instances of 
+%Continue Statement $E_{13,5} = 2$ would be considered to be incorrectly 
+%predicted. Since the 
+%equally distributed approach in this example correctly guessed 6 out of 10 
+%instances of the testing data, we would then say that in this particular case, 
+%the equally distributed approach correctly predicted 60\% of the instances in 
+%the testing set.  
+
+\begin{figure}[!h]
+  \centering
+    \includegraphics[scale=0.33]{sanity1}
+  \caption{Correctly predicted percentage by applying 10 fold cross validation}
+  \label{fig:results10fcv}
+\end{figure}
 
 We ran this experiment with all the rows $n$ in the sub-model $TE_{n,m}$ and 
 $TP_{n,m}$ for each of the 10 
-folds. The results are detailed in Figure \ref{fig:results10fcv}. As we can see 
+folds. The results are detailed in figure~\ref{fig:results10fcv}. As we can see 
 in this graph, the red bars represent the results of the percentage of correctly 
-predicted instances of the testing data in each particular fold; while the blue 
-bars represent the percentage of correctly predicted instances using the top 5 
+predicted instances of the testing data in each particular fold by the top five guesses of the equally distributed approach; while the blue 
+bars represent the percentage of correctly predicted instances using the top five 
 guesses of the sub-model of each of the folds. We have a mean of 19.79\% 
 correctly predicted instances through the different folds when using the equally 
 distributed schema, while we get a mean of 87.70\% correctly predicted instances 
 through the different folds when using the probabilistic model. 
 
-
-
-\begin{figure}[!h]
-  \centering
-    \includegraphics[scale=0.33]{sanity1}
-  \caption{Results 10 fold cross validation}
-  \label{fig:results10fcv}
-\end{figure}
-
-\subsection{Initial Example}
+\subsection{Evaluating an independent example}
 After performing the 10 fold cross validation, we know that the model built from 
 gathering cases from mined from Github predicts with very high accuracy all the 
 subsets of the data gathered, which implies that the data is consistent among 
@@ -1181,8 +1076,7 @@ the folds and outperforms the current equally distributed model in every case.
 
 The natural next step would be to try the model with an example taken from 
 outside of the collected cases from Github. Therefore we evaluated our model 
-with an example of a basic bug in a method as shown in figure 
-\ref{fig:initialExample}. The purpose of this method is to calculate the median 
+with an example of a basic bug in a method as shown in figure~\ref{fig:initialExample}. The purpose of this method is to calculate the median 
 of three numbers, and there is a bug as indicated by the highlighted text where 
 instead of $ret = z;$ it should be $ret = x;$ in order to have a correct output 
 for all cases.
@@ -1190,43 +1084,41 @@ for all cases.
 \begin{figure}[!h]
   \centering
     \includegraphics[scale=0.35]{sanity2}
-  \caption{Initial example}
+  \caption{Source code of an independent example. Bug to be fixed is annotated and highlighted}
   \label{fig:initialExample}
 \end{figure}
 
-In order to be able to do this, we restructured the code of the tool ``GenProg4J" 
-\todo{or GenProg4Java, I don't know what Claire prefers} (available at 
-https://bitbucket.org/clegoues/genprog4java/), which is the Java version of the 
+In order to be able to do this, we restructured the code of the tool ``GenProg4Java"\footnote{https://bitbucket.org/clegoues/genprog4java/}, which is the Java version of the 
 well known tool Genprog~\cite{legoues12}. This tool provides all the work-flow 
 for any generate-and-validate approach to be implemented. We restructured the 
 tool in order to be able to select the mutation operators between a 
 probabilistic model, and the default (equally distributed).
 
-We then ran the tool with the code in figure \ref{fig:initialExample} using both 
+We then ran the tool with the code in figure~\ref{fig:initialExample} using both 
 the probabilistic model and the equally distributed model. Since this is an 
 initial example for sanity checking, we start by evaluating it on a subset of 
-the mutation operators. We first evaluate it with$ Replace only$ and $Append, 
-Remove and Replace$. The results are detailed in figures 
+the mutation operators. We first evaluate it in two different sets: 1) Only using the $Replace$ mutation operator, and 2) Using only $Append,~
+Remove~and~Replace$ mutation operators. The results are detailed in figures 
 \ref{fig:resultsReplace} and \ref{fig:resultsARR}. 
 
 Generate-and-validate, as explained before, works by creating variants of the 
 source code by applying mutation operators to the original source code. 
 Therefore, a large number of variants created before finding a patch means that 
-it takes longer to find a patch, than a small number of variants. Which means 
+it takes longer to find a patch, than a small number of variants. We can imply by this 
 that in these graphs, the smaller number of variants in each case, means that 
 the patch was found faster, than with a larger number of variants. It is also 
 noticeable that this tool uses genetic programming in its workflow, therefore we 
 run the tool with 10 different seeds in order to be able to abstract the results 
 and not focus on a particular seed.
 
-In figure \ref{fig:resultsReplace} we consider only the mutation operator 
-$Replace$, which means, that the tool will disregard all other mutation 
+In figure~\ref{fig:resultsReplace} we consider only the mutation operator 
+$Replace$, which means that the tool will disregard all other mutation 
 operators and will only apply Replace operations using the probabilistic model 
 of Replacements. This is because at this step we are evaluating our model in a 
-subset of the mutation operators to see if it makes sense to move forward and 
+subset of the mutation operators to understand if it makes sense to move forward and 
 continue implementing the rest of the mutation operators.
 
-In this graph we can see the runs with 10 different seeds, contrasting the 
+In this graph we can analyze the runs with 10 different seeds, contrasting the 
 number of variants it takes to find a patch using the probabilistic approach 
 (blue bar), with the number of variants it takes to find a patch using the 
 equally distributed approach (green bar). 
@@ -1235,7 +1127,7 @@ As we can derive from the graph, the probabilistic approach was able to find a
 patch faster than the equally distributed for all the seeds tested. In some 
 cases as seed 5, 7 and 10, the patch using the probabilistic approach was found 
 in one of the first variants, therefore the number is so low that it doesn't 
-show in the graph. In average, we found that using the probabilistic model we 
+show in the graph. In average, we found that by using the probabilistic model we 
 could find a patch in 23.8 variants, while it took an average of 60.5 variants 
 to find a patch using the equally distributed model.
 
@@ -1246,13 +1138,13 @@ to find a patch using the equally distributed model.
   \label{fig:resultsReplace}
 \end{figure}
 
-In figure \ref{fig:resultsARR}, we consider three mutation operators: Append, 
+In figure~\ref{fig:resultsARR}, we consider three mutation operators: Append, 
 Remove and Replace. In this case we can also notice that in seeds 7 and 10 the 
 number of variants it takes to find a patch using the probabilistic model is 
 close to 1 therefore it is hard to notice it in the graph. In this case the data 
-shows that using the probabilistic model model we get a mean of 22.6 variants 
+shows that using the probabilistic model we obtain a mean of 22.6 variants 
 before finding the patch, while it takes an average of 41.4 variants to find the 
-patch using the equally distributed approach.
+patch using the equally distributed approach. We consider of importance to notice that in both experiments the probabilistic model outperformed the equally distributed model in every single case.
 
 \begin{figure}[!h]
   \centering
@@ -1262,49 +1154,34 @@ the initial example}
   \label{fig:resultsARR}
 \end{figure}
 
-\section{Upgrading the model}
-After having very successful results in the sanity checking process, we decided 
-to improve our model by building it from the 500 projects in Github with more 
-stars (this was collected in August 2016), mining the last 100 bug fixing-commits from each of these projects. This is the model generated from the largest code base so far to the best 
+\subsection{Single line bugs with Human Injected Fault Localization}
+After having very successful results in the first two evaluations with a subset of the model, we decided 
+to increase our data by building the whole model with 500 projects in Github with more 
+stars. This is in order to generate the largest code base so far to the best 
 of our knowledge, surpassing all the previous state of the 
-art~\cite{long15,Soto15,zhong15,matias15,xuan16}. At this point, in our analyzed data, 
+art~\cite{long15,Soto15,zhong15,matias15,xuan16}. 
+
+At this point, by analyzing our dataset, 
 we found that the Template-Based mutations comprise 29.26\% of the corpus of 
-instances found, while Statement-Edition mutations make up 70.74\% of the 
-corpus.
-
-Since this idea seems promising at this point we decided to implement the rest 
-of the mutatio
-n operators. There are several different template-based approaches 
-\cite{kim2013,fan15,long15} which are constituted by mining common behaviors 
-that developers usually perform to patch errors in their code. Since these 
-templates in the different approaches tend to be very similar, we considered the 
-approach that seems to be representative of the template-based category due to 
-the diversity of the templates it encounters. 
-
-``Automatic patch generation learned from human-written patches"~\cite{kim2013} describes 10 different templates that 
-developers use very commonly to patch their code. Besides these 10 templates 
-published, they define other extra 6 templates in the research site 
-https://sites.google.com/site/autofixhkust/home/fix-templates that we have 
-considered as a representation of the template-based mutation operators.
-
-We implemented these 16 templates in GenProg4J, and generated the functionality 
+instances found, while Statement-Edit mutations make up 70.74\% of the 
+corpus. Since this idea seems promising at this point we decided to implement the rest 
+of the mutation operators. We implemented these 16 templates in GenProg4J, and generated the functionality 
 to be able to select which subset of mutation operators to apply in a particular 
 run.
 
-\section{Evaluation}
 We are interested in evaluating our new approach with real life bugs taken from 
 open source projects that have a long history of maintainability and 
 scalability. For these reasons, we chose Defects4j~\cite{just14} as our 
-evaluation platform. Defects4j is ``a database and extensible 
+evaluation platform. Defects4j is a database and extensible 
 framework providing real bugs to enable reproducible studies in software testing 
-research"~\cite{just14}. This database bugs contains 357 real bugs from 5 
+research~\cite{just14}. This database of bugs contains 357 real bugs from 5 
 real-world open source programs, and each of these cases is accompanied by a 
-comprehensive test suite that can expose the bug. This database also provides 
-the corresponding human-generated patch, which is the edits performed by a human 
+comprehensive test suite with test cases that expose the bug. This database also provides 
+the corresponding human-generated patch, which is the version of the code written by a human 
 developer to patch the bug. Due to these features Defects4j has previously been 
 subject for evaluation of important APR approaches~\cite{Durieux15}.
 
-In order to get this results we ran our approach in a physical server that 
+In order to perform our evalutation, we ran our approach in a physical server that 
 consists of 16 processors Intel(R) Xeon(R) CPU E5-2699 v3, with 2.30 GHz each 
 processor, 46080 KB cache each, and 32 GB RAM memory, operating system Ubuntu 
 14.04.5 LTS. We set the size for each population to 40 for consistency with 
@@ -1312,76 +1189,102 @@ previous work~\cite{legoues12,kim2013} and a timeout of 4 hours since there is
 the need of several generations of mutant creations needed to assess the 
 performance of this approach~\cite{arcuri11}.
 
-
 For this evaluation we tested the mutation operators using three different sets 
-of operations: 1) Statement-Edition mutations only 2) Template-based mutations 
+of operations: 1) Statement-Edit mutations only 2) Template-based mutations 
 only 3) All mutations.
 
-
-\subsection{Single line bugs with Human Injected Fault Localization}
 Since historically automatic program repair has worked better with single line 
 patches, we decided to first test bugs that required a single line edit to get 
 patched. We analyzed the first 3 bugs from each of the projects that required a 
-single line edit. Therefore we analyze the bugs that met this criteria: Chart 1, 
+single line edit.\footnote{The bugs that met this criteria are the following: Chart 1, 
 Chart 8, Chart 20, Closure 10, Closure 14, Closure 18, Lang 6, Lang 16, Lang 21, 
-Math 2, Math 5, Math 10, Time 4, Time 16 and Time 19.
+Math 2, Math 5, Math 10, Time 4, Time 16 and Time 19.}
+
+In this cases we applied Human Injected Fault Localization, which is the process in which the researchers in charged of running the experiment, with the goal of minimizing randomness, select the faulty statement. In these cases we picked the faulty statements to be the statements which the human developers modified in order to patch the code.
 
 From these 15 bugs we were able to find patches for 5 of them as described in table \ref{tab:singleLineBugs}. It is also worth mentioning that the numbers shown in the table are the mean from the solutions found running the tool with 20 different seeds. 
 
-In the first row (Closure \#10) we can see that in all three comparisons (Statement-Edition Only, Template-Based Only, and All mutations), the approach using the Probabilistic model performs better than its counterpart using the equally distributed model. This happens as well in all cases of bugs Math \#2 and Time \#19 except for the cases where no patch was found. Different from this, in bugs Chart \#1 and Closure \#18 the equally distributed approach finds a patch faster in average. This is due to the fact that removal mutations such as Deletion and Expression Changer are more likely to be picked by the equally distributed model than the probabilistic model since developers use these editions less often than others. But these editions have been seen in the past to make the test cases pass even if the edition did not fixed the bug as per the opinion of developers as indicated in~\cite{kim2013}.
+In the first row of Table \ref{tab:singleLineBugs} (Closure \#10) we can see that in all three comparisons (Statement-Edit Only, Template-Based Only, and All mutations), the approach using the probabilisitc model performs better than its counterpart using the equally distributed model. This happens as well in all cases of bugs Math \#2 and Time \#19 except for the cases where no patch was found. Different from this, in bugs Chart \#1 and Closure \#18 the equally distributed approach finds a patch faster in average. This is due to the fact that removal mutations such as Deletion and Expression Changer are more likely to be picked by the equally distributed model than the probabilistic model since developers use these editions less often than others. But these editions have been seen in the past to make the test cases pass even if the edition did not fixed the bug as per the opinion of developers as indicated in~\cite{kim2013}.
 
 
 \begin{table*}\centering
 \ra{1.3}
 	\resizebox{\textwidth}{!}{
-\begin{tabular}{rcrrcrrcrr}
-\toprule 
-  &\multicolumn{3}{c}{\textbf{Stmt-Edition}} & \multicolumn{3}{c}{\textbf{Temp-Based}} & \multicolumn{3}{c}{\textbf{All mutations}} \\  
+\begin{tabular}{|r|rr|rr|rr|rr|rr|rr|}
+\hline
+  &\multicolumn{4}{c|}{\textbf{Stmt-Edition}} & \multicolumn{4}{c|}{\textbf{Temp-Based}} & \multicolumn{4}{c|}{\textbf{All mutations}} \\  
  \hline
- \textbf{Bug Name}  && \textbf{Equally Dist} & \textbf{Probabilistic} && \textbf{Equally Dist} & \textbf{Probabilistic} && \textbf{Equally Dist} & 
-\textbf{Probabilistic} \\
+ \textbf{Bug Name}  & \multicolumn{2}{c|}{\textbf{Equally Dist}} & \multicolumn{2}{c|}{\textbf{Probabilistic}} & \multicolumn{2}{c|}{\textbf{Equally Dist}} & \multicolumn{2}{c|}{\textbf{Probabilistic}} & \multicolumn{2}{c|}{\textbf{Equally Dist}} & 
+\multicolumn{2}{c|}{\textbf{Probabilistic}} \\
 
- Closure \#10 && 221.0 & 179.5 && 183.1 & 121.3 && 163.3 & 157.4 \\
+ Closure \#10 & \color{OliveGreen}{221.0}& \color{blue}{100\%} & \color{OliveGreen}{179.5} &\color{blue}{100\%} & \color{OliveGreen}{175.1}&\color{blue}{100\%} & \color{OliveGreen}{121.3}&\color{blue}{100\%} & \color{OliveGreen}{163.3}&\color{blue}{100\%} & \color{OliveGreen}{157.4}&\color{blue}{100\%} \\
 
- Closure \#18 && Not found & Not found && 36.2 & 197.5 && 45.0 & 139.0 \\
+ Closure \#18 & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & \color{OliveGreen}{36.2}&\color{blue}{100\%} & \color{OliveGreen}{197.5}&\color{blue}{100\%} & \color{OliveGreen}{45.0}&\color{blue}{100\%} & \color{OliveGreen}{139.0}&\color{blue}{100\%} \\
 
- Math \#2 && Not found & Not found && 109.4 & 39.6 && 109.4 & 39.6 \\
+ Math \#2 & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & \color{OliveGreen}{109.4}&\color{blue}{0\%} & \color{OliveGreen}{39.6}&\color{blue}{0\%} & \color{OliveGreen}{109.4}&\color{blue}{0\%} & \color{OliveGreen}{39.6}&\color{blue}{0\%} \\
 
- Time \#19 && 94.1 & 80.7 && Not found & Not found && 135.1 & 91.9 \\
+ Time \#19 & \color{OliveGreen}{94.1}&\color{blue}{100\%} & \color{OliveGreen}{80.7}&\color{blue}{100\%} & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & \color{OliveGreen}{135.1}&\color{blue}{100\%} & \color{OliveGreen}{91.9}&\color{blue}{100\%} \\
 
- Chart \#1 && 1.8 & 7.3 && 4.9 & 19.0 && 2.2 & 4.8 \\
+ Chart \#1 & \color{OliveGreen}{1.8}&\color{blue}{0\%} & \color{OliveGreen}{7.3}&\color{blue}{0\%} & \color{OliveGreen}{4.9}&\color{blue}{0\%} & \color{OliveGreen}{19.0}&\color{blue}{0\%} & \color{OliveGreen}{2.2}&\color{blue}{0\%} & \color{OliveGreen}{4.8}&\color{blue}{0\%} \\
 
- \bottomrule
+\hline
  
 \end{tabular}
 }
 \ra{1.3}
-		\caption{Single line bugs With Human Injected Fault Localization}\label{tab:singleLineBugs}
+		\caption{Value on the left of each slot (green): Number of variants taken to find a patch in single line bugs. Value on the right of each slot (blue): Percentage according to the number of patches that passed the second test suite}\label{tab:singleLineBugs}
 \end{table*}
 
 
 
-\subsection{Bugs fixed with a single line edit}
-Last evaluation with the bugs we found had a fix
+\subsection{Quality assessment}
+In order to assess the quality of the patches generated by both models we need an independent validation mechanism. In this study we automatically build a second test suite of test cases that describes the same behavior as the test suite that guides the search process. This second test suite will be composed by a different set of test cases, so we can test the same behavior but so that we can also generalize the patch to different descriptions of the same behavior and not to overfit to a particular set of test cases taken to guide the search. In order to achieve this, we used the popular automatic test suite generation tool for Java, Randoop~\cite{pacheco07}.
 
+For each of the bugs that we were able to create a patch for, we have subtracted the source code of the human patch provided by Defects4j to take this as a description of the behavior of the program after the bug has been fixed, and we have run Randoop for ten minutes (six times the default value, to make sure we have enough test cases to test the validity of the patch) on this version of the code in order to get a different test suite\footnote{Available at: https://goo.gl/YbFeql} than the one used to guide the search. We then ran this second test suite on the patch generated by both models and we obtained the results of Table \ref{tab:singleLineBugs}. The blue values in the right of each slots of the table represent the percentage of number of patches created that passed the second test suite presented and did not overfit to the first set of test cases but generalized to the second independent test suite. 
 
 %\subsection{Bugs fixed with a multi line edit within a function}
 %Last evaluation with the bugs we found had a fix
 
 
-\section{Multiple mutation association rule mining}
+\section{Multiple edit association rule mining} \label{multEdit}
 
-Edits that apply a single mutation (also known as "Single-edit" source code changes) as the ones studied so far in this study, are historically the most common subject of analysis in bug fixing tools and have been by far the most studied edits in the state of the art approaches \cite{Qi15,fan15,kim2013,Long2016,legoues12,Qi13,Qi14,xuan16}.
+Edits that apply a single mutation (also known as "Single-edit" source code 
+changes) as the ones studied so far in this study, are historically the most 
+common subject of analysis in bug fixing tools and have been by far the most 
+studied edits in the state of the art approaches 
+\cite{Qi15,fan15,kim2013,Long2016,legoues12,Qi13,Qi14,xuan16}.
 
-In order to differentiate this study from the rest and take the analysis one step further, we have analyzed a field that has been very shallowly studied in the past, which is Multi-edit source code changes.
+In order to differentiate this study from the rest and take the analysis one 
+step further, we have analyzed a field that has been very shallowly studied in 
+the past and whose importance overpasses the former mentioned since the vast 
+majority of patches fall into this category, which is Multi-edit source code 
+changes.
 
-In the past, most studies and tools currently being used have focused on single edit source code changes; by far, most of the changes performed that result in successful patches are single edit changes, and this is ok for a initial stage of automatic program repair approach. This covers basic patches that humans perform, but the reality is that most bug fixes that humans perform in real software systems are much more complex and go a lot deeper than a single edit change. 
+In the past, most studies and tools currently being used have focused on single 
+edit source code changes. In these studies, by far most of the changes performed that result in 
+successful patches are single edit changes, and this is ok for a initial stage 
+of automatic program repair approach. This covers basic patches that humans 
+perform, but the truth is that most bug fixes that humans perform in real 
+software systems are much more complex and go a lot deeper than a single edit 
+change. 
 
-This study has gone one step further and gives a initial analysis of multi edit source code changes by extracting association rules between single edit changes in order to create chains of single edit changes the way humans create them.
+This study has gone one step further and gives a initial analysis of multi edit 
+source code changes by extracting association rules between single edit changes 
+in order to create chains of single edit changes the way humans create them.
 
-In order to extract association rules from the data gathered in our study, we have transformed each of the mutation operator count and replacement count from each of the commits studied and created a transaction to be analyzed. We use the well known association rule mining algorithm called Apriori~\cite{Agrawal94,Liu98,Zaki2000} in which we identify the frequent individual items in the set of transactions and then we extend these sets into larger sets as long as those item sets appear sufficiently often in the database of transactions, which in our case would be the database of transactions created by each of the commits studied.
+In order to extract association rules from the data gathered in our study, we 
+have transformed each of the mutation operator count and replacement count from 
+each of the commits studied and created a transaction to be analyzed. A transaction in this context is a row of values that describes which mutation operators were applied in a single commit. We use the 
+well known association rule mining algorithm called 
+Apriori~\cite{Agrawal94,Liu98,Zaki2000} in which we identify the frequent 
+individual items in the set of transactions and then we extend these sets into 
+larger sets as long as those item sets appear sufficiently often in the database 
+of transactions, which in our case would be the database of transactions created 
+by each of the commits studied.
 
-We have divided our association rule mining into the two different models as follows:
+We have divided our association rule mining into the two different models as 
+follows:
+
 
 \subsection{Mutation operators}
 
@@ -1392,7 +1295,7 @@ Formally, we define Confidence as:
 $conf(X \implies Y) = \dfrac{supp(X \cup Y)}{supp(X)}$ 
 \end{center}
 
-As seen above Confidence is calculated according to its Support, where Support is an indication of how frequently the itemset appears in the transaction base.
+As seen above Confidence is calculated according to its Support, where Support is an indication of how frequently the set of mutation operators (itemset) occurs in the transaction base.
 Formally, we define Support as:
 
 \begin{center}
@@ -1401,7 +1304,8 @@ $supp(X) = \dfrac{|\{t \in T; X \subseteq t\}|}{|T|}$
 
 Where X is the itemset being analyzed and t is each individual transaction in the database of transactions T. 
 
-We show the 10 best association rules found for the mining of single edit mutation operators:
+These rules are ranked by their confidence; in this case, the top 5 rules shown below have a confidence of a 100\% which means that in 100\% of the cases studied, every transaction that showed the antecedent also shows the consequent; and they are obtained with a 1\% support, which means that each of these rules individually show in at least a 1\% of all the transactions of the overall corpus. We show the 5  top association rules found for the mining of single edit mutation operators.
+
 
 %Minimum support: 0 (1 instances)
 %Minimum metric <confidence>: 0.9
@@ -1412,16 +1316,14 @@ We show the 10 best association rules found for the mining of single edit mutati
 \item Replace \& SeqExchanger $\implies$ Append
 \item Replace \& ParamReplacer $\implies$ Append
 \item Delete \& CasteeMutator $\implies$ Append
-\item Replace \& Delete \& ParamReplacer $\implies$ Append
-\item Replace \& AddNullCheck $\implies$ Append
-\item Replace \& Delete \& SeqExchanger $\implies$ Append
-\item Delete \& ExpressionAdder $\implies$ Append
-\item Delete \& AddNullCheck \& ParamReplacer $\implies$ Append
+%\item Replace \& Delete \& ParamReplacer $\implies$ Append
+%\item Replace \& AddNullCheck $\implies$ Append
+%\item Replace \& Delete \& SeqExchanger $\implies$ Append
+%\item Delete \& ExpressionAdder $\implies$ Append
+%\item Delete \& AddNullCheck \& ParamReplacer $\implies$ Append
 \end{itemize}
 
-These rules are ranked by their confidence; in this case, these top 10 rules have a confidence of a 100\% which means that in 100\% of the cases studied, every transaction that showed the antecedent also shows the consequent; and they are obtained with a 1\% support, which means that each of these rules individually show in at least a 1\% of all the transactions of the overall corpus.
-
-Append is the most common single edit mutation operator. This behavior is reflected in the fact that it is the most common consequent. Being the consequent in 10 out of 10 of the top 10 association rules. The authors are showing the top 10 association rules to give an example of what the rules look like. If the reader would like to know the full list of association rules mined in this study, the authors have made available the full list with over 12.000 rules with over 90\% Confidence and 0.01\% Support in the following link: https://goo.gl/UT8QbI
+Append is the most common single edit mutation operator. This behavior is reflected in the fact that it is the most common consequent being the consequent in 5 out of 5 of the top 5 association rules. The authors are showing the top 5 association rules to give an example of what the rules look like. If the reader would like to know the full list of association rules mined in this study, the authors have made available the full list with over 12.000 rules with over 90\% Confidence and 0.01\% Support\footnote{https://goo.gl/UT8QbI}
 %REPLACE FOR CAMERA READY: https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt
 
 
@@ -1448,8 +1350,7 @@ Similar to the case detailed before, we have analyzed the association rules for 
 \item VariableDeclarationStatement replaces ForStatement $\implies$ IfStatement replaces TryStatement
 \end{itemize}
 
-Similar to the one described above, the authors have made available the full list of association rules with over 90\% Confidence and 0.01\% Support in the following link: 
-https://goo.gl/omk60t
+Similar to the one described above, the authors have made available the full list of association rules with over 90\% Confidence and 0.01\% Support\footnote{https://goo.gl/omk60t}
 %REPLACE FOR CAMERA READY: https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningReplacements.txt
 
 
@@ -1457,19 +1358,60 @@ https://goo.gl/omk60t
 %\subsection{10 fold cross validation}
 
 
-\section{Discussion}
-There still remain a vast set of challenges and limitations in the field of automatic program repair~\cite{Qi15}. In this paper we are tackling specific challenges regarding the way in which mutation operators are chosen, we provide a probabilistic model that describes the way in which humans give preference to some mutation operators over others, and have analyzed how these single edit source code changes can be chained together to form multi edit changes.
+\section{Discussion} \label{discussion}
+There still remain a vast set of challenges and limitations in the field of 
+automatic program repair~\cite{Qi15}. In this paper we are tackling specific 
+challenges regarding the way in which mutation operators are chosen, we provide 
+a probabilistic model that describes the way in which humans give preference to 
+some mutation operators over others, and have analyzed how these single edit 
+source code changes can be chained together to form multi edit changes.
 
-In order to do this we have analyzed the way in which humans create single edit source code changes and we have created a set of association rules that describe how often different sets of mutation operators can predict the change that will come next and how often subsets of mutation operators are applied together.
+In order to do this we have analyzed the way in which humans create single edit 
+source code changes and we have created a set of association rules that describe 
+how often different sets of mutation operators can predict the change that will 
+come next and how often subsets of mutation operators are applied together.
 
-There is a tension between the Support and the Confidence in the transaction base, in particular the transaction base considered in this study, in which we evaluate the different mutation operators being applied to source code in bug fixing commits. 
+There is a tension between the Support and the Confidence in the transaction 
+base, in particular the transaction base considered in this study, in which we 
+evaluate the different mutation operators being applied to source code in bug 
+fixing commits. 
 
-If we increase the Confidence and decrease the Support we will obtain rules in which the priority is that every time that the antecedent happens, the consequent will happen as well. With this approach we may obtain rules that don't happen very often, but every time that they happen in the analyzed corpus, there is a high confidence that the rule will be correct. On the other hand, if we increase the Support and decrease the Confidence we would obtain rules that are guaranteed to happen in a certain percent of the corpus, which means, that the relationship described by the rules, happen often, but confidence is sacrificed, which means that there will be a higher percentage of the transactions in which the antecedent is present, but the consequent is not. 
+If we increase the Confidence and decrease the Support we will obtain rules in 
+which the priority is that every time that the antecedent happens, the 
+consequent will happen as well. With this approach we may obtain rules that 
+don't happen very often, but every time that they happen in the analyzed corpus, 
+there is a high confidence that the rule will be correct. On the other hand, if 
+we increase the Support and decrease the Confidence we would obtain rules that 
+are guaranteed to happen in a certain percent of the corpus, which means, that 
+the relationship described by the rules, happen often, but confidence is 
+sacrificed, which means that there will be a higher percentage of the 
+transactions in which the antecedent is present, but the consequent is not. 
 
+Regarding Table \ref{tab:singleLineBugs}, there are two of these bugs in which the equally distributed model performed better than the probabilistic model. This is due to the fact, that the mutations needed to be applied in the source code for it to pass all the test cases, are mutation operators that are not usually applied by humans, and therefore they have a smaller probability of being chosen by the probabilistic model, and this is exposed as a larger number of variants needed to find these unusual mutation operators.
 
-\section{Conclusion}
-The conclusion goes here.
+We also notice that there is no difference in the quality of patches when using one approach or the other for these five bugs. Further evaluation should be performed in order to determine if one of the models creates higher quality patches than the other.
 
+\section{Conclusion} \label{conclusion}
+In this study we analyze the way in which current state of the art automatic 
+program repair approaches select mutation operators in order to create candidate 
+patches. We analyze, categorize and compare the mutation operators being used by 
+state of the art approaches. We analyzed the last 100 bug fixing commits from the
+500 projects in Github with most stars, which is the largest corpus analyzed to date
+to the best of our knowledge, and we created a two level probabilistic model regarding 
+the likelihood of mutation operators to be selected as humans select them.
+
+We evaluated our approach in three different ways: by performing 10 fold cross 
+validation of the model, by comparing the equally distributed model with the probabilistic model by running an initial independent example; and finally by  comparing the two models by running them on 15 bugs using the database of bugs and extensible 
+framework Defects4j. For these bugs, we measured the number of variants it takes to find the patch and the quality of patches by using a second automatically created test suite using Randoop. 
+
+According to the 10 fold cross validation, the probabilistic model outperforms the equally distributed model by a factor of 4 when looking at the first five guesses of each model. When running an initial independent example, the probabilistic model outperformed the equally distributed model by a factor of 3 and a factor of 2 accordingly. And when running in the bugs obtained by Defects4j, the probabilistic model outperformed the equally distributed model in the majority of the cases. We did not find a difference in the quality of patches produced by each of the approaches in this sample.
+
+Finally, we have analyzed a field that has been understudied in the past and which covers 
+the vast majority of bug fixes in software systems, which is Multi-edit source code changes. 
+We have created a set of association rules using Apriori, a state of the art
+methodology for association rule mining based on the analyzed corpus. The authors have
+made an initial analysis of how single-edit source code changes can be chained together 
+to become multi-edit source code changes the way humans do it.
 
 
 
@@ -1478,7 +1420,7 @@ The conclusion goes here.
 
 % use section* for acknowledgment
 \section*{Acknowledgment}
-The authors would like to thank...
+The acknowledgments section will be added for the camera ready version. 
 
 
 
