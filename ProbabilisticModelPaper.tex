@@ -419,16 +419,16 @@
 Automatic Software Repair (APR) has significant potential to reduce software
 maintenance costs by reducing the human effort required to localize and fix
 bugs. Well-known state-of-the-art generate-and-validate 
-APR approaches select between various mutation operators
+APR approaches select between and instantiate various mutation operators
 to construct candidate patches, informed by largely heuristic probability
-distributions.  This may reduce APR effectiveness, in terms of both efficiency and
-output quality: patches informed by the ways humans fix bugs may be considered
+distributions.  This may reduce effectiveness in terms of both efficiency and
+output quality; patches informed by the ways humans fix bugs may be considered
 more acceptable.  In practice, human developers
 have many options in terms of how to edit code to fix bugs, some of which 
 are far more common than others (e.g., deleting a line of code is more common
 than adding a new class). %and are also dependent of the context. 
 Treating such edits as 
-mutation operators in the APR context, we  
+APR mutation operators, we  
 mined the most recent 100 bug-fixing commits from each of the 500 most popular Java projects in Github (largest 
 dataset to date) to
 create a probabilistic model describing edit distributions.
