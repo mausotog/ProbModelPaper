@@ -417,36 +417,21 @@
 % in the abstract
 \begin{abstract}
 Automatic Software Repair (APR) has significant potential to reduce software
-maintenance costs by reducing the huma effort required to localize and fix
+maintenance costs by reducing the human effort required to localize and fix
 bugs. Well-known state-of-the-art generate-and-validate 
 APR approaches select between various mutation operators
-to constructing candidate patches, and do so either according to a probability
-distribution of \todo{Mau can you please try to rephrase this clause?  I'm not
-  sure what you mean}  adapted from
-the results of a particular benchmark.  This may reduce lead to patches that are harder to
-understand and less maintainable.\todo{OK, we're not evaluating
-  understandability/maintainability in this work, so I would add something in
-  here about correctness or expressive power instead (since that's what we do
-  evaluate)}. In engineering practice, \todo{Phrasing issue: ``mutation operators'' has a
-  particular meaning, especially in the context of mutation testing research, so
-  please avoid overloading/reusing it like this.  I think you really mean
-  something like ``in practice, human bug fixers take multiple strategies to fix
-  bugs, and the transformations they select between are not uniformly
-  likely...'' or something like that.  Maybe you mean ``transformations'' or
-  ``templates'' or something, but mutation operators is a bit confusing.  Please
-  rephrase.}  mutation operators have  
-different probabilities of being applied; some mutation operators are far more 
-common than others and are also dependent of the context. We 
-mine FIXME bug-fixing commits from FIXME projects to create a probabilistic model describing the distribution of 
-feasibility\todo{feasibility?  I don't think this is the correct word; rephrase,
-  and then adjust the rest of the sentence accordingly.} when applying each of the different mutation operators. 
-Wtudy we categorize, compare and evaluate the different mutation operators in 
+to constructing candidate patches, and do so either according to a uniform probability
+distribution or \todo{Mau can you please try to rephrase this clause?  I'm not
+  sure what you mean. Reponse: What I mean is that current GenProg, AE, etc use a probability that was produced by eyeballing the benchmark used and what would work better, not by formally analyzing it, and PAR, etc just use a uniform distribution} a probability adapted from
+the results of a particular benchmark.  This may lead to a time increase when searching the fix space to patch bugs, a lack of generalizability when evaluated in a second test suite, and a lack of
+understandability and maintainability. In engineering practice, human developers edit source code in several different ways when fixing bugs. Some of these edits are far more common than others (eg, deleting a line of code, is more common than adding a new class), and are also dependent of the context. These edits are represented as mutation operators in an APR context. We 
+mined instances of mutation operators in bug-fixing commits from projects to create a probabilistic model describing the distribution of 
+likelihood when applying each of the different edits. 
+We categorize, compare and evaluate the different mutation operators in 
 the state of the art approaches, we create a model mined from the largest 
 dataset to date, and we create association rules to analyze the context when 
 dealing with multi-edit source code changes, an area that has been understudied 
-in the past and covers the majority of real source code changes. \todo{one
-  sentence summary indicating nature of evaluation/results, even if you don't
-  have numbers.}
+in the past and covers the majority of real source code changes. We evaluated our model in a case study and in 15 bugs from popular open source projects. Our results indicate that by applying the probabilistic model we are able to find the correct mutation operator to patch bugs faster in the majority of bugs studied, while they also indicate that having models with different probabilities to construct the source code variants doesn't increase the likelihood of the created patches to pass a second test suite. 
 \end{abstract}
 
 
@@ -980,7 +965,7 @@ Similar to the one described above, the authors have made available the full lis
 
 \section{Evaluation} \label{evaluation}
 Building the model and evaluating it is a time consuming process. Therefore, the first step in our effort to know if the probabilistic model is a promising idea, is to perform an evaluation on a subsection of the model. We performed two different evaluations on a subsection of the model, and finally we performed a larger evaluation with the complete model. The first of these evaluations is a 10 fold cross 
-validation of the model; the second, a run on an case study to check how 
+validation of the model; the second, a run on a case study to check how 
 much faster we can find a patch with the probabilistic model vs the equally 
 distributed approach; and finally an evaluation on fifteen independent real life bugs.
 
@@ -1200,7 +1185,7 @@ tool to be able to select the mutation operators between a
 probabilistic model, and the default (equally distributed).
 
 We then ran the tool on the code in figure~\ref{fig:initialExample} using both 
-the probabilistic model and the equally distributed model. Since this is an 
+the probabilistic model and the equally distributed model. Since this is a 
 case study for sanity checking, we start by evaluating it on a subset of 
 the mutation operators. We first evaluate it in two different sets: 1) Only using the $Replace$ mutation operator, and 2) Using only $Append,~
 Remove~and~Replace$ mutation operators. The results are detailed in figures 
@@ -1237,7 +1222,7 @@ could find a patch in 23.8 variants, while it took an average of 60.5 variants
 to find a patch using the equally distributed model.
 
 \begin{table}[ht]
-\begin{tabular}{lR{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}|R{0.1cm}|R{0.5cm}|R{0.5cm}}
+\begin{tabular}{lR{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.5cm}R{0.5cm}}
 \hline
 \textbf{Seed} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & Avrg & StdDev  \\
 \hline
@@ -1281,29 +1266,28 @@ patch using the equally distributed approach. We consider of importance to notic
 
 
 \begin{table}[ht]
-\begin{tabular}{|lrrrrrrrrrr|}
+\begin{tabular}{lR{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.5cm}R{0.5cm}}
 \hline
-\textbf{Seed} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9}  \\
+\textbf{Seed} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9}  & Avrg & StdDev  \\
 \hline
-\textbf{Prob Model} & 8 & 20 & 23 & 42 & 4 & 11 & 0 & 29 & 80 & 0 \\
+\textbf{Prob Model} & 8 & 20 & 23 & 42 & 4 & 11 & 0 & 29 & 80 & 0  & 22.6 & 23.7\\
 
-\textbf{Eq Dist} & 8 & 66 & 23 & 42 & 4 & 11 & 2 & 38 & 81 & 139 \\
+\textbf{Eq Dist} & 8 & 66 & 23 & 42 & 4 & 11 & 2 & 38 & 81 & 139 & 1704.0 & 41.3 \\
 \hline
 \end{tabular}
 \\
 \\
-\center
-\begin{tabular}{|lrrr|}
-\hline
-& Average & Variance & Std Dev \\
-\hline
-\textbf{Prob Model} & 22.6 & 563.0 & 23.7\\
-
-\textbf{Eq Dist} & 41.4 & 1704.0 & 41.3\\
-\hline
-\end{tabular}
-\\
-\center
+%\center
+%\begin{tabular}{|lrrr|}
+%\hline
+%& Average & Variance & Std Dev \\
+%\hline
+%\textbf{Prob Model} & 22.6 & 563.0 & 23.7\\
+%\textbf{Eq Dist} & 41.4 & 1704.0 & 41.3\\
+%\hline
+%\end{tabular}
+%\\
+%\center
   \caption{Number of variants it takes to find a patch (starting at 0) using append, remove and replace to guide the search for a patch of 
 the case study}
   \label{fig:resultsARR}
