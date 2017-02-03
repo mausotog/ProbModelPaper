@@ -420,7 +420,7 @@ Automatic Software Repair (APR) has significant potential to reduce software
 maintenance costs by reducing the human effort required to localize and fix
 bugs. Well-known state-of-the-art generate-and-validate 
 APR approaches select between various mutation operators
-to constructing candidate patches, informed by largely heuristic probability
+to construct candidate patches, informed by largely heuristic probability
 distributions.  This may reduce APR effectiveness, in terms of both efficiency and
 output quality: patches informed by the ways humans fix bugs may be considered
 more acceptable.  In practice, human developers
@@ -429,21 +429,16 @@ are far more common than others (e.g., deleting a line of code is more common
 than adding a new class). %and are also dependent of the context. 
 Treating such edits as 
 mutation operators in the APR context, we  
-mined a large set \todo{how many?} of bug-fixing commits from \todo{how many?} projects to
+mined the most recent 100 bug-fixing commits from each of the 500 most popular Java projects in Github (largest 
+dataset to date) to
 create a probabilistic model describing edit distributions.
 We categorize, compare and evaluate the different mutation operators used in 
-the state of the art approaches \todo{...we do?}, we create a model mined from the largest 
-dataset to date \todo{is this different from the first contribution listed in
-  this sentence?}.  Finally, we mine association rules to analyze context surrounding
+the state of the art approaches \todo{...we do? Response: We categorize them in stmt-edit/template-based, compare how and why they are different and evaluate them separately and together}.  Finally, we mine association rules to analyze context surrounding
 multi-edit source code changes, an understudied problem 
 that covers the majority of real source code changes. Our evaluation
 indicates that by applying the probabilistic model we are able to find
 the correct mutation operator to patch bugs faster in the majority of bugs
-studied. \todo{OK, no need to open with the bad news, so we can update the
-  abstract later if these results shift a  bit, but I'd just cut the back half
-  of this sentence after the end of this todo.} they also indicate that having models with different
-probabilities to construct the source code variants doesn't increase the
-likelihood of the created patches to pass a second test suite.  
+studied, and that using the superset of all mutation operators performs better than restricting the mutation operator pool to just one category.  
 \end{abstract}
 
 
@@ -1364,6 +1359,7 @@ From these 15 bugs we were able to find patches for 5 of them as described in ta
 
 In the first row of Table \ref{tab:singleLineBugs} (Closure \#10) we can see that in all three comparisons (Statement-Edit Only, Template-Based Only, and All mutations), the approach using the probabilisitc model performs better than its counterpart using the equally distributed model. This happens as well in all cases of bugs Math \#2 and Time \#19 except for the cases where no patch was found. Different from this, in bugs Chart \#1 and Closure \#18 the equally distributed approach finds a patch faster in average. This is due to the fact that removal mutations such as Deletion and Expression Changer are more likely to be picked by the equally distributed model than the probabilistic model since developers use these editions less often than others. But these editions have been seen in the past to make the test cases pass even if the edition did not fixed the bug as per the opinion of developers as indicated in~\cite{kim2013}.
 
+Our results also show that applying mutation operators from both categories together, benefits the process by finding the patch faster, than when restricting the mutation operator pool to just one of the categories. For the Statement-Edit category: 3 out of 6 were fixed faster when combining it with Template-Based mutations, and 3 out of 6 were slower. For the Template-Based category: 4 out of 8 were fixed faster when combining it with Statemtent-Edit mutations, 2 out of 8 were the same, and 2 out of 8 were slower.
 
 \begin{table*}\centering
 \ra{1.3}
@@ -1437,7 +1433,9 @@ transactions in which the antecedent is present, but the consequent is not.
 
 Regarding Table \ref{tab:singleLineBugs}, there are two of these bugs in which the equally distributed model performed better than the probabilistic model. This is due to the fact, that the mutations needed to be applied in the source code for it to pass all the test cases, are mutation operators that are not usually applied by humans, and therefore they have a smaller probability of being chosen by the probabilistic model, and this is exposed as a larger number of variants needed to find these unusual mutation operators.
 
-We also notice that there is no difference in the quality of patches when using one approach or the other for these five bugs. Further evaluation should be performed to determine if one of the models creates higher quality patches than the other.
+We also notice that applying different probabilities when constructing variants does not make the patches found in either of the models more likely to pass a second test suite for these five bugs. Further evaluation should be performed to determine if one of the models creates higher quality patches than the other.
+
+
 
 \section{Related Work} \label{relatedWork}
 
