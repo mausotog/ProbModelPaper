@@ -416,19 +416,37 @@
 % As a general rule, do not put math, special symbols or citations
 % in the abstract
 \begin{abstract}
-Automatic Software Repair has significant potential to reduce software
-maintenance costs by reducing developer effort necessary to localize and fix
-bugs in software. Well known state of the art generate-and-validate 
-approaches used for automatic error repair use probabilities to select which mutation operator will be applied to construct candidate patches that are either random or adapted from the results of a particular benchmark, which leads to patches that are harder to understand and less maintainable. In reality, mutation operators have
+Automatic Software Repair (APR) has significant potential to reduce software
+maintenance costs by reducing the huma effort required to localize and fix
+bugs. Well-known state-of-the-art generate-and-validate 
+APR approaches select between various mutation operators
+to constructing candidate patches, and do so either according to a probability
+distribution of \todo{Mau can you please try to rephrase this clause?  I'm not
+  sure what you mean}  adapted from
+the results of a particular benchmark.  This may reduce lead to patches that are harder to
+understand and less maintainable.\todo{OK, we're not evaluating
+  understandability/maintainability in this work, so I would add something in
+  here about correctness or expressive power instead (since that's what we do
+  evaluate)}. In engineering practice, \todo{Phrasing issue: ``mutation operators'' has a
+  particular meaning, especially in the context of mutation testing research, so
+  please avoid overloading/reusing it like this.  I think you really mean
+  something like ``in practice, human bug fixers take multiple strategies to fix
+  bugs, and the transformations they select between are not uniformly
+  likely...'' or something like that.  Maybe you mean ``transformations'' or
+  ``templates'' or something, but mutation operators is a bit confusing.  Please
+  rephrase.}  mutation operators have  
 different probabilities of being applied; some mutation operators are far more 
 common than others and are also dependent of the context. We 
-have created a probabilistic model that describes the distribution of 
-feasibility when applying each of the different mutation operators. In this 
-study we categorize, compare and evaluate the different mutation operators in 
+mine FIXME bug-fixing commits from FIXME projects to create a probabilistic model describing the distribution of 
+feasibility\todo{feasibility?  I don't think this is the correct word; rephrase,
+  and then adjust the rest of the sentence accordingly.} when applying each of the different mutation operators. 
+Wtudy we categorize, compare and evaluate the different mutation operators in 
 the state of the art approaches, we create a model mined from the largest 
 dataset to date, and we create association rules to analyze the context when 
 dealing with multi-edit source code changes, an area that has been understudied 
-in the past and covers the majority of real source code changes. 
+in the past and covers the majority of real source code changes. \todo{one
+  sentence summary indicating nature of evaluation/results, even if you don't
+  have numbers.}
 \end{abstract}
 
 
