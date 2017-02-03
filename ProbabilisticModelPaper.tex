@@ -326,7 +326,11 @@
 
 \usepackage{array}
 \usepackage{tabulary}
-\newcolumntype{K}[1]{>{\arraybackslash}p{#1}}
+\newcolumntype{K}[1]{>{\raggedleft\arraybackslash}p{#1}}
+
+\usepackage{array}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}m{#1}}
 
 \usepackage{adjustbox}
 
@@ -415,9 +419,7 @@
 Automatic Software Repair has gained a lot of attention in the last several 
 years due to its ability to imitate and succeed in complex processes such as localizing errors and fixing source code with minimal human interaction, tasks that have been historically expensive 
 and resource consuming. Well known state of the art generate-and-validate 
-approaches used for automatic error repair determine which mutation operators to 
-use at a particular fault location by applying an equal distribution to the 
-selection process of these edits. In reality, mutation operators have
+approaches used for automatic error repair use probabilities to select which mutation operator will be applied to construct candidate patches that are either random or adapted from the results of a particular benchmarks, which leads to patches that are harder to understand and less maintainable. In reality, mutation operators have
 different probabilities of being applied; some mutation operators are far more 
 common than others and are also dependent of the context. We 
 have created a probabilistic model that describes the distribution of 
@@ -472,9 +474,7 @@ maintainability~\cite{Liblit03,Anvik05}.
 There have been efforts to automate this complex task by 
 building automatic program repair tools that are able to automatically repair 
 programs with minimal human interaction. One of the most well known approaches of automatic program repair
-is the generate-and-validate approach. 
-
-This approach takes in a test suite with at least one test case that exposes 
+is the generate-and-validate approach. This approach takes in a test suite with at least one test case that exposes 
 a defect, and the corresponding source code to be 
 tested and modified. The passing test cases confirm the
 expected behavior of the program, while the failing test cases expose the
@@ -533,7 +533,7 @@ use a particular mutation operator, then that mutation operator will have a
 higher probability of being selected than other mutation operators. This way we 
 are simulating the manner in which human programmers patch their code, which has 
 being evaluated to create patches that are easier to understand by humans~\cite{kim2013} and 
-therefore it increases the maintainability of the patches. Following a similar intuition to Prophet\cite{long15} which ranks the candidate patches according to their likelihood to fix the bug based on a model constructed by human behavior. 
+therefore it increases the maintainability of the patches, following a similar intuition to Prophet\cite{long15} which ranks the created candidate patches according to their likelihood to fix the bug based on a model constructed by human behavior. 
 
 We evaluated this approach both on its own, by using 10 fold cross validation, and as part of a repair algorithm, by applying the model to predict independent instances. We use 10 fold cross validation to structure the evaluation of predictive power to increase confidence in the generalizability of the results. Afterwards, we run the an automatic program repair algorithm using the probabilistic model with a subset of the mutation 
 operators in a simple example from a basic function. Then, we implemented all 
@@ -557,7 +557,7 @@ The primary contributions of this paper thus are:
 \end{itemize}
 
 The rest of this paper proceeds as follows:
-The following section entails the state of the art, general terminology and background knowledge for automatic program repair, in particular generation-and-validation. Section \ref{categorization} discusses how we categorize and generalize the mutation operators used in state of the art approaches in an effort to compare them. Section \ref{buildingTheModel} describes the process of how we gathered, analyzed and extracted the data necessary to build the probabilistic model. Section \ref{evaluation} outlines our evaluation methodology and our benchmarks. Section \ref{multEdit} is a pioneering work that discusses a new methodology to handle patches that require various edits to patch the code. Finally we have a section for Discussion, Related Work, and Conclusion.
+The following section entails the state of the art, general terminology and background knowledge for automatic program repair, in particular generation-and-validation. Section \ref{categorization} discusses how we categorize and generalize the mutation operators used in state of the art approaches in an effort to compare them. Section \ref{buildingTheModel} describes the process of how we gathered, analyzed and extracted the data necessary to build the probabilistic model. Section \ref{multEdit} is a pioneering work that discusses a new methodology to handle defects that require various edits to patch the code. Section \ref{evaluation} outlines our evaluation methodology and our benchmarks.  Finally we have a section for Discussion, Related Work, and Conclusion.
 
 \section{Background} \label{background}
 
@@ -1219,28 +1219,28 @@ could find a patch in 23.8 variants, while it took an average of 60.5 variants
 to find a patch using the equally distributed model.
 
 \begin{table}[ht]
-\begin{tabular}{|lrrrrrrrrrr|}
+\begin{tabular}{lR{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}|R{0.1cm}|R{0.5cm}|R{0.5cm}}
 \hline
-\textbf{Seed} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9}  \\
+\textbf{Seed} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & Avrg & StdDev  \\
 \hline
-\textbf{Prob Model} & 48 & 19 & 81 & 41 & 0 & 11 & 0 & 25 & 13 & 0 \\
+\textbf{Prob} & 48 & 19 & 81 & 41 & 0 & 11 & 0 & 25 & 13 & 0 & 23.8 & 24.8 \\
 
-\textbf{Eq Dist} & 49 & 34 & 89 & 98 & 4 & 11 & 80 & 25 & 13 & 202 \\
+\textbf{Eq Dist} & 49 & 34 & 89 & 98 & 4 & 11 & 80 & 25 & 13 & 202 & 60.5 & 57.1\\
 \hline
 \end{tabular}
-\\
-\\
-\center
-\begin{tabular}{|lrr|}
-\hline
-& Average & Std Dev \\
-\hline
-\textbf{Prob Model} & 18.7 & 15.9\\
-
-\textbf{Eq Dist} & 60.5 & 57.1\\
-\hline
-\end{tabular}
-\\
+%\\
+%\\
+%\center
+%\begin{tabular}{|lrrr|}
+%\hline
+%& Average & Variance & Std Dev \\
+%\hline
+%\textbf{Prob Model} & 23.8 & 615.8 & 24.8\\
+%
+%\textbf{Eq Dist} & 60.5 & 3261.5 & 57.1\\
+%\hline
+%\end{tabular}
+%\\
 \center
   \caption{Number of variants it takes to find a patch (starting at 0) using replace to guide the search for a patch of the case study}
   \label{fig:resultsReplace}
@@ -1275,13 +1275,13 @@ patch using the equally distributed approach. We consider of importance to notic
 \\
 \\
 \center
-\begin{tabular}{|lrr|}
+\begin{tabular}{|lrrr|}
 \hline
-& Average & Std Dev \\
+& Average & Variance & Std Dev \\
 \hline
-\textbf{Prob Model} & 22.6 & 23.7\\
+\textbf{Prob Model} & 22.6 & 563.0 & 23.7\\
 
-\textbf{Eq Dist} & 41.4 & 41.3\\
+\textbf{Eq Dist} & 41.4 & 1704.0 & 41.3\\
 \hline
 \end{tabular}
 \\
