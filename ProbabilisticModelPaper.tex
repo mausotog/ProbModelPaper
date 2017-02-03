@@ -420,18 +420,30 @@ Automatic Software Repair (APR) has significant potential to reduce software
 maintenance costs by reducing the human effort required to localize and fix
 bugs. Well-known state-of-the-art generate-and-validate 
 APR approaches select between various mutation operators
-to constructing candidate patches, and do so either according to a uniform probability
-distribution or \todo{Mau can you please try to rephrase this clause?  I'm not
-  sure what you mean. Reponse: What I mean is that current GenProg, AE, etc use a probability that was produced by eyeballing the benchmark used and what would work better, not by formally analyzing it, and PAR, etc just use a uniform distribution} a probability adapted from
-the results of a particular benchmark.  This may lead to a time increase when searching the fix space to patch bugs, a lack of generalizability when evaluated in a second test suite, and a lack of
-understandability and maintainability. In engineering practice, human developers edit source code in several different ways when fixing bugs. Some of these edits are far more common than others (eg, deleting a line of code, is more common than adding a new class), and are also dependent of the context. These edits are represented as mutation operators in an APR context. We 
-mined instances of mutation operators in bug-fixing commits from projects to create a probabilistic model describing the distribution of 
-likelihood when applying each of the different edits. 
-We categorize, compare and evaluate the different mutation operators in 
-the state of the art approaches, we create a model mined from the largest 
-dataset to date, and we create association rules to analyze the context when 
-dealing with multi-edit source code changes, an area that has been understudied 
-in the past and covers the majority of real source code changes. We evaluated our model in a case study and in 15 bugs from popular open source projects. Our results indicate that by applying the probabilistic model we are able to find the correct mutation operator to patch bugs faster in the majority of bugs studied, while they also indicate that having models with different probabilities to construct the source code variants doesn't increase the likelihood of the created patches to pass a second test suite. 
+to constructing candidate patches, informed by largely heuristic probability
+distributions.  This may reduce APR effectiveness, in terms of both efficiency and
+output quality: patches informed by the ways humans fix bugs may be considered
+more acceptable.  In practice, human developers
+have many options in terms of how to edit code to fix bugs, some of which 
+are far more common than others (e.g., deleting a line of code is more common
+than adding a new class). %and are also dependent of the context. 
+Treating such edits as 
+mutation operators in the APR context, we  
+mined a large set \todo{how many?} of bug-fixing commits from \todo{how many?} projects to
+create a probabilistic model describing edit distributions.
+We categorize, compare and evaluate the different mutation operators used in 
+the state of the art approaches \todo{...we do?}, we create a model mined from the largest 
+dataset to date \todo{is this different from the first contribution listed in
+  this sentence?}.  Finally, we mine association rules to analyze context surrounding
+multi-edit source code changes, an understudied problem 
+that covers the majority of real source code changes. Our evaluation
+indicates that by applying the probabilistic model we are able to find
+the correct mutation operator to patch bugs faster in the majority of bugs
+studied. \todo{OK, no need to open with the bad news, so we can update the
+  abstract later if these results shift a  bit, but I'd just cut the back half
+  of this sentence after the end of this todo.} they also indicate that having models with different
+probabilities to construct the source code variants doesn't increase the
+likelihood of the created patches to pass a second test suite.  
 \end{abstract}
 
 
