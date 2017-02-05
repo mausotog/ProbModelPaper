@@ -326,7 +326,7 @@
 
 \usepackage{array}
 \usepackage{tabulary}
-\newcolumntype{K}[1]{>{\raggedleft\arraybackslash}p{#1}}
+\newcolumntype{K}[1]{>{\arraybackslash}p{#1}}
 
 \usepackage{array}
 \newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1}}
@@ -426,14 +426,14 @@ output quality; patches informed by the ways humans fix bugs may be considered
 more acceptable.  In practice, human developers
 have many options in terms of how to edit code to fix bugs, some of which 
 are far more common than others (e.g., deleting a line of code is more common
-than adding a new class). %and are also dependent of the context. 
+than adding a new class).
 Treating such edits as 
 APR mutation operators, we  
 mined the most recent 100 bug-fixing commits from each of the 500 most popular Java projects in Github (largest 
 dataset to date) to
 create a probabilistic model describing edit distributions.
 We categorize, compare and evaluate the different mutation operators used in 
-the state of the art approaches \todo{...we do? Response: We categorize them in stmt-edit/template-based, compare how and why they are different and evaluate them separately and together}.  Finally, we mine association rules to analyze context surrounding
+the state of the art approaches. Finally, we mine association rules to analyze context surrounding
 multi-edit source code changes, an understudied problem 
 that covers the majority of real source code changes. Our evaluation
 indicates that by applying the probabilistic model we are able to find
@@ -677,7 +677,7 @@ created patches and abstracted 10 different templates to be the most
 commonly used changes that human programmers perform to fix their 
 code~\cite{kim2013}.
 The 10 templates which they considered in their approach are the following:
-
+\newline \\
 \begin{tabular}{K{3.3cm}K{5cm}}
 1) Null Checker & 6) Parameter Adder and Remover \\ 
 2) Parameter Replacer & 7) Expression Adder and Remover \\  
@@ -690,7 +690,7 @@ In an effort to provide completeness, we also include 6 extra templates that are
 mentioned in the website of this 
 approach\footnote{\url{https://sites.google.com/site/autofixhkust/home/fix-templates}} 
 but aren't mentioned in the paper\cite{kim2013}. These extra templates provide new mutation operators that helps us compare and generalize to the other approaches: 
-
+\newline \\
 \begin{tabular}{K{3.3cm}K{5cm}}
 1) Caster Mutator & 4) Lower Bound Setter  \\
 2) Castee Mutator & 5) Upper Bound Setter  \\
@@ -700,7 +700,7 @@ but aren't mentioned in the paper\cite{kim2013}. These extra templates provide n
 Because of this, we consider a total of 16 PAR templates. There are other well known techniques in this domain, such as the SPR 
 approach~\cite{fan15}, which is composed of a set of transformation schemas as 
 follows:
-
+\newline \\
 \begin{tabular}{K{3.3cm}K{5cm}}
 1) Copy and Replace & 4) Insert Initialization \\
 2) Cond Refinement & 5) Cond Control Flow Introd  \\
@@ -1233,9 +1233,9 @@ to find a patch using the equally distributed model.
 \hline
 \textbf{Seed} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & Avrg & StdDev  \\
 \hline
-\textbf{Prob} & 48 & 19 & 81 & 41 & 0 & 11 & 0 & 25 & 13 & 0 & 23.8 & 24.8 \\
+\textbf{Prob} & 48 & 19 & 81 & 41 & 0 & 11 & 0 & 25 & 13 & ~~~~0 & 23 & 24 \\
 
-\textbf{Eq Dist} & 49 & 34 & 89 & 98 & 4 & 11 & 80 & 25 & 13 & 202 & 60.5 & 57.1\\
+\textbf{Eq Dist} & 49 & 34 & 89 & 98 & 4 & 11 & 80 & 25 & 13 & 202 & 60 & 57\\
 \hline
 \end{tabular}
 %\\
@@ -1277,9 +1277,9 @@ patch using the equally distributed approach. We consider of importance to notic
 \hline
 \textbf{Seed} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9}  & Avrg & StdDev  \\
 \hline
-\textbf{Prob Model} & 8 & 20 & 23 & 42 & 4 & 11 & 0 & 29 & 80 & 0  & 22.6 & 23.7\\
+\textbf{Prob Model} & 8 & 20 & 23 & 42 & 4 & 11 & 0 & 29 & 80 & ~~~~0 & 22 & 23\\
 
-\textbf{Eq Dist} & 8 & 66 & 23 & 42 & 4 & 11 & 2 & 38 & 81 & 139 & 1704.0 & 41.3 \\
+\textbf{Eq Dist} & 8 & 66 & 23 & 42 & 4 & 11 & 2 & 38 & 81 & 139 & 1704 & 41 \\
 \hline
 \end{tabular}
 \\
