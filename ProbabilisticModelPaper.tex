@@ -483,18 +483,14 @@ maintainability~\cite{Liblit03,Anvik05}.
 %
 There have been efforts to automate this complex task by 
 building automatic program repair tools that are able to automatically repair 
-programs with minimal human interaction\todo{add citations here, rather than
-  later in this paragraph}. One well-known class of repair techniques follows a 
+programs with minimal human interaction~\cite{legoues12,kim2013,Weimer13,fan15,long15,debroy10,perkins09,wei10}. One well-known class of repair techniques follows a 
 \emph{generate-and-validate} approach, which take as input a test suite, including at
 least one failing test case exposing
 a defect, and source code to be 
 modified.  These approaches then \emph{generate} a large patch candidate space by applying 
 mutation operators to the original source code and \emph{validate} each by
 running the patched  program against the test suite, seeking a candidate that
-leads the program to pass all input test cases. There is a wide a variety of approaches that use generate-and-validate for 
-program 
-repair~\cite{legoues12,kim2013,Weimer13,fan15,long15,debroy10,perkins09,wei10}\todo{Cut
-  this sentence, put the citations up at the previous todo}. 
+leads the program to pass all input test cases. 
 
 One reason this task is challenging is the vast search space of possible 
 edits that can be applied to the different sections of the source 
@@ -510,34 +506,30 @@ AE~\cite{Weimer13}, etc. use probabilities to select which mutation operator
 will be applied to construct candidate patches that are either random or adapted
 from the results of a particular benchmarks, which may lead to plausible patches
 that aren't similar to what a developer would do, and therefore harder to
-understand, less efficient and less maintainable~\cite{Qi15}.\todo{the Qi15
+understand, less efficient and less maintainable~\cite{kim2013}.\todo{the Qi15
   reference doesn't talk about understandability, efficiency, nor
   maintainability...the Par paper might be a better reference, and/or maybe the
   Prophet paper?  Again,
   I'm wary of making claims about plausibility versus correctness, because I
-  don't think we evaluate it.} 
+  don't think we evaluate it. RESPONSE: I'm trying to build up the problem by listing a set of problems, from which we will evaluate speed and generalizability} 
 
-\todo{I would move this entire paragraph out of intro and into the background subsection on G-and-V
-  repair.} The automatic error fixing process starts by localizing the defect,
-this can be achieved in several different ways (eg, Ochiai, Jaccard, SBI,
-Tarantula, etc\todo{also whenever you mention a prior technqiue, as you do in
-  this list, refer to the paper that proposes it.  This is always true.}). It then goes through a process in which it analyzes which mutation operators can
-be applied to that specific location; or if the context of that location doesn't
-allow some mutation operators to be used. Once this process is finalized, as a result, there is a set of possible 
-mutation operators that
-can be applied to the chosen location. 
-
-In reality, human developers choose some mutation operators 
+Most generate-and-validate approaches build a set of candidate patches by applying mutation operators using a heuristic based or random distribution. In reality, human developers choose some mutation operators 
 much more often than 
-others.\todo{an example highlighting the intutition, even just in prose/without
-  code, might help.} In this paper we study and then simulate the behavior of human developers in order 
-to create patches the closest way to what real developers do, which increases understandability and maintainability~\cite{kim2013}.
-%
-We also handle, compare and contrast a full set of mutation operators, taking into
+others (e.g., deleting a line of code is more common
+than adding a new class). In this paper we study and then simulate the behavior of human developers in order 
+to create patches the closest way to what real developers do, which has 
+being evaluated to create patches that are easier to understand by
+humans~\cite{kim2013} and 
+therefore it increases the maintainability of the patches. We follow a similar
+intuition to Prophet\cite{long15} which ranks the created candidate patches
+according to their likelihood to fix the bug based on a model constructed by
+human behavior. Different from them, we take this notion of applying a probabilistic model even earlier in the process, at the time of creating the patch candidates so all the candidates in the pool are built in a way designed to fix the error. We also include a superset of mutation operators and not only the transformation schemas~\cite{fan15}.  
+
+We also categorize, compare and contrast a full set of mutation operators, taking into
 account the full set of mutation operators currently used in the most widely
 used state of the art approaches, such as GenProg, Prophet, PAR, AE, RSRepair,
 SPR, etc.\todo{I'm still not totally certain what we are claiming here; what
-  does this contribution do?}
+  does this contribution do? RESPONSE: we are claiming to have categorized and compared the different mutation operators from the bigger approaches}
 We mine
 the 500 most popular Github projects to produce a model of the probability of
 each of the possible mutation operators used in prior approaches based on 
@@ -545,22 +537,10 @@ empirical data that describes how human programmers fix their code.  We use this
 model to inform a repair approach that chooses from the set of possible
 operators based on 
 probabilities that describe how often each is used
-to fix bugs in real world projects. We therefore more closely
-simulate the manner in which human programmers patch their code, which has 
-being evaluated to create patches that are easier to understand by
-humans~\cite{kim2013}\todo{this claim should go up above.} and 
-therefore it increases the maintainability of the patches, following a similar
-intuition to Prophet\cite{long15} which ranks the created candidate patches
-according to their likelihood to fix the bug based on a model constructed by
-human behavior.\todo{ the problem with this sentence is that it's not making it
-  clear how we're different/better or what the limitation of Prophet is.  why do
-  we need to exist, if they already do?  Move this claim above to where you
-  introduce the idea of selecting between mutation operators and highlight the
-  deficiency with it that motivates this study.}
+to fix bugs in real world projects. 
 
-We evaluated this approach both on its own, by using 10 fold cross
-validation,\todo{this sentence still needs to say what metrics we're using, per
-  our conversation on Slack.}
+We evaluated this approach both on its own, by evaluating the predictive power of the model by analyzing the number of correctly predicted mutation operators and using 10 fold cross
+validation;
 and as part of a repair algorithm, by applying the model to predict independent
 instances. We use 10 fold cross validation to structure the evaluation of
 predictive power to increase confidence in the generalizability of the
@@ -620,8 +600,11 @@ order to perform this tasks~\cite{Jones05,Jones02,Chen02,legoues12,Qi13}, also t
 Once we know where the fault is located we proceed to create what we call 
 ``Candidate patches". Candidate patches are variations of the original program 
 which may or may not be a patch for the bug(s) we are trying to fix. To 
-create candidate patches we need to apply one or several mutation operators to 
-the fault location. 
+create candidate patches we analyze which mutation operators can
+be applied to that specific location; or if the context of that location doesn't
+allow some mutation operators to be used. We apply them and once this process is finalized, as a result, there is a set of possible 
+mutation operators that
+can be applied to the chosen location.
 
 Once the tool has a set of candidate patches, it will run the test suite on each 
 of those candidate patches. If it is able to find a candidate patch that can 
@@ -630,7 +613,6 @@ considered a patch of the bug. If it is not able to pass all the test cases in
 the test suite, then it will go back to creating more candidate patches and will 
 continue to do so until it reaches a stopping point, which may be a certain user 
 defined number of generations or a user defined clock time limit.
-
 
 In contrast to generate-and-validate there exist other techniques used for 
 automatic program repair such as Synthesis-Based program 
