@@ -575,7 +575,7 @@ The following section entails the state of the art, general terminology and back
   something similar, add subsections, and combine it with the content currently
   in the next section.  I think I asked you to move the association rule mining
   background (back?) to the section on association rule mining as a subsection
-  on background in context.  Imperfect, but I think it would be a better organization.}
+  on background in context.  Imperfect, but I think it would be a better organization. RESPONSE: I'm confused about this: We talked about having a background section that can be skipped by people who know the area. The next section is how we categorize the mutation operators, which is a contribution, so people shouldn't skip that. I think they are very different sections that shouldn't be merged.}
 
 One of the most well known approaches for automatic program repair is the
 generate-and-validate approach which is detailed in figure~\ref{fig:generateandvalidate}. This approach starts with source code that
@@ -663,20 +663,13 @@ Statement-Edit and Template-Based.
 There is a family of well-known approaches such as GenProg~\cite{legoues12}, 
 TrpAutoRepair\cite{Qi13}, RSRepair~\cite{Qi14}, and AE~\cite{Weimer13} in which the main technique for 
 creating candidate 
-patches is by applying low level\todo{wrong phrasing; the key behind these
-  techniques is that statement-level mutations aren't low-level but are instead
-  fairly coarse.  Rephrase; this is misleading.} mutation operators (such as append, delete, or 
+patches is by applying coarse grained mutation operators (such as append, delete, or 
 replace) which modify statements of source code to 
-repair programs. A statement is the smallest standalone element that expresses 
-some action to be carried out in a programming language.\todo{Careful, this
-  isn't true.  Statements are a grammar nonterminal in C, referring to a
-  specific language construct.  They correspond to language constructs at a
-  similar granularity level in Java.  Say something like that, with an example,
-  like ``including 
-if-then-else or instruction statements.''} These tools are able to 
+repair programs. A statement is  a grammar nonterminal, which in Java this translates to the smallest standalone element that expresses 
+some action to be carried out, such as a while loop with its corresponding body, or a method call. These tools are able to 
 apply these mutation operators to statements in the source code to 
 create candidate patches. These and several other techniques use \todo{this
-  statement is still false}  randomized 
+  statement is still false. RESPONSE: Why is this false? They apply randomness to create variations selecting mut ops from the search space}  randomized 
 search for patch generation~\cite{arcuri08,bradbury10,Qi14,Weimer13}. 
 
 \subsection{Template-based mutations}
@@ -692,41 +685,50 @@ human
 created patches and abstracted 10 different templates to be the most 
 commonly used changes that human programmers perform to fix their 
 code~\cite{kim2013}.
-The 10 templates which they considered in their approach are the following:
-\newline \\
+The 10 templates which they considered in their approach are the ones detailed in Table~\ref{approachTemplates} Top.
 
-\todo{the formatting on this doesn't work, several ways; left-align text, and
-  it's too wide.  I think a proper figure might work better than an in-line
-  table like this.}
+\begin{table}[ht]
+  \centering
+
 \begin{tabular}{K{3.3cm}K{5cm}}
+\hline 
+\multicolumn{2}{C{8cm}}{PAR fix templates} \newline \\
+\hline 
 1) Null Checker & 6) Parameter Adder and Remover \\ 
 2) Parameter Replacer & 7) Expression Adder and Remover \\  
 3) Method Replacer & 8) Collection Size Checker \\
-4) Expression Changer & 9) Range Checker\\
+4) Expression Replacer & 9) Range Checker\\
 5) Object Initializer & 10) Class Cast Checker\\
-\end{tabular}\\
- 
-In an effort to provide completeness, we also include 6 extra templates that are 
-mentioned in the website of this 
-approach\footnote{\url{https://sites.google.com/site/autofixhkust/home/fix-templates}} 
-but aren't mentioned in the paper\cite{kim2013}. These extra templates provide new mutation operators that helps us compare and generalize to the other approaches: 
-\newline \\
+\end{tabular}\newline \\
+
 \begin{tabular}{K{3.3cm}K{5cm}}
+\hline 
+\multicolumn{2}{C{8cm}}{PAR extra templates} \newline \\
+\hline 
 1) Caster Mutator & 4) Lower Bound Setter  \\
 2) Castee Mutator & 5) Upper Bound Setter  \\
 3) Sequence Exchanger & 6) Off-by-one Mutator\\
-\end{tabular}\\
+\end{tabular}\newline \\
 
-Because of this, we consider a total of 16 PAR templates. There are other well known techniques in this domain, such as the SPR 
-approach~\cite{fan15}, which is composed of a set of transformation schemas as 
-follows:
-\newline \\
 \begin{tabular}{K{3.3cm}K{5cm}}
+\hline 
+\multicolumn{2}{C{8cm}}{SPR transformation schemas} \newline \\
+\hline 
 1) Copy and Replace & 4) Insert Initialization \\
 2) Cond Refinement & 5) Cond Control Flow Introd  \\
-3) Value Replacement  & 6) Condition Introduction 
+3) Value Replacement  & 6) Condition Introduction \\
 \end{tabular}
-\\
+  \caption{Top) PAR fix templates. Middle) PAR extra templates. Bottom) SPR transformation schemas.}
+  \label{approachTemplates}
+\end{table}
+
+In an effort to provide completeness, we also include 6 extra templates that are 
+mentioned in the website of this 
+approach\footnote{\url{https://sites.google.com/site/autofixhkust/home/fix-templates}} 
+but aren't mentioned in the paper\cite{kim2013}. These extra templates provide new mutation operators that helps us compare and generalize to the other approaches as especified in Table~\ref{approachTemplates} Middle.
+
+Because of this, we consider a total of 16 PAR templates. There are other well known techniques in this domain, such as the SPR 
+approach~\cite{fan15}, which is composed of a set of transformation schemas as entailed in Table~\ref{approachTemplates} Bottom.
 
 These transformation schema can be seen as a generalization of some of the PAR 
 templates, for example, ``Condition Introduction" can be seen as a superset of 
@@ -787,10 +789,7 @@ after-fix versions, and analyze how often they match the mutation operators in
 question. 
 %
 To do this we used two different widely used tools for mapping changes 
-between two versions of code: Gumtree~\cite{falleri14} and
-QACrashFix~\cite{gao15}.\todo{As mentioned in my previous notes, QACrashFix is a
-  bug fixing tool, not a differencing tool, so please be explicit about the
-  element you'r eusing here.}
+between two versions of code: Gumtree~\cite{falleri14}, the source code tree differencing framework, and QACrashFix~\cite{gao15}, the tool for generating fixes via analyzing Q\&A pages (specifically the modification of Gumtree performed by the authors to account for replaces).
 These tools create an AST representation of the program files for both the 
 before-fix and after-fix representations of the programs for each of the files 
 of the commit, and then use a set of heuristics to match the before-fix version 
