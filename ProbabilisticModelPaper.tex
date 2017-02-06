@@ -575,7 +575,7 @@ The following section entails the state of the art, general terminology and back
   something similar, add subsections, and combine it with the content currently
   in the next section.  I think I asked you to move the association rule mining
   background (back?) to the section on association rule mining as a subsection
-  on background in context.  Imperfect, but I think it would be a better organization. RESPONSE: I'm confused about this: We talked about having a background section that can be skipped by people who know the area. The next section is how we categorize the mutation operators, which is a contribution, so people shouldn't skip that. I think they are very different sections that shouldn't be merged.}
+  on background in context.  Imperfect, but I think it would be a better organization. RESPONSE: I'm confused about this: We talked about having a background section that can be skipped by people who know the area. The next section is how we categorize the mutation operators, which is a contribution, so people shouldn't skip that. I think they are very different sections that shouldn't be merged. Also, I did move the background of Association Rule mining here. It is the last section of background that talks about support and confidence.}
 
 One of the most well known approaches for automatic program repair is the
 generate-and-validate approach which is detailed in figure~\ref{fig:generateandvalidate}. This approach starts with source code that
@@ -912,12 +912,9 @@ that the probability of a For loop replacing a While loop is different from the
 probability of a While loop replacing a For loop, and the same applies to all 
 the different statement types.
 
-\section{Multiple edit association rule mining} \label{multEdit}
+\subsection{Multiple edit association rule mining} \label{multEdit}
 
-\todo{Maybe this should be part of the preceding section, as a subsection?  Also
-  see my note on the background}
-
-Single-mutation or -edit approaches are historically the most 
+Single-mutation (or single-edit) approaches are historically the most 
 common subject of analysis in 
 state of the art bug-fixing approaches
 \cite{Qi15,fan15,kim2013,Long2016,legoues12,Qi13,Qi14,xuan16}.
@@ -938,95 +935,17 @@ Apriori~\cite{Agrawal94,Liu98,Zaki2000}, which identifies the frequent
 individual items in the set of transactions (commits in this context) and then we extend these sets into 
 larger sets as long as those item sets appear sufficiently often in the database 
 of transactions, which in our case would be the database of transactions created 
-by each of the commits studied.
-
-We have divided our association rule mining into the two different models as 
-follows:
-
-\todo{Restructure; No single subsections.  Any single subjsection should be
-  folded into a section without subsections, or divided further.}
-
-\subsection{Mutation operator and replacement rules}
-
-To create these association rules among several mutation operators, we mine the
-transactions made out of the commits created by humans in the corpus of projects
-studied and we look for rules that have at least 90\% Confidence, where
-Confidence is an indication of how often the rule has been found to be true.  
-These rules are ranked by their confidence; in this case, the top 5 rules shown
-below have a confidence of a 100\% which means that in 100\% of the cases
-studied, every transaction that showed the antecedent also shows the consequent;
-and they are obtained with a 1\% support, which means that each of these rules
-individually show in at least a 1\% of all the transactions of the overall
-corpus. We show the 5  top association rules found for the mining of single edit
-mutation operators. 
-
-
-%Minimum support: 0 (1 instances)
-%Minimum metric <confidence>: 0.9
-%Number of cycles performed: 20
-\begin{itemize}
-\item Replace \& Delete $\implies$ Append
-\item Delete \& AddNullCheck $\implies$ Append
-\item Replace \& SeqExchanger $\implies$ Append
-\item Replace \& ParamReplacer $\implies$ Append
-\item Delete \& CasteeMutator $\implies$ Append
-%\item Replace \& Delete \& ParamReplacer $\implies$ Append
-%\item Replace \& AddNullCheck $\implies$ Append
-%\item Replace \& Delete \& SeqExchanger $\implies$ Append
-%\item Delete \& ExpressionAdder $\implies$ Append
-%\item Delete \& AddNullCheck \& ParamReplacer $\implies$ Append
-\end{itemize}
-
-Append is the most common single edit mutation operator. This behavior is
-reflected in the fact that it is the most common consequent being the consequent
-in 5 out of 5 of the top 5 association rules. The authors are showing the top 5
-association rules to give an example of what the rules look like. If the reader
-would like to know the full list of association rules mined in this study, the
-authors have made available the full list with over 12.000 rules with over 90\%
-Confidence and 0.01\% Support.\footnote{https://goo.gl/UT8QbI} 
-%REPLACE FOR CAMERA READY: https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt
-
-Similar to the case detailed before, we have analyzed the association rules for the replacements model. We obtained the following rules with a 0.01\% Support and 90\% Confidence.
-10 Best rules found:
-%Minimum support: 0.0001 (1 instances)
-%Minimum metric <confidence>: 0.9
-%Number of cycles performed: 20
-\begin{itemize}
-\item Block replaces ReturnStatement \& ExpressionStatement replaces IfStatement $\implies$ Block replaces IfStatement
-\item VariableDeclarationStatement replaces AssertStatement $\implies$ SwitchCase replaces BreakStatement
-\item EnhancedForStatement replaces TryStatement $\implies$ ExpressionStatement replaces ReturnStatement
-\item ForStatement replaces TryStatement $\implies$ ExpressionStatement replaces VariableDeclarationStatement
-\item VariableDeclarationStatement replaces EnhancedForStatement $\implies$ ExpressionStatement replaces VariableDeclarationStatement
-\item VariableDeclarationStatement replaces ForStatement $\implies$ ExpressionStatement replaces VariableDeclarationStatement
-\item ForStatement replaces TryStatement $\implies$ IfStatement replaces TryStatement
-\item VariableDeclarationStatement replaces ForStatement $\implies$ ForStatement replaces TryStatement
-\item ForStatement replaces TryStatement $\implies$ VariableDeclarationStatement replaces ForStatement
-\item VariableDeclarationStatement replaces ForStatement $\implies$ IfStatement replaces TryStatement
-\end{itemize}
-
-Similar to the one described above, the authors have made available the full list of association rules with over 90\% Confidence and 0.01\% Support.\footnote{https://goo.gl/omk60t}
-%REPLACE FOR CAMERA READY: https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningReplacements.txt
-
-
-
-%\subsection{10 fold cross validation}
-
-
-
+by each of the commits studied. We have divided our association rule mining to be built one from each of the models as described in section~\ref{armRes}.
 
 \section{Evaluation} \label{evaluation}
 
 We evaluate our model both independently and as part of an automatic repair
-technique.  We first \todo{What are the metrics for the independent model
-  evaluation?} (Section~\ref{sec:generalize}).  Next, we asses a case study
+technique.  We first evaluate the predictive power of the model by analyzing the number of correctly predicted mutation operators and using 10 fold cross validation (Section~\ref{sec:generalize}).  Next, we assess a case study
 repair problem to check how 
 much faster we can find a patch with the probabilistic model vs the equally 
 distributed approach (Section~\ref{sec:casestudy}); and finally, we evaluate
 repair efficacy on fifteen real bugs from the Defects4J dataset
 (Section~\ref{sec:single}).
-
-\todo{Is there a way to separate out the association rule content from the
-  association rule results, and put the latter in this section?}
 
 \subsection{Model generalization}
 \label{sec:generalize}
@@ -1447,11 +1366,7 @@ Our results also show that applying mutation operators from both categories toge
 \end{table*}
 
 
-
-\subsection{Quality assessment}
-
-\todo{I'd make this a subsection of the previous section.}
-
+\emph{Quality assessment:}
 To assess the quality of the patches generated by both models we need an
 independent validation mechanism. In this study we automatically build a second
 test suite of test cases that describes the same behavior as the test suite that
@@ -1484,7 +1399,66 @@ that none of them pass the second test suite.
 %\subsection{Bugs fixed with a multi line edit within a function}
 %Last evaluation with the bugs we found had a fix
 
+\subsection{Association Rule Mining Results} \label{armRes}
+\emph{Mutation operator and replacement rules:}
+To create these association rules among several mutation operators, we mine the
+transactions made out of the commits created by humans in the corpus of projects
+studied and we look for rules that have at least 90\% Confidence, where
+Confidence is an indication of how often the rule has been found to be true.  
+These rules are ranked by their confidence; in this case, the top 5 rules shown
+below have a confidence of a 100\% which means that in 100\% of the cases
+studied, every transaction that showed the antecedent also shows the consequent;
+and they are obtained with a 1\% support, which means that each of these rules
+individually show in at least a 1\% of all the transactions of the overall
+corpus. We show the 5  top association rules found for the mining of single edit
+mutation operators. 
 
+
+%Minimum support: 0 (1 instances)
+%Minimum metric <confidence>: 0.9
+%Number of cycles performed: 20
+\begin{itemize}
+\item Replace \& Delete $\implies$ Append
+\item Delete \& AddNullCheck $\implies$ Append
+\item Replace \& SeqExchanger $\implies$ Append
+\item Replace \& ParamReplacer $\implies$ Append
+\item Delete \& CasteeMutator $\implies$ Append
+%\item Replace \& Delete \& ParamReplacer $\implies$ Append
+%\item Replace \& AddNullCheck $\implies$ Append
+%\item Replace \& Delete \& SeqExchanger $\implies$ Append
+%\item Delete \& ExpressionAdder $\implies$ Append
+%\item Delete \& AddNullCheck \& ParamReplacer $\implies$ Append
+\end{itemize}
+
+Append is the most common single edit mutation operator. This behavior is
+reflected in the fact that it is the most common consequent being the consequent
+in 5 out of 5 of the top 5 association rules. The authors are showing the top 5
+association rules to give an example of what the rules look like. If the reader
+would like to know the full list of association rules mined in this study, the
+authors have made available the full list with over 12.000 rules with over 90\%
+Confidence and 0.01\% Support.\footnote{https://goo.gl/UT8QbI} 
+%REPLACE FOR CAMERA READY: https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt
+
+Similar to the case detailed before, we have analyzed the association rules for the replacements model. We obtained the following rules with a 0.01\% Support and 90\% Confidence.
+10 Best rules found:
+%Minimum support: 0.0001 (1 instances)
+%Minimum metric <confidence>: 0.9
+%Number of cycles performed: 20
+\begin{itemize}
+\item Block replaces ReturnStatement \& ExpressionStatement replaces IfStatement $\implies$ Block replaces IfStatement
+\item VariableDeclarationStatement replaces AssertStatement $\implies$ SwitchCase replaces BreakStatement
+\item EnhancedForStatement replaces TryStatement $\implies$ ExpressionStatement replaces ReturnStatement
+\item ForStatement replaces TryStatement $\implies$ ExpressionStatement replaces VariableDeclarationStatement
+\item VariableDeclarationStatement replaces EnhancedForStatement $\implies$ ExpressionStatement replaces VariableDeclarationStatement
+\item VariableDeclarationStatement replaces ForStatement $\implies$ ExpressionStatement replaces VariableDeclarationStatement
+\item ForStatement replaces TryStatement $\implies$ IfStatement replaces TryStatement
+\item VariableDeclarationStatement replaces ForStatement $\implies$ ForStatement replaces TryStatement
+\item ForStatement replaces TryStatement $\implies$ VariableDeclarationStatement replaces ForStatement
+\item VariableDeclarationStatement replaces ForStatement $\implies$ IfStatement replaces TryStatement
+\end{itemize}
+
+Similar to the one described above, the authors have made available the full list of association rules with over 90\% Confidence and 0.01\% Support.\footnote{https://goo.gl/omk60t}
+%REPLACE FOR CAMERA READY: https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningReplacements.txt
 
 \section{Discussion} \label{discussion}
 In this paper we are tackling specific 
