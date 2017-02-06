@@ -801,10 +801,9 @@ changes performed from the before-fix to the after-fix versions into the
 different mutation operators. For example, if we want to analyze the 
 case of a Null Checker, we go through all the actions performed to go from the
 before-fix to the after-fix versions; in each of the actions we ask if the node
-being manipulated is an If statement, we then  ask if the action being performed
-is an Insertion of a node. After we know that it is an insertion of an If
-statement, we then ask if the first condition within the If statement is an
-InfixExpression. An InfixExpression as defined by the Eclipse JDT API
+being manipulated is an \emph{IfStatement}, we then  ask if the action being performed
+is an Insertion of a node. After we know that it is an insertion of an \emph{IfStatement}, we then ask if the first condition within the \emph{IfStatement} is an
+\emph{InfixExpression}. An \emph{InfixExpression} as defined by the Eclipse JDT API
 specification has the following form: 
 \\
 \\
@@ -813,12 +812,10 @@ Expression~InfixOperator~Expression
 $
 \\
 \\  
-Afterwards, we ask if the Expression following the InfixOperator is a
-\todo{Find a way to typeset language constructs differently from regular text.}
-NullLiteral. Once we know all this information we know that a null checker
-template was applied to the code, since we know that the developer added an If
-statement, whose conditional is conformed by an Expression being compared to a
-NullLiteral, so we count it as an instance of this template. 
+Afterwards, we ask if the \emph{Expression} following the \emph{InfixOperator} is a
+\emph{NullLiteral}. Once we know all this information we know that a null checker
+template was applied to the code, since we know that the developer added an \emph{IfStatement}, whose conditional is conformed by an \emph{Expression} being compared to a
+\emph{NullLiteral}, so we count it as an instance of this template. 
 
 
 
@@ -861,15 +858,13 @@ We extend the GenProg4Java\footnote{https://bitbucket.org/clegoues/genprog4java}
 by implementing all the mutation operators mentioned in
 Section~\ref{categorization} and created a configuration in which the tool 
 selects between the mutation operators according to the probabilities described by
-a given model.  Our probabilistic model is two-level: the 
+a given model. To construct our model we started from the intuiton of the replacement model by Soto et al~\cite{Soto15} which counts the number of statements in before and after fix versions. We upgraded this model by analyzing the abstract syntax tree structure of the before and after fix versions, and then we expanded our model to cover a superset of mutation operators and not only replacement. Therefore, our probabilistic model is conformed by two levels: the 
 \textit{Mutation operator probabilistic model} and 
 the \textit{Replacements probabilistic model}.
 
-\todo{What is the motivation between a two-level model?}
-\todo{I think these could be labelled paragraphs rather than subsubsections.}
+\todo{I think these could be labelled paragraphs rather than subsubsections. RESPONSE: Do you mean a particular latex object called Paragraph? or just a regular paragraph like this?}
 
-\subsubsection{Mutation operator probabilistic model}
-
+\emph{Mutation operator probabilistic model:}
 The \textit{Mutation operator probabilistic model} is a probabilistic model that 
 describes the probabilities to choose between the several different mutation 
 operators in a particular fault location.
@@ -885,8 +880,7 @@ after-fix versions of each of the files in the 100 last bug fixing commits per
 each of the 500 projects; and these instance sums are the data we take to create 
 our probabilistic model.
 
-\subsubsection{Replacements probabilistic model}
-
+\emph{Replacements probabilistic model:}
 The \textit{Replacements probabilistic model} is the next level of the 
 probabilistic model, which describes, if the ``Replacement" mutation operator is 
 picked, what are the probabilities of replacing one statement for another. 
@@ -904,16 +898,14 @@ replaced and what kind of statement is replacing the other. We call these
 statements ``replacee" and ``replacer" accordingly.
 
 
-We analyzed the 22 different kinds of statement detailed by Eclipse JDT\todo{add
-  a footnote linking to the official JDT rather than listing all statements in
-  the footnote.} as
+We analyzed the 22 different kinds of statement detailed by Eclipse JDT\footnote{https://goo.gl/SX3wnA \label{stmtNames}} as
 direct known subclasses of the class "Statement", and the probability in which
 each of  
 them replaces another. For example, what is the probability that a For loop 
 would replace a While loop, or the probability that a Break statement would 
 replace a Continue statement, etc. Since there are 22 statement types and each of these 22 may 
 replace each of these 22 statement types, we then have 484 combinations of 
-replacement combinations.\footnote{The 22 statement types mentioned above are the following: AssertStatement, Block, BreakStatement, ConstructorInvocation, ContinueStatement, DoStatement, EmptyStatement, EnhancedForStatement, ExpressionStatement, ForStatement, IfStatement, LabeledStatement, ReturnStatement, SuperConstructorInvocation, SwitchCase, SwitchStatement, SynchronizedStatement, ThrowStatement, TryStatement, TypeDeclarationStatement, VariableDeclarationStatement, WhileStatement.\label{stmtNames}}
+replacement combinations.
 
 It is also worth noticing that these probabilities are not reciprocal, meaning 
 that the probability of a For loop replacing a While loop is different from the 
