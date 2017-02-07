@@ -494,26 +494,17 @@ leads the program to pass all input test cases.
 
 One reason this task is challenging is the vast search space of possible 
 edits that can be applied to the different sections of the source 
-code~\cite{long16}. Each such technique defines  a set of possible changes that 
-can be applied to the source code, allowing for program variations; this 
-set of possible operations are called ``Mutation operators". There is a broad diversity of these, such as deleting or inserting statements~\cite{legoues12}, applying templates~\cite{kim2013}, transformation schemas~\cite{fan15}, etc.
-Given a potentially-buggy program location, generate-and-validate repair must
-select between such possible schemas.  
-At this point, most of the well known and highly 
-used generate-and-validate approaches, such as GenProg~\cite{legoues12}, 
+code~\cite{long16}. Each such technique defines  a set of possible changes to be
+applied to the source code, which we refer to as ``Mutation operators''; these operators allow for program variations.
+There is a broad diversity of these, such as deleting or inserting statements~\cite{legoues12}, applying templates~\cite{kim2013}, transformation schemas~\cite{fan15}, etc.
+Given a potentially-faulty location, many
+generate-and-validate approaches (e.g., GenProg~\cite{legoues12}, 
 Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13}, RSRepair~\cite{Qi14},
-AE~\cite{Weimer13}, etc. use probabilities to select which mutation operator
+AE~\cite{Weimer13}) use probabilities to select which mutation operator
 will be applied to construct candidate patches that are either random or adapted
-from the results of a particular benchmarks, which may lead to plausible patches
-that aren't similar to what a developer would do, and therefore harder to
-understand, less efficient and less maintainable~\cite{kim2013}.\todo{the Qi15
-  reference doesn't talk about understandability, efficiency, nor
-  maintainability...the Par paper might be a better reference, and/or maybe the
-  Prophet paper?  Again,
-  I'm wary of making claims about plausibility versus correctness, because I
-  don't think we evaluate it. RESPONSE: I'm trying to build up the problem by listing a set of problems, from which we will evaluate speed and generalizability} 
+from the results of a particular benchmarks.
 
-Most generate-and-validate approaches build a set of candidate patches by applying mutation operators using a heuristic based or random distribution. In reality, human developers choose some mutation operators 
+In reality, human developers choose some mutation operators 
 much more often than 
 others (e.g., deleting a line of code is more common
 than adding a new class). In this paper we study and then simulate the behavior of human developers in order 
@@ -521,15 +512,21 @@ to create patches the closest way to what real developers do, which has
 being evaluated to create patches that are easier to understand by
 humans~\cite{kim2013} and 
 therefore it increases the maintainability of the patches. We follow a similar
-intuition to Prophet\cite{long15} which ranks the created candidate patches
+intuition to Prophet\cite{long15} which ranks candidate patches
 according to their likelihood to fix the bug based on a model constructed by
-human behavior. Different from them, we take this notion of applying a probabilistic model even earlier in the process, at the time of creating the patch candidates so all the candidates in the pool are built in a way designed to fix the error. We also include a superset of mutation operators and not only the transformation schemas~\cite{fan15}.  
+human behavior. Different from them, we take this notion of applying a
+probabilistic model even earlier in the process, at the time of creating the
+patch candidates so all the candidates in the pool are built in a way designed
+to fix the error. We also include a more expresisve superset of mutation
+operators, beyond the transformation schemas~\cite{fan15}.  
 
 We also categorize, compare and contrast a full set of mutation operators, taking into
 account the full set of mutation operators currently used in the most widely
 used state of the art approaches, such as GenProg, Prophet, PAR, AE, RSRepair,
 SPR, etc.\todo{I'm still not totally certain what we are claiming here; what
-  does this contribution do? RESPONSE: we are claiming to have categorized and compared the different mutation operators from the bigger approaches}
+  does this contribution do? RESPONSE: we are claiming to have categorized and
+  compared the different mutation operators from the bigger approaches RESPONSE
+  RESPONSE: Rephrase: why is this interesting/useful/contributory to human knowlede?}
 We mine
 the 500 most popular Github projects to produce a model of the probability of
 each of the possible mutation operators used in prior approaches based on 
@@ -539,12 +536,10 @@ operators based on
 probabilities that describe how often each is used
 to fix bugs in real world projects. 
 
-We evaluated this approach both on its own, by evaluating the predictive power of the model by analyzing the number of correctly predicted mutation operators and using 10 fold cross
+We evaluate this approach both on its own, by evaluating the predictive power of the model by analyzing the number of correctly predicted mutation operators and using 10 fold cross
 validation;
 and as part of a repair algorithm, by applying the model to predict independent
-instances. We use 10 fold cross validation to structure the evaluation of
-predictive power to increase confidence in the generalizability of the
-results. Afterwards, we run the an automatic program repair algorithm using the
+instances. We run an automatic program repair algorithm using the
 probabilistic model with a subset of the mutation  
 operators in a simple example from a basic function. Then, we implemented all 
 the mutation operators and ran a comparison between how an APR tool performs when using the equally distributed model  
@@ -575,7 +570,19 @@ The following section entails the state of the art, general terminology and back
   something similar, add subsections, and combine it with the content currently
   in the next section.  I think I asked you to move the association rule mining
   background (back?) to the section on association rule mining as a subsection
-  on background in context.  Imperfect, but I think it would be a better organization. RESPONSE: I'm confused about this: We talked about having a background section that can be skipped by people who know the area. The next section is how we categorize the mutation operators, which is a contribution, so people shouldn't skip that. I think they are very different sections that shouldn't be merged. Also, I did move the background of Association Rule mining here. It is the last section of background that talks about support and confidence.}
+  on background in context.  Imperfect, but I think it would be a better
+  organization. RESPONSE: I'm confused about this: We talked about having a
+  background section that can be skipped by people who know the area. The next
+  section is how we categorize the mutation operators, which is a contribution,
+  so people shouldn't skip that. I think they are very different sections that
+  shouldn't be merged. Also, I did move the background of Association Rule
+  mining here. It is the last section of background that talks about support and
+  confidence.}
+
+\todo{As mentioned on slack: not all papers need to have the exact same
+  structure.  Many benefit from the current type of approach, with background
+  serving as background.  I'm arguing that this paper might benefit from an
+  alternative approach, as articulated in my original suggestion.}
 
 One of the most well known approaches for automatic program repair is the
 generate-and-validate approach which is detailed in figure~\ref{fig:generateandvalidate}. This approach starts with source code that
@@ -669,7 +676,9 @@ repair programs. A statement is  a grammar nonterminal, which in Java this trans
 some action to be carried out, such as a while loop with its corresponding body, or a method call. These tools are able to 
 apply these mutation operators to statements in the source code to 
 create candidate patches. These and several other techniques use \todo{this
-  statement is still false. RESPONSE: Why is this false? They apply randomness to create variations selecting mut ops from the search space}  randomized 
+  statement is still false. RESPONSE: Why is this false? They apply randomness
+  to create variations selecting mut ops from the search space RESPONSE
+  RESPONSE: because AE is deterministic/doesn't use randomness}  randomized 
 search for patch generation~\cite{arcuri08,bradbury10,Qi14,Weimer13}. 
 
 \subsection{Template-based mutations}
