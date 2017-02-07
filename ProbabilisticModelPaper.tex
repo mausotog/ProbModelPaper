@@ -520,13 +520,15 @@ patch candidates so all the candidates in the pool are built in a way designed
 to fix the error. We also include a more expresisve superset of mutation
 operators, beyond the transformation schemas~\cite{fan15}.  
 
-We also categorize, compare and contrast a full set of mutation operators, taking into
-account the full set of mutation operators currently used in the most widely
+The search space in automatic program repair has been growing in an ad hoc 
+manner with new approaches emerging often and without any kind of classification 
+or grouping mechanism to help us understand them and study them as groups of 
+instances with shared similarities. To tackle this problem, we categorize, 
+compare and contrast the full set of mutation operators currently used in the 
+most widely
 used state of the art approaches, such as GenProg, Prophet, PAR, AE, RSRepair,
-SPR, etc.\todo{I'm still not totally certain what we are claiming here; what
-  does this contribution do? RESPONSE: we are claiming to have categorized and
-  compared the different mutation operators from the bigger approaches RESPONSE
-  RESPONSE: Rephrase: why is this interesting/useful/contributory to human knowlede?}
+SPR, etc. 
+
 We mine
 the 500 most popular Github projects to produce a model of the probability of
 each of the possible mutation operators used in prior approaches based on 
@@ -564,25 +566,8 @@ The primary contributions of this paper thus are:
 The rest of this paper proceeds as follows:
 The following section entails the state of the art, general terminology and background knowledge for automatic program repair, in particular generation-and-validation. Section \ref{categorization} discusses how we categorize and generalize the mutation operators used in state of the art approaches in an effort to compare them. Section \ref{buildingTheModel} describes the process of how we gathered, analyzed and extracted the data necessary to build the probabilistic model. Section \ref{multEdit} is a pioneering work that discusses a new methodology to handle defects that require various edits to patch the code. Section \ref{evaluation} outlines our evaluation methodology and our benchmarks.  Finally we have a section for Discussion, Related Work, and Conclusion.
 
-\section{Background} \label{background}
-
-\todo{Suggestion: Rename this to something like ``Generate and validate repair'' or
-  something similar, add subsections, and combine it with the content currently
-  in the next section.  I think I asked you to move the association rule mining
-  background (back?) to the section on association rule mining as a subsection
-  on background in context.  Imperfect, but I think it would be a better
-  organization. RESPONSE: I'm confused about this: We talked about having a
-  background section that can be skipped by people who know the area. The next
-  section is how we categorize the mutation operators, which is a contribution,
-  so people shouldn't skip that. I think they are very different sections that
-  shouldn't be merged. Also, I did move the background of Association Rule
-  mining here. It is the last section of background that talks about support and
-  confidence.}
-
-\todo{As mentioned on slack: not all papers need to have the exact same
-  structure.  Many benefit from the current type of approach, with background
-  serving as background.  I'm arguing that this paper might benefit from an
-  alternative approach, as articulated in my original suggestion.}
+\section{Generate-and-validate repair} \label{background}
+\todo{MAU'S COMMENT: I performed the changes proposed, but I still think the Background/Categorization sections would work better. Now I feel we have a G\&V section that has two very clear background subsections and then a completely different categorization section. What are we gaining from merging those two?}
 
 One of the most well known approaches for automatic program repair is the
 generate-and-validate approach which is detailed in figure~\ref{fig:generateandvalidate}. This approach starts with source code that
@@ -600,6 +585,7 @@ of the expected behavior does not match the output of the source code as is.
   \label{fig:generateandvalidate}
 \end{figure}
 
+\subsection{Background}
 The first step of this process is to localize the error in a particular 
 statement. There is an extensive list of possible approaches in literature in 
 order to perform this tasks~\cite{Jones05,Jones02,Chen02,legoues12,Qi13}, also there are several papers that have focused on the evaluation of the test suite~\cite{Qi13,fan15}; the main focus of this paper will be the step between these two, as highlighted in figure~\ref{fig:generateandvalidate} our main focus will be Generating patch candidates.
@@ -637,6 +623,7 @@ possible approaches that can analyze this segment with different levels of certa
 requiring different characteristics from the source code and/or test 
 suite~\cite{Jones05,Jones02,Chen02,legoues12,Qi13,Qi2013,Abreu07,wong09}. 
 
+\subsection{Association rule mining}
 Regarding the association rule mining, to extract association rules from the data gathered in our study, we 
 have transformed each of the mutation operator count and replacement count from 
 each of the commits studied and created a transaction to be analyzed. A transaction in this context is a row of values that describes which mutation operators were applied in a single commit.
@@ -658,7 +645,7 @@ $supp(X) = \dfrac{|\{t \in T; X \subseteq t\}|}{|T|}$
 
 Where X is the itemset being analyzed and t is each individual transaction in the database of transactions T. 
 
-\section{Generalization and Categorization of mutation operators} 
+\subsection{Generalization and Categorization of mutation operators} 
 \label{categorization}
 
 There are several possible mutation operators that can be applied to a location 
@@ -666,7 +653,7 @@ to modify the behavior of a program. To analyze the broad
 spectrum of mutation operators we categorized them into two groups: 
 Statement-Edit and Template-Based. 
 
-\subsection{Statement-Edit mutations}
+\emph{Statement-Edit mutations:}
 There is a family of well-known approaches such as GenProg~\cite{legoues12}, 
 TrpAutoRepair\cite{Qi13}, RSRepair~\cite{Qi14}, and AE~\cite{Weimer13} in which the main technique for 
 creating candidate 
@@ -675,13 +662,9 @@ replace) which modify statements of source code to
 repair programs. A statement is  a grammar nonterminal, which in Java this translates to the smallest standalone element that expresses 
 some action to be carried out, such as a while loop with its corresponding body, or a method call. These tools are able to 
 apply these mutation operators to statements in the source code to 
-create candidate patches. These and several other techniques use \todo{this
-  statement is still false. RESPONSE: Why is this false? They apply randomness
-  to create variations selecting mut ops from the search space RESPONSE
-  RESPONSE: because AE is deterministic/doesn't use randomness}  randomized 
-search for patch generation~\cite{arcuri08,bradbury10,Qi14,Weimer13}. 
+create candidate patches. \todo{MAU'S COMMENT: I removed the whole sentence because it made it seem like all stmt-edit mut HAVE to be randomized, which is not true.}
 
-\subsection{Template-based mutations}
+\emph{Template-based mutations:}
 Template-based mutation operators is the family of approaches that have 
 predetermined templates to apply to specific sections of the code to 
 modify the behavior of the program to make it possibly fix the error in the 
@@ -870,8 +853,6 @@ selects between the mutation operators according to the probabilities described 
 a given model. To construct our model we started from the intuiton of the replacement model by Soto et al~\cite{Soto15} which counts the number of statements in before and after fix versions. We upgraded this model by analyzing the abstract syntax tree structure of the before and after fix versions, and then we expanded our model to cover a superset of mutation operators and not only replacement. Therefore, our probabilistic model is conformed by two levels: the 
 \textit{Mutation operator probabilistic model} and 
 the \textit{Replacements probabilistic model}.
-
-\todo{I think these could be labelled paragraphs rather than subsubsections. RESPONSE: Do you mean a particular latex object called Paragraph? or just a regular paragraph like this?}
 
 \emph{Mutation operator probabilistic model:}
 The \textit{Mutation operator probabilistic model} is a probabilistic model that 
