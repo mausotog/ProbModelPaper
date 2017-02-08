@@ -567,7 +567,6 @@ The rest of this paper proceeds as follows:
 The following section entails the state of the art, general terminology and background knowledge for automatic program repair, in particular generation-and-validation. Section \ref{categorization} discusses how we categorize and generalize the mutation operators used in state of the art approaches in an effort to compare them. Section \ref{buildingTheModel} describes the process of how we gathered, analyzed and extracted the data necessary to build the probabilistic model. Section \ref{multEdit} is a pioneering work that discusses a new methodology to handle defects that require various edits to patch the code. Section \ref{evaluation} outlines our evaluation methodology and our benchmarks.  Finally we have a section for Discussion, Related Work, and Conclusion.
 
 \section{Generate-and-validate repair} \label{background}
-\todo{MAU'S COMMENT: I performed the changes proposed, but I still think the Background/Categorization sections would work better. Now I feel we have a G\&V section that has two very clear background subsections and then a completely different categorization section. What are we gaining from merging those two?}
 
 One of the most well known approaches for automatic program repair is the
 generate-and-validate approach which is detailed in figure~\ref{fig:generateandvalidate}. This approach starts with source code that
@@ -622,28 +621,6 @@ a whole set of
 possible approaches that can analyze this segment with different levels of certainty and 
 requiring different characteristics from the source code and/or test 
 suite~\cite{Jones05,Jones02,Chen02,legoues12,Qi13,Qi2013,Abreu07,wong09}. 
-
-\subsection{Association rule mining}
-Regarding the association rule mining, to extract association rules from the data gathered in our study, we 
-have transformed each of the mutation operator count and replacement count from 
-each of the commits studied and created a transaction to be analyzed. A transaction in this context is a row of values that describes which mutation operators were applied in a single commit.
-
-To use Apriori we need to further clarify basic concepts used by this approach: Confidence and Support.
-
-Formally, we define Confidence as:
-
-\begin{center}
-$conf(X \implies Y) = \dfrac{supp(X \cup Y)}{supp(X)}$ 
-\end{center}
-
-Where X and Y are possible items in a transaction. In this context it is refering to mutation operators. As seen above Confidence is calculated according to its Support, where Support is an indication of how frequently the set of mutation operators (itemset) occurs in the transaction base.
-Formally, we define Support as:
-
-\begin{center}
-$supp(X) = \dfrac{|\{t \in T; X \subseteq t\}|}{|T|}$
-\end{center}
-
-Where X is the itemset being analyzed and t is each individual transaction in the database of transactions T. 
 
 \subsection{Generalization and Categorization of mutation operators} 
 \label{categorization}
@@ -1389,7 +1366,27 @@ that none of them pass the second test suite.
 %\subsection{Bugs fixed with a multi line edit within a function}
 %Last evaluation with the bugs we found had a fix
 
-\subsection{Association Rule Mining Results} \label{armRes}
+\subsection{Association Rule Mining} \label{armRes}
+Regarding the association rule mining, to extract association rules from the data gathered in our study, we 
+have transformed each of the mutation operator count and replacement count from 
+each of the commits studied and created a transaction to be analyzed. A transaction in this context is a row of values that describes which mutation operators were applied in a single commit.
+
+To use Apriori we need to further clarify basic concepts used by this approach: Confidence and Support.
+
+Formally, we define Confidence as:
+
+\begin{center}
+$conf(X \implies Y) = \dfrac{supp(X \cup Y)}{supp(X)}$ 
+\end{center}
+
+Where X and Y are possible items in a transaction. In this context it is refering to mutation operators. As seen above Confidence is calculated according to its Support, where Support is an indication of how frequently the set of mutation operators (itemset) occurs in the transaction base.
+Formally, we define Support as:
+
+\begin{center}
+$supp(X) = \dfrac{|\{t \in T; X \subseteq t\}|}{|T|}$
+\end{center}
+
+Where X is the itemset being analyzed and t is each individual transaction in the database of transactions T. 
 \emph{Mutation operator and replacement rules:}
 To create these association rules among several mutation operators, we mine the
 transactions made out of the commits created by humans in the corpus of projects
