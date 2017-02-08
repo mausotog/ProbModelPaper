@@ -502,7 +502,7 @@ generate-and-validate approaches (e.g., GenProg~\cite{legoues12},
 Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13}, RSRepair~\cite{Qi14},
 AE~\cite{Weimer13}) use probabilities to select which mutation operator
 will be applied to construct candidate patches that are either random or adapted
-from the results of a particular benchmarks.
+from the results of a particular benchmarks. The use of randomized search for patch generation is common among these and other techniques~\cite{arcuri08,bradbury10,Qi14,Weimer13}. 
 
 In reality, human developers choose some mutation operators 
 much more often than 
@@ -550,7 +550,7 @@ database and framework of reproducible real-life bugs found in large scale open
 source projects. In this final step we evaluate our model with bugs that require 
 one line to be modified to patch them. 
 
-Finally, we introduce a new approach for multi-edit repairs. Most of the successful repairs from current approaches find a patch when applying a single-edit source code change~\cite{Weimer13,Qi15,kim2013}. Patches that consist of several mutations have being understudied even when the vast majority of patches in existence are multi-edit changes. The approach we propose, takes single-edit mutation operators and predicts which operation should be applied next to create multi-edit patches.
+Finally, we introduce a new approach for multi-edit repairs. Most of the successful repairs from current approaches find a patch when applying a single-edit source code change~\cite{Weimer13,Qi15,kim2013}. Patches that consist of several mutations have been understudied even when the vast majority of patches in existence are multi-edit changes. The approach we propose, takes single-edit mutation operators and predicts which operation should be applied next to create multi-edit patches.
 
 
 The primary contributions of this paper thus are:
@@ -586,7 +586,7 @@ of the expected behavior does not match the output of the source code as is.
 
 \subsection{Background}
 The first step of this process is to localize the error in a particular 
-statement. There is an extensive list of possible approaches in literature in 
+statement. There is an extensive set of possible approaches in literature in 
 order to perform this tasks~\cite{Jones05,Jones02,Chen02,legoues12,Qi13}, also there are several papers that have focused on the evaluation of the test suite~\cite{Qi13,fan15}; the main focus of this paper will be the step between these two, as highlighted in figure~\ref{fig:generateandvalidate} our main focus will be Generating patch candidates.
 
 Once we know where the fault is located we proceed to create what we call 
@@ -639,7 +639,7 @@ replace) which modify statements of source code to
 repair programs. A statement is  a grammar nonterminal, which in Java this translates to the smallest standalone element that expresses 
 some action to be carried out, such as a while loop with its corresponding body, or a method call. These tools are able to 
 apply these mutation operators to statements in the source code to 
-create candidate patches. \todo{MAU'S COMMENT: I removed the whole sentence because it made it seem like all stmt-edit mut HAVE to be randomized, which is not true.}
+create candidate patches.
 
 \emph{Template-based mutations:}
 Template-based mutation operators is the family of approaches that have 
@@ -1387,6 +1387,7 @@ $supp(X) = \dfrac{|\{t \in T; X \subseteq t\}|}{|T|}$
 \end{center}
 
 Where X is the itemset being analyzed and t is each individual transaction in the database of transactions T. 
+
 \emph{Mutation operator and replacement rules:}
 To create these association rules among several mutation operators, we mine the
 transactions made out of the commits created by humans in the corpus of projects
