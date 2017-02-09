@@ -1139,7 +1139,9 @@ we assign all the statements, the same probability of being chosen to replace
 the statement being analyzed. We denominate the equally distributed approach 
 $TE_{n,m}$ where $\forall n,m: 1<=n<=22 \land 1<=m<=22 \land TE_{n,m} = 4.54\%$. 
 We have been analyzing the Return Statement in this particular example, as 
-detailed in figure~\ref{fig:exPredReturn}B. To get the top five choices of the 
+detailed in figure~\ref{fig:exPredReturn}B.\todo{always capitalize Figure,
+  Section, etc, anything with a ref (this is mentioned on my blog post).  Fix it
+  here and everywhere)} To get the top five choices of the 
 equally distributed schema we just pick five choices at random, since all of 
 them have the same probability, which is how the current approach handles what 
 statement to pick.
@@ -1167,7 +1169,13 @@ statement to pick.
 \begin{figure}[!h]
   \centering
     \includegraphics[scale=0.33]{sanity1}
-  \caption{Correctly predicted percentage by applying 10 fold cross validation}
+  \caption{Correctly predicted percentage by applying 10 fold cross
+    validation. \todo{expand this caption to draw conclusions, and stop saying ``applying'' with
+      respect to 10 fold cross validation because it's not something one
+      applies, as discussed.  Additionally I think this graph ight make more
+      sense as a table, with variances and averages included.  The legend to the
+      side is honestly the important part, and also too small.  Include an
+      aggregate/total row.}.   }
   \label{fig:results10fcv}
 \end{figure}
 
