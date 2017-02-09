@@ -944,26 +944,43 @@ the different statement types.
 
 Single-mutation (or single-edit) approaches are historically the most 
 common subject of analysis in 
-state of the art bug-fixing approaches
-\cite{Qi15,fan15,kim2013,Long2016,legoues12,Qi13,Qi14,xuan16}.
+state of the art bug-fixing
+approaches~\cite{Qi15,fan15,kim2013,Long2016,Qi13,Qi14}.
+\todo{Don't cite GenProg, Par, or HDRepair on this.You do need to say something like ``even
+  techniques that can allow multi-edit changes (like GenProg) typically find
+  patches that reduce to single-edit changes.''  In fact, add that sentence
+  here, with appropriate references.   I also don't think you're
+  citing the correct Qi15 or Qi13 here.  }
 In these studies, most of the changes performed that result in 
-successful patches are single edit changes, and this is ok for a initial stage 
-of automatic program repair approach. This covers basic patches that humans 
-perform, but the truth is that most bug fixes that humans perform in real 
-software systems are much more complex and go a lot deeper than a single edit 
-change. 
+successful patches are single edit changes.\todo{There are references here;
+  fixing this sentence with respect to the first sentence is really what I'm
+  asking for in the above todo.}  Although such single-edit patches can be
+sufficient to repair non-trivial bugs in real software, many bug fixes in real
+software require multiple edits.\todo{reference?  Must be something.}
 
-We go one step further to give a initial analysis of multi edit 
-source code changes by extracting association rules between single edit changes 
-to create chains of single edit changes the way humans create them.
+\todo{Missing piece of this argument: Why is this hard?  The answer to this question motivates the use of association
+  rule mining, so add a few sentences.}
+
+As a first step towards mitigating this limitation, we propose 
+an initial analysis of multi-edit 
+source code changes by mining a more expressive model of common changes. In
+particular, we extracting \emph{association rules} between single edit changes 
+to model chains of single edit changes, capturing the way humans create them.
 %
 We use the 
 well known association rule mining algorithm
-Apriori~\cite{Agrawal94,Liu98,Zaki2000}, which identifies the frequent 
-individual items in the set of transactions (commits in this context) and then we extend these sets into 
+Apriori~\cite{Agrawal94,Liu98,Zaki2000}, which identifies frequent 
+individual items in sets of transactions (commits, in our context).  We extend these sets into 
 larger sets as long as those item sets appear sufficiently often in the database 
 of transactions, which in our case would be the database of transactions created 
-by each of the commits studied. We have divided our association rule mining to be built one from each of the models as described in section~\ref{armRes}.
+by each of the commits studied. We have divided our association rule mining to
+be built one from each of the models as described in section~\ref{armRes}. 
+\todo{I'm afraid this explanation isn't really working for me, and I think it's
+  because you moved the background and explanation to the ARM section in
+  evaluation.  This may have been because I was unclear, I apologize.  Please
+  integrate that content here (what is ARM?  How does it work?  What are our
+  metrics?).  The only thing that should be in evaluation are the actual
+  results.} 
 
 \section{Evaluation} \label{evaluation}
 
