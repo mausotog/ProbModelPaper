@@ -1193,13 +1193,10 @@ through the different folds when using the probabilistic model.
 \subsection{Case study}
 \label{sec:casestudy}
 
-After performing the 10 fold cross validation, we know that the model built by 
-gathering cases mined from Github predicts with very high accuracy all the 
-subsets of the data gathered, which implies that the data is consistent among 
-the folds and outperforms the current equally distributed model in every case. 
-
-The natural next step would be to try the model with an example taken from 
-outside of the collected cases from Github. Therefore we evaluated our model 
+After evaluating the model's predictive power in isolation, we assess the
+model's utility in a repair algorithm on a small case study example, constructed
+to differ from the code used in the model.  Therefore we evaluated our model
+\todo{model, or a repair technique that uses the model?}
 with an example of a basic bug in a method as shown in figure~\ref{fig:initialExample}. The purpose of this method is to calculate the median 
 of three numbers, and there is a bug as indicated by the highlighted text where 
 instead of $ret = z;$ it should be $ret = x;$ to have a correct output 
@@ -1248,8 +1245,14 @@ for all cases.
 %  \label{fig:initialExample}
 %\end{figure}
 
-To be able to do this, we restructured the code of the tool ``GenProg4Java",\footnote{https://bitbucket.org/clegoues/genprog4java/} which is the Java version of the 
-well known tool Genprog~\cite{legoues12}. This tool provides the work-flow 
+To be able to do this, we forked and extended an open-source Java version of the 
+well known\todo{we don't need to call it well known every time it's mentioned,
+  it sounds braggy once you know who wrote the paper.  Please remove it here,
+  and then this todo.} tool GenProg~\cite{legoues12}.\todo{I might actually cite the TSE
+  genprog paper rather than the ICSE 12 paper and also, we should leave the
+  footnote out because if anyone goes there and looks at the commit log they
+  will see that it's obvious that we did this paper.  That's why I killed the
+  footnote that existed previously.} This tool provides the work-flow 
 for many generate-and-validate approaches to be implemented. We restructured the 
 tool to be able to select the mutation operators between a 
 probabilistic model, and the default (equally distributed).
