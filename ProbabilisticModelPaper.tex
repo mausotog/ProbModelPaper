@@ -479,7 +479,7 @@ Repairing errors is one of the most expensive\cite{Tassey02,Britton13} and
 resource consuming~\cite{Weiss07} tasks in 
 the software development process, especially for large projects in modern 
 object-oriented languages that have to comply with standards of scalability and 
-maintainability~\cite{Liblit03,Anvik05}. \todo{I'm not sure why you've chosen these two references for this claim...I think Liblit 03 targets C...what's your reasoning?}
+maintainability~\cite{Liblit03,Anvik05}. \todo{I'm not sure why you've chosen these two references for this claim...I think Liblit 03 targets C...what's your reasoning? RESPONSE: Liblit talks about how large software systems are deployed with bugs and the resources for improving software is always limited}
 %
 There have been efforts to automate this complex task by 
 building automatic program repair tools that are able to automatically repair 
@@ -502,7 +502,7 @@ generate-and-validate approaches (e.g., GenProg~\cite{legoues12},
 Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13}, RSRepair~\cite{Qi14},
 AE~\cite{Weimer13}) use probability distributions to inform the selection of which mutation operator
 will be applied to construct candidate patches that are either random or adapted
-from the results of a particular benchmarks. The use of randomized search for patch generation is common among these and other techniques~\cite{arcuri08,bradbury10,Qi14,Weimer13}. \todo{see my slack messages.  AE.  Does.  Not.  Use.  Random.  Search.}
+from the results of a particular benchmarks. The use of randomized search for patch generation is common among these and other techniques~\cite{arcuri08,bradbury10,Qi14,Weimer13}. \todo{see my slack messages.  AE.  Does.  Not.  Use.  Random.  Search. RESPONSE: I rephrased this sentence especifically to exclude AE. It says the use of randomized search is common. It doesn't say they all have it. Should I rephrase it again to say something like: Some of these approaches apply randomized search?}
 \todo{add a footnote somewhere in this or the previous paragraph that says we exclude from consideration semantic approaches.}
 
 In reality, human developers choose some mutation operators 
