@@ -671,36 +671,37 @@ Section~\ref{relatedWork}.
 \subsection{Generate and validate mutation operators} 
 \label{categorization}
 
-There are several possible mutation operators that can be applied to a location 
-to modify the behavior of a program. To analyze the broad 
-spectrum of mutation operators we categorized them into two groups: 
+There are a number possible mutation operators that can be applied to a location 
+to modify the behavior of a program.  We categorize those used in a cross
+section of state-of-the-art techniques into two groups: 
 Statement-Edit and Template-Based. 
 
 \emph{Statement-Edit mutations:}
-There is a family of well-known approaches such as GenProg~\cite{legoues12}, 
-TrpAutoRepair\cite{Qi13}, RSRepair~\cite{Qi14}, and AE~\cite{Weimer13} in which the main technique for 
-creating candidate 
-patches is by applying coarse grained mutation operators (such as append, delete, or 
+One family of repair approaches, including GenProg~\cite{legoues12}, 
+TrpAutoRepair\cite{Qi13},\todo{Is this the right Qi14?} RSRepair~\cite{Qi14}, and AE~\cite{Weimer13},
+create candidate 
+patches by applying coarse-grained mutation operators (such as append, delete, or 
 replace) which modify statements of source code to 
-repair programs. A statement is  a grammar nonterminal, which in Java this translates to the smallest standalone element that expresses 
-some action to be carried out, such as a while loop with its corresponding body, or a method call. These tools are able to 
-apply these mutation operators to statements in the source code to 
-create candidate patches.
+repair programs. These prior techniques target the C programming language, where
+a statement is grammar nonterminal corresponding intuitively to blocks,
+simple statements terminating
+with a semicolon or compound statements corresponding to control flow or
+loops. In Java, statements conceptually map to program elements expressing
+some action to be carried out, including blocks,  while loops, or single-line
+method calls. \todo{mention where the replace/append code comes from in these
+  operators for these techniques.}
 
 \emph{Template-based mutations:}
-Template-based mutation operators is the family of approaches that have 
-predetermined templates to apply to specific sections of the code to 
-modify the behavior of the program to make it possibly fix the error in the 
-code being analyzed. In this family we have well known techniques such as PAR~\cite{kim2013}, 
+Template-based mutation operators describe a family of approaches that instantiate
+predetermined templates, more complicated than those in the first family of
+approaches, at applicable code locations.  This family includes PAR~\cite{kim2013}, 
 SPR~\cite{fan15}, and 
 Prophet~\cite{Long2016}.
- 
-PAR is the product of a study in which researchers examined a large number of 
+ PAR is the product of a study of a large number of 
 human 
-created patches and abstracted 10 different templates to be the most 
-commonly used changes that human programmers perform to fix their 
-code~\cite{kim2013}.
-The 10 templates which they considered in their approach are the ones detailed in Table~\ref{approachTemplates} Top.
+created patches, from which human annotators abstracted 10 different templates to cover
+the most commonly-used changes in bug-fixing practice.
+The 10 considered templates are detailed in the top half of Table~\ref{approachTemplates}.
 
 \begin{table}[ht]
   \centering
@@ -738,19 +739,22 @@ The 10 templates which they considered in their approach are the ones detailed i
   \label{approachTemplates}
 \end{table}
 
-In an effort to provide completeness, we also include 6 extra templates that are 
-mentioned in the website of this 
-approach\footnote{\url{https://sites.google.com/site/autofixhkust/home/fix-templates}} 
-but aren't mentioned in the paper\cite{kim2013}. These extra templates provide new mutation operators that helps us compare and generalize to the other approaches as especified in Table~\ref{approachTemplates} Middle.
+In the interest of completeness, we also include six extra templates 
+mentioned on the website associated with the Par
+approach.\footnote{\url{https://sites.google.com/site/autofixhkust/home/fix-templates}} 
+These extra templates provide new mutation operators that helps us compare and
+generalize to the other approaches; they are shown in the middle segment of
+Table~\ref{approachTemplates} Middle. 
+The SPR and Prophet approaches make use of a set of transformation schemas,
+shown in the Bottom section of Table~\ref{approachTemplates}.
 
-Because of this, we consider a total of 16 PAR templates. There are other well known techniques in this domain, such as the SPR 
-approach~\cite{fan15}, which is composed of a set of transformation schemas as entailed in Table~\ref{approachTemplates} Bottom.
-
-These transformation schema can be seen as a generalization of some of the PAR 
-templates, for example, ``Condition Introduction" can be seen as a superset of 
-the corresponding templates in the PAR approach: Range Checker, Collection Size 
-Checker, Class Cast Checker, and Null Checker. ``Condition Refinement" can be 
-seen as a superset of 
+\todo{Find a way to typeset the names of the par templates and transformatio
+  nschemas so they don't look the same as the other text.  Or quotes.  Or
+  italics.  Or something.}
+Some of the SPR/Prophet transformation schema can be seen as a generalization of certain PAR 
+templates. For example, ``Condition Introduction" can be seen as a superset of 
+Range Checker, Collection Size 
+Checker, Class Cast Checker, and Null Checker. ``Condition Refinement" includes
 Expression Adder and Remover. ``Insert Initialization" can be 
 generalized from Object Initializer, Upper Bound Setter and Lower Bound Setter; ``Conditional Control Flow Introduction" can be 
 seen as a subset of Sequence Exchanger;
@@ -759,18 +763,20 @@ Replacer, Parameter Replacer, Castee Mutator and Expression Changer; and ``Copy
 and Replace" can be matched to Expression Adder. 
 
 We also considered the program modification tool Kali~\cite{Qi15}, whose
-templates can be seen as subsets of some of the PAR templates or the extensions
-of the PAR templates mentioned above, for example Redirect Branch can be seen as
-a subset of ``Expression Changer", and Insert Return and Remove Statement are
+templates correspond to subsets of certain PAR templates their extensions. 
+For example, Redirect Branch can be seen as
+a subset \todo{Do you mean subset?}  of ``Expression Changer", and Insert Return and Remove Statement are
 subsets of ``Expression Adder and Remover" accordingly. In the same way, we find
 similar mutation operators that can be seen as subsets of the extensions of the
 Par templates in studies such as~\cite{Offutt96,Offutt06}. 
 
-There is enough similarity between these approaches that they can be grouped 
-into one category. We have chosen the PAR templates to represent this category 
+To summarize, these approaches have significant similarities between their
+included templates.  We have chosen the PAR templates to represent this category 
 since these templates provide a more concrete description of how the code is 
-being changed, in order for us to replicate it; also, as mentioned before, all the SPR, Prophet and Kali templates are represented by one or several of the PAR templates, but not viceversa; and also the PAR templates represent templates specifically for the Java language, which is a common ground for the rest of the 
-approaches considered and the benchmarks to evaluate the approach on.
+being changed, enabling replication. As mentioned, 
+the SPR, Prophet and Kali templates are represented by one or several of the PAR
+templates, but not vice versa.  Finally, the PAR templates naturally target
+Java, the subject of our study. 
 
 
 \section{Building the model} \label{buildingTheModel}
