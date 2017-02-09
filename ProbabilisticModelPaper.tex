@@ -503,6 +503,7 @@ Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13}, RSRepair~\cite{Qi14},
 AE~\cite{Weimer13}) use probability distributions to inform the selection of which mutation operator
 will be applied to construct candidate patches that are either random or adapted
 from the results of a particular benchmarks. The use of randomized search for patch generation is common among these and other techniques~\cite{arcuri08,bradbury10,Qi14,Weimer13}. \todo{see my slack messages.  AE.  Does.  Not.  Use.  Random.  Search. RESPONSE: I rephrased this sentence especifically to exclude AE. It says the use of randomized search is common. It doesn't say they all have it. Should I rephrase it again to say something like: Some of these approaches apply randomized search?}
+
 \todo{add a footnote somewhere in this or the previous paragraph that says we exclude from consideration semantic approaches.}
 
 In reality, human developers choose some mutation operators 
@@ -524,8 +525,9 @@ The search space in automatic program repair, including the various mutation
 operators used, has been growing in a relatively ad hoc 
 manner. We mitigate this effect by categorizing and comparing a superset of
 mutation operators in use in a number of 
-state-of-the-art approaches, including GenProg, Prophet, PAR, AE, RSRepair,
-SPR, etc. \todo{add references for each of those.}
+state-of-the-art approaches, including GenProg~\cite{legoues12}, RSRepair~\cite{Qi14}, AE~\cite{Weimer13}, PAR~\cite{kim2013}, 
+SPR~\cite{fan15},
+Prophet~\cite{Long2016}, etc.
 We then mine
 the 500 most popular Github Java projects to produce a model of the probability of
 each of the possible mutation operators used in prior approaches based on 
@@ -537,7 +539,7 @@ to fix bugs in real world projects.
 
 We evaluate this approach both on its own, by evaluating the predictive power of
 the model by analyzing the number of correctly predicted mutation
-operators\todo{don't need to mention the xvalidation in the intro; it's implied},
+operators,
 and as part of a repair algorithm, by applying the model to predict independent
 instances. We demonstrate this algorithm with a subset of included operators in
 a case study setting.  We then evaluate an APR tool with the full set of mutation
@@ -554,10 +556,10 @@ successful repairs from current approaches are
 single-edit~\cite{Weimer13,Qi15,kim2013}.\todo{there's another reference
   here...maybe something from Arcuri and Briand circa 2011 that analyzed
   success?  Other papers reference it...check the Angelix paper, I think it
-  probably cites it somewhere.}  Patches
+  probably cites it somewhere. RESPONSE: Are you talking about this paper?: Adaptive random testing: an illusion of effectiveness? Arcuri and Briand ISSTA'11}  Patches
 consisting of several mutations have been understudied even when the vast majority
-of patches in existence are multi-edit changes.\todo{easy reference here, maybe?
-   Something from the MSR community?  Someone must have studied this.}  We
+of patches in existence are multi-edit changes~\cite{Soto15}.\todo{easy reference here, maybe?
+   Something from the MSR community?  Someone must have studied this. RESPONSE: We did :)}  We
  propose and initially validated an approach that predicts from a given 
 single-edit mutation which operation should be applied
 next to create multi-edit patches. 
@@ -583,7 +585,7 @@ The primary contributions of this paper thus are:
     analyzed. 
   \item \textbf{Evidence:} Evaluation of the probabilistic model in several
     different benchmarks, including a large number of real life bugs from well
-    known open source projects.  \todo{High level conclusions?}
+    known open source projects. We conclude that by creating candidate patches using human behavior we are able to find patches faster and we found that the patch creation process benefits from combining the mutation operator categories, instead of isolating the mutation operator pool to a single category. 
   \item \textbf{Multi-edit repair approach} A proposed technique to construct 
     bug-fixing patches requiring several mutations by mining and then applying association
     rules from a large set of historical bug fixes. 
@@ -592,31 +594,25 @@ The primary contributions of this paper thus are:
 The rest of this paper proceeds as follows:
 The following section entails the state of the art, general terminology and
 background knowledge for automatic program repair, in particular
-generation-and-validation. Section~\ref{categorization} \todo{always include a
-  tilde/non breaking space between things liek Section, Figure, etc and the ref
-  tag that follows it.  I added one; please add the rest.} discusses how we
+generation-and-validation. Section~\ref{categorization} discusses how we
 categorize and generalize the mutation operators used in state of the art
-approaches in an effort to compare them. Section \ref{buildingTheModel}
+approaches in an effort to compare them. Section~\ref{buildingTheModel}
 describes the process of how we gathered, analyzed and extracted the data
-necessary to build the probabilistic model. Section \ref{multEdit} is a
+necessary to build the probabilistic model. Section~\ref{multEdit} is a
 pioneering work that discusses a new methodology to handle defects that require
-various edits to patch the code. Section \ref{evaluation} outlines our
+various edits to patch the code. Section~\ref{evaluation} outlines our
 evaluation methodology and our benchmarks.  Finally, we have a section for
-Discussion, Related Work, and Conclusion. \todo{please add section refs to each
-  of these.}
+Discussion (Section~\ref{discussion}), Related Work (Section~\ref{relatedWork}), and Conclusion (Section~\ref{conclusion}).
 
-\section{Generate-and-validate repair and operators} 
-\label{background}
+\section{Generate-and-validate repair} \label{background}
 
-In this section, we outline generate and validate repair at a high level
-(Section~\ref{sec-paradigm}), to provide necessary background and situation our
-work, and then detail and categorize the mutation operators used in the
-state-of-the-art and that we model, mine, and leverage in our approach
-(Section~\ref{categorization}).  
+One of the most well known approaches for automatic program repair is the
+generate-and-validate approach which is detailed in figure~\ref{fig:generateandvalidate}. This approach starts with source code that
+has one or various bugs to be fixed, and a test suite which contains passing
+test cases to guide the expected behavior of the program of the program, and failing test 
+cases which expose the behavior of the program that is expected but the output
+of the expected behavior does not match the output of the source code as is.
 
-
-\subsection{Paradigm}
-\label{sec-paradigm}
 
 
 \begin{figure}[!h]
@@ -626,82 +622,77 @@ state-of-the-art and that we model, mine, and leverage in our approach
   \label{fig:generateandvalidate}
 \end{figure}
 
-Figure~\ref{fig:generateandvalidate} diagrams the basic generate and validate
-program repair paradigm. This approach starts with source code that
-has one or various bugs to be fixed, and a test suite with passing
-test cases that expose expected program behavior that should not change, and failing test 
-cases which expose the buggy behavior that should be repaired.  
+\subsection{Background}
+The first step of this process is to localize the error in a particular 
+statement. There is an extensive set of possible approaches in literature in 
+order to perform this tasks~\cite{Jones05,Jones02,Chen02,legoues12,Qi13}, also there are several papers that have focused on the evaluation of the test suite~\cite{Qi13,fan15}; the main focus of this paper will be the step between these two, as highlighted in figure~\ref{fig:generateandvalidate} our main focus will be Generating patch candidates.
 
-The first step of this process is to localize the error to a smaller set of
-candidate program statements. There is an extensive set of possible approaches
-in the fault localization literature that can be adapted to this task
-task~\cite{Jones05,Jones02,Chen02,Qi13},\todo{why were/are you
-  citing my ICSE 2012 paper on fault localization?  Also this is the wrong Qi 2013;
-you mean reference [44] I think}.  A given candidate faulty statement informs
-the construction of 
-``candidate patches", produced by modifying the program at such a
-statement. Candidate patches induce variations of the original program 
-that seek to repair the bug in question. To 
-create such a candidate patch, these techniques typically identify a subset of
-available mutation operators tha are applicable to a given location (\todo{add
-  a quick parenthetical example that demonstrates how an edit might not apply.}
+Once we know where the fault is located we proceed to create what we call 
+``Candidate patches". Candidate patches are variations of the original program 
+which may or may not be a patch for the bug(s) we are trying to fix. To 
+create candidate patches we analyze which mutation operators can
+be applied to that specific location; or if the context of that location doesn't
+allow some mutation operators to be used. We apply them and once this process is finalized, as a result, there is a set of possible 
+mutation operators that
+can be applied to the chosen location.
 
-Each candidate patch is applied to the input program \todo{Note that a candidate
-  is a patch, not a program, and thus cannot be run on its own, but must be
-  applied first; I've fixed your phrasing here but be sure to maintain
-  consistency.  You may delete this todo once you've read it.}, which is run on
-one or more of the input test cases for evaluation.  If a patch leads the
-program to 
-pass all the test cases in the test suite, including those originally witnessing
-the bug, the candidate patch is presented as a likely repair for the bug. 
-If it is not able to pass all the test cases in 
-the test suite, then it\todo{unclear antecedent} will go back to creating more candidate patches and will 
+Once the tool has a set of candidate patches, it will run the test suite on each 
+of those candidate patches. If it is able to find a candidate patch that can 
+pass all the test cases in the test suite, that candidate patch will be 
+considered a patch of the bug. If it is not able to pass all the test cases in 
+the test suite, then it will go back to creating more candidate patches and will 
 continue to do so until it reaches a stopping point, which may be a certain user 
 defined number of generations or a user defined clock time limit.
 
-Techniques vary in how they identify and choose between candidate mutation
-operators, and how they travers ethe search space otherwise. \todo{talk about
-  the different selection mechanisms, and mention different search heuristics or
-  approaches.  For example, genetic programming is different from random search
-  is different from how either Prophet or AE select between patches.}
+In contrast to generate-and-validate there exist other techniques used for 
+automatic program repair such as Synthesis-Based program 
+repair~\cite{jin11,pei14} which uses constraints to build 
+correct-by-construction patches via formal verification, inferred or 
+programmer-provided contracts,
+or specifications~\cite{jin11,wei10}. Also in contrast to search based approaches, there exist semantic based approaches such as SemFix~\cite{nguyen13}, DirectFix~\cite{mechtaev15} and SearchRepair~\cite{ke15} which use semantic analysis to create patches for buggy code.
 
-We discuss other techniques for automatic program repair in
-Section~\ref{relatedWork}.
+Regarding generate-and-validate, in
+order to select which mutation operator will be used, the 
+first step is to define in what section of the code the fault is located. This can be determined in various ways, and 
+there is 
+a whole set of
+possible approaches that can analyze this segment with different levels of certainty and 
+requiring different characteristics from the source code and/or test 
+suite~\cite{Jones05,Jones02,Chen02,legoues12,Qi13,Qi2013,Abreu07,wong09}. 
 
-\subsection{Generate and validate mutation operators} 
+\subsection{Generalization and Categorization of mutation operators} 
 \label{categorization}
 
-There are a number possible mutation operators that can be applied to a location 
-to modify the behavior of a program.  We categorize those used in a cross
-section of state-of-the-art techniques into two groups: 
+There are several possible mutation operators that can be applied to a location 
+to modify the behavior of a program. To analyze the broad 
+spectrum of mutation operators we categorized them into two groups: 
 Statement-Edit and Template-Based. 
 
 \emph{Statement-Edit mutations:}
-One family of repair approaches, including GenProg~\cite{legoues12}, 
-TrpAutoRepair\cite{Qi13},\todo{Is this the right Qi14?} RSRepair~\cite{Qi14}, and AE~\cite{Weimer13},
-create candidate 
-patches by applying coarse-grained mutation operators (such as append, delete, or 
+There is a family of well-known approaches such as GenProg~\cite{legoues12}, 
+TrpAutoRepair\cite{Qi13}, RSRepair~\cite{Qi14}, and AE~\cite{Weimer13} in which the main technique for 
+creating candidate 
+patches is by applying coarse grained mutation operators (such as append, delete, or 
 replace) which modify statements of source code to 
-repair programs. These prior techniques target the C programming language, where
-a statement is grammar nonterminal corresponding intuitively to blocks,
-simple statements terminating
-with a semicolon or compound statements corresponding to control flow or
-loops. In Java, statements conceptually map to program elements expressing
-some action to be carried out, including blocks,  while loops, or single-line
-method calls. \todo{mention where the replace/append code comes from in these
-  operators for these techniques.}
+repair programs. A statement is  a grammar nonterminal, which in Java this translates to the smallest standalone element that expresses 
+some action to be carried out, such as a while loop with its corresponding body, or a method call. These tools are able to 
+apply these mutation operators to statements in the source code to 
+create candidate patches.
 
 \emph{Template-based mutations:}
-Template-based mutation operators describe a family of approaches that instantiate
-predetermined templates, more complicated than those in the first family of
-approaches, at applicable code locations.  This family includes PAR~\cite{kim2013}, 
+Template-based mutation operators is the family of approaches that have 
+predetermined templates to apply to specific sections of the code to 
+modify the behavior of the program to make it possibly fix the error in the 
+code being analyzed. In this family we have well known techniques such as PAR~\cite{kim2013}, 
 SPR~\cite{fan15}, and 
 Prophet~\cite{Long2016}.
- PAR is the product of a study of a large number of 
+ 
+PAR is the product of a study in which researchers examined a large number of 
 human 
-created patches, from which human annotators abstracted 10 different templates to cover
-the most commonly-used changes in bug-fixing practice.
-The 10 considered templates are detailed in the top half of Table~\ref{approachTemplates}.
+created patches and abstracted 10 different templates to be the most 
+commonly used changes that human programmers perform to fix their 
+code~\cite{kim2013}.
+The 10 templates which they considered in their approach are the ones detailed in table~\ref{approachTemplates} Top.
 
 \begin{table}[ht]
   \centering
@@ -739,22 +730,19 @@ The 10 considered templates are detailed in the top half of Table~\ref{approachT
   \label{approachTemplates}
 \end{table}
 
-In the interest of completeness, we also include six extra templates 
-mentioned on the website associated with the Par
-approach.\footnote{\url{https://sites.google.com/site/autofixhkust/home/fix-templates}} 
-These extra templates provide new mutation operators that helps us compare and
-generalize to the other approaches; they are shown in the middle segment of
-Table~\ref{approachTemplates} Middle. 
-The SPR and Prophet approaches make use of a set of transformation schemas,
-shown in the Bottom section of Table~\ref{approachTemplates}.
+In an effort to provide completeness, we also include 6 extra templates that are 
+mentioned in the website of this 
+approach\footnote{\url{https://sites.google.com/site/autofixhkust/home/fix-templates}} 
+but aren't mentioned in the paper\cite{kim2013}. These extra templates provide new mutation operators that helps us compare and generalize to the other approaches as especified in table~\ref{approachTemplates} Middle.
 
-\todo{Find a way to typeset the names of the par templates and transformatio
-  nschemas so they don't look the same as the other text.  Or quotes.  Or
-  italics.  Or something.}
-Some of the SPR/Prophet transformation schema can be seen as a generalization of certain PAR 
-templates. For example, ``Condition Introduction" can be seen as a superset of 
-Range Checker, Collection Size 
-Checker, Class Cast Checker, and Null Checker. ``Condition Refinement" includes
+Because of this, we consider a total of 16 PAR templates. There are other well known techniques in this domain, such as the SPR 
+approach~\cite{fan15}, which is composed of a set of transformation schemas as entailed in table~\ref{approachTemplates} Bottom.
+
+These transformation schema can be seen as a generalization of some of the PAR 
+templates, for example, ``Condition Introduction" can be seen as a superset of 
+the corresponding templates in the PAR approach: Range Checker, Collection Size 
+Checker, Class Cast Checker, and Null Checker. ``Condition Refinement" can be 
+seen as a superset of 
 Expression Adder and Remover. ``Insert Initialization" can be 
 generalized from Object Initializer, Upper Bound Setter and Lower Bound Setter; ``Conditional Control Flow Introduction" can be 
 seen as a subset of Sequence Exchanger;
@@ -763,20 +751,18 @@ Replacer, Parameter Replacer, Castee Mutator and Expression Changer; and ``Copy
 and Replace" can be matched to Expression Adder. 
 
 We also considered the program modification tool Kali~\cite{Qi15}, whose
-templates correspond to subsets of certain PAR templates their extensions. 
-For example, Redirect Branch can be seen as
-a subset \todo{Do you mean subset?}  of ``Expression Changer", and Insert Return and Remove Statement are
+templates can be seen as subsets of some of the PAR templates or the extensions
+of the PAR templates mentioned above, for example Redirect Branch can be seen as
+a subset of ``Expression Changer", and Insert Return and Remove Statement are
 subsets of ``Expression Adder and Remover" accordingly. In the same way, we find
 similar mutation operators that can be seen as subsets of the extensions of the
 Par templates in studies such as~\cite{Offutt96,Offutt06}. 
 
-To summarize, these approaches have significant similarities between their
-included templates.  We have chosen the PAR templates to represent this category 
+There is enough similarity between these approaches that they can be grouped 
+into one category. We have chosen the PAR templates to represent this category 
 since these templates provide a more concrete description of how the code is 
-being changed, enabling replication. As mentioned, 
-the SPR, Prophet and Kali templates are represented by one or several of the PAR
-templates, but not vice versa.  Finally, the PAR templates naturally target
-Java, the subject of our study. 
+being changed, in order for us to replicate it; also, as mentioned before, all the SPR, Prophet and Kali templates are represented by one or several of the PAR templates, but not viceversa; and also the PAR templates represent templates specifically for the Java language, which is a common ground for the rest of the 
+approaches considered and the benchmarks to evaluate the approach on.
 
 
 \section{Building the model} \label{buildingTheModel}
@@ -1351,9 +1337,9 @@ Math 2, Math 5, Math 10, Time 4, Time 16 and Time 19.}
 
 Several evaluations in the past use an off-the-shelf fault localization technique when evaluating a new way to navigate the search space, which introduces a lot of noise and randomness to the result of the patch creation and selection process. To diminish the degree of randomness in this experiment, we will be using Human Injected Fault Localization, a technique in which the researcher indicates to the APR approach the section of the code that contains the defect. In these cases we picked the faulty statements to be the statements which the human developers modified to patch the code.
 
-From these 15 bugs we were able to find patches for 5 of them as described in table \ref{tab:singleLineBugs}. It is also worth mentioning that the numbers shown in the table are the mean from the solutions found running the tool with 20 different seeds. 
+From these 15 bugs we were able to find patches for 5 of them as described in table~\ref{tab:singleLineBugs}. It is also worth mentioning that the numbers shown in the table are the mean from the solutions found running the tool with 20 different seeds. 
 
-In the first row of Table \ref{tab:singleLineBugs} (Closure \#10) we can see that in all three comparisons (Statement-Edit Only, Template-Based Only, and All mutations), the approach using the probabilisitc model performs better than its counterpart using the equally distributed model. This happens as well in all cases of bugs Math \#2 and Time \#19 except for the cases where no patch was found. Different from this, in bugs Chart \#1 and Closure \#18 the equally distributed approach finds a patch faster in average. This is due to the fact that removal mutations such as Deletion and Expression Changer are more likely to be picked by the equally distributed model than the probabilistic model since developers use these editions less often than others. But these editions have been seen in the past to make the test cases pass even if the edition did not fixed the bug as per the opinion of developers as indicated in~\cite{kim2013}.
+In the first row of table~\ref{tab:singleLineBugs} (Closure \#10) we can see that in all three comparisons (Statement-Edit Only, Template-Based Only, and All mutations), the approach using the probabilisitc model performs better than its counterpart using the equally distributed model. This happens as well in all cases of bugs Math \#2 and Time \#19 except for the cases where no patch was found. Different from this, in bugs Chart \#1 and Closure \#18 the equally distributed approach finds a patch faster in average. This is due to the fact that removal mutations such as Deletion and Expression Changer are more likely to be picked by the equally distributed model than the probabilistic model since developers use these editions less often than others. But these editions have been seen in the past to make the test cases pass even if the edition did not fixed the bug as per the opinion of developers as indicated in~\cite{kim2013}.
 
 Our results also show that applying mutation operators from both categories together, benefits the process by finding the patch faster, than when restricting the mutation operator pool to just one of the categories. For the Statement-Edit category: 3 out of 6 were fixed faster when combining it with Template-Based mutations, and 3 out of 6 were slower. For the Template-Based category: 4 out of 8 were fixed faster when combining it with Statemtent-Edit mutations, 2 out of 8 were the same, and 2 out of 8 were slower.
 
@@ -1406,7 +1392,7 @@ code to get a different test suite\footnote{Available at: https://goo.gl/YbFeql}
 than the one used to guide the search.  
 
 We then ran this second test suite on the patch generated by both models and we
-obtained the results noted in Table \ref{tab:singleLineBugs}. We noticed a
+obtained the results noted in table~\ref{tab:singleLineBugs}. We noticed a
 constant behavior regarding the different sets of mutations. In this sample, if
 a model is able to find a patch faster, then that also happens independent of
 the mutation set used. We notice that in the majority of cases when the
@@ -1529,7 +1515,7 @@ the relationship described by the rules, happen often, but confidence is
 sacrificed, which means that there will be a higher percentage of the 
 transactions in which the antecedent is present, but the consequent is not. 
 
-Regarding Table \ref{tab:singleLineBugs}, there are two of these bugs in which
+Regarding table~\ref{tab:singleLineBugs}, there are two of these bugs in which
 the equally distributed model performed better than the probabilistic
 model. This is due to the fact, that the mutations needed to be applied in the
 source code for it to pass all the test cases, are mutation operators that are
@@ -1573,18 +1559,6 @@ order to counter the
 risk of overfitting to a small set of training projects as performed before, our 
 current study trains the model with 500 projects, which covers a vast diversity 
 of dominions and bug fixing styles.
-
-
-Other techniques used for
-automatic program repair such as Synthesis-Based program
-repair~\cite{jin11,pei14} which uses constraints to build
-correct-by-construction patches via formal verification, inferred or
-programmer-provided contracts, or
-specifications~\cite{smith15}.\todo{...smith15?  What?} Also in contrast to
-search based approaches, there exist semantic based approaches such as
-SemFix~\cite{nguyen13}, DirectFix~\cite{mechtaev15} and SearchRepair~\cite{ke15}
-which uses semantic code analysis (and in the latter case, search) to inform
-patch construction.
 
 
 \section{Conclusion} \label{conclusion}
