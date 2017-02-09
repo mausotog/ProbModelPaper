@@ -1026,10 +1026,15 @@ are trying to predict). \todo{Something about the phrasing here is confusing to
   explaining it in the simplest way possible.}
 
 Since the main focus of this step is to check whether the behavior of the 
-current approaches would perform faster with the probabilistic model as opposed 
+current approaches would perform faster\todo{I don't think this is the main
+  focus of this first step; if it were, we'd be evaluating repair speed.
+  Rephrase, something like ``our overall goal is to...''| with the probabilistic model as opposed 
 to the current equally distributed scheme; we rank the first five choices each 
 of the models would take and see how many of the instances in the testing data 
-match those first five guesses. Five guesses is the point of inflection where the maximum difference between the two approaches happen. After five guesses, the slope starts to flatten, which is why we picked five guesses as our comparison point.
+match those first five guesses. Five guesses is the point of inflection where
+the maximum difference between the two approaches happen. After five guesses,
+the slope starts to flatten, which is why we picked five guesses as our
+comparison point.\todo{Hm.  Is this valid?  Can you expand on this explanation for me?}
 
 \begin{table}[ht]
 \begin{tabular}{llllllllllllllllllllll}
