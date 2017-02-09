@@ -1193,7 +1193,14 @@ through the different folds when using the probabilistic model.
 \subsection{Case study}
 \label{sec:casestudy}
 
-After evaluating the model's predictive power in isolation, we assess the
+\todo{Explanatory note: you have been introducing subsections with temporal
+  descriptions: ``after X, we decide to do why.''  Time is not very important in
+  papers.  Instead, introduce each subsection with the experimental goal or
+  question.  What is the purpose of these experiments?  Avoid phrasing like
+  ``the obvious next step'' or ``the natural thing to do'' because they beg the
+  question and are weak in terms of motivation.}
+
+We assess the
 model's utility in a repair algorithm on a small case study example, constructed
 to differ from the code used in the model.  Therefore we evaluated our model
 \todo{model, or a repair technique that uses the model?}
@@ -1341,7 +1348,7 @@ patch using the equally distributed approach. We consider of importance to notic
 \todo{On all results here: do not separate out by seed.  Report the average and
   standard deviation across successful seeds.  Report random success rate
   (percentage of successful seeds).  You can probably put all that for both
-  tables in a single table/figure.}
+  tables in a single table/figure.  This is because the different seeds are not meaningful.}
 
 \begin{table}[ht]
 \begin{tabular}{lR{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.5cm}R{0.5cm}}
@@ -1378,12 +1385,15 @@ the case study}
 %  \label{fig:resultsARR}
 %\end{figure}
 
-\subsection{Single line bugs with Human Injected Fault Localization}
+\subsection{Single line bug repair}
 \label{sec:single}
 
+\todo{See my todo about motivation of subsections at the top of the previous
+  subsection and then fix this one.}
 After having very successful results in the first two evaluations with a subset of the model, we decided 
 to increase our data by building the whole model with 500 projects in Github with more 
-stars. This is to generate the largest code base so far to the best 
+stars.\todo{I don't know if this claim is true, if we count considered commits
+  rather than projects.  Is it?} This is to generate the largest code base so far to the best 
 of our knowledge, surpassing all the previous state of the 
 art~\cite{long15,Soto15,zhong15,matias15,xuan16}. 
 
