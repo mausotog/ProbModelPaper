@@ -1264,6 +1264,7 @@ the mutation operators. We first evaluate it in two different sets: 1) Only usin
 Remove~and~Replace$ mutation operators. The results are detailed in figures 
 \ref{fig:resultsReplace} and \ref{fig:resultsARR}. 
 
+\todo{I can reduce the text here once the other todos in experiments ar addressed}
 Generate-and-validate, as explained before, works by creating variants of the 
 source code by applying mutation operators to the original source code. 
 Therefore, a large number of variants created before finding a patch means that 
@@ -1318,7 +1319,7 @@ to find a patch using the equally distributed model.
 %\end{tabular}
 %\\
 \center
-  \caption{Number of variants it takes to find a patch (starting at 0) using replace to guide the search for a patch of the case study}
+  \caption{Number of variants it takes to find a patch using replace to guide the search for a patch of the case study}
   \label{fig:resultsReplace}
 \end{table} 
 
@@ -1337,6 +1338,10 @@ shows that using the probabilistic model we obtain a mean of 22.6 variants
 before finding the patch, while it takes an average of 41.4 variants to find the 
 patch using the equally distributed approach. We consider of importance to notice that in both experiments the probabilistic model outperformed the equally distributed model in every single case.
 
+\todo{On all results here: do not separate out by seed.  Report the average and
+  standard deviation across successful seeds.  Report random success rate
+  (percentage of successful seeds).  You can probably put all that for both
+  tables in a single table/figure.}
 
 \begin{table}[ht]
 \begin{tabular}{lR{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.5cm}R{0.5cm}}
