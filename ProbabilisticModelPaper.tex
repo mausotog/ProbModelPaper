@@ -1631,7 +1631,10 @@ Similar to the case detailed before, we have analyzed the association rules for 
 Similar to the one described above, the authors have made available the full list of association rules with over 90\% Confidence and 0.01\% Support.\footnote{https://goo.gl/omk60t}
 %REPLACE FOR CAMERA READY: https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningReplacements.txt
 
-\section{Discussion} \label{discussion}
+\subsection{Discussion} \label{discussion}
+\todo{I made discussion and threats subsections, because that's more
+  standard/appropriate.}
+
 In this paper we are tackling specific 
 challenges regarding the way in which mutation operators are chosen, we provide 
 a probabilistic model that describes the way in which humans give preference to 
@@ -1672,9 +1675,9 @@ does not make the patches found in either of the models more likely to pass a
 second test suite for these five bugs. Further evaluation should be performed to
 determine if one of the models creates higher quality patches than the other. 
   
-\section{Threats to Validity} \label{threatsVal}
+\subsection{Threats to Validity} \label{threatsVal}
 
-\textbf{Internatl validity:}
+\paragraph{Internal validity:}
 Regarding possible errors in our implementation and experiments, to run our comparison with Genprog, we used Genprog4Java\footnote{https://bitbucket.org/clegoues/genprog4java/}, a publicly available version of Genprog created by the original creators of Genprog. Unlike other similar versions who have tried to replicate Genprog in a Java context, this version is written by the creators of Genprog who understand and know all the details of the original implementation, therefore mitigating the possibility of errors in the translation process. Regarding the PAR templates, we have had to write the templates ourselves due to the fact that the implementation of the PAR templates has not been made publicly available by the authors of that approach. In order to mitigate this, we made our implementation of the templates publicly available 
 %REMOVE THIS FOR CAMERA READY
 %in the project mentioned before 
@@ -1707,7 +1710,8 @@ of 8 different projects. They then rank the candidate patches according to this 
 A similar case is studied in ``An empirical study on 
 real bug fixes"~\cite{zhong15} with a smaller number of projects (6) and a 
 smaller set of 
-mutation operators (3), and also by Matias and Monperrus~\cite{matias15} with 14 
+mutation operators (3), and also by Matias\todo{This is his first name.
+  Martinez is his last name.  Please cite appropriately} and Monperrus~\cite{matias15} with 14 
 projects. To the best of our knowledge a full set of mutation 
 operators hasn't been studied and compared in the past, as neither has a study 
 consider such a vast diversity of projects to build a probabilistic model. In 
@@ -1716,8 +1720,12 @@ risk of overfitting to a small set of training projects as performed before, our
 current study trains the model with 500 projects, which covers a vast diversity 
 of dominions and bug fixing styles.
 
+\todo{I strongly believe there's more work here.  What is cited by Martinez and
+  Monperrus and by Zhong and Su?  Other work in mining for human bug fixing
+  behavior is appropriate as well.}
 
 \section{Conclusion} \label{conclusion}
+
 In this study we analyze the way in which current state of the art automatic 
 program repair approaches select mutation operators to create candidate 
 patches. We analyze, categorize and compare the mutation operators being used by 
@@ -1730,7 +1738,15 @@ We evaluated our approach in three different ways: by performing 10 fold cross
 validation of the model, by comparing the equally distributed model with the probabilistic model by running an initial independent example; and finally by  comparing the two models by running them on 15 bugs using the database of bugs and extensible 
 framework Defects4j. For these bugs, we measured the number of variants it takes to find the patch and the quality of patches by using a second automatically created test suite using Randoop. 
 
-According to the 10 fold cross validation, the probabilistic model outperforms the equally distributed model by a factor of 4 when looking at the first five guesses of each model. When running an initial independent example, the probabilistic model outperformed the equally distributed model by a factor of 3 and a factor of 2 accordingly. And when running in the bugs obtained by Defects4j, the probabilistic model outperformed the equally distributed model in the majority of the cases. We did not find a difference in the quality of patches produced by each of the approaches in this sample.
+According to the 10 fold cross validation\todo{please rephrase, because as we've
+  discussed to death, the cross validation is not the thing doing the assessment.}, the probabilistic model outperforms
+the equally distributed model by a factor of 4 when looking at the first five
+guesses of each model. When running an initial independent example, the
+probabilistic model outperformed the equally distributed model by a factor of 3
+and a factor of 2 accordingly. And when running in the bugs obtained by
+Defects4j, the probabilistic model outperformed the equally distributed model in
+the majority of the cases. We did not find a difference in the quality of
+patches produced by each of the approaches in this sample. 
 
 Finally, we have analyzed a field that has been understudied in the past and which covers 
 the vast majority of bug fixes in software systems, which is Multi-edit source code changes. 
