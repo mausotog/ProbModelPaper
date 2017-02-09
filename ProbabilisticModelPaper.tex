@@ -479,7 +479,7 @@ Repairing errors is one of the most expensive\cite{Tassey02,Britton13} and
 resource consuming~\cite{Weiss07} tasks in 
 the software development process, especially for large projects in modern 
 object-oriented languages that have to comply with standards of scalability and 
-maintainability~\cite{Liblit03,Anvik05}. \todo{I'm not sure why you've chosen these two references for this claim...I think Liblit 03 targets C...what's your reasoning? RESPONSE: Liblit talks about how large software systems are deployed with bugs and the resources for improving software is always limited}
+maintainability~\cite{Liblit03,Anvik05}. \todo{I'm not sure why you've chosen these two references for this claim...I think Liblit 03 targets C...what's your reasoning? RESPONSE: Liblit talks about how large software systems are deployed with bugs and the resources for improving software is always limited.  RESPONSE: sure, but they don't say anythning about object oriented languages, scalability, or maintainability in particular.  Rephrase the sentence to be broader.}
 %
 There have been efforts to automate this complex task by 
 building automatic program repair tools that are able to automatically repair 
@@ -502,7 +502,7 @@ generate-and-validate approaches (e.g., GenProg~\cite{legoues12},
 Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13}, RSRepair~\cite{Qi14},
 AE~\cite{Weimer13}) use probability distributions to inform the selection of which mutation operator
 will be applied to construct candidate patches that are either random or adapted
-from the results of a particular benchmarks. The use of randomized search for patch generation is common among these and other techniques~\cite{arcuri08,bradbury10,Qi14,Weimer13}. \todo{see my slack messages.  AE.  Does.  Not.  Use.  Random.  Search. RESPONSE: I rephrased this sentence especifically to exclude AE. It says the use of randomized search is common. It doesn't say they all have it. Should I rephrase it again to say something like: Some of these approaches apply randomized search?}
+from the results of a particular benchmarks. The use of randomized search for patch generation is common among these and other techniques~\cite{arcuri08,bradbury10,Qi14,Weimer13}. \todo{see my slack messages.  AE.  Does.  Not.  Use.  Random.  Search. RESPONSE: I rephrased this sentence especifically to exclude AE. It says the use of randomized search is common. It doesn't say they all have it. Should I rephrase it again to say something like: Some of these approaches apply randomized search? RESPONSE: rephrase it to not include the AE reference.  The sentence says ``the use of randomized search is common'' and then cites a bunch of approaches; the canonical meaning is that those approaches are instances of approaches described in the sentence, that is, those that use randomzied search.}
 \todo{add a footnote somewhere in this or the previous paragraph that says we exclude from consideration semantic approaches.}
 
 In reality, human developers choose some mutation operators 
@@ -735,7 +735,7 @@ The 10 considered templates are detailed in the top half of Table~\ref{approachT
 3) Value Replacement  & 6) Condition Introduction \\
 \\
 \end{tabular}
-  \caption{Top) PAR fix templates. Middle) PAR extra templates. Bottom) SPR transformation schemas.}
+  \caption{(Top) PAR fix templates. (Middle) PAR extra templates. (Bottom) SPR transformation schemas.\todo{make the naming consistent---sometimes you use ``Cond'' and sometimes ``Condition''.  And define anything you shorten in the table in the caption.}}
   \label{approachTemplates}
 \end{table}
 
@@ -744,7 +744,7 @@ mentioned on the website associated with the Par
 approach.\footnote{\url{https://sites.google.com/site/autofixhkust/home/fix-templates}} 
 These extra templates provide new mutation operators that helps us compare and
 generalize to the other approaches; they are shown in the middle segment of
-Table~\ref{approachTemplates} Middle. 
+Table~\ref{approachTemplates}. 
 The SPR and Prophet approaches make use of a set of transformation schemas,
 shown in the Bottom section of Table~\ref{approachTemplates}.
 
@@ -890,18 +890,21 @@ template was applied to the code, so we count it as an instance of this template
   \label{fig:probModel}
 \end{figure}
 
-We extend the GenProg4Java\footnote{https://bitbucket.org/clegoues/genprog4java}
-by implementing all the mutation operators mentioned in
-Section~\ref{categorization} and created a configuration in which the tool 
+We extend an open-source implementation of the GenProg technique adapted for Java
+by implementing the mutation operators from
+Section~\ref{categorization} to allow the tool 
 selects between the mutation operators according to the probabilities described by
-a given model. To construct our model we started from the intuiton of the replacement model by Soto et al~\cite{Soto15} which counts the number of statements in before and after fix versions. We upgraded this model by analyzing the abstract syntax tree structure of the before and after fix versions, and then we expanded our model to cover a superset of mutation operators and not only replacement. Therefore, our probabilistic model is conformed by two levels: the 
-\textit{Mutation operator probabilistic model} and 
-the \textit{Replacements probabilistic model}.
+a given model.\footnote{We will release a link to our implementation to support
+  a camera ready; we obscure it in the interest of supporting double-blind
+  review.}  We construct this model by counting incidences of all considered
+mutation operators (this can be considered a generalization of a simpler
+previously-proposed replacement-only model~\cite{Soto15}). The resulting model
+is two-level: 
 
 \emph{Mutation operator probabilistic model:}
-The \textit{Mutation operator probabilistic model} is a probabilistic model that 
-describes the probabilities to choose between the several different mutation 
-operators in a particular fault location.
+The \textit{Mutation operator probabilistic model} 
+describes the probabilities of choosing between the several different mutation 
+operators at a particular fault location.
 %
 To build the \textit{Mutation operator probabilistic model} we created 
 a program that goes through these 
@@ -915,38 +918,31 @@ each of the 500 projects; and these instance sums are the data we take to create
 our probabilistic model.
 
 \emph{Replacements probabilistic model:}
-The \textit{Replacements probabilistic model} is the next level of the 
-probabilistic model, which describes, if the ``Replacement" mutation operator is 
-picked, what are the probabilities of replacing one statement for another. 
-
-To build the \textit{Replacements probabilistic model} we created a 
-program similar to the one mentioned before\footnote{https://goo.gl/mMFbnQ
-%REPLACE FOR CAMERA READY: https://github.com/mausotog/ReplacementsEmpiricalStudy
-Note to reviewer: This link has been aliased for the purposes of the double 
-blind review, the content is available, but the reviewer should notice that 
-following the link mentioned before will potentially show the identity of the authors} that 
-goes through these 
-changes and when it encounters a  replacement mutation operator, then it looks 
-at what kind of statement is being 
-replaced and what kind of statement is replacing the other. We call these 
-statements ``replacee" and ``replacer" accordingly.
-
-
-We analyzed the 22 different kinds of statement detailed by Eclipse JDT\footnote{https://goo.gl/SX3wnA \label{stmtNames}} as
-direct known subclasses of the class "Statement", and the probability in which
+The \textit{Replacements probabilistic model}
+if the ``Replacement" mutation operator is 
+selected, this model describes the probability of replacing one statement with
+another and thus informs the selection of fix code for such operators.
+The \textit{Replacements probabilistic model} is built analogously to the
+mutation operator model, 
+%\footnote{https://goo.gl/mMFbnQ
+but simply identifies replacements (referring to the 
+``replacee" and ``replacer" statements accordingly).
+%
+We consider 
+the 22 different types detailed by the Eclipse JDT\footnote{https://goo.gl/SX3wnA \label{stmtNames}} as
+direct known subclasses of the class ``Statement", and the incidence with which
 each of  
-them replaces another. For example, what is the probability that a For loop 
-would replace a While loop, or the probability that a Break statement would 
-replace a Continue statement, etc. Since there are 22 statement types and each of these 22 may 
-replace each of these 22 statement types, we then have 484 combinations of 
-replacement combinations.
-
-It is also worth noticing that these probabilities are not reciprocal, meaning 
+them replaces another. For example: What is the observed probability that a For loop 
+replaces a While loop? \todo{typeset language constructs like For and While;
+  texttt usually works} Given 22 statement types, any of which may replace one
+another, there are 484 possible replacement combinations. 
+Note that the observed probabilities are not reciprocal, meaning 
 that the probability of a For loop replacing a While loop is different from the 
 probability of a While loop replacing a For loop, and the same applies to all 
 the different statement types.
 
-\subsection{Multiple edit association rule mining} \label{multEdit}
+\subsection{Multiple edit association rule mining} 
+\label{multEdit}
 
 Single-mutation (or single-edit) approaches are historically the most 
 common subject of analysis in 
