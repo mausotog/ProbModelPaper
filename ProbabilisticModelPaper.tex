@@ -1068,10 +1068,26 @@ where $n$ is the statement being replaced (replacee) and $m$ the statement it is
 replaced by (replacer); likewise we have a probabilistic sub-model created from 
 folds 2-10 inclusive $TP_{n,m}$ where $\forall n,m: 1<=n<=22 \land 1<=m<=22$, 
 that describes how often each statement is replaced by 
-other kinds of statements, this is what we call the training data. 
+other kinds of statements, this is what we call the training data. \todo{This
+  sentence is like 8 lines long and I can't parse it.  Please rephrase and
+  simplify so that I can make sure I understand it.  I like the idea of a simple
+  example that walks through a single row of the model, but I don't know if this
+  is explaining it well.}
 
 In 
-particular, assume we are analyzing the Return statement (Row 13). We want to 
+particular, assume we are analyzing the\todo{The? Which?  OK.  Maybe what I
+  really want for this example to make snese is for it to start at a higher
+  level of abstraction.  Each datapoint we're predicting in the model is ``given
+  X location, what is the predicted mutation operator that will be applied to
+  that location?''  and ``if the operator is a replacement, what statement is
+  predicted to replace this statement?''  So, if you start with ``consider an
+  edit in the dataset that is performed at a return statement: [example patch
+  where a return statement is replaced by something; doesn't even have to be
+  real].  The first tmodel selects an operator; the second model predicts the
+  statement that will be used in a replacement...Then walk through the model,
+  and show what a correct/incorrect answer is.  You may want to use two possible
+  patches/edits here, one where hte model succeeds and one where it doesn't.
+  This explanation is too abstract as it is, a reader can't follow.}Return statement (Row 13). We want to 
 predict 
 how well the sub-model created from folds 2-10 is able to predict the testing 
 data; in this particular case, how well is the section of the sub-model that 
