@@ -985,12 +985,16 @@ be built one from each of the models as described in section~\ref{armRes}.
 \section{Evaluation} \label{evaluation}
 
 We evaluate our model both independently and as part of an automatic repair
-technique.  We first evaluate the predictive power of the model by analyzing the number of correctly predicted mutation operators and using 10 fold cross validation (Section~\ref{sec:generalize}).  Next, we assess a case study
-repair problem to check how 
-much faster we can find a patch with the probabilistic model vs the equally 
-distributed approach (Section~\ref{sec:casestudy}); and finally, we evaluate
+technique.  We first evaluate the predictive power of the model by analyzing the
+number of correctly predicted mutation operators across a large dataset, using 10 fold cross
+validation to mitigate and assess the risk of overfitting
+(Section~\ref{sec:generalize}).  Next, we describe a case study 
+repair problem to precisely validate the increase in efficiency the
+probabilistic model affords (Section~\ref{sec:casestudy}).  Finally, we evaluate
 repair efficacy on fifteen real bugs from the Defects4J dataset
-(Section~\ref{sec:single}).
+(Section~\ref{sec:single}).  \todo{This roadmap is imcomplete.  Add poitners to
+  the multi-edit section, discussion/threats, and example patch(es), in the
+  appropriate order.}
 
 \subsection{Model generalization}
 \label{sec:generalize}
