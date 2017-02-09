@@ -461,20 +461,6 @@ studied, and that using the superset of all mutation operators performs better t
 
 \section{Introduction} \label{introduction}
 % no \IEEEPARstart
-
-%\todo{CLG says: OK, let's start at the top: Please fix the formatting issues,
-%  and then work on the argument from the high level.  Please add citations where
-%  necessary, or at least blank cite tags that you fill in at a later pass.}
-
-%\todo{An introduction typically follows an outline along the lines of (1) there
-%  is a Big Important Problem.  (2) previous work has attempted to tackle this
-%  problem; high-level background on the general approaches.  (3) but, there is
-%  some problem that remains, or a gap.  (4) we have an intuition or novel
-%  contribution or observation that allows us to tackle the problem left by that
-%  gap, it is backed up by X, Y, or Z previous work or initial studies, etc, (5)
-%  we propose a technique that builds on it in the following high-level way.}
-
-%\todo{Please reformulate this intro accordingly.}
 Repairing errors is one of the most expensive\cite{Tassey02,Britton13} and 
 resource consuming~\cite{Weiss07} tasks in 
 the software development process, especially for large error-prone systems~\cite{Liblit03,Anvik05} in modern languages that have to comply with standards of scalability and 
@@ -953,8 +939,7 @@ changes (eg. GenProg~\cite{legoues12}, Par~\cite{kim2013}, SPR~\cite{fan15},
 Prophet~\cite{Long2016}, etc.) but typically find patches that reduce to single-edit changes.
 
 \todo{Don't cite GenProg, Par, or HDRepair on this.You do need to say something 
-like ``even
-  techniques that can allow multi-edit changes (like GenProg) typically find
+like ``even  techniques that can allow multi-edit changes (like GenProg) typically find
   patches that reduce to single-edit changes.''  In fact, add that sentence
   here, with appropriate references.   I also don't think you're
   citing the correct Qi15 or Qi13 here. RESPONSE: Qi15 is Kali and Qi13 is 
@@ -1034,7 +1019,7 @@ are trying to predict). \todo{Something about the phrasing here is confusing to
 Since the main focus of this step is to check whether the behavior of the 
 current approaches would perform faster\todo{I don't think this is the main
   focus of this first step; if it were, we'd be evaluating repair speed.
-  Rephrase, something like ``our overall goal is to...''| with the probabilistic model as opposed 
+  Rephrase, something like ``our overall goal is to...''} with the probabilistic model as opposed 
 to the current equally distributed scheme; we rank the first five choices each 
 of the models would take and see how many of the instances in the testing data 
 match those first five guesses. Five guesses is the point of inflection where
