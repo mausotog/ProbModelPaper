@@ -468,11 +468,8 @@ the software development process, especially for large, real-world systems~\cite
 Significant recent research effort has been dedicated to
 building automatic program repair (APR) tools that are able to address
 bugs in 
-programs~\cite{legoues12,kim2013,Weimer13,fan15,long15,debroy10,perkins09,wei10}. 
-\todo{Please go into the bibtex and give the different papers by Fan Long more
-  informative key names than fan15 and long15 (one is his first name, one is his
-  last name) so that I can tell if we're citing the correct thing in a
-  particular place by looking at the latex.}
+programs~\cite{legoues12,kim2013,Weimer13,fan15,long15Proph,debroy10,perkins09,wei10}. 
+
 One well-known class of repair techniques follows a 
 \emph{generate-and-validate} approach, which take as input a test suite, 
 including at
@@ -490,14 +487,14 @@ code~\cite{long16}. Each such technique defines  a set of possible changes to be
 applied to the source code, which we refer to as ``Mutation operators''. 
 There is a broad diversity of such operators used in , such as deleting or inserting 
 statements~\cite{legoues12}, applying templates~\cite{kim2013}, transformation 
-schemas~\cite{fan15}, etc.\footnote{In this study we will exclude 
+schemas~\cite{fan15SPR}, etc.\footnote{In this study we will exclude 
 from 
 consideration semantic approaches since the main topic of interest is how 
 candidate patches are created} 
 Given a potentially-faulty location, these
 generate-and-validate approaches (e.g., GenProg~\cite{legoues12}, 
 Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13}
-Prophet~\cite{fan15}, HDRepair~\cite{xuan16}) use heuristics or heuristically-informed probability distributions to inform the selection of 
+Prophet~\cite{long15Proph}, HDRepair~\cite{xuan16}) use heuristics or heuristically-informed probability distributions to inform the selection of 
 which mutation operator
 will be applied to construct candidate patches. \todo{A sentence about search strategies
   that is not false.  I blew away the old one because it doesn't have the ``not
@@ -684,7 +681,7 @@ method calls. \todo{mention where the replace/append code comes from in these
 Template-based mutation operators describe a family of approaches that instantiate
 predetermined templates, more complicated than those in the first family of
 approaches, at applicable code locations.  This family includes PAR~\cite{kim2013}, 
-SPR~\cite{fan15}, and 
+SPR~\cite{fan15SPR}, and 
 Prophet~\cite{Long2016}.
 
 PAR is the product of a study of a large number of 
@@ -933,7 +930,7 @@ approaches. This applies to both, approaches that limit the number of source
 code changes they apply to create a program variant to one change per variant 
 only (eg, TrpAutoRepair~\cite{Qi13}, AE~\cite{Weimer13}, Kali~\cite{Qi15}), and 
 to approaches whose search space traversal technique can allow multi-edit 
-changes (eg. GenProg~\cite{legoues12}, Par~\cite{kim2013}, SPR~\cite{fan15},
+changes (eg. GenProg~\cite{legoues12}, Par~\cite{kim2013}, SPR~\cite{fan15SPR},
 Prophet~\cite{Long2016}, etc.) but typically find patches that reduce to
 single-edit changes.\todo{I think the above-referenced Arcuri and Briand paper
   does talk about this and should be cited here.}
@@ -1389,7 +1386,7 @@ In this subsection, we evaluate the success of automatic program repair with our
 To achieve this, we increased our data by building the whole model with 500 projects in Github with the most stars.
  This is to generate the largest code base so far to the best 
 of our knowledge, surpassing all the previous state of the 
-art~\cite{long15,Soto15,zhong15,martinez15,xuan16}. 
+art~\cite{long15Proph,Soto15,zhong15,martinez15,xuan16}. 
 
 In our dataset, Template-Based mutations comprise 29.26\% of the corpus; Statement-Edit mutations make up 70.74\% of the 
 corpus. To perform this experiment with real-world bugs, we decided to implement the rest 
@@ -1733,7 +1730,7 @@ technique in which the researchers use fix history
 to help assess their fitness. The fitness of the generated
 fix candidates is determined by the frequency with which the changes included in a given patch occur in the corpus using a Graph-based representation of the bug fixes.
 
-Prophet~\cite{long15} is also an approach that has done previous work in this 
+Prophet~\cite{long15Proph} is also an approach that has done previous work in this 
 area, where the researchers built a 
 probabilistic model for a subset of the mutation operators (the SPR transformation schemas), with a training set 
 of 8 different projects. They then rank the candidate patches according to this model and evaluate them in that order. Our approach follows this intuition to mimic human behavior; we apply this knowledge when creating the patch candidates, as opposed to Prophet, which applies this knowledge afterwards. 
