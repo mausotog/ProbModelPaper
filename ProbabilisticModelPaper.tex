@@ -953,7 +953,8 @@ an initial analysis of multi-edit
 source code changes by mining a more expressive model of common changes. In
 particular, we are extracting \emph{association rules} between single edit changes 
 to model chains of single edit changes, capturing the way humans create them.
-%
+Association rules are if/then statements that show relationships between elements in a dataset which happen frequently together.
+
 We use the 
 well known association rule mining algorithm
 Apriori~\cite{Agrawal94,Liu98,Zaki2000}, which identifies frequent 
@@ -962,12 +963,27 @@ larger sets as long as those item sets appear sufficiently often in the database
 of transactions, which in our case would be the database of transactions created 
 by each of the commits studied. We have divided our association rule mining to
 be built one from each of the models as described in section~\ref{armRes}. 
-\todo{I'm afraid this explanation isn't really working for me, and I think it's
-  because you moved the background and explanation to the ARM section in
-  evaluation.  This may have been because I was unclear, I apologize.  Please
-  integrate that content here (what is ARM?  How does it work?  What are our
-  metrics?).  The only thing that should be in evaluation are the actual
-  results.} 
+
+To extract association rules from the data gathered in our study, we 
+have transformed each of the mutation operator count and replacement count from 
+each of the commits studied and created a transaction to be analyzed. A transaction in this context is a row of values that describes which mutation operators were applied in a single commit.
+
+To use Apriori we need to further clarify basic concepts used by this approach: Confidence and Support.
+
+Formally, we define Confidence as:
+
+\begin{center}
+$conf(X \implies Y) = \dfrac{supp(X \cup Y)}{supp(X)}$ 
+\end{center}
+
+Where X and Y are possible items in a transaction. In this context it is refering to mutation operators. As seen above Confidence is calculated according to its Support, where Support is an indication of how frequently the set of mutation operators (itemset) occurs in the transaction base.
+Formally, we define Support as:
+
+\begin{center}
+$supp(X) = \dfrac{|\{t \in T; X \subseteq t\}|}{|T|}$
+\end{center}
+
+Where X is the itemset being analyzed and t is each individual transaction in the database of transactions T. 
 
 \section{Evaluation} \label{evaluation}
 
@@ -1541,26 +1557,6 @@ that none of them pass the second test suite.
 \subsection{Association Rule Mining} \label{armRes}
 \todo{See my notes on ARM in approach about the content that needs to move
   there.  Then I'll reread.}
-Regarding the association rule mining, to extract association rules from the data gathered in our study, we 
-have transformed each of the mutation operator count and replacement count from 
-each of the commits studied and created a transaction to be analyzed. A transaction in this context is a row of values that describes which mutation operators were applied in a single commit.
-
-To use Apriori we need to further clarify basic concepts used by this approach: Confidence and Support.
-
-Formally, we define Confidence as:
-
-\begin{center}
-$conf(X \implies Y) = \dfrac{supp(X \cup Y)}{supp(X)}$ 
-\end{center}
-
-Where X and Y are possible items in a transaction. In this context it is refering to mutation operators. As seen above Confidence is calculated according to its Support, where Support is an indication of how frequently the set of mutation operators (itemset) occurs in the transaction base.
-Formally, we define Support as:
-
-\begin{center}
-$supp(X) = \dfrac{|\{t \in T; X \subseteq t\}|}{|T|}$
-\end{center}
-
-Where X is the itemset being analyzed and t is each individual transaction in the database of transactions T. 
 
 \textbf{Mutation operator and replacement rules:}
 To create these association rules among several mutation operators, we mine the
