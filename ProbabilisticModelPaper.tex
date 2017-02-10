@@ -493,7 +493,7 @@ consideration semantic approaches, as we focus on
 candidate patches creation in the heuristic or syntactic context.} 
 Given a potentially-faulty location, these
 generate-and-validate approaches (e.g., GenProg~\cite{legoues12}, 
-Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13}
+Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13TrpAutoR}
 Prophet~\cite{long15Proph}, HDRepair~\cite{xuan16}) use heuristics or heuristically-informed probability distributions to inform the selection of 
 which mutation operator
 will be applied to construct candidate patches.
@@ -656,7 +656,7 @@ section of state-of-the-art techniques into two groups:
 
 \textbf{Statement-Edit mutations:}
 One family of repair approaches, including GenProg~\cite{legoues12}, 
-TrpAutoRepair\cite{Qi13},\todo{Is this the right Qi14?} RSRepair~\cite{Qi14}, and AE~\cite{Weimer13},
+TrpAutoRepair\cite{Qi13TrpAutoR}, RSRepair~\cite{Qi14RSRepair}, and AE~\cite{Weimer13},
 create candidate 
 patches by applying coarse-grained mutation operators (such as append, delete, or 
 replace) which modify statements of source code to 
@@ -922,7 +922,7 @@ common subject of analysis in
 state of the art bug-fixing
 approaches. This applies to both, approaches that limit the number of source 
 code changes they apply to create a program variant to one change per variant 
-only (eg, TrpAutoRepair~\cite{Qi13}, AE~\cite{Weimer13}, Kali~\cite{Qi15}), and 
+only (eg, TrpAutoRepair~\cite{Qi13TrpAutoR}, AE~\cite{Weimer13}, Kali~\cite{Qi15}), and 
 to approaches whose search space traversal technique can allow multi-edit 
 changes (eg. GenProg~\cite{legoues12}, Par~\cite{kim2013}, SPR~\cite{fan15SPR},
 Prophet~\cite{Long2016}, etc.) but typically find patches that reduce to
