@@ -997,27 +997,26 @@ probabilistic model affords (Section~\ref{sec:casestudy}).  Finally, we evaluate
 repair efficacy on fifteen real bugs from the Defects4J dataset
 (Section~\ref{sec:single}), and use Apriori to create a list of the most common association rules between mutation operators mined from our corpus of the 500 more popular java projects in Github.  
 
+To perform our evalutation, we ran our approach in a physical server that 
+consists of 16 processors Intel(R) Xeon(R) CPU E5-2699 v3, with 2.30 GHz each
+processor, 46080 KB cache each, and 32 GB RAM memory, operating system Ubuntu 
+14.04.5 LTS.
+
 \todo{This roadmap is imcomplete.  Add poitners to
   the multi-edit section, discussion/threats, and example patch(es), in the
   appropriate order. RESPONSE: Will add example patch soon, and modify this section accordingly.}
 
-\todo{Add text reminding the reader about where the dataset came from.  Outline
-  the specifications of the machine on which the experiments were run (the
-  server, presumably.) RESPONSE: The specs of the server are in section IV C where I describe the experiment on the 15 bugs. Should I move it here?}
 
 \subsection{Model generalization}
 \label{sec:generalize}
 
 \todo{Wait, why don't we assess the mutations model?  That seems like a natural
   experiment to have done...6 months ago, and I remember asking for it.  And
-  it's the same infrastructure.}
+  it's the same infrastructure. RESPONSE: Because when this experiment was done the mutations model didn't exist. This first experiment on the replacements model was to know if it was worth it to make the mutations model.}
+  
+In this first experiment we want to evaluate the predictive power of our model by analyzing once we have the faulty statement, what are the first N guesses the replacement model makes, and evaluate to what extent those first N guesses correctly predict future instances of faulty statements that need to be replaced by another statement to fix the code. We want to know if by applying the probabilistic model we will find the correct statement kind to replace it for in a larger number of instances, than using the equally distributed model. For this we will be using the percentage of instances correctly predicted when performing 10 fold cross validation~\cite{kohavi95}.
 
-%Our initial sanity check was performed on the replacements model. At this point, 
-\todo{Introduce this experiment.  What is the goal?  What is the research
-  question?  What are the metrics?  Then go into what you did.  Also, find the
-  refernece for cross validation; it exists, just find another paper that does
-  it and figure out what they cite.}
-We segregated the\todo{my first question was ``which projects?'' but I think this will be answered when you address the todo I just added above.} projects into 10 
+We segregated the projects that form our corpus into 10 
 different folds assigned at random. For each of the 
 folds we would take 1 fold for testing and the remaining 9 folds for training. 
 Afterwards we analyze how often do the training data is able to predict the 
@@ -1025,14 +1024,8 @@ testing data. This is performed 10 times, one time per each fold and then it is
 averaged to see how commonly is the training data able to predict the testing 
 data.
 
-In this initial sanity check, we compare two distributions: the sub-model 
-that is built from the remaining 9 folds, and the distribution of the testing 
-data. We need to analyze how often one of the distributions (the sub-model 
-training data) predicts the other distribution (the distribution of the fold we 
-are trying to predict). \todo{Something about the phrasing here is confusing to
-  me.  Maybe rephrase, and add a sentence about what the concrete metric is?  It
-  almost reads like you're complicating the phrasing more than necessary.  Try
-  explaining it in the simplest way possible.}
+For each of the folds, we compare two distributions: the distribution of that fold, being used as testing 
+data, and the distribution of the sub-model built from the remaining 9 folds. We want to know how many instances from the testing data are being correctly predicted by the first guesses of the training sub-model. 
 
 Since the main focus of this step is to check whether the behavior of the 
 current approaches would perform faster\todo{I don't think this is the main
@@ -1335,7 +1328,7 @@ to find a patch using the equally distributed model.
 %\end{tabular}
 %\\
 \center
-  \caption{Number of variants it takes to find a patch using replace to guide the search for a patch of the case study}
+  \caption{Number of variants it takes to find a patch (starting at 0) using replace to guide the search for a patch of the case study}
   \label{fig:resultsReplace}
 \end{table} 
 
@@ -1425,11 +1418,7 @@ developer to patch the bug. Defects4j has previously been
 subject for evaluation of important APR approaches~\cite{Durieux15}.\todo{but we
   don't evaluate on all 357, right?}
 
-To perform our evalutation, we ran our approach in a physical server that 
-consists of 16 processors Intel(R) Xeon(R) CPU E5-2699 v3, with 2.30 GHz each
-\todo{Move all this to the top of evaluation, where the todo on machine specs is}
-processor, 46080 KB cache each, and 32 GB RAM memory, operating system Ubuntu 
-14.04.5 LTS. We set the size for each population to 40 for consistency with 
+We set the size for each population to 40 for consistency with 
 previous work~\cite{legoues12,kim2013}\todo{does Par say the population size
   they use? Also add generation count, or say we used rsrepair instead of
   genprog as a search strategy (if that's true).  Say how many seeds we ran per.}  and a timeout of 4 hours since there is 
