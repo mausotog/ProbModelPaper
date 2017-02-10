@@ -602,7 +602,7 @@ Discussion (Section~\ref{discussion}), Related Work (Section~\ref{relatedWork}),
 \section{Generate-and-validate repair} \label{background}
 
 One of the most well known approaches for automatic program repair is the
-generate-and-validate approach~\cite{legoues12} which is detailed in figure~\ref{fig:generateandvalidate}. This approach starts with source code that
+generate-and-validate approach~\cite{legoues12} which is detailed in Figure~\ref{fig:generateandvalidate}. This approach starts with source code that
 has one or various bugs to be fixed, and a test suite which contains passing
 test cases to guide the expected behavior of the program of the program, and failing test 
 cases which expose the behavior of the program that is expected but the output
@@ -620,7 +620,7 @@ of the expected behavior does not match the output of the source code as is.
 \subsection{Background}
 The first step of this process is to localize the error in a particular 
 statement. There is an extensive set of possible approaches in literature in 
-order to perform this tasks~\cite{Jones05,Jones02,Chen02,legoues12,Qi13}, also there are several papers that have focused on the evaluation of the test suite~\cite{Qi13,fan15}; the main focus of this paper will be the step between these two, as highlighted in figure~\ref{fig:generateandvalidate} our main focus will be Generating patch candidates.
+order to perform this tasks~\cite{Jones05,Jones02,Chen02,legoues12,Qi13}, also there are several papers that have focused on the evaluation of the test suite~\cite{Qi13,fan15}; the main focus of this paper will be the step between these two, as highlighted in Figure~\ref{fig:generateandvalidate} our main focus will be Generating patch candidates.
 
 Once we know where the fault is located we proceed to create what we call 
 ``Candidate patches". Candidate patches are variations of the original program 
@@ -687,7 +687,7 @@ human
 created patches and abstracted 10 different templates to be the most 
 commonly used changes that human programmers perform to fix their 
 code~\cite{kim2013}.
-The 10 templates which they considered in their approach are the ones detailed in table~\ref{approachTemplates} Top.
+The 10 templates which they considered in their approach are the ones detailed in Table~\ref{approachTemplates} Top.
 
 \begin{table}[ht]
   \centering
@@ -962,7 +962,7 @@ individual items in sets of transactions (commits, in our context).  We extend t
 larger sets as long as those item sets appear sufficiently often in the database 
 of transactions, which in our case would be the database of transactions created 
 by each of the commits studied. We have divided our association rule mining to
-be built one from each of the models as described in section~\ref{armRes}. 
+be built one from each of the models as described in Section~\ref{armRes}. 
 
 To extract association rules from the data gathered in our study, we 
 have transformed each of the mutation operator count and replacement count from 
@@ -1014,7 +1014,7 @@ processor, 46080 KB cache each, and 32 GB RAM memory, operating system Ubuntu
   experiment to have done...6 months ago, and I remember asking for it.  And
   it's the same infrastructure. RESPONSE: Because when this experiment was done the mutations model didn't exist. This first experiment on the replacements model was to know if it was worth it to make the mutations model.}
   
-In this first experiment we want to evaluate the predictive power of our model by analyzing once we have the faulty statement, what are the first N guesses the replacement model makes, and evaluate to what extent those first N guesses correctly predict future instances of faulty statements that need to be replaced by another statement to fix the code. We want to know if by applying the probabilistic model we will find the correct statement kind to replace it for in a larger number of instances, than using the equally distributed model. For this we will be using the percentage of instances correctly predicted when performing 10 fold cross validation~\cite{kohavi95}.
+In this first experiment we want to evaluate the predictive power of our replacements model by analyzing once we have the faulty statement, what are the first N guesses the replacement model makes, and evaluate to what extent those first N guesses correctly predict future instances of faulty statements that need to be replaced by another statement to fix the code. We want to know if by applying the probabilistic model we will find the correct statement kind to replace it for in a larger number of instances, than using the equally distributed model. For this we will be using the percentage of instances correctly predicted when performing 10 fold cross validation~\cite{kohavi95}.
 
 We segregated the projects that form our corpus into 10 
 different folds assigned at random. For each of the 
@@ -1025,18 +1025,63 @@ averaged to see how commonly is the training data able to predict the testing
 data.
 
 For each of the folds, we compare two distributions: the distribution of that fold, being used as testing 
-data, and the distribution of the sub-model built from the remaining 9 folds. We want to know how many instances from the testing data are being correctly predicted by the first guesses of the training sub-model. 
-
-Since the main focus of this step is to check whether the behavior of the 
-current approaches would perform faster\todo{I don't think this is the main
-  focus of this first step; if it were, we'd be evaluating repair speed.
-  Rephrase, something like ``our overall goal is to...''} with the probabilistic model as opposed 
+data, and the distribution of the sub-model built from the remaining 9 folds. We want to know how many instances from the testing data are being correctly predicted by the first guesses of the training sub-model.   
+  
+Our overall goal is to analyze if the probabilistic model will assign a higher probability to the correct statement kind to be picked as opposed 
 to the current equally distributed scheme; we rank the first five choices each 
 of the models would take and see how many of the instances in the testing data 
 match those first five guesses. Five guesses is the point of inflection where
-the maximum difference between the two approaches happen. After five guesses,
-the slope starts to flatten, which is why we picked five guesses as our
-comparison point.\todo{Hm.  Is this valid?  Can you expand on this explanation for me?}
+the maximum difference between the two approaches happen. After five guesses, the behavior of the two models starts to become more similar to each other, until they become the same with all the twenty two possible guesses.
+This is the reason why we picked five guesses as our
+comparison point.
+
+\lstdefinestyle{base}{
+  language=Java,
+  emptylines=1,
+  breaklines=true,
+  basicstyle=\ttfamily\color{black},
+  moredelim=**[is][\color{red}]{@}{@},
+  xleftmargin=20pt, frame=bt, basicstyle={\small\tt}, numbers=left, keywordstyle=\bfseries, 
+	numberstyle=\scriptsize\tt,  moredelim=[is][\color{red}]{@}{@}, deletekeywords={}, captionpos=b, belowskip=1pt, autogobble=true
+}
+
+To illustrate the point, consider a simple example. Assume we have a 
+faulty location in line 4 of the following program in our corpus:
+
+\begin{lstlisting}[frame=single,style=base]
+    List l = new LinkedList();
+    int i = 0; 
+    ...    
+    return l.get(i); @//faulty location@
+    ...
+\end{lstlisting}
+
+Assume the mutation operator model has chosen a "replace" as the mutation operator to be applied at that location. If the operator is a replacement, the next step is for the replacement model to predict what statement kind should the return be replaced by.
+
+Since this is an instance in our corpus of bug fixes, we already know what changes the developer performed to fix it. Assume the developer performed the following change:
+
+\begin{lstlisting}[frame=single,style=base]
+    List l = new LinkedList();
+    int i = 0; 
+    ...    
+    if(i > l.size()){
+      return l.get(i);
+    }    
+    ...
+\end{lstlisting}
+
+What we want to know is if given a \emph{ReturnStatement} as a faulty location, would the models be able to predict that it was replaced by an \emph{IfStatement} in the first guesses. If they predict to replace it by an \emph{IfStatement} if their first guesses, then it is correctly predicted. If they do not guess it was an \emph{IfStatement} in their first five guesses, then it was not correctly predicted. We do this for all the instances distributed randomly through the different folds. 
+
+We have a lot of these instances in the 10 folds. For example, when analyzing fold 1, we have a distribution in that fold that describes how many times each statement is replaced 
+by other kinds of statements in this fold 
+only. This is what we denominate testing data of this fold and we represent it with $E_{n,m}$ 
+where $n$ is the statement being replaced (replacee) and $m$ the statement it is 
+replaced by (replacer). Likewise, we have a probabilistic sub-model created from 
+folds 2-10 inclusive $TP_{n,m}$ where $\forall n,m: 1<=n<=22 \land 1<=m<=22$, 
+that describes how often each statement is replaced by 
+other kinds of statements. This is what we call the training data of this fold. 
+
+
 
 \begin{table}[ht]
 \begin{tabular}{llllllllllllllllllllll}
@@ -1062,34 +1107,9 @@ the training data. Replacee probabillities of the replacer ReturnStatement. The 
 % 
 %\end{figure}
 
-To illustrate the point, consider a simple example. Assume we have a 
-distribution in fold 1 that describes how many times each statement is replaced 
-by other kinds of statements in this fold 
-only, this is what we denominate testing data and we represent it with $E_{n,m}$ 
-where $n$ is the statement being replaced (replacee) and $m$ the statement it is 
-replaced by (replacer); likewise we have a probabilistic sub-model created from 
-folds 2-10 inclusive $TP_{n,m}$ where $\forall n,m: 1<=n<=22 \land 1<=m<=22$, 
-that describes how often each statement is replaced by 
-other kinds of statements, this is what we call the training data. \todo{This
-  sentence is like 8 lines long and I can't parse it.  Please rephrase and
-  simplify so that I can make sure I understand it.  I like the idea of a simple
-  example that walks through a single row of the model, but I don't know if this
-  is explaining it well.}
 
 In 
-particular, assume we are analyzing the\todo{The? Which?  OK.  Maybe what I
-  really want for this example to make snese is for it to start at a higher
-  level of abstraction.  Each datapoint we're predicting in the model is ``given
-  X location, what is the predicted mutation operator that will be applied to
-  that location?''  and ``if the operator is a replacement, what statement is
-  predicted to replace this statement?''  So, if you start with ``consider an
-  edit in the dataset that is performed at a return statement: [example patch
-  where a return statement is replaced by something; doesn't even have to be
-  real].  The first tmodel selects an operator; the second model predicts the
-  statement that will be used in a replacement...Then walk through the model,
-  and show what a correct/incorrect answer is.  You may want to use two possible
-  patches/edits here, one where hte model succeeds and one where it doesn't.
-  This explanation is too abstract as it is, a reader can't follow.}Return statement (Row 13). We want to 
+particular, assume we are analyzing the Return statement (Row 13). We want to 
 predict 
 how well the sub-model created from folds 2-10 is able to predict the testing 
 data; in this particular case, how well is the section of the sub-model that 
@@ -1097,7 +1117,7 @@ describes the Return Statement able to predict the instance count of the
 statements that replace a Return Statement in the testing data.
 
 Assume the training data is a sub-model $TP_{n,m}$ which contains a row 
-$TP_{13,m}$ as the one shown in figure~\ref{fig:exPredReturn}A, and the testing data is a distribution that describes 
+$TP_{13,m}$ as the one shown in Figure~\ref{fig:exPredReturn}A, and the testing data is a distribution that describes 
 how many instances of returns were replaced by different statements.
 %as follows: 
 %A return statement was replaced by a Expression Statement 4 times $E_{13,9} = 
@@ -1141,9 +1161,7 @@ we assign all the statements, the same probability of being chosen to replace
 the statement being analyzed. We denominate the equally distributed approach 
 $TE_{n,m}$ where $\forall n,m: 1<=n<=22 \land 1<=m<=22 \land TE_{n,m} = 4.54\%$. 
 We have been analyzing the Return Statement in this particular example, as 
-detailed in figure~\ref{fig:exPredReturn}B.\todo{always capitalize Figure,
-  Section, etc, anything with a ref (this is mentioned on my blog post).  Fix it
-  here and everywhere)} To get the top five choices of the 
+detailed in Figure~\ref{fig:exPredReturn}B. To get the top five choices of the 
 equally distributed schema we just pick five choices at random, since all of 
 them have the same probability, which is how the current approach handles what 
 statement to pick.
@@ -1171,8 +1189,8 @@ statement to pick.
 \begin{figure}[!h]
   \centering
     \includegraphics[scale=0.33]{sanity1}
-  \caption{Correctly predicted percentage by applying 10 fold cross
-    validation. \todo{expand this caption to draw conclusions, and stop saying ``applying'' with
+  \caption{Correctly predicted percentage according to 10 fold cross
+    validation. The probabilistic model is able to predict the correct statement kind to replace a faulty one in 87\% of the times, over 4 times better than the equally distributed model. \todo{expand this caption to draw conclusions, and stop saying ``applying'' with
       respect to 10 fold cross validation because it's not something one
       applies, as discussed.  Additionally I think this graph ight make more
       sense as a table, with variances and averages included.  The legend to the
@@ -1183,7 +1201,7 @@ statement to pick.
 
 We ran this experiment with all the rows $n$ in the sub-model $TE_{n,m}$ and 
 $TP_{n,m}$ for each of the 10 
-folds. The results are detailed in figure~\ref{fig:results10fcv}. As we can see 
+folds. The results are detailed in Figure~\ref{fig:results10fcv}. As we can see 
 in this graph, the red bars represent the results of the percentage of correctly 
 predicted instances of the testing data in each particular fold by the top five guesses of the equally distributed approach; while the blue 
 bars represent the percentage of correctly predicted instances using the top five 
@@ -1206,20 +1224,12 @@ We assess the
 model's utility in a repair algorithm on a small case study example, constructed
 to differ from the code used in the model.  Therefore we evaluated our model
 \todo{model, or a repair technique that uses the model?}
-with an example of a basic bug in a method as shown in figure~\ref{fig:initialExample}. The purpose of this method is to calculate the median 
+with an example of a basic bug in a method as shown in Figure~\ref{fig:initialExample}. The purpose of this method is to calculate the median 
 of three numbers, and there is a bug as indicated by the highlighted text where 
 instead of $ret = z;$ it should be $ret = x;$ to have a correct output 
 for all cases.
 
-\lstdefinestyle{base}{
-  language=Java,
-  emptylines=1,
-  breaklines=true,
-  basicstyle=\ttfamily\color{black},
-  moredelim=**[is][\color{red}]{@}{@},
-  xleftmargin=20pt, frame=bt, basicstyle={\small\tt}, numbers=left, keywordstyle=\bfseries, 
-	numberstyle=\scriptsize\tt,  moredelim=[is][\color{red}]{@}{@}, deletekeywords={}, captionpos=b, belowskip=1pt, autogobble=true
-}
+
 
 \begin{figure}[t]
 \begin{lstlisting}[frame=single,style=base]
@@ -1266,7 +1276,7 @@ for many generate-and-validate approaches to be implemented. We restructured the
 tool to be able to select the mutation operators between a 
 probabilistic model, and the default (equally distributed).
 
-We then ran the tool on the code in figure~\ref{fig:initialExample} using both 
+We then ran the tool on the code in Figure~\ref{fig:initialExample} using both 
 the probabilistic model and the equally distributed model. Since this is a 
 case study for sanity checking, we start by evaluating it on a subset of 
 the mutation operators. We first evaluate it in two different sets: 1) Only using the $Replace$ mutation operator, and 2) Using only $Append,~
@@ -1284,7 +1294,7 @@ noticeable that this tool uses genetic programming in its workflow, therefore we
 run the tool with 10 different seeds to be able to abstract the results 
 and not focus on a particular seed.
 
-In figure~\ref{fig:resultsReplace} we consider only the mutation operator 
+In Figure~\ref{fig:resultsReplace} we consider only the mutation operator 
 $Replace$, which means that the tool will disregard all other mutation 
 operators and will only apply Replace operations using the probabilistic model 
 of Replacements. This is because at this step we are evaluating our model in a 
@@ -1339,7 +1349,7 @@ to find a patch using the equally distributed model.
 %  \label{fig:resultsReplace}
 %\end{figure}
 
-In figure~\ref{fig:resultsARR}, we consider three mutation operators: Append, 
+In Figure~\ref{fig:resultsARR}, we consider three mutation operators: Append, 
 Remove and Replace. In this case we can also notice that in seeds 7 and 10 the 
 number of variants it takes to find a patch using the probabilistic model is 
 close to 1 therefore it is hard to notice it in the graph. In this case the data 
@@ -1451,10 +1461,10 @@ the defect. In these cases we picked the faulty statements to be the statements
 which the human developers modified to patch the code. 
 
 From these 15 bugs we were able to find patches for 5 of them as described in
-table~\ref{tab:singleLineBugs}. Results show the average of results on 
+Table~\ref{tab:singleLineBugs}. Results show the average of results on 
 20 different seeds.  
 
-In the first row of table~\ref{tab:singleLineBugs} (Closure \#10) we can see
+In the first row of Table~\ref{tab:singleLineBugs} (Closure \#10) we can see
 that in all three comparisons (Statement-Edit Only, Template-Based Only, and All
 mutations), the approach using the probabilisitc model performs better than its
 counterpart using the equally distributed model. This happens as well in all
@@ -1532,7 +1542,7 @@ code to get a different test suite\footnote{Available at: https://goo.gl/YbFeql}
 than the one used to guide the search.  
 
 We then ran this second test suite on the patch generated by both models and we
-obtained the results noted in table~\ref{tab:singleLineBugs}. We noticed a
+obtained the results noted in Table~\ref{tab:singleLineBugs}. We noticed a
 constant behavior regarding the different sets of mutations. In this sample, if
 a model is able to find a patch faster, then that also happens independent of
 the mutation set used. We notice that in the majority of cases when the
@@ -1610,8 +1620,6 @@ Similar to the one described above, the authors have made available the full lis
 %REPLACE FOR CAMERA READY: https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningReplacements.txt
 
 \subsection{Discussion} \label{discussion}
-\todo{I made discussion and threats subsections, because that's more
-  standard/appropriate.}
 
 In this paper we are tackling specific 
 challenges regarding the way in which mutation operators are chosen, we provide 
@@ -1640,7 +1648,7 @@ the relationship described by the rules, happen often, but confidence is
 sacrificed, which means that there will be a higher percentage of the 
 transactions in which the antecedent is present, but the consequent is not. 
 
-Regarding table~\ref{tab:singleLineBugs}, there are two of these bugs in which
+Regarding Table~\ref{tab:singleLineBugs}, there are two of these bugs in which
 the equally distributed model performed better than the probabilistic
 model. This is due to the fact, that the mutations needed to be applied in the
 source code for it to pass all the test cases, are mutation operators that are
