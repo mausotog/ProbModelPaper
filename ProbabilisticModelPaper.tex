@@ -487,10 +487,10 @@ code~\cite{long16}. Each such technique defines  a set of possible changes to be
 applied to the source code, which we refer to as ``Mutation operators''. 
 There is a broad diversity of such operators used in , such as deleting or inserting 
 statements~\cite{legoues12}, applying templates~\cite{kim2013}, transformation 
-schemas~\cite{fan15SPR}, etc.\footnote{In this study we will exclude 
+schemas~\cite{fan15SPR}, etc.\footnote{In this study, we exclude 
 from 
-consideration semantic approaches since the main topic of interest is how 
-candidate patches are created} 
+consideration semantic approaches, as we focus on
+candidate patches creation in the heuristic or syntactic context.} 
 Given a potentially-faulty location, these
 generate-and-validate approaches (e.g., GenProg~\cite{legoues12}, 
 Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13}
@@ -525,7 +525,7 @@ mutation operators, and using a fully-automatically-mined model much
 earlier in the APR process, when
 patch candidates are actually created.  Prior results suggest that this is likely to result in patches that
 humans are more likely to consider acceptable~\cite{kim2013}.
-
+%
 We evaluate the predictive power of our mined model on its own, in terms of its
 accuracy in predicting the operators used in real-world bug fixes.  We also
 integrate it into a repair algorithm. We demonstrate this algorithm with a
@@ -533,11 +533,12 @@ subset of included operators in
 a case study setting as well as with a full set of mutation
 operators on a subset of real-world single-line defects
 from Defects4j~\cite{just14}. 
-Finally, we introduce a new approach for modeling multi-edit repairs based on
+
+We also introduce a new approach for modeling multi-edit repairs based on
 mining previous rules from historical edit data. Most of the
 successful repairs from current APR approaches are
 single-edit~\cite{Weimer13,Qi15,kim2013,arcuri11}.  
-
+%
 Indeed, patches
 consisting of several mutations are undertreated in this context, even though the vast majority
 of patches in existence are comprised of multiple edits~\cite{Soto15,zhong15}.
