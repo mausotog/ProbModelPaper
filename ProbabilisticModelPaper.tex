@@ -598,7 +598,19 @@ various edits to patch the code. Section~\ref{evaluation} outlines our
 evaluation methodology and our benchmarks.  Finally, we have a section for
 Discussion (Section~\ref{discussion}), Related Work (Section~\ref{relatedWork}), and Conclusion (Section~\ref{conclusion}).
 
-\section{Generate-and-validate repair} \label{background}
+\section{Generate-and-validate repair and operators} 
+\label{background}
+
+In this section, we outline generate and validate repair at a high level
+(Section~\ref{sec-paradigm}), to provide necessary background and situation our
+work, and then detail and categorize the mutation operators used in the
+state-of-the-art and that we model, mine, and leverage in our approach
+(Section~\ref{categorization}).  
+ 
+ 
+\subsection{Paradigm}
+\label{sec-paradigm}
+
 
 One of the most well known approaches for automatic program repair is the
 generate-and-validate approach~\cite{legoues12} which is detailed in Figure~\ref{fig:generateandvalidate}. This approach starts with source code that
@@ -614,45 +626,49 @@ of the expected behavior does not match the output of the source code as is.
   \label{fig:generateandvalidate}
 \end{figure}
 
-\subsection{Background}
-The first step of this process is to localize the error in a particular 
-statement. There is an extensive set of possible approaches in literature in 
-order to perform this tasks~\cite{Jones05,Jones02,Chen02,legoues12,Qi13}, also there are several papers that have focused on the evaluation of the test suite~\cite{Qi13,fan15}; the main focus of this paper will be the step between these two, as highlighted in Figure~\ref{fig:generateandvalidate} our main focus will be Generating patch candidates.
+Figure~\ref{fig:generateandvalidate} diagrams the basic generate and validate
+program repair paradigm. This approach starts with source code that
+has one or various bugs to be fixed, and a test suite with passing
+test cases that expose expected program behavior that should not change, and failing test 
+cases which expose the buggy behavior that should be repaired.  
 
-Once we know where the fault is located we proceed to create what we call 
-``Candidate patches". Candidate patches are variations of the original program 
-which may or may not be a patch for the bug(s) we are trying to fix. To 
-create candidate patches we analyze which mutation operators can
-be applied to that specific location; or if the context of that location doesn't
-allow some mutation operators to be used. We apply them and once this process is finalized, as a result, there is a set of possible 
-mutation operators that
-can be applied to the chosen location.
+The first step of this process is to localize the error to a smaller set of
+candidate program statements. There is an extensive set of possible approaches
+in the fault localization literature that can be adapted to this task
+task~\cite{Jones05,Jones02,Chen02,Qi13},\todo{why were/are you
+  citing my ICSE 2012 paper on fault localization?  Also this is the wrong Qi 2013;
+you mean reference [44] I think}.  A given candidate faulty statement informs
+the construction of 
+``candidate patches", produced by modifying the program at such a
+statement. Candidate patches induce variations of the original program 
+that seek to repair the bug in question. To 
+create such a candidate patch, these techniques typically identify a subset of
+available mutation operators tha are applicable to a given location (\todo{add
+  a quick parenthetical example that demonstrates how an edit might not apply.}
 
-Once the tool has a set of candidate patches, it will run the test suite on each 
-of those candidate patches. If it is able to find a candidate patch that can 
-pass all the test cases in the test suite, that candidate patch will be 
-considered a patch of the bug. If it is not able to pass all the test cases in 
-the test suite, then it will go back to creating more candidate patches and will 
+Each candidate patch is applied to the input program \todo{Note that a candidate
+  is a patch, not a program, and thus cannot be run on its own, but must be
+  applied first; I've fixed your phrasing here but be sure to maintain
+  consistency.  You may delete this todo once you've read it.}, which is run on
+one or more of the input test cases for evaluation.  If a patch leads the
+program to 
+pass all the test cases in the test suite, including those originally witnessing
+the bug, the candidate patch is presented as a likely repair for the bug. 
+If it is not able to pass all the test cases in 
+the test suite, then it\todo{unclear antecedent} will go back to creating more candidate patches and will 
 continue to do so until it reaches a stopping point, which may be a certain user 
 defined number of generations or a user defined clock time limit.
 
-In contrast to generate-and-validate there exist other techniques used for 
-automatic program repair such as Synthesis-Based program 
-repair~\cite{jin11,pei14} which uses constraints to build 
-correct-by-construction patches via formal verification, inferred or 
-programmer-provided contracts,
-or specifications~\cite{jin11,wei10}. Also in contrast to search based approaches, there exist semantic based approaches such as SemFix~\cite{nguyen13}, DirectFix~\cite{mechtaev15} and SearchRepair~\cite{ke15} which use semantic analysis to create patches for buggy code.
+Techniques vary in how they identify and choose between candidate mutation
+operators, and how they travers ethe search space otherwise. \todo{talk about
+  the different selection mechanisms, and mention different search heuristics or
+  approaches.  For example, genetic programming is different from random search
+  is different from how either Prophet or AE select between patches.}
 
-Regarding generate-and-validate~\cite{legoues12}, in
-order to select which mutation operator will be used, the 
-first step is to define in what section of the code the fault is located. This can be determined in various ways, and 
-there is 
-a whole set of
-possible approaches that can analyze this segment with different levels of certainty and 
-requiring different characteristics from the source code and/or test 
-suite~\cite{Jones05,Jones02,Chen02,legoues12,Qi13,Qi2013,Abreu07,wong09}. 
+We discuss other techniques for automatic program repair in
+Section~\ref{relatedWork}.
 
-\subsection{Generalization and Categorization of mutation operators} 
+\subsection{Generate and validate mutation operators} 
 \label{categorization}
 
 There are several possible mutation operators that can be applied to a location 
@@ -1735,6 +1751,18 @@ current study trains the model with 500 projects, which covers a vast diversity
 of dominions and bug fixing styles.
 
 \todo{Note from Mau to Mau: Check what Su and Martinez cite in Rel work}
+
+Other techniques used for
+automatic program repair such as Synthesis-Based program
+repair~\cite{jin11,pei14} which uses constraints to build
+correct-by-construction patches via formal verification, inferred or
+programmer-provided contracts, or
+specifications~\cite{smith15}.\todo{...smith15?  What?} Also in contrast to
+search based approaches, there exist semantic based approaches such as
+SemFix~\cite{nguyen13}, DirectFix~\cite{mechtaev15} and SearchRepair~\cite{ke15}
+which uses semantic code analysis (and in the latter case, search) to inform
+patch construction.
+
 
 \section{Conclusion} \label{conclusion}
 
