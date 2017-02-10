@@ -634,13 +634,16 @@ one or more of the input test cases for evaluation.  If a patch leads the
 program to 
 pass all the test cases in the test suite, including those originally witnessing
 the bug, the candidate patch is presented as a likely repair for the bug. 
-If it doesn't pass all the test cases in 
-the test suite used to guide the search, then it will go back to creating more candidate patches and will 
+If it doesn't\todo{no contractions in scientific writing} pass all the test cases in 
+the test suite used to guide the search, then it\todo{This ``it'' is the it with the unclear antecednet my original todo referred to; it's still unclear.} will go back to creating more candidate patches and will 
 continue to do so until it reaches a stopping point, which may be a certain user 
 defined number of generations or a user defined clock time limit.
 
 Techniques vary in how they identify and choose between candidate mutation
-operators, and how they travers the search space otherwise. For example, some mechanisms adapt the fitness function to assign higher priority to some candidate patches over others based in heuristics; some others restrict their approach to apply a single edit in the variant creation process; others removes similar patches and prioritizes the test cases according to their likelihood to fail, among others. 
+operators, and how they travers the search space otherwise. For example, some
+mechanisms adapt the fitness function\todo{use before defined; the casual reader
+  won't know what you mean.  Rephrase at a higher level (rather than defining
+  fitness function)} to assign higher priority to some candidate patches over others based in heuristics; some others restrict their approach to apply a single edit in the variant creation process; others removes similar patches and prioritizes the test cases according to their likelihood to fail, among others. 
 
 We discuss other techniques for automatic program repair in
 Section~\ref{relatedWork}.
