@@ -1186,13 +1186,39 @@ statement to pick.
 %the equally distributed approach correctly predicted 60\% of the instances in 
 %the testing set.  
 
+
+\begin{table}[ht]
+\begin{tabular}{lrr}}
+\hline
+Fold used to test	&Probabilistic Model&	Equally Distributed Model\\
+	\hline
+1	&70\%&	14.6\%\\
+2	&100\%&	22.8\%\\
+3	&82\%	&19\%\\
+4	&81\%	&14.9\%\\
+5	&90\%	&28.7\%\\
+6	&84\%	&19.5\%\\
+7	&86\%	&17.5\%\\
+8	&96\%	&24.7\%\\
+9	&88\%	&18.9\%\\
+10	&100\%	&17.3\%\\
+	\hline
+Mean	&87.7	&19.79\\
+Variance	&78.41&	17.63\\
+Std dev	&8.85&	4.19\\
+\hline
+\end{tabular}
+\center
+  \caption{Correctly predicted percentage according to 10 fold cross
+    validation. The probabilistic model is able to predict the correct statement kind to replace a faulty one in 87\% of the times, this is an improvement of a factor of 4.5 when compared to the equally distributed model.}
+  \label{fig:resultsReplace}
+\end{table} 
+
+
 \begin{figure}[!h]
   \centering
     \includegraphics[scale=0.33]{sanity1}
-  \caption{Correctly predicted percentage according to 10 fold cross
-    validation. The probabilistic model is able to predict the correct statement kind to replace a faulty one in 87\% of the times, over 4 times better than the equally distributed model. \todo{expand this caption to draw conclusions, and stop saying ``applying'' with
-      respect to 10 fold cross validation because it's not something one
-      applies, as discussed.  Additionally I think this graph ight make more
+  \caption{ \todo{Additionally I think this graph ight make more
       sense as a table, with variances and averages included.  The legend to the
       side is honestly the important part, and also too small.  Include an
       aggregate/total row.}.   }
@@ -1324,19 +1350,6 @@ to find a patch using the equally distributed model.
 \textbf{Eq Dist} & 49 & 34 & 89 & 98 & 4 & 11 & 80 & 25 & 13 & 202 & 60 & 57\\
 \hline
 \end{tabular}
-%\\
-%\\
-%\center
-%\begin{tabular}{|lrrr|}
-%\hline
-%& Average & Variance & Std Dev \\
-%\hline
-%\textbf{Prob Model} & 23.8 & 615.8 & 24.8\\
-%
-%\textbf{Eq Dist} & 60.5 & 3261.5 & 57.1\\
-%\hline
-%\end{tabular}
-%\\
 \center
   \caption{Number of variants it takes to find a patch (starting at 0) using replace to guide the search for a patch of the case study}
   \label{fig:resultsReplace}
