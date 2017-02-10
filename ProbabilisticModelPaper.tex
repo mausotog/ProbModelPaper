@@ -1080,76 +1080,32 @@ correctly predicts this instance.
 We have a lot of these\todo{what do you mean by ``these''?} instances in the 10 folds. For example, when analyzing fold 1, we 
 have a distribution in that fold that describes how many times each statement is replaced 
 by other kinds of statements in this fold 
-only. This is what we denominate testing data of this fold and we represent it with $E_{n,m}$ 
+only. This is what we denominate testing data of this fold and we represent it
+with $E_{n,m}$\todo{Should this be a vector maybe?} 
 where $n$ is the statement being replaced (replacee) and $m$ the statement it is 
 replaced by (replacer). Likewise, we have a probabilistic sub-model created from 
-folds 2-10 inclusive $TP_{n,m}$ where $\forall n,m: 1<=n<=22 \land 1<=m<=22$, 
+folds 2--10 inclusive $TP_{n,m}$ where $\forall n,m: 1<=n<=22 \land 1<=m<=22$, 
 that describes how often each statement is replaced by 
 other kinds of statements. This is what we call the training data of this fold. 
-
-%\begin{figure}[!h]
-%  \centering
-%    \includegraphics[scale=0.25]{sanity5}
-%  \caption{A)  B) Example of return statement with equally distributed 
-%probability. }
-% 
-%\end{figure}
-
-
-In 
-particular, assume we are analyzing the Return statement (Row 13). We want to 
-predict 
-how well the sub-model created from folds 2-10 is able to predict the testing 
-data; in this particular case, how well is the section of the sub-model that 
-describes the Return Statement able to predict the instance count of the 
-statements that replace a Return Statement in the testing data.
-
-Assume the training data is a sub-model $TP_{n,m}$ which contains a row 
-$TP_{13,m}$ as the one shown in Figure~\ref{fig:exPredReturn}A, and the testing data is a distribution that describes 
+Assuming the training data is a sub-model $TP_{n,m}$ which contains a row 
+$TP_{13,m}$ as the one shown in Figure~\ref{fig:exPredReturn}, and the testing data is a distribution that describes 
 how many instances of returns were replaced by different statements.
-%as follows: 
-%A return statement was replaced by a Expression Statement 4 times $E_{13,9} = 
-%4$; by an If 
-%Statement 2 times $E_{13,11} = 2$; by a Continue Statement 2 times $E_{13,5} = 
-%2$; by a Do Statement 1 time $E_{13,6} = 1$;
-%and by a Try Statement 1 time $E_{13,19} = 1$. As a clarification, this is a 
-%fictional example 
-%to explain how the prediction is being analyzed.
-For each of the statements we would take the top five guesses from each row in 
+For each of the statements, we take the top five guesses from each row in 
 the sub-model and count the percentage of instances of the testing data that were correctly 
 predicted by the sub model. 
-
+%
 In this example, the top five guesses in this row would be: The most 
 likely statement chosen to replace a Return Statement according to this row in 
 this fictional sub-model would be a Expression Statement (Ex) $TP_{13,9} = 43\%$ 
-which means that there is a 43\% of probability to replace a Return Statement. 
-The second and following most likely would be an If Statement (If) $TP_{13,11} = 22\%$, Variable Declaration (VD)  $TP_{13,21} = 19\%$, 
-Continue Statement (Co)  $TP_{13,5} = 5\%$, and Throw Statement (Th) $TP_{13,18} = 3\%$. We then compare how many instances of the testing data were correctly predicted 
-by these top five guesses of this row in the sub-model. 
-%In this example, we will 
-%look at the instances that match the top five guesses in the testing data, which 
-%would be: Expression Statement $E_{13,9} = 4$, If Statement $E_{13,11} = 2$, and 
-%Continue Statement $E_{13,5} = 2$. Since Do 
-%Statement $E_{13,6} = 1$ and Try Statement $E_{13,19} = 1$ were not within the 
-%top five guesses, then the 
-%instances in these two categories won't be considered a successful match, but 
-%the former three would. 
-
-%Based on this information, we can say that the 4 instances of Expression 
-%Statement replacing a Return Statement in the testing data were correctly 
-%predicted by the sub-model; the same with the 2 instances of the If Statement 
-%and the 2 instances of the Continue Statement. The instance of the Do Statement, 
-%and the instance of the Try Statement, would be considered as not correctly 
-%predicted by the sub-model. In this case, since the sub-model correctly 
-%predicted 8 out of 10 instances, we say that the sub-model correctly predicted 
-%80\% of the instances in the testing data. 
+which means that there is a 43\% of an expression statement replacing a Return
+Statement. The second-most likely candidate is indeed an If statement ($22\%$),
+meaning we count this as a correct prediction for this model.
 
 To contrast this with the equally distributed approach used currently, 
 we assign all the statements, the same probability of being chosen to replace 
 the statement being analyzed. We denominate the equally distributed approach 
 $TE_{n,m}$ where $\forall n,m: 1<=n<=22 \land 1<=m<=22 \land TE_{n,m} = 4.54\%$. 
-We have been analyzing the Return Statement in this particular example, as 
-detailed in Figure~\ref{fig:exPredReturn}B. To get the top five choices of the 
+To get the top five choices of the 
 equally distributed schema we just pick five choices at random, since all of 
 them have the same probability, which is how the current approach handles what 
 statement to pick.
@@ -1221,7 +1177,8 @@ Std dev	&8.85&	4.19\\
 We ran this experiment with all the rows $n$ in the sub-model $TE_{n,m}$ and 
 $TP_{n,m}$ for each of the 10 
 folds. The results are detailed in Figure~\ref{fig:results10fcv}. As we can see 
-in this graph, the red bars represent the results of the percentage of correctly 
+in this graph, the red bars\todo{Update the text to reflect the way the data is
+  actually presented; we don't have bars any more.} represent the results of the percentage of correctly 
 predicted instances of the testing data in each particular fold by the top five guesses of the equally distributed approach; while the blue 
 bars represent the percentage of correctly predicted instances using the top five 
 guesses of the sub-model of each of the folds. We have a mean of 19.79\% 
