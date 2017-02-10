@@ -556,7 +556,7 @@ The primary contributions of this paper thus are:
     understanding of which mutation operators are used by programmers to fix
     errors in source code, and the frequency of each of the mutation operators
     analyzed. \todo{This last sentence is a fragment/not a complete sentence,
-      please fix (I'd do it but I know you want to use the paper for your
+      please fix (I would do it but I know you want to use the paper for your
       writing requirement so I don't want to do too much rewriting for you.)}
   \item \textbf{New Repair Approach that generates patches based on human behavior}, incorporating mutation operators
     from multiple state-of-the-art approaches and 
@@ -628,15 +628,15 @@ the construction of
 statement. Candidate patches induce variations of the original program 
 that seek to repair the bug in question. To 
 create such a candidate patch, these techniques typically identify a subset of
-available mutation operators that are applicable to a given location (An example of an edit that doesn't apply in a particular location, is for example: Adding a \texttt{SuperConstructorInvocation} in the middle of a method. These calls can only be performed in the first line of a constructor)   
+available mutation operators that are applicable to a given location (An example of an edit that does not apply in a particular location, is for example: Adding a \texttt{SuperConstructorInvocation} in the middle of a method. These calls can only be performed in the first line of a constructor)   
 
 Each candidate patch is applied to the input program, which is run on
 one or more of the input test cases for evaluation.  If a patch leads the
 program to 
 pass all the test cases in the test suite, including those originally witnessing
 the bug, the candidate patch is presented as a likely repair for the bug. 
-If it doesn't\todo{no contractions in scientific writing} pass all the test cases in 
-the test suite used to guide the search, then it\todo{This ``it'' is the it with the unclear antecednet my original todo referred to; it's still unclear.} will go back to creating more candidate patches and will 
+If it does not pass all the test cases in 
+the test suite used to guide the search, then it\todo{This ``it'' is the it with the unclear antecednet my original todo referred to; it is still unclear.} will go back to creating more candidate patches and will 
 continue to do so until it reaches a stopping point, which may be a certain user 
 defined number of generations or a user defined clock time limit.
 
@@ -1273,7 +1273,7 @@ equally distributed approach (green bar).
 As we can derive from the graph, the probabilistic approach was able to find a 
 patch faster than the equally distributed for all the seeds tested. In some 
 cases as seed 5, 7 and 10, the patch using the probabilistic approach was found 
-in one of the first variants, therefore the number is so low that it doesn't 
+in one of the first variants, therefore the number is so low that it does not 
 show in the graph. In average, we found that by using the probabilistic model we 
 could find a patch in 23.8 variants, while it took an average of 60.5 variants 
 to find a patch using the equally distributed model.
@@ -1343,7 +1343,7 @@ knowing if the patches created by one of the categories are able to create bette
 patches than the other. For this we use a quality assessment technique in which we create a
 second test suite different from the one that was used to guide the search, and if the patch
 generalizes to this second test suite, this is evidence that the patch is of better quality than
-a patch who wouldn't pass the test cases in the second test suite.  For this evaluation
+a patch who would not pass the test cases in the second test suite.  For this evaluation
 we tested the mutation operators using three different sets 
 of operations: 1) Statement-Edit mutations only 2) Template-based mutations 
 only 3) All mutations.  
@@ -1357,7 +1357,7 @@ Math 2, Math 5, Math 10, Time 4, Time 16 and Time 19.
 We set the size for each population to 40 for consistency with 
 previous work~\cite{legoues12,kim2013}\todo{does Par say the population size
   they use? Also add generation count, or say we used rsrepair instead of
-  genprog as a search strategy (if that's true).  RESPONSE: Yes, PAR uses 40, that's why I mention it in the cite. / Where do I get the generation count information? The config file doesn't say anything, so it uses the default one.}, we ran 20 seeds per each run, and a timeout of 4 hours since there is 
+  genprog as a search strategy (if that's true).  RESPONSE: Yes, PAR uses 40, that is why I mention it in the cite. / Where do I get the generation count information? The config file does not say anything, so it uses the default one.}, we ran 20 seeds per each run, and a timeout of 4 hours since there is 
 the need of several generations of mutant creations needed to assess the 
 performance of this approach~\cite{arcuri11}.
 
@@ -1607,7 +1607,7 @@ fixing commits.
 If we increase the Confidence and decrease the Support we will obtain rules in 
 which the priority is that every time that the antecedent happens, the 
 consequent will happen as well. With this approach we may obtain rules that 
-don't happen very often, but every time that they happen in the analyzed corpus, 
+do not happen very often, but every time that they happen in the analyzed corpus, 
 there is a high confidence that the rule will be correct. On the other hand, if 
 we increase the Support and decrease the Confidence we would obtain rules that 
 are guaranteed to happen in a certain percent of the corpus, which means, that 
@@ -1640,17 +1640,17 @@ to be checked and used in the future by ongoing researchers.
 Regarding the generalizability of our findings, the authors acknowledge the concern that this idea might not generalize to external datasets and further real life bugs. To attenuate this concern, the authors have evaluated their experiment on a state of the art bug-mining platform which consists of five different real life well known open source projects. We analyzed 15 different real life bugs from different projects in very different areas of knowledge (eg, math, language, technology, time representation, graphical interphase). 
 
 \textbf{Construct validity:}
-Regarding the suitability of our evaluation metrics, the authors evaluate patch quality by running the generated patches through a second test suite created from a human patch, which is to a certain extent a biased measure since we can't guarantee that the human created patch is perfect. Nevertheless, this is a best known practice, especially when compared to the the approach used previously in similar experiments in which a biased human developer would judge whether he/she considered the patch was correct or not.
+Regarding the suitability of our evaluation metrics, the authors evaluate patch quality by running the generated patches through a second test suite created from a human patch, which is to a certain extent a biased measure since we can not guarantee that the human created patch is perfect. Nevertheless, this is a best known practice, especially when compared to the the approach used previously in similar experiments in which a biased human developer would judge whether he/she considered the patch was correct or not.
 
 \section{Related Work} \label{relatedWork}
 
-\todo{Key problem here: we describe the related work but not how we're
+\todo{Key problem here: we describe the related work but not how we are
   different; that is, we need to put ourselves in context with respect to it.
   For related work, always say what we do differently.  Please update this
   content accordingly.}
 \todo{Key problem number 2: PAR.  PAR PAR PAR PAR PAR.  Why are we different/better?}
 \todo{key problem 3: not nearly enough.  You do need to list the other G and V approaches mentioned earlier, even if 
-you don't need to go into a lot of detail.}
+you do not need to go into a lot of detail.}
 There have been previous efforts to create a model based on human behavior by Soto et al~\cite{Soto15} 
 where the researchers built a probabilistic model of the replace mutation 
 operator only, based in 
@@ -1672,7 +1672,7 @@ real bug fixes"~\cite{zhong15} with a smaller number of projects (6) and a
 smaller set of 
 mutation operators (3), and also by Martinez and Monperrus~\cite{martinez15} with 14 
 projects. To the best of our knowledge a full set of mutation 
-operators hasn't been studied and compared in the past, as neither has a study 
+operators has not been studied and compared in the past, as neither has a study 
 consider such a vast diversity of projects to build a probabilistic model. In 
 order to counter the 
 risk of overfitting to a small set of training projects as performed before, our 
@@ -1683,7 +1683,7 @@ of dominions and bug fixing styles.
 
 \todo{put in description of synthesis based repair that was originally in
   background; the sentence that we had to rephrase because it was taken from
-  smith15.  It got lost/readded in the background edit loss and I don't know how
+  smith15.  It got lost/readded in the background edit loss and I do not know how
   you rewrote it.  Add that and the references back.}
 
 \section{Conclusion} \label{conclusion}
