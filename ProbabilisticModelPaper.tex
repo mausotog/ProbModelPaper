@@ -487,10 +487,10 @@ code~\cite{long16}. Each such technique defines  a set of possible changes to be
 applied to the source code, which we refer to as ``Mutation operators''. 
 There is a broad diversity of such operators used in , such as deleting or inserting 
 statements~\cite{legoues12}, applying templates~\cite{kim2013}, transformation 
-schemas~\cite{fan15SPR}, etc.\footnote{In this study we will exclude 
+schemas~\cite{fan15SPR}, etc.\footnote{In this study, we exclude 
 from 
-consideration semantic approaches since the main topic of interest is how 
-candidate patches are created} 
+consideration semantic approaches, as we focus on
+candidate patches creation in the heuristic or syntactic context.} 
 Given a potentially-faulty location, these
 generate-and-validate approaches (e.g., GenProg~\cite{legoues12}, 
 Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13}
@@ -525,7 +525,7 @@ mutation operators, and using a fully-automatically-mined model much
 earlier in the APR process, when
 patch candidates are actually created.  Prior results suggest that this is likely to result in patches that
 humans are more likely to consider acceptable~\cite{kim2013}.
-
+%
 We evaluate the predictive power of our mined model on its own, in terms of its
 accuracy in predicting the operators used in real-world bug fixes.  We also
 integrate it into a repair algorithm. We demonstrate this algorithm with a
@@ -533,11 +533,12 @@ subset of included operators in
 a case study setting as well as with a full set of mutation
 operators on a subset of real-world single-line defects
 from Defects4j~\cite{just14}. 
-Finally, we introduce a new approach for modeling multi-edit repairs based on
+
+We also introduce a new approach for modeling multi-edit repairs based on
 mining previous rules from historical edit data. Most of the
 successful repairs from current APR approaches are
 single-edit~\cite{Weimer13,Qi15,kim2013,arcuri11}.  
-
+%
 Indeed, patches
 consisting of several mutations are undertreated in this context, even though the vast majority
 of patches in existence are comprised of multiple edits~\cite{Soto15,zhong15}.
@@ -897,7 +898,12 @@ another  (referring to the
 ``replacee" and ``replacer" statements accordingly), informing the selection of replacement fix code.
 %\footnote{https://goo.gl/mMFbnQ
 We consider 
-the 22 different types detailed by the Eclipse JDT\footnote{https://goo.gl/SX3wnA \label{stmtNames}} as
+the 22 different types detailed by the Eclipse
+JDT\footnote{https://goo.gl/SX3wnA \label{stmtNames}\todo{I'd prefer if we just
+    put the statement names back in the footnote actually, this is unclear; I
+    thought you were linking the JDT spec, and also it's really important that
+    the reviewers know what these statement kinds are so as to be able to read
+    you example table from section IV.A}} as
 direct known subclasses of the class ``Statement", and the incidence with which
 each of  
 them replaces another. For example: What is the observed probability that a \texttt{For} loop 
@@ -983,113 +989,25 @@ We evaluate our model both independently and as part of an automatic repair
 technique.  We first evaluate the predictive power of the model by analyzing the
 number of correctly predicted mutation operators across a large dataset, using 10 fold cross
 validation to mitigate and assess the risk of overfitting
-(Section~\ref{sec:generalize}). We describe a case study 
-repair problem to precisely validate the increase in efficiency the
-probabilistic model affords (Section~\ref{sec:casestudy}).  Finally, we evaluate
-repair efficacy on fifteen real bugs from the Defects4J dataset
-(Section~\ref{sec:single}), and use Apriori to create a list of the most common 
-association rules between mutation operators mined from our corpus of the 500 more
- popular java projects in Github(Section~\ref{armRes}). We also include a section for 
-discussion(Section~\ref{discussion}) and threats to validity (Section~\ref{threatsVal}) 
+(Section~\ref{sec:generalize}). We evaluate our new APR approach both in a case study 
+repair context, to precisely validate the potential increase in efficiency the
+probabilistic model affords (Section~\ref{sec:casestudy}), and 
+on fifteen real bugs from the Defects4J dataset
+(Section~\ref{sec:single}).  Finally, we assess and present the most common 
+association rules between mutation operators mined from our corpus
+(Section~\ref{armRes}). 
 
-To perform our evalutation, we ran our approach in a physical server that 
-consists of 16 processors Intel(R) Xeon(R) CPU E5-2699 v3, with 2.30 GHz each
+%We also include a section for 
+%discussion(Section~\ref{discussion}) and threats to validity (Section~\ref{threatsVal}) 
+
+All experiments are perfomed on a server running Ubuntu 14.04.5 LTS, 
+consisting of 16 processors Intel(R) Xeon(R) CPU E5-2699 v3, with 2.30 GHz each
 processor, 46080 KB cache each, and 32 GB RAM memory, operating system Ubuntu 
 14.04.5 LTS.
 
 \subsection{Model generalization}
 \label{sec:generalize}
   
-In this first experiment we want to evaluate the predictive power of our 
-replacements model by analyzing once we have the faulty statement, what are 
-the first N guesses the replacement model makes, and evaluate to what extent 
-those first N guesses correctly predict future instances of faulty statements 
-that need to be replaced by another statement to fix the code. We want to know 
-if by applying the probabilistic model we will find the correct statement kind 
-to replace it for in a larger number of instances, than using the equally 
-distributed model. For this we will be using the percentage of instances correctly 
-predicted when performing 10 fold cross validation~\cite{kohavi95}.
-
-We segregated the projects that form our corpus into 10 
-different folds assigned at random. For each of the 
-folds we would take 1 fold for testing and the remaining 9 folds for training. 
-Afterwards we analyze how often do the training data is able to predict the 
-testing data. This is performed 10 times, one time per each fold and then it is 
-averaged to see how commonly is the training data able to predict the testing 
-data.
-
-For each of the folds, we compare two distributions: the distribution of that fold,
- being used as testing 
-data, and the distribution of the sub-model built from the remaining 9 folds.
- We want to know how many instances from the testing data are being correctly 
- predicted by the first guesses of the training sub-model.   
-  
-Our overall goal is to analyze if the probabilistic model will assign a higher 
-probability to the correct statement kind to be picked as opposed 
-to the current equally distributed scheme; we rank the first five choices each 
-of the models would take and see how many of the instances in the testing data 
-match those first five guesses. Five guesses is the point of inflection where
-the maximum difference between the two approaches happen. After five guesses, 
-the behavior of the two models starts to become more similar to each other, 
-until they become the same with all the twenty two possible guesses.
-This is the reason why we picked five guesses as our
-comparison point.
-
-\lstdefinestyle{base}{
-  language=Java,
-  emptylines=1,
-  breaklines=true,
-  basicstyle=\ttfamily\color{black},
-  moredelim=**[is][\color{red}]{@}{@},
-  xleftmargin=20pt, frame=bt, basicstyle={\small\tt}, numbers=left, keywordstyle=\bfseries, 
-	numberstyle=\scriptsize\tt,  moredelim=[is][\color{red}]{@}{@}, deletekeywords={}, captionpos=b, belowskip=1pt, autogobble=true
-}
-
-To illustrate the point, consider a simple example. Assume we have a 
-faulty location in line 4 of the following program in our corpus:
-
-\begin{lstlisting}[frame=single,style=base]
-    List l = new LinkedList();
-    int i = 0; 
-    ...    
-    return l.get(i); @//faulty location@
-    ...
-\end{lstlisting}
-
-Assume the mutation operator model has chosen a "replace" as the mutation operator to be 
-applied at that location. If the operator is a replacement, the next step is for the replacement model to predict what statement kind should the return be replaced by.
-
-Since this is an instance in our corpus of bug fixes, we already know what changes the 
-developer performed to fix it. Assume the developer performed the following change:
-
-\begin{lstlisting}[frame=single,style=base]
-    List l = new LinkedList();
-    int i = 0; 
-    ...    
-    if(i > l.size()){
-      return l.get(i);
-    }    
-    ...
-\end{lstlisting}
-
-What we want to know is if given a \emph{ReturnStatement} as a faulty location, 
-would the models be able to predict that it was replaced by an \emph{IfStatement} 
-in the first guesses. If they predict to replace it by an \emph{IfStatement} if their first 
-guesses, then it is correctly predicted. If they do not guess it was an \emph{IfStatement} 
-in their first five guesses, then it was not correctly predicted. We do this for all the instances 
-distributed randomly through the different folds. 
-
-We have a lot of these instances in the 10 folds. For example, when analyzing fold 1, we 
-have a distribution in that fold that describes how many times each statement is replaced 
-by other kinds of statements in this fold 
-only. This is what we denominate testing data of this fold and we represent it with $E_{n,m}$ 
-where $n$ is the statement being replaced (replacee) and $m$ the statement it is 
-replaced by (replacer). Likewise, we have a probabilistic sub-model created from 
-folds 2-10 inclusive $TP_{n,m}$ where $\forall n,m: 1<=n<=22 \land 1<=m<=22$, 
-that describes how often each statement is replaced by 
-other kinds of statements. This is what we call the training data of this fold. 
-
-
 
 \begin{table}[ht]
 \begin{tabular}{llllllllllllllllllllll}
@@ -1106,6 +1024,70 @@ La & Re & SC & Ca & Sw & Sy & Th & Tr & TD & VD & Wh \\
 the training data. Replacee probabillities of the replacer ReturnStatement. The acronyms represent the statement kinds detailed in footnote \ref{stmtNames}}
  \label{fig:exPredReturn} 
 \end{table} 
+
+First, we evaluate the predictive power of our 
+replacements model. Our high-level research question concerns whether 
+our mined models are likely to identify the correct fix code across a large
+dataset, suggesting its potential utility in a repair context.  To this end, we
+compare its predictive accuracy to an \emph{equally distributed} model, in which
+the probability of selecting any replacee statement is uniformly random. 
+We therefore assess the degree to which each model correctly predicts the
+replacer statement for given replacee statements, within the top 5 produced
+choices.  Because these models are to be used in the context of program repair,
+perfect accuracy (correctness in the Top-1 most likely choice) is unecessary;
+however, the noisy search problem induced by fault localization and a larger set
+of available mutation operators suggests that a relatively tight bound (top-5)
+is likely appropriate.  Additionally, we found obserationally that the top-5
+choices serves as a point of inflection between the mined and equal model
+performance. 
+
+To mitigate and assess the risk of overfitting and avoid testing and training on
+the same data, we use 
+10-fold cross validation~\cite{kohavi95} to structure our experiment. 
+We segregated the projects that form our corpus into 10 
+different folds assigned at random. For each of the 
+folds we would take 1 fold for testing and the remaining 9 folds for training a model. 
+This is performed 10 times, one time per each fold and then it is 
+averaged\todo{or summed, we can show both, rigth?} to see how commonly is the training data able to predict the testing 
+data.
+We then count the number of testing instances that are correctly predicted 
+by the first five guesses from the training sub-model.   
+
+\lstdefinestyle{base}{
+  language=Java,
+  emptylines=1,
+  breaklines=true,
+  basicstyle=\ttfamily\color{black},
+  moredelim=**[is][\color{red}]{@}{@},
+  xleftmargin=20pt, frame=bt, basicstyle={\small\tt}, numbers=left, keywordstyle=\bfseries, 
+	numberstyle=\scriptsize\tt,  moredelim=[is][\color{red}]{@}{@}, deletekeywords={}, captionpos=b, belowskip=1pt, autogobble=true
+}
+
+To illustrate the point, consider a simple example. Assume the following
+simple bug-fixing patch from our corpus: 
+
+\begin{lstlisting}[frame=single,style=base]
++ if(i > l.size()) {
+    return l.get(i); @//original faulty location@
++  }    
+\end{lstlisting}
+
+In effect, the developer has replaced the original \texttt{return} with an
+\texttt{if-then} statement that wraps it.  Our goal in assessing our model is,
+assuming the selected mutation operator 
+is \emph{replace}, how often will an \emph{IfStatement} be predicted as the
+replacer? If it is returned for the first five instances in a model, the model
+correctly predicts this instance.  
+
+We have a lot of these\todo{what do you mean by ``these''?} instances in the 10 folds. For example, when analyzing fold 1, we 
+have a distribution in that fold that describes how many times each statement is replaced 
+by other kinds of statements in this fold 
+only. This is what we denominate testing data of this fold and we represent it with $E_{n,m}$ 
+where $n$ is the statement being replaced (replacee) and $m$ the statement it is 
+replaced by (replacer). Likewise, we have a probabilistic sub-model created from 
+folds 2-10 inclusive $TP_{n,m}$ where $\forall n,m: 1<=n<=22 \land 1<=m<=22$, 
+that describes how often each statement is replaced by 
+other kinds of statements. This is what we call the training data of this fold. 
 
 %\begin{figure}[!h]
 %  \centering
