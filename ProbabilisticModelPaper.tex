@@ -463,13 +463,16 @@ studied, and that using the superset of all mutation operators performs better t
 % no \IEEEPARstart
 Repairing errors is one of the most expensive\cite{Tassey02,Britton13} and 
 resource consuming~\cite{Weiss07} tasks in 
-the software development process, especially for large error-prone systems~\cite{Liblit03,Anvik05} in modern languages that have to comply with standards of scalability and 
-maintainability.
-
-There have been efforts to automate this complex task by 
-building automatic program repair tools that are able to automatically repair 
+the software development process, especially for large, real-world systems~\cite{Liblit03,Anvik05}.
+%
+Significant recent research effort has been dedicated to
+building automatic program repair (APR) tools that are able to address
 bugs in 
 programs~\cite{legoues12,kim2013,Weimer13,fan15,long15,debroy10,perkins09,wei10}. 
+\todo{Please go into the bibtex and give the different papers by Fan Long more
+  informative key names than fan15 and long15 (one is his first name, one is his
+  last name) so that I can tell if we're citing the correct thing in a
+  particular place by looking at the latex.}
 One well-known class of repair techniques follows a 
 \emph{generate-and-validate} approach, which take as input a test suite, 
 including at
@@ -484,76 +487,74 @@ leads the program to pass all input test cases.
 One reason this is challenging is the vast search space of possible 
 edits that can be applied to the different sections of the source 
 code~\cite{long16}. Each such technique defines  a set of possible changes to be
-applied to the source code, which we refer to as ``Mutation operators''; these 
-operators enable program variations.
-There is a broad diversity of such operators, such as deleting or inserting 
+applied to the source code, which we refer to as ``Mutation operators''. 
+There is a broad diversity of such operators used in , such as deleting or inserting 
 statements~\cite{legoues12}, applying templates~\cite{kim2013}, transformation 
-schemas~\cite{fan15}, etc.~\footnote{In this study we will exclude 
+schemas~\cite{fan15}, etc.\footnote{In this study we will exclude 
 from 
 consideration semantic approaches since the main topic of interest is how 
 candidate patches are created} 
-Given a potentially-faulty location, many
+Given a potentially-faulty location, these
 generate-and-validate approaches (e.g., GenProg~\cite{legoues12}, 
-Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13}, RSRepair~\cite{Qi14},
-AE~\cite{Weimer13}) use probability distributions to inform the selection of 
+Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13}
+Prophet~\cite{fan15}, HDRepair~\cite{xuan16}) use heuristics or heuristically-informed probability distributions to inform the selection of 
 which mutation operator
-will be applied to construct candidate patches that are either random or adapted
-from the results of a particular benchmarks. Most of these techniques and others 
-use randomized search for patch 
-generation~\cite{arcuri08,bradbury10,Qi14,Weimer13}.
+will be applied to construct candidate patches. \todo{A sentence about search strategies
+  that is not false.  I blew away the old one because it doesn't have the ``not
+  false'' property.  If the sentence says ``many techniques do X'', then the
+  references in teh citations at the end of the sentence are assumed to be in
+  the class of techniques that do X; it is not the case that we assume that some
+  of those references may not do X, even though the word ``Many'' is in the
+  sentence being referenced.}
 
-In reality, human developers choose some mutation operators 
+Our intuition is that, in bug-fixing reality, human developers use certain mutation operators 
 much more often than 
-others (e.g., deleting a line of code is more common than adding a new class). In this paper we study and then simulate the behavior of human developers in order 
-to create patches the closest way to what real developers do, which has 
-being evaluated to create patches that are easier to understand by
-humans~\cite{kim2013} and 
-therefore it increases the maintainability of the patches. We follow a similar
-intuition to Prophet~\cite{long15} which ranks candidate patches
-according to their likelihood to fix the bug based on a model constructed by
-human behavior. Unlike Prophet, we bring the
-probabilistic model much earlier in the process, to where
-patch candidates are created. We also include a more expressive superset of repair mutation
-operators, beyond the transformation schemas~\cite{fan15}.  
-
-The search space in automatic program repair, including the various mutation
-operators used, has been growing in a relatively ad hoc 
+others (e.g., deleting a line of code is more common than adding a
+new class). In this paper, we therefore study and then simulate the behavior of human
+developers to create patches. 
+Indeed, this idea has been
+leveraged manually in the past to create more human-acceptable mutation
+operators~\cite{kim2013} and to inform patch \emph{ranking} (rather than construction)~\cite{xuan16,Long2016}.
+The APR search space, including the various mutation
+operators used by different techniques, has been growing in a relatively ad hoc 
 manner. We mitigate this effect by categorizing and comparing a superset of
 mutation operators in use in a number of 
-state-of-the-art approaches, including GenProg~\cite{legoues12}, RSRepair~\cite{Qi14}, AE~\cite{Weimer13}, PAR~\cite{kim2013}, 
-SPR~\cite{fan15},
-Prophet~\cite{Long2016}, etc.
-We then mine
-the 500 most popular Github Java projects to produce a model of the probability of
-each of the possible mutation operators used in prior approaches based on 
-empirical data that describes how human programmers fix their code.  We use this
+state-of-the-art approaches~\cite{legoues12,Weimer13,kim2013,Long2016}.
+We mine bug fixing commits from 
+the 500 most popular Github Java projects to model the selection probability of
+the possible mutation operators based on 
+empirical data that describes how human programmers fix their code.  We then use this
 model to inform a repair approach that chooses from the set of possible
-operators based on 
-probabilities that describe how often each is used
-to fix bugs in real world projects. 
+operators based on these real-world
+probabilities.
+As a result, our work goes beyond even the prior work that leverages human bug
+fixes in a program repair context~\cite{kim2013,xuan16,Long2016} by generalizing
+to a broader and more expressive set of
+mutation operators, and using a fully-automatically-mined model much 
+earlier in the APR process, when
+patch candidates are actually created.  Prior results suggest that this is likely to result in patches that
+humans are more likely to consider acceptable~\cite{kim2013}.
 
-We evaluate this approach both on its own, by evaluating the predictive power of
-the model by analyzing the number of correctly predicted mutation
-operators,
-and as part of a repair algorithm, by applying the model to predict independent
-instances. We demonstrate this algorithm with a subset of included operators in
-a case study setting.  We then evaluate an APR tool with the full set of mutation
-operators to compare the relative utility of our probabilistic model as compared
-to a uniform model.  We perform this latter evaluation on a subset of defects
-from Defects4j,~\cite{just14} a 
-database and framework of reproducible real-life bugs found in large scale open 
-source projects. In this final step we evaluate our model with bugs that require 
-one line to be modified to patch them. 
-
+We evaluate the predictive power of our mined model on its own, in terms of its
+accuracy in predicting the operators used in real-world bug fixes.  We also
+integrate it into a repair algorithm. We demonstrate this algorithm with a
+subset of included operators in 
+a case study setting as well as with a full set of mutation
+operators on a subset of real-world single-line defects
+from Defects4j~\cite{just14}. 
 Finally, we introduce a new approach for modeling multi-edit repairs based on
 mining previous rules from historical edit data. Most of the
-successful repairs from current approaches are
+successful repairs from current APR approaches are
 single-edit~\cite{Weimer13,Qi15,kim2013}.\todo{there's another reference
   here...maybe something from Arcuri and Briand circa 2011 that analyzed
   success?  Other papers reference it...check the Angelix paper, I think it
-  probably cites it somewhere. RESPONSE: Are you talking about this paper?: Adaptive random testing: an illusion of effectiveness? Arcuri and Briand ISSTA'11}  Patches
-consisting of several mutations have been understudied even when the vast majority
-of patches in existence are multi-edit changes~\cite{Soto15}.  We
+  probably cites it somewhere. RESPONSE: Are you talking about this paper?:
+  Adaptive random testing: an illusion of effectiveness? Arcuri and Briand
+  ISSTA'11.  RESPONSE RESPONSE: I believe the answer to that is yes.  Please
+  cite it.}  Indeed, patches
+consisting of several mutations are undertreated in this context, even though the vast majority
+of patches in existence are comprised of multiple edits~\cite{Soto15,zhong15}.
+We therefoere
  propose and initially validated an approach that predicts from a given 
 single-edit mutation which operation should be applied
 next to create multi-edit patches. 
@@ -561,42 +562,40 @@ next to create multi-edit patches.
 
 The primary contributions of this paper thus are:
 \begin{itemize}
-  \item \textbf{New Repair Approach that generates patches based on human behavior:} that incorporates mutation operators
-    from multiple state-of-the-art approaches and 
-    uses a probabilistic model to between them, favoring those more commonly
-    used by human developers. It is, to the best of our
-    knowledge, the first study that, compares and contrasts directly using the
-    same platform, all the different mutation operators from the most well known
-    state of the art approaches.  \todo{Do we actually compare/draw conclusions
-      on this?  We should, if we claim it.  This is mostly a note to myself to
-      ensure we do.} 
-    \item \textbf{Large, mined model of single-edit repairs to Java code.} To
-      enable the above approach, we mine a probabilistic model for edits to Java programs
-    from the 100 most recent bug fixes of the 500 most popular projects from
+    \item \textbf{Empirical model of single-edit repairs to Java code} mined
+      from the 100 most recent bug fixes from the 500 most popular Java projects on
     Github.   A deeper
     understanding of which mutation operators are used by programmers to fix
     errors in source code, and the frequency of each of the mutation operators
-    analyzed. 
-  \item \textbf{Evidence:} Evaluation of the probabilistic model in several
-    different benchmarks, including a large number of real life bugs from well
-    known open source projects, and we evaluate quality by using a held-out test suite. We conclude that by creating candidate patches using human behavior we are able to find patches faster and we found that the patch creation process benefits from combining the mutation operator categories, instead of isolating the mutation operator pool to a single category. 
-  \item \textbf{Multi-edit repair approach} A proposed technique to construct 
+    analyzed. \todo{This last sentence is a fragment/not a complete sentence,
+      please fix (I'd do it but I know you want to use the paper for your
+      writing requirement so I don't want to do too much rewriting for you.)}
+  \item \textbf{New Repair Approach that generates patches based on human behavior}, incorporating mutation operators
+    from multiple state-of-the-art approaches and 
+    using the above-mentioned probabilistic model to choose between them, favoring those more commonly
+    used by human developers.
+  \item \textbf{Evaluation} of the probabilistic model in several
+    contexts, including as part of a new APR approach used to repair real world bugs from well
+    known open source projects (independent of those used to inform model
+    construction). We independently evaluate patch quality using a held-out test
+    suite. We conclude that by creating candidate patches using human behavior
+    we are able to find patches faster than a technique that does not use such
+    mined probabilities, and that the patch creation
+    process benefits from combining mutation operator categories.  
+  \item \textbf{Multi-edit repair approach} A proposed technique, and an initial
+    validation thereof, to construct 
     bug-fixing patches requiring several mutations by mining and then applying association
     rules from a large set of historical bug fixes. 
 \end{itemize}
 
-The rest of this paper proceeds as follows:
-The following section entails the state of the art, general terminology and
-background knowledge for automatic program repair, in particular
-generation-and-validation. Section~\ref{categorization} discusses how we
+The rest of this paper proceeds as follows: We first outline
+generate-and-validate repair and, in particular, 
 categorize and generalize the mutation operators used in state of the art
-approaches in an effort to compare them. Section~\ref{buildingTheModel}
-describes the process of how we gathered, analyzed and extracted the data
-necessary to build the probabilistic model. Section~\ref{multEdit} is a
-pioneering work that discusses a new methodology to handle defects that require
-various edits to patch the code. Section~\ref{evaluation} outlines our
-evaluation methodology and our benchmarks.  Finally, we have a section for
-Discussion (Section~\ref{discussion}), Related Work (Section~\ref{relatedWork}), and Conclusion (Section~\ref{conclusion}).
+approaches (Section~\ref{background}). Section~\ref{buildingTheModel}
+describes our approach to building a probabilistic model of human bug-fixing
+edits for both single- and multi-edit bug fixes. Section~\ref{evaluation}
+describes our evaluation. Section~\ref{relatedWork} describes
+related work; Section~\ref{conclusion} concludes. 
 
 \section{Generate-and-validate repair and operators} 
 \label{background}
@@ -1244,7 +1243,11 @@ Std dev	&8.85&	4.19\\
       sense as a table, with variances and averages included.  The legend to the
       side is honestly the important part, and also too small.  Include an
       aggregate/total row. RESPONSE: What do you mean by an aggregate?}. 
-
+\todo{I mean: sum the correctly predicted numbers.  Add a column for each model
+  that shows the actual number predicted correctly in top N (in addition to the
+  percentage, in its own column).  Add those numbers up.  Put the total in an
+  aggregate row at the bottom.  You can also compute the aggregate of the
+  percentages, but you need the raw numbers/ data to do that.}
 We ran this experiment with all the rows $n$ in the sub-model $TE_{n,m}$ and 
 $TP_{n,m}$ for each of the 10 
 folds. The results are detailed in Figure~\ref{fig:results10fcv}. As we can see 
