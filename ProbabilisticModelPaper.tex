@@ -635,35 +635,26 @@ cases which expose the buggy behavior that should be repaired.
 The first step of this process is to localize the error to a smaller set of
 candidate program statements. There is an extensive set of possible approaches
 in the fault localization literature that can be adapted to this task
-task~\cite{Jones05,Jones02,Chen02,Qi13},\todo{why were/are you
-  citing my ICSE 2012 paper on fault localization?  Also this is the wrong Qi 2013;
-you mean reference [44] I think}.  A given candidate faulty statement informs
+task~\cite{Jones05,Jones02,Chen02,Qi2013}.  A given candidate faulty statement informs
 the construction of 
 ``candidate patches", produced by modifying the program at such a
 statement. Candidate patches induce variations of the original program 
 that seek to repair the bug in question. To 
 create such a candidate patch, these techniques typically identify a subset of
-available mutation operators tha are applicable to a given location (\todo{add
-  a quick parenthetical example that demonstrates how an edit might not apply.}
+available mutation operators that are applicable to a given location (An example of an edit that doesn't apply in a particular location, is for example: Adding a \texttt{SuperConstructorInvocation} in the middle of a method. These calls can only be performed in the first line of a constructor)   
 
-Each candidate patch is applied to the input program \todo{Note that a candidate
-  is a patch, not a program, and thus cannot be run on its own, but must be
-  applied first; I've fixed your phrasing here but be sure to maintain
-  consistency.  You may delete this todo once you've read it.}, which is run on
+Each candidate patch is applied to the input program, which is run on
 one or more of the input test cases for evaluation.  If a patch leads the
 program to 
 pass all the test cases in the test suite, including those originally witnessing
 the bug, the candidate patch is presented as a likely repair for the bug. 
-If it is not able to pass all the test cases in 
-the test suite, then it\todo{unclear antecedent} will go back to creating more candidate patches and will 
+If it doesn't pass all the test cases in 
+the test suite used to guide the search, then it will go back to creating more candidate patches and will 
 continue to do so until it reaches a stopping point, which may be a certain user 
 defined number of generations or a user defined clock time limit.
 
 Techniques vary in how they identify and choose between candidate mutation
-operators, and how they travers ethe search space otherwise. \todo{talk about
-  the different selection mechanisms, and mention different search heuristics or
-  approaches.  For example, genetic programming is different from random search
-  is different from how either Prophet or AE select between patches.}
+operators, and how they travers the search space otherwise. For example, some mechanisms adapt the fitness function to assign higher priority to some candidate patches over others based in heuristics; some others restrict their approach to apply a single edit in the variant creation process; others removes similar patches and prioritizes the test cases according to their likelihood to fail, among others. 
 
 We discuss other techniques for automatic program repair in
 Section~\ref{relatedWork}.
