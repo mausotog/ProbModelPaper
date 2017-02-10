@@ -496,13 +496,7 @@ generate-and-validate approaches (e.g., GenProg~\cite{legoues12},
 Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13}
 Prophet~\cite{long15Proph}, HDRepair~\cite{xuan16}) use heuristics or heuristically-informed probability distributions to inform the selection of 
 which mutation operator
-will be applied to construct candidate patches. \todo{A sentence about search strategies
-  that is not false.  I blew away the old one because it doesn't have the ``not
-  false'' property.  If the sentence says ``many techniques do X'', then the
-  references in teh citations at the end of the sentence are assumed to be in
-  the class of techniques that do X; it is not the case that we assume that some
-  of those references may not do X, even though the word ``Many'' is in the
-  sentence being referenced.}
+will be applied to construct candidate patches.
 
 Our intuition is that, in bug-fixing reality, human developers use certain mutation operators 
 much more often than 
@@ -542,13 +536,9 @@ from Defects4j~\cite{just14}.
 Finally, we introduce a new approach for modeling multi-edit repairs based on
 mining previous rules from historical edit data. Most of the
 successful repairs from current APR approaches are
-single-edit~\cite{Weimer13,Qi15,kim2013}.\todo{there's another reference
-  here...maybe something from Arcuri and Briand circa 2011 that analyzed
-  success?  Other papers reference it...check the Angelix paper, I think it
-  probably cites it somewhere. RESPONSE: Are you talking about this paper?:
-  Adaptive random testing: an illusion of effectiveness? Arcuri and Briand
-  ISSTA'11.  RESPONSE RESPONSE: I believe the answer to that is yes.  Please
-  cite it.}  Indeed, patches
+single-edit~\cite{Weimer13,Qi15,kim2013,arcuri11}.  
+
+Indeed, patches
 consisting of several mutations are undertreated in this context, even though the vast majority
 of patches in existence are comprised of multiple edits~\cite{Soto15,zhong15}.
 We therefoere
