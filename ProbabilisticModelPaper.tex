@@ -1219,7 +1219,7 @@ models' utility in a repair algorithm on a small case study example, constructed
 to differ from the code used in the model.  Consider the buggy method shown in
 Figure~\ref{fig:initialExample}, which is intended to  calculate the median 
 of three numbers.  The incorrect line reads 
-$ret = z;$ instead of $ret = x;$. \todo{at leaset describe the test cases in
+$ret = z;$ instead of $ret = x;$. \todo{at least describe the test cases in
   prose, even if we don't provide them.  How many passing/failing?}
 
 We run our implementation of the GenProg approach targeting Java and using the
@@ -1228,39 +1228,35 @@ operators. \todo{But not the replacement model for replacements?}
 In the interest of sanity checking our approach, we 
 start by evaluating on a restricted subset of 
 the mutation operators: (1) Only using the $Replace$ mutation operator, and (2) Using only $Append,~
-Delete~and~Replace$ operators. 
+Delete~and~Replace$ operators.  We measure the average number of variants
+evaluated before finding a repair, a machine- and test-suite independent proxy
+for time.\todo{Please give details on other genprog settings, as you do later as
+  well: timeout, population size, etc.}  We average results of 10 random trials,
+as GenProg is a stochastic algorithm. 
 
 The results are detailed in Figure 
 \ref{fig:resultsReplace}. 
 %
-\todo{I can reduce the text here once the other todos in experiments ar addressed}
-Generate-and-validate, as explained before, works by creating variants of the 
-source code by applying mutation operators to the original source code. 
-Therefore, a large number of variants created before finding a patch means that 
-it takes longer to find a patch, than a small number of variants. We can imply by this 
-that in these graphs, the smaller number of variants in each case, means that 
-the patch was found faster, than with a larger number of variants. It is also 
-noticeable that this tool uses genetic programming in its workflow, therefore we 
-run the tool with 10 different seeds to be able to abstract the results 
-and not focus on a particular seed.
-
 In Figure~\ref{fig:resultsReplace} we consider only the mutation operator 
-$Replace$, which means that the tool will disregard all other mutation 
+$Replace$,\todo{Wait so why do we
+  say we assess using all of the operators if we don't?  Also I think the table
+  you show both sets of results.  I think you need to update this to reflect the
+way you're actually presenting the data?} which means that the tool will disregard all other mutation 
 operators and will only apply Replace operations using the probabilistic model 
 of Replacements. This is because at this step we are evaluating our model in a 
 subset of the mutation operators to understand if it makes sense to move forward and 
 continue implementing the rest of the mutation operators.
-
+%
 In this graph we can analyze the runs with 10 different seeds, contrasting the 
 number of variants it takes to find a patch using the probabilistic approach 
 (blue bar), with the number of variants it takes to find a patch using the 
-equally distributed approach (green bar). 
-
+equally distributed approach (green bar).\todo{...bars?  It's a table...}
+\todo{Also this looks like it succeeds on all seeds even for the equally
+  distributed, all-operators approach.  I just want to check: is that true?}
+%
 As we can derive from the graph, the probabilistic approach was able to find a 
-patch faster than the equally distributed for all the seeds tested. In some 
-cases as seed 5, 7 and 10, the patch using the probabilistic approach was found 
-in one of the first variants, therefore the number is so low that it does not 
-show in the graph. In average, we found that by using the probabilistic model we 
+patch faster than the equally distributed for all the seeds tested. On average,
+we found that by using the probabilistic model we  
 could find a patch in 23.8 variants, while it took an average of 60.5 variants 
 to find a patch using the equally distributed model.
 
@@ -1277,7 +1273,11 @@ to find a patch using the equally distributed model.
 \\
 \\
 \center
-  \caption{Number of variants it takes to find a patch using different sets of mutation operators to guide the search for a patch of the case study. Left) Using Replace. Right) Using Append, Remove and Replace}
+  \caption{Number of variants it takes to find a patch using different sets of
+    mutation operators to guide the search for a patch of the case study. Left)
+    Using Replace. Right) Using Append, Remove and Replace. \todo{Please stop
+      using colors and instead use text to label units and meaning.  What is the
+    left, and what is the right, in this table?  Add column headings.}}
   \label{fig:resultsReplace}
 \end{table} 
 
