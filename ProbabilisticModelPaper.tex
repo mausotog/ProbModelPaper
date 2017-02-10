@@ -573,14 +573,14 @@ The primary contributions of this paper thus are:
       ensure we do.} 
     \item \textbf{Large, mined model of single-edit repairs to Java code.} To
       enable the above approach, we mine a probabilistic model for edits to Java programs
-    from bug fixes to the 500 most popular projects from
+    from the 100 most recent bug fixes of the 500 most popular projects from
     Github.   A deeper
     understanding of which mutation operators are used by programmers to fix
     errors in source code, and the frequency of each of the mutation operators
     analyzed. 
   \item \textbf{Evidence:} Evaluation of the probabilistic model in several
     different benchmarks, including a large number of real life bugs from well
-    known open source projects. We conclude that by creating candidate patches using human behavior we are able to find patches faster and we found that the patch creation process benefits from combining the mutation operator categories, instead of isolating the mutation operator pool to a single category. 
+    known open source projects, and we evaluate quality by using a held-out test suite. We conclude that by creating candidate patches using human behavior we are able to find patches faster and we found that the patch creation process benefits from combining the mutation operator categories, instead of isolating the mutation operator pool to a single category. 
   \item \textbf{Multi-edit repair approach} A proposed technique to construct 
     bug-fixing patches requiring several mutations by mining and then applying association
     rules from a large set of historical bug fixes. 
@@ -1317,8 +1317,8 @@ We then ran the tool on the code in Figure~\ref{fig:initialExample} using both
 the probabilistic model and the equally distributed model. Since this is a 
 case study for sanity checking, we start by evaluating it on a subset of 
 the mutation operators. We first evaluate it in two different sets: 1) Only using the $Replace$ mutation operator, and 2) Using only $Append,~
-Remove~and~Replace$ mutation operators. The results are detailed in figures 
-\ref{fig:resultsReplace} and \ref{fig:resultsARR}. 
+Remove~and~Replace$ mutation operators. The results are detailed in figure 
+\ref{fig:resultsReplace}. 
 
 \todo{I can reduce the text here once the other todos in experiments ar addressed}
 Generate-and-validate, as explained before, works by creating variants of the 
@@ -1352,19 +1352,19 @@ could find a patch in 23.8 variants, while it took an average of 60.5 variants
 to find a patch using the equally distributed model.
 
 \begin{table}[ht]
-\begin{tabular}{lrr}
+\begin{tabular}{lR{0.8cm}R{0.8cm}R{0.8cm}|R{0.8cm}R{0.8cm}R{0.8cm}}
 \hline
-\textbf{Seed}& Avrg & StdDev  \\
+\textbf{Seed}& Avrg & StdDev & Success rate & Avrg & StdDev & Success rate\\
 \hline
-\textbf{Prob} & 23 & 24 \\
+\textbf{Prob} & 23.8 & 24.8 & 100\% & 22.6 & 23.7 & 100\% \\
 
-\textbf{Eq Dist} & 60 & 57\\
+\textbf{Eq Dist} & 60.5 & 57.1 & 100\% & 41.4 & 41.2 & 100\% \\
 \hline
 \end{tabular}
 \\
 \\
 \center
-  \caption{Number of variants it takes to find a patch (starting at 0) using replace to guide the search for a patch of the case study}
+  \caption{Number of variants it takes to find a patch using different sets of mutation operators to guide the search for a patch of the case study. Left) Using Replace. Right) Using Append, Remove and Replace}
   \label{fig:resultsReplace}
 \end{table} 
 
@@ -1375,7 +1375,7 @@ to find a patch using the equally distributed model.
 %  \label{fig:resultsReplace}
 %\end{figure}
 
-In Figure~\ref{fig:resultsARR}, we consider three mutation operators: Append, 
+In Figure~\ref{fig:resultsReplace}Right, we consider three mutation operators: Append, 
 Remove and Replace. In this case we can also notice that in seeds 7 and 10 the 
 number of variants it takes to find a patch using the probabilistic model is 
 close to 1 therefore it is hard to notice it in the graph. In this case the data 
@@ -1391,54 +1391,18 @@ patch using the equally distributed approach. We consider of importance to notic
   Which are similar to the table for the 10 fold cross val. Should I remove all these tables then? 
   2) By random success rate, do you mean 100\% success rate since all the seeds were able to find it?}
 
-\begin{table}[ht]
-\begin{tabular}{lrr}
-\hline
-\textbf{Seed} & Avrg & StdDev  \\
-\hline
-\textbf{Prob Model} & 22 & 23\\
-
-\textbf{Eq Dist} & 1704 & 41 \\
-\hline
-\end{tabular}
-\\
-\\
-%\center
-%\begin{tabular}{|lrrr|}
-%\hline
-%& Average & Variance & Std Dev \\
-%\hline
-%\textbf{Prob Model} & 22.6 & 563.0 & 23.7\\
-%\textbf{Eq Dist} & 41.4 & 1704.0 & 41.3\\
-%\hline
-%\end{tabular}
-%\\
-%\center
-  \caption{Number of variants it takes to find a patch (starting at 0) using append, remove and replace to guide the search for a patch of 
-the case study}
-  \label{fig:resultsARR}
-\end{table} 
-%\begin{figure}[!h]
-%  \centering
-%    \includegraphics[scale=0.25]{sanity4}
-%  \caption{Using append, remove and replace to guide the search for a patch of 
-%the case study}
-%  \label{fig:resultsARR}
-%\end{figure}
-
 \subsection{Single line bug repair}
 \label{sec:single}
 
-To be able to evaluate the success of automatic program repair with our model in real world examples, we decided 
-to increase our data by building the whole model with 500 projects in Github with the most 
-stars.\todo{I don't know if this claim is true, if we count considered commits
-  rather than projects.  Is it? RESPONSE: I did not understand the phrasing of this sentence. But the model is built the model based on the 500 projects with more stars. A maximum of 100 bug fixing commits per project. This is explained in the paper. } This is to generate the largest code base so far to the best 
+In this subsection, we evaluate the success of automatic program repair with our model in real-world examples by comparing the performance of a state of the art automatic program repair tool using the probabilistic model, and using the equally distributed behavior.
+
+To achieve this, we increased our data by building the whole model with 500 projects in Github with the most stars.
+ This is to generate the largest code base so far to the best 
 of our knowledge, surpassing all the previous state of the 
 art~\cite{long15,Soto15,zhong15,martinez15,xuan16}. 
-\todo{I'm not sure why this long15 cite is not being read well?}
 
 In our dataset, Template-Based mutations comprise 29.26\% of the corpus; Statement-Edit mutations make up 70.74\% of the 
-corpus. To perform this experiment with real life bugs, we decided to implement the rest 
+corpus. To perform this experiment with real-world bugs, we decided to implement the rest 
 of the mutation operators to be able to compare Statement-Edit, Template-Based, and both. We implemented these 16 templates in GenProg4J, and generated the functionality 
 to be able to select which subset of mutation operators to apply in a particular 
 run.
@@ -1450,10 +1414,9 @@ research. This database of bugs contains 357 real bugs from 5
 real-world open source programs, and each of these cases is accompanied by a 
 comprehensive test suite with test cases that expose the bug. This database also provides 
 the corresponding human-generated patch, which is the version of the code written by a human 
-developer to patch the bug. Defects4j has previously been 
-subject for evaluation of important APR approaches~\cite{Durieux15}.\todo{but we
-  don't evaluate on all 357, right? RESPONSE: No, as explained in the following paragraph}
-  
+developer to patch the bug. Defects4j has been 
+subject for evaluation of previous APR approaches in the past~\cite{Durieux15}.
+
   As part of this experiment we want to analyze if one category of mutation 
   operators is able to fix bugs better than the other, and if 
   mixing them is beneficial as opposed to keeping them apart. Also we are interested in 
@@ -1544,13 +1507,9 @@ mutations, 2 out of 8 were the same, and 2 out of 8 were slower.
 \end{table*}
 
 
-\textbf{Quality assessment:}\todo{This comes a little bit out of nowhere; it
-  may be worth alluding to it at least at the top of the subsection and even in
-  the contributions list. RESPONSE: What would I 
-  write as a contribution? This quality assessment technique 
-  was already used in the past.}
+\textbf{Quality assessment:}
 To assess the quality of the patches generated by both models we need an
-independent validation mechanism. In this study we use a second test suite 
+independent validation mechanism. In this study we use a held-out test suite 
 evaluation technique~\cite{legoues2012,Smith15} where we automatically build a second
 test suite of test cases that describes the same behavior as the test suite that
 guides the search process. This second test suite will be composed by a
@@ -1600,8 +1559,7 @@ that none of them pass the second test suite.
   int seriesCount=dataset.getRowCount();
 ...
 	\end{lstlisting}
-	\caption{Source code of the Chart 1 bug, showing the code the developer
-      deleted to fix the defect.\label{fig:chart1.1}}
+	\caption{Source code of the Chart 1 bug fixed using the probabilistic model. The APR tool deleted code similar to what a developer would have done.\label{fig:chart1.1}}
 \end{figure}
 
 \begin{figure}[t]
@@ -1624,7 +1582,7 @@ that none of them pass the second test suite.
   int seriesCount=dataset.getRowCount();
 ...
 	\end{lstlisting}
-	\caption{Source code of Chart 1 fixed by the equally distributed model. Inserted code unlike a developer would have done it and produces undesired behavior.	\label{fig:chart1.3}}
+	\caption{Source code of Chart 1 bug fixed using the equally distributed model. The APR tool inserted code unlike a developer would have done it by deallocating global variables that will be used later.	\label{fig:chart1.3}}
 
 \end{figure}
 
