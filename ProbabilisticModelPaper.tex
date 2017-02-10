@@ -1189,15 +1189,6 @@ through the different folds when using the probabilistic model.
 \subsection{Case study}
 \label{sec:casestudy}
 
-We assess the
-model's utility in a repair algorithm on a small case study example, constructed
-to differ from the code used in the model.  Therefore we evaluated the difference between the performance of a repair technique when applying our model
-against the equally distributed counterpart, with an example of a basic bug in a method as shown in Figure~\ref{fig:initialExample}. The purpose of this method is to calculate the median 
-of three numbers, and there is a bug as indicated by the highlighted text where 
-instead of $ret = z;$ it should be $ret = x;$ to have a correct output 
-for all cases.
-
-
 
 \begin{figure}[t]
 \begin{lstlisting}[frame=single,style=base]
@@ -1219,32 +1210,29 @@ for all cases.
     return ret;
   }	
 	\end{lstlisting}
-	\caption{Source code of an independent example. Bug to be fixed is annotated and highlighted}
+	\caption{Source code of an independent example. The bug to be fixed is annotated and highlighted}
 	\label{fig:initialExample}
 \end{figure}
 
+We assess our
+models' utility in a repair algorithm on a small case study example, constructed
+to differ from the code used in the model.  Consider the buggy method shown in
+Figure~\ref{fig:initialExample}, which is intended to  calculate the median 
+of three numbers.  The incorrect line reads 
+$ret = z;$ instead of $ret = x;$. \todo{at leaset describe the test cases in
+  prose, even if we don't provide them.  How many passing/failing?}
 
+We run our implementation of the GenProg approach targeting Java and using the
+equally- and probabilistically-constructed models to select between mutation
+operators. \todo{But not the replacement model for replacements?}
+In the interest of sanity checking our approach, we 
+start by evaluating on a restricted subset of 
+the mutation operators: (1) Only using the $Replace$ mutation operator, and (2) Using only $Append,~
+Delete~and~Replace$ operators. 
 
-%\begin{figure}[!h]
-%  \centering
-%    \includegraphics[scale=0.35]{sanity2}
-%  \caption{Source code of an independent example. Bug to be fixed is annotated %and highlighted}
-%  \label{fig:initialExample}
-%\end{figure}
-
-To be able to do this, we forked and extended an open-source Java version of the 
-tool GenProg~\cite{legoues2012}. This tool provides the work-flow 
-for many generate-and-validate approaches to be implemented. We restructured the 
-tool to be able to select the mutation operators between a 
-probabilistic model, and the default (equally distributed).
-
-We then ran the tool on the code in Figure~\ref{fig:initialExample} using both 
-the probabilistic model and the equally distributed model. Since this is a 
-case study for sanity checking, we start by evaluating it on a subset of 
-the mutation operators. We first evaluate it in two different sets: 1) Only using the $Replace$ mutation operator, and 2) Using only $Append,~
-Remove~and~Replace$ mutation operators. The results are detailed in figure 
+The results are detailed in Figure 
 \ref{fig:resultsReplace}. 
-
+%
 \todo{I can reduce the text here once the other todos in experiments ar addressed}
 Generate-and-validate, as explained before, works by creating variants of the 
 source code by applying mutation operators to the original source code. 
