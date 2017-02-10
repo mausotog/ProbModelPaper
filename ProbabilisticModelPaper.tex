@@ -761,8 +761,8 @@ model of human bug-fixing edits from a large set of popular Java projects on Git
 
 \subsection{Selecting the corpus}
 
-We cloned the 500 Java projects in Github 
-with the most stars (as of August 2016). The methodology of 
+We cloned the 500 most-starred Java projects on Github 
+as of August 2016. The methodology of 
 gathering large,
 popular, and active open source Java software repositories is common in
 empirical studies (e.g.,~\cite{Ray14}). 
@@ -771,21 +771,23 @@ We compiled the most recent 100 bug fixing commits per each project. Identifying
 bug fixing commits is a difficult
 problem in repository mining~\cite{Bird09}. We filter these by applying a
 regular expression to the commit message in each of the commits in each of the
-projects that looks for words such as "fix", "bug", "issue", "problem",
+projects that looks for words such as ``fix", ``bug", ``issue", ``problem",
 etc. following the guidelines by \cite{schroter06,Cubranic05,Fischer03}. 
-
+%
 %\\
 %\\
 %$[Ff]ix(ed|es|ing)?(\backslash s)*([Bb]ug|[Ii]ssue|[Pp]roblem)?(s)?$
 %\\
 %\\
-We also added two extra filters to our search: First we had commits that only 
-modify Fava source code.  Additionally, we restrict our search to commits 
-that modify a maximum of 3 files. We do this to
-filter big merges of code such as pull requests or initial commits, and because
+We included two additional filters in our search: First, we only include commits
+that exclusively 
+modify Java source code.  Additionally, we restrict our search to commits 
+that modify a maximum of three files. We do this to exclude
+big merges, such as pull requests or initial commits, and because
 large commits are more likely to include changes unrelated to a bug fix~\cite{Dias15,Herzig13,Matsuda15,Kawrykow11}.
 
 \subsection{Identifying mutations in developer commits}
+\label{sec:mining}
 
 For each bug fixing commit, we refer to the code before the fix as the
 ``before-fix" version and the code after as the ``after-fix" version.
@@ -793,26 +795,27 @@ We next seek to identify the changes performed between the before-fix and
 after-fix versions, to analyze how often they match the mutation operators in
 question. 
 %
-To do this we used two existing tools for mapping changes 
-between two versions of code: Gumtree~\cite{falleri14}, a source code tree
+We used two existing tools for identify changes 
+between code versions: Gumtree~\cite{falleri14}, a source code tree
 differencing framework, and QACrashFix~\cite{gao15}, the tool for generating
 fixes via analyzing Q\&A pages.  Specifically, we adapt QACrashFix's
 differencing engine, which modifies Gumtree to account for replacements.
 These tools create an AST representation of the program files for both the 
-before-fix and after-fix representations of the programs for each of the files 
-of the commit, and then use a set of heuristics to match the before-fix version 
+before-fix and after-fix representations of the programs for each modified file,
+and then use a set of heuristics to match the before-fix version 
 with the after-fix version and produce a set of 
 changes performed between them. 
 
-For each bug-fixing commit, we greedily attempt match the identified changes to the
+For each bug-fixing commit, we then greedily attempt match the identified changes to the
 available 
-mutation operators. For example, to identify
-a Null Checker application, we go through all the actions performed to go from the
-before-fix to the after-fix versions; in each of the actions we ask if the node
-being manipulated is an \emph{IfStatement}, we then  ask if the action being performed
-is an Insertion of a node. After we know that it is an insertion of an \emph{IfStatement}, we then ask if the first condition within the \emph{IfStatement} is an
-\emph{InfixExpression} comparing an 
-
+mutation operators. We seek the most complex template that can match a given set
+of edits.  For example, to identify
+a \emph{Null Checker} application, for each action describing a commit, we check
+if the manipualted node
+is an \emph{IfStatement}.  If so, we check whether the action
+is a node insertion.  If so, we check if the condition in the inserted
+\emph{IfStatement} is an 
+\emph{InfixExpression} that compares an 
 %  An \emph{InfixExpression} as defined by the Eclipse JDT API
 % specification has the following form: 
 % \\
@@ -823,9 +826,12 @@ is an Insertion of a node. After we know that it is an insertion of an \emph{IfS
 % \\
 % \\  
 \emph{Expression} to a
-\emph{NullLiteral}. If all these conditions are met, we know that a null checker
-template was applied to the code, so we count it as an instance of this template. 
-
+\emph{NullLiteral}. If all these conditions are met, we count this sequence of
+actions as an instance of a \emph{null checker application}.  These rules are
+necessarily heuristic, and we do not claim perfect soundness in our matching,
+instead aggregating counted templates over a large dataset.  When a sequence of
+actions is matched to a template, it is removed from further consideration (and
+thus is only counted as matching a single template).  
 
 
 
@@ -854,7 +860,7 @@ template was applied to the code, so we count it as an instance of this template
 
 
 
-\subsection{Two-level probabilistic model}
+\subsection{Two-level probabilistic model for repair}
 
 \begin{figure}[!h]
   \centering
@@ -865,42 +871,31 @@ template was applied to the code, so we count it as an instance of this template
 
 We extend an open-source implementation of the GenProg technique adapted for Java
 by implementing the mutation operators from
-Section~\ref{categorization} to allow the tool 
-selects between the mutation operators according to the probabilities described by
+Section~\ref{categorization} as well as a mechanism that allows the tool to
+select between the mutation operators according to the probabilities described by
 a given model.\footnote{We will release a link to our implementation to support
   a camera ready; we obscure it in the interest of supporting double-blind
-  review.}  We construct this model by counting incidences of all considered
-mutation operators (this can be considered a generalization of a simpler
-previously-proposed replacement-only model~\cite{Soto15}). The resulting model
-is two-level: 
+  review.}  We construct a two-level model that effectively counts incidences of all considered
+mutation operators, and fix code used in replacements  (generalizing prior work
+proposing a replacement-only model~\cite{Soto15}):
 
-\textbf{Mutation operator probabilistic model:}
+\paragraph{Mutation operator probabilistic model:}
 The \textit{Mutation operator probabilistic model} 
 describes the probabilities of choosing between the several different mutation 
 operators at a particular fault location.
 %
-To build the \textit{Mutation operator probabilistic model} we created 
-a program that goes through these 
-changes and matches these changes with the mutation operators we described 
-earlier.
-
-We sum the instances of each of the appearances of the mutation operators in the 
-lists of changes created out of the differences between the before-fix and 
-after-fix versions of each of the files in the 100 last bug fixing commits per 
-each of the 500 projects; and these instance sums are the data we take to create 
-our probabilistic model.
+To build the \textit{Mutation operator probabilistic model} 
+we normalize the number of incidences of each mutation operator observed in our
+dataset, matched as described in Section~\ref{sec:mining}.  These normalized
+instances comprise a probablistic model, where mutation operator probability is
+weighted by its appearance in the dataset.  
 
 \textbf{Replacements probabilistic model:}
-The \textit{Replacements probabilistic model}
-if the ``Replacement" mutation operator is 
-selected, this model describes the probability of replacing one statement with
-another and thus informs the selection of fix code for such operators.
-The \textit{Replacements probabilistic model} is built analogously to the
-mutation operator model, 
+If the ``Replacement" mutation operator is 
+selected,  \textit{Replacements probabilistic model} model describes the probability of replacing one statement with
+another  (referring to the 
+``replacee" and ``replacer" statements accordingly), informing the selection of replacement fix code.
 %\footnote{https://goo.gl/mMFbnQ
-but simply identifies replacements (referring to the 
-``replacee" and ``replacer" statements accordingly).
-%
 We consider 
 the 22 different types detailed by the Eclipse JDT\footnote{https://goo.gl/SX3wnA \label{stmtNames}} as
 direct known subclasses of the class ``Statement", and the incidence with which
@@ -912,11 +907,13 @@ Note that the observed probabilities are not reciprocal, meaning
 that the probability of a \texttt{For} loop replacing a \texttt{While} loop is different from the 
 probability of a \texttt{While} loop replacing a \texttt{For} loop, and the same applies to all 
 the different statement types.
+This model is built analogously to the
+mutation operator model, with a focus on replacer and replacee statement incidence.
 
 \subsection{Multiple edit association rule mining} 
 \label{multEdit}
 
-Single-mutation (or single-edit) source code changes are historically the most 
+Single-mutation (or single-edit) source code changes are the most 
 common subject of analysis in 
 state of the art bug-fixing
 approaches. This applies to both, approaches that limit the number of source 
@@ -932,9 +929,9 @@ Although such single-edit patches can be
 sufficient to repair non-trivial bugs in real software, many bug fixes in real
 software require multiple edits~\cite{Weimer13}.\todo{Why are we citing Weimer
   13 for this?  That's AE, and AE is single-edit.} The combination of possible mutation
- operators to apply in a sequence increases exponentially as we add more source code changes 
- and the need of a mechanism to navigate this vast search space is a must when we talk about
- multi-edit changes.
+ operators to apply in a sequence increases exponentially as we add more source
+ code changes, motivating a more precise mechanism to navigate the vast search
+ space. 
 
 As a first step towards mitigating this limitation, we propose 
 an initial analysis of multi-edit 
@@ -944,7 +941,7 @@ to model chains of single edit changes, capturing the way humans create them.
 Association rules are if/then statements that show relationships between elements in a dataset which happen frequently together.
 
 We use the 
-well known association rule mining algorithm
+well-known association rule mining algorithm
 Apriori~\cite{Agrawal94,Liu98,Zaki2000}, which identifies frequent 
 individual items in sets of transactions (commits, in our context).  We extend these sets into 
 larger sets as long as those item sets appear sufficiently often in the database 
@@ -952,9 +949,9 @@ of transactions, which in our case would be the database of transactions created
 by each of the commits studied. We have divided our association rule mining to
 be built one from each of the models as described in Section~\ref{armRes}. 
 
-To extract association rules from the data gathered in our study, we 
-have transformed each of the mutation operator count and replacement count from 
-each of the commits studied and created a transaction to be analyzed. A transaction 
+To extract association rules from  our data, we
+transform each of the mutation operator count and replacement count from 
+each of the commits studied into a transaction to be analyzed. A transaction 
 in this context is a row of values that describes which mutation operators were applied in a single commit.
 
 To use Apriori we need to further clarify basic concepts used by this approach: Confidence and Support.
