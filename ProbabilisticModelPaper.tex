@@ -1224,7 +1224,9 @@ $ret = z;$ instead of $ret = x;$. \todo{at least describe the test cases in
 
 We run our implementation of the GenProg approach targeting Java and using the
 equally- and probabilistically-constructed models to select between mutation
-operators. \todo{But not the replacement model for replacements?}
+operators. \todo{But not the replacement model for replacements?}\todo{Also, in
+  the next subsection you say you build the full model on 500 projects.  If
+  that's true, what is this model built on?}
 In the interest of sanity checking our approach, we 
 start by evaluating on a restricted subset of 
 the mutation operators: (1) Only using the $Replace$ mutation operator, and (2) Using only $Append,~
@@ -1232,7 +1234,7 @@ Delete~and~Replace$ operators.  We measure the average number of variants
 evaluated before finding a repair, a machine- and test-suite independent proxy
 for time.\todo{Please give details on other genprog settings, as you do later as
   well: timeout, population size, etc.}  We average results of 10 random trials,
-as GenProg is a stochastic algorithm. 
+as GenProg is a stochastic algorithm. We also provide the success rate across those trials. 
 
 The results are detailed in Figure 
 \ref{fig:resultsReplace}. 
@@ -1299,7 +1301,7 @@ patch using the equally distributed approach. We consider of importance to notic
 \subsection{Single line bug repair}
 \label{sec:single}
 
-In this subsection, we evaluate the success of automatic program repair with our model in real-world examples by comparing the performance of a state of the art automatic program repair tool using the probabilistic model, and using the equally distributed behavior.
+In this subsection, we evaluate the success of automatic program repair with our model in real-world examples by comparing the performance of a state of the art automatic program repair tool using the probabilistic model, and using the equally distributed behavior. 
 
 To achieve this, we increased our data by building the whole model with 500 projects in Github with the most stars.
  This is to generate the largest code base so far to the best 
