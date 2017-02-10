@@ -1188,8 +1188,7 @@ statement to pick.
 
 
 \begin{table}[ht]
-\begin{tabular}{lrr}}
-\hline
+\begin{tabular}{lrr}
 Fold used to test	&Probabilistic Model&	Equally Distributed Model\\
 	\hline
 1	&70\%&	14.6\%\\
@@ -1206,12 +1205,11 @@ Fold used to test	&Probabilistic Model&	Equally Distributed Model\\
 Mean	&87.7	&19.79\\
 Variance	&78.41&	17.63\\
 Std dev	&8.85&	4.19\\
-\hline
 \end{tabular}
 \center
   \caption{Correctly predicted percentage according to 10 fold cross
     validation. The probabilistic model is able to predict the correct statement kind to replace a faulty one in 87\% of the times, this is an improvement of a factor of 4.5 when compared to the equally distributed model.}
-  \label{fig:resultsReplace}
+  \label{fig:results10fcv}
 \end{table} 
 
 
@@ -1222,7 +1220,7 @@ Std dev	&8.85&	4.19\\
       sense as a table, with variances and averages included.  The legend to the
       side is honestly the important part, and also too small.  Include an
       aggregate/total row.}.   }
-  \label{fig:results10fcv}
+
 \end{figure}
 
 We ran this experiment with all the rows $n$ in the sub-model $TE_{n,m}$ and 
