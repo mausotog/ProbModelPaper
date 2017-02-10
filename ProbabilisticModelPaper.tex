@@ -944,11 +944,14 @@ code changes they apply to create a program variant to one change per variant
 only (eg, TrpAutoRepair~\cite{Qi13}, AE~\cite{Weimer13}, Kali~\cite{Qi15}), and 
 to approaches whose search space traversal technique can allow multi-edit 
 changes (eg. GenProg~\cite{legoues12}, Par~\cite{kim2013}, SPR~\cite{fan15},
-Prophet~\cite{Long2016}, etc.) but typically find patches that reduce to single-edit changes.
+Prophet~\cite{Long2016}, etc.) but typically find patches that reduce to
+single-edit changes.\todo{I think the above-referenced Arcuri and Briand paper
+  does talk about this and should be cited here.}
 
 Although such single-edit patches can be
 sufficient to repair non-trivial bugs in real software, many bug fixes in real
-software require multiple edits~\cite{Weimer13}. The combination of possible mutation
+software require multiple edits~\cite{Weimer13}.\todo{Why are we citing Weimer
+  13 for this?  That's AE, and AE is single-edit.} The combination of possible mutation
  operators to apply in a sequence increases exponentially as we add more source code changes 
  and the need of a mechanism to navigate this vast search space is a must when we talk about
  multi-edit changes.
