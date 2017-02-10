@@ -608,8 +608,6 @@ test cases to guide the expected behavior of the program of the program, and fai
 cases which expose the behavior of the program that is expected but the output
 of the expected behavior does not match the output of the source code as is.
 
-
-
 \begin{figure}[!h]
   \centering
     \includegraphics[scale=0.25]{Picture1}
@@ -1002,7 +1000,7 @@ repair efficacy on fifteen real bugs from the Defects4J dataset
 (Section~\ref{sec:single}), and use Apriori to create a list of the most common 
 association rules between mutation operators mined from our corpus of the 500 more
  popular java projects in Github(Section~\ref{armRes}). We also include a section for 
-discussion(Section~\cite{discussion}) and threats to validity (Section~\cite{threatsVal}) 
+discussion(Section~\ref{discussion}) and threats to validity (Section~\ref{threatsVal}) 
 
 To perform our evalutation, we ran our approach in a physical server that 
 consists of 16 processors Intel(R) Xeon(R) CPU E5-2699 v3, with 2.30 GHz each
@@ -1354,13 +1352,13 @@ could find a patch in 23.8 variants, while it took an average of 60.5 variants
 to find a patch using the equally distributed model.
 
 \begin{table}[ht]
-\begin{tabular}{lR{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.5cm}R{0.5cm}}
+\begin{tabular}{lrr}
 \hline
-\textbf{Seed} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & Avrg & StdDev  \\
+\textbf{Seed}& Avrg & StdDev  \\
 \hline
-\textbf{Prob} & 48 & 19 & 81 & 41 & 0 & 11 & 0 & 25 & 13 & ~~~~0 & 23 & 24 \\
+\textbf{Prob} & 23 & 24 \\
 
-\textbf{Eq Dist} & 49 & 34 & 89 & 98 & 4 & 11 & 80 & 25 & 13 & 202 & 60 & 57\\
+\textbf{Eq Dist} & 60 & 57\\
 \hline
 \end{tabular}
 \\
@@ -1394,13 +1392,13 @@ patch using the equally distributed approach. We consider of importance to notic
   2) By random success rate, do you mean 100\% success rate since all the seeds were able to find it?}
 
 \begin{table}[ht]
-\begin{tabular}{lR{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.1cm}R{0.5cm}R{0.5cm}}
+\begin{tabular}{lrr}
 \hline
-\textbf{Seed} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9}  & Avrg & StdDev  \\
+\textbf{Seed} & Avrg & StdDev  \\
 \hline
-\textbf{Prob Model} & 8 & 20 & 23 & 42 & 4 & 11 & 0 & 29 & 80 & ~~~~0 & 22 & 23\\
+\textbf{Prob Model} & 22 & 23\\
 
-\textbf{Eq Dist} & 8 & 66 & 23 & 42 & 4 & 11 & 2 & 38 & 81 & 139 & 1704 & 41 \\
+\textbf{Eq Dist} & 1704 & 41 \\
 \hline
 \end{tabular}
 \\
@@ -1436,7 +1434,7 @@ to increase our data by building the whole model with 500 projects in Github wit
 stars.\todo{I don't know if this claim is true, if we count considered commits
   rather than projects.  Is it? RESPONSE: I did not understand the phrasing of this sentence. But the model is built the model based on the 500 projects with more stars. A maximum of 100 bug fixing commits per project. This is explained in the paper. } This is to generate the largest code base so far to the best 
 of our knowledge, surpassing all the previous state of the 
-art~\cite{long15,Soto15,zhong15,matias15,xuan16}. 
+art~\cite{long15,Soto15,zhong15,martinez15,xuan16}. 
 \todo{I'm not sure why this long15 cite is not being read well?}
 
 In our dataset, Template-Based mutations comprise 29.26\% of the corpus; Statement-Edit mutations make up 70.74\% of the 
