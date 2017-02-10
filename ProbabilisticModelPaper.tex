@@ -553,8 +553,7 @@ single-edit~\cite{Weimer13,Qi15,kim2013}.\todo{there's another reference
   success?  Other papers reference it...check the Angelix paper, I think it
   probably cites it somewhere. RESPONSE: Are you talking about this paper?: Adaptive random testing: an illusion of effectiveness? Arcuri and Briand ISSTA'11}  Patches
 consisting of several mutations have been understudied even when the vast majority
-of patches in existence are multi-edit changes~\cite{Soto15}.\todo{easy reference here, maybe?
-   Something from the MSR community?  Someone must have studied this. RESPONSE: We did :)}  We
+of patches in existence are multi-edit changes~\cite{Soto15}.  We
  propose and initially validated an approach that predicts from a given 
 single-edit mutation which operation should be applied
 next to create multi-edit patches. 
@@ -756,14 +755,6 @@ since these templates provide a more concrete description of how the code is
 being changed, in order for us to replicate it; also, as mentioned before, all the SPR, Prophet and Kali templates are represented by one or several of the PAR templates, but not viceversa; and also the PAR templates represent templates specifically for the Java language, which is a common ground for the rest of the 
 approaches considered and the benchmarks to evaluate the approach on. It is also worth mentioning hybrid approaches such as HDRepair~\cite{xuan16} where the authors use a combination of previously mentioned Statement-Edit and Template-Based mutation operators.
 
-
-\todo{Somewhere in this subsection we should acknowledge the techniques we don't
-  consider.  The ommission of HDRepair is a notable, since it targets Java, and
-  I don't think you've even cited it yet so far.  Add a reference to various
-  places you mention GandV repair, at minimum, but consider adding a discussion
-  of it to this framework.  Does it fit anywhere?  How?  Why/why not? RESPONSE: Do you mean to add a discussion about the semantic approaches and why we don't consider them? I added a footnote in page one regarding we not looking at semantic approaches because the main point of the paper is the way in which candidate patches are created, which, in semantic approaches is done in a completely different way.}
-
-
 \section{Building the model} \label{buildingTheModel}
 
 In this section we describe how we mined a probabilistic
@@ -936,9 +927,6 @@ to approaches whose search space traversal technique can allow multi-edit
 changes (eg. GenProg~\cite{legoues12}, Par~\cite{kim2013}, SPR~\cite{fan15},
 Prophet~\cite{Long2016}, etc.) but typically find patches that reduce to single-edit changes.
 
-\todo{I also don't think you're
-  citing the correct Qi15 or Qi13 here. RESPONSE: Qi15 is Kali and Qi13 is 
-TRPAutoRepair, Qi14 is RSRepair }
 Although such single-edit patches can be
 sufficient to repair non-trivial bugs in real software, many bug fixes in real
 software require multiple edits~\cite{Weimer13}. The combination of possible mutation
@@ -1009,12 +997,6 @@ processor, 46080 KB cache each, and 32 GB RAM memory, operating system Ubuntu
 
 \subsection{Model generalization}
 \label{sec:generalize}
-
-\todo{Wait, why don't we assess the mutations model?  That seems like a natural
-  experiment to have done...6 months ago, and I remember asking for it.  And
-  it's the same infrastructure. RESPONSE: Because when this experiment was done 
-  the mutations model didn't exist. This first experiment on the replacements model 
-  was to know if it was worth it to make the mutations model.}
   
 In this first experiment we want to evaluate the predictive power of our 
 replacements model by analyzing once we have the faulty statement, what are 
@@ -1383,14 +1365,6 @@ shows that using the probabilistic model we obtain a mean of 22.6 variants
 before finding the patch, while it takes an average of 41.4 variants to find the 
 patch using the equally distributed approach. We consider of importance to notice that in both experiments the probabilistic model outperformed the equally distributed model in every single case.
 
-\todo{On all results here: do not separate out by seed.  Report the average and
-  standard deviation across successful seeds.  Report random success rate
-  (percentage of successful seeds).  You can probably put all that for both
-  tables in a single table/figure.  This is because the different seeds are not meaningful. 
-  RESPONSE: I am confused about this. 1)You told me to create these tables for this results. 
-  Which are similar to the table for the 10 fold cross val. Should I remove all these tables then? 
-  2) By random success rate, do you mean 100\% success rate since all the seeds were able to find it?}
-
 \subsection{Single line bug repair}
 \label{sec:single}
 
@@ -1596,13 +1570,7 @@ our repair efforts found patches that removed either the entire \texttt{If} stat
 By contrast, the equally-distributed model leads to a patch shown in
 Figure~\ref{fig:chart1.3}, which \todo{...what's going on in this patch? other
   questions: (1) is this the only patch the equally distributed model 
-  found?  Or did it also find the deletion? (2) did the probablistic model find patches besides the deletion?}
-
-
-
-
-
-
+  found?  Or did it also find the deletion? RESPONSE: It also found deletion but in less cases. (2) did the probablistic model find patches besides the deletion? RESPONSE: Yes, one more, in just one of the seeds. This patch was also found by the eq dist model and it is just replacing the if by some other random method call}
 
 \subsection{Association Rule Mining} \label{armRes}
 
@@ -1766,9 +1734,7 @@ risk of overfitting to a small set of training projects as performed before, our
 current study trains the model with 500 projects, which covers a vast diversity 
 of dominions and bug fixing styles.
 
-\todo{I strongly believe there's more work here.  What is cited by Martinez and
-  Monperrus and by Zhong and Su?  Other work in mining for human bug fixing
-  behavior is appropriate as well. RESPONSE: I do cite Martinez and Monperrus, and Zhong and Su.}
+\todo{Note from Mau to Mau: Check what Su and Martinez cite in Rel work}
 
 \section{Conclusion} \label{conclusion}
 
