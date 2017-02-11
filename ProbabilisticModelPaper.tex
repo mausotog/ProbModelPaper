@@ -1303,11 +1303,10 @@ probabilistic model outperformed the equally distributed model on every seed.
 \end{tabular}
 }
 \ra{1.3}
-		\caption{Value on the left of each slot (green): Number of variants
+		\caption{Value on the left of each slot: Number of variants
           taken to find a patch in single line bugs. Value on the right of each
-          slot (blue): Percentage according to the number of patches that passed
-          the second test suite \todo{As above, please don't use color to
-            denote meaning and instead use text labels for the associated columns.}\label{tab:singleLineBugs}}
+          slot: Percentage of patches that passed
+          the second test suite\label{tab:singleLineBugs}}
 \end{table*}
 
 In this subsection, we evaluate the success of automatic program repair with our
@@ -1315,8 +1314,7 @@ model on real-world bugs  by comparing the performance of our
 automatic program repair tool using the probabilistic model to one using the
 equally distributed model.  
 We built the whole model with 500
-projects in Github with the most stars.\todo{This is confusing with respect to
-  the previous section.  What was that model built on?}
+projects in Github with the most stars.
  This is to generate the largest code base so far to the best 
 of our knowledge, surpassing all the previous state of the 
 art~\cite{long15Proph,Soto15,zhong15,martinez15,xuan16}. 
@@ -1352,14 +1350,8 @@ in fault localizaiton. Anecdotally, we observe that less-accurate fault localiza
 time taken to repair these defects, as expected (results not shown). 
 
 We set the size for each population to 40m for consistency with 
-previous work~\cite{legoues12,kim2013}\todo{does Par say the population size
-  they use? Also add generation count, or say we used rsrepair instead of
-  genprog as a search strategy (if that's true).  RESPONSE: Yes, PAR uses 40,
-  that is why I mention it in the cite. / Where do I get the generation count
-  information? The config file does not say anything, so it uses the default
-  one.  RESPONSE REPSONSE: I anticipate that you are able to acertain the
-  default used in code you have been contributing to for three years}, we ran 20
-seeds per trial, with a timeout of 4 hours for each, in keeping with 
+previous work~\cite{legoues12,kim2013}, we ran 20
+seeds per trial, 10 generations, a timeout of 4 hours for each run, in keeping with 
 recommendations on the assessment of stochastic techniques~\cite{arcuri11}.
 To compare the efficacy of different types of mutation operators,
 we tested three operation sets: (1) Statement-Edit mutations only (2) Template-based mutations 
@@ -1380,21 +1372,16 @@ thus additionally report patched program success on these independent test
 suites. 
 
 Our modified APR techniques patched 5 of the 15 bugs, as shown in 
-Table~\ref{tab:singleLineBugs}.\todo{Why is success rate 0 for Chart 1, given
-  that repairs were obviously found?  OH BECAUSE IT'S SUCCESS RATE ON HELD OUT
-  TEST SUITE yeah please lable the table properly} In the first row of Table~\ref{tab:singleLineBugs} (Closure \#10) we can see
+Table~\ref{tab:singleLineBugs}. In the first row of Table~\ref{tab:singleLineBugs} (Closure \#10) we can see
 that in all three comparisons (Statement-Edit Only, Template-Based Only, and All
 mutations), the probabilisitc model outperforms
 the equally distributed model. This happens as well for
 Math \#2 and Time \#19 except for the cases where no patch was
 found. By contrast, for bugs Chart \#1 and Closure \#18, the equally
 distributed approach finds a patch faster on average. This is due to the fact
-that removal mutations such as Deletion and Expression Changer are more likely
-to be picked by the equally distributed model than the probabilistic model since
-developers use these editions less often than others. But these editions have
-been seen in the past to make the test cases pass even if the edition did not
-fixed the bug as per the opinion of developers as indicated
-in~\cite{kim2013}. \todo{I'm not sure I follow this point.  Try to reexplain?}
+that these bugs are patched with a mutation that is rare to apply by developers,
+therefore it is more likely that the mutation operator will be chosen by randomness
+than by an informed model trying to replicate how developers behave.
 
 Our results also show that considering all available mutation operators is
 preferable to 
@@ -1470,11 +1457,8 @@ models, as compared to a human patch.  Consider the snippet of code correspondin
 to the first Chart bug (and its developer fix) from the Defects4J dataset
 (Figure~\ref{fig:chart1.1}).  The developer patches this bug by deleting the if
 statement.  The mined statement-level mutation model favors deletion, and thus
-our repair efforts found patches that removed either the entire \texttt{If} statement, or its body (line 9).
-By contrast, the equally-distributed model leads to a patch shown in
-Figure~\ref{fig:chart1.3}, which \todo{...what's going on in this patch? other
-  questions: (1) is this the only patch the equally distributed model 
-  found?  Or did it also find the deletion? RESPONSE: It also found deletion but in less cases. (2) did the probablistic model find patches besides the deletion? RESPONSE: Yes, one more, in just one of the seeds. This patch was also found by the eq dist model and it is just replacing the if by some other random method call}
+our repair efforts found patches that removed either the entire \texttt{IfStatement}, or its body (line 9).
+By contrast, the equally-distributed model has a higher probability to lead to a patch as the one shown in Figure~\ref{fig:chart1.3}. This patches does not simulate what a human would do to fix this bug, and also deallocates global variables that aren't being used for the execution of this method, but will be used in the future.
 
 \subsection{Association Rule Mining} \label{armRes}
 
