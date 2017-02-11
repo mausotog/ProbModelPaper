@@ -1507,7 +1507,7 @@ replacements that happen commonly together, which will give us a hint regarding
 what mutation operations and replacements can be applied together to form multi-edit
 source code changes.
 
-\textbf{Mutation operator rules:}
+\paragraph{Mutation operator rules:}
 To create these association rules among several mutation operators, we mine the
 transactions made out of the commits created by humans in the corpus of projects
 studied and we look for rules that have at least 90\% Confidence, where
@@ -1518,7 +1518,8 @@ studied, every transaction that showed the antecedent also shows the consequent;
 and they are obtained with a 1\% support, which means that each of these rules
 individually show in at least a 1\% of all the transactions of the overall
 corpus. We show the 5  top association rules found for the mining of single edit
-mutation operators. 
+mutation operators. \todo{is this redundant with the content in the approach
+  section that describes the computation?}
 
 
 %Minimum support: 0 (1 instances)
@@ -1537,17 +1538,24 @@ mutation operators.
 %\item Delete \& AddNullCheck \& ParamReplacer $\implies$ Append
 \end{itemize}
 
-Append is the most common single edit mutation operator. This behavior is
+Append is the most common single edit mutation operator.\todo{In general or in
+  the multi-edit case?} This behavior is
 reflected in the fact that it is the most common consequent being the consequent
 in 5 out of 5 of the top 5 association rules. The authors are showing the top 5
-association rules to give an example of what the rules look like. If the reader
-would like to know the full list of association rules mined in this study, the
-authors have made available the full list with over 12.000 rules with over 90\%
-Confidence and 0.01\% Support.\footnote{https://goo.gl/UT8QbI} 
+association rules to give an example of what the rules look like.\footnote{We
+  will release the full list of mined association rules with over 90\%
+  confidence and 0.01\% Suppport post double-blined
+  review.} 
+%\footnote{https://goo.gl/UT8QbI} 
 %REPLACE FOR CAMERA READY: https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt
 
-\textbf{Replacement rules:}Similar to the case detailed before, we have analyzed the association rules for the replacements model. 
-We obtained the following rules with a 0.01\% Support and 90\% Confidence.
+\paragraph {Replacement rules} We have also analyzed association rules for the
+replacements model,\todo{It's not obvious to me that association rules for the
+  replacement model makes sense, actually...because it assumes that the second
+  operator after a replace should be a replace and the top-5 rules we have in
+  the preceding paragraph don't suggest that replacements are always followed by
+  replacements.  This paragraph/subsection of content may therefore be worth cutting.} obtaining
+the following rules with a 0.01\% Support and 90\% Confidence.
 10 Best rules found:
 %Minimum support: 0.0001 (1 instances)
 %Minimum metric <confidence>: 0.9
@@ -1565,7 +1573,7 @@ We obtained the following rules with a 0.01\% Support and 90\% Confidence.
 \item VariableDeclarationStatement replaces ForStatement $\implies$ IfStatement replaces TryStatement
 \end{itemize}
 
-Similar to the one described above, the authors have made available the full list of association rules with over 90\% Confidence and 0.01\% Support.\footnote{https://goo.gl/omk60t}
+%Similar to the one described above, the authors have made available the full list of association rules with over 90\% Confidence and 0.01\% Support.\footnote{https://goo.gl/omk60t}
 %REPLACE FOR CAMERA READY: https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningReplacements.txt
 
 \subsection{Discussion} \label{discussion}
