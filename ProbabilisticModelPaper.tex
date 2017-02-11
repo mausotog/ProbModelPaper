@@ -1652,9 +1652,11 @@ rather than restricting their choices to just one category, increase in search
 space size notwithstanding; future improvements in fault localization thus will
 serve to further benefit from more precise models of mutation selection. 
 
-We also constructed a set of association rules that describe 
+Multi-edit source code changes are understudied, but cover
+the vast majority of bug fixes in software systems. 
+To move towards advancing this area, we constructed a set of association rules that describe 
 how often different sets of mutation operators can predict the change that will 
-come next and how often subsets of mutation operators are applied together.
+come next, and how often subsets of mutation operators are applied together.
 Note that there is a tension between the Support and the Confidence in our transaction 
 base, in which we 
 evaluate the different mutation operators being applied to source code in bug 
@@ -1662,18 +1664,13 @@ fixing commits.
 If we increase the Confidence and decrease Support, we obtain rules such that
 the antecedent and consequents always occur to gether.  This may produce rules that
 do not occur often, but, when they \emph{are} selected, are very likely to be
-correct. n the other hand, if 
+correct. On the other hand, if 
 we increase the Support and decrease the Confidence we would obtain rules that 
 are guaranteed to happen in a certain percent of the corpus, which means, that 
 the relationship described by the rules, happen often, but confidence is 
 sacrificed, which means that there will be a higher percentage of the 
 transactions in which the antecedent is present, but the consequent is not. 
-
-Finally, we have analyzed a field that has been understudied in the past and which covers 
-the vast majority of bug fixes in software systems, which is Multi-edit source code changes. 
-We have created a set of association rules using Apriori, a state of the art
-methodology for association rule mining based on the analyzed corpus. Our
-initial analysis of how single-edit source code changes can be chained together 
+Overall, this initial analysis of how single-edit source code changes can be chained together 
 to become multi-edit source code changes by following human behavior provides a
 first step towards an efficient mechanism for traversing the large search space
 of multi-edit repairs.
