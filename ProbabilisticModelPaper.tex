@@ -1455,7 +1455,7 @@ int seriesCount=dataset.getRowCount();
 
 
 In this subsection, we provide example patches produced using the alternative
-\models, as compared to a human patch.  Consider the snippet of code corresponding
+models, as compared to a human patch.  Consider the snippet of code corresponding
 to the first Chart bug (and its developer fix) from the Defects4J dataset
 (Figure~\ref{fig:chart1.1}).  The developer patches this bug by deleting the if
 statement.  The mined statement-level mutation model favors deletion, and thus
@@ -1465,7 +1465,7 @@ to a patch such as the one shown in Figure~\ref{fig:chart1.3}.  This test case
 passes when, in the case that \texttt{dataset} is not null, nothing is returned;
 this patch avoids this, but also allocates state variables that are not
 necessary at present (and whose state may have unknown effects in other
-executions}. 
+executions). 
 
 \subsection{Association Rule Mining} \label{armRes}
 
@@ -1515,12 +1515,7 @@ association rules to indicate the structure of the rules; and release all mined 
 %REPLACE FOR CAMERA READY: https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt
 
 \paragraph {Replacement rules} We have also analyzed association rules for the
-replacements model,\todo{It's not obvious to me that association rules for the
-  replacement model makes sense, actually...because it assumes that the second
-  operator after a replace should be a replace and the top-5 rules we have in
-  the preceding paragraph don't suggest that replacements are always followed by
-  replacements.  This paragraph/subsection of content may therefore be worth cutting. RESPONSE:
-  I am not sure if you are reading the rules how they are meant to be read. These two sets of rules are mined from different bodies of data. We have a bunch of commits, 1) from those commits we take only the replacements, and we create the replacements model. Then we mine that body of data (of replacements only) and we apply Apriori, and we get these association rules. Which are replacements only. These assoc rules say things like: if you replace a block by an if statement AND you also replaced an expression by an If statement THEN the next step would be to replace a block by an if statement. 2) We do that same thing, but instead of replaces only, we do it with mutation operators. The two models are independent, the same with the association rules. Let me know if I can clarify further.} obtaining
+replacements model, obtaining
 the following rules with a 0.01\% Support and 90\% Confidence.
 10 Best rules found:
 %Minimum support: 0.0001 (1 instances)
@@ -1544,7 +1539,7 @@ the following rules with a 0.01\% Support and 90\% Confidence.
 
 \subsection{Threats to Validity} \label{threatsVal}
 
-\textbf{Internal validity:}
+\noindent\textbf{Internal validity:}
 Regarding possible errors in our implementation and experiments, to run our
 comparison with Genprog, we used an open-source implementation of GenProg
 targeting Java. We release our code, as well as our templates,
@@ -1553,7 +1548,7 @@ researchers, to mitigate the risk of errors in our implementation or approach.
 %REMOVE THIS FOR CAMERA READY
 %in the project mentioned before 
 
-\textbf{External validity:} 
+\noindent\textbf{External validity:} 
 Regarding the generalizability of our findings, it is possible 
 that our results will not generalize external datasets and further
 real life bugs. To mitigate this concern, we evaluate 
@@ -1571,7 +1566,7 @@ faulty location to the APR tool, since APR tools do not know in advance what the
 fault location is. This is for the purposes of evaluating the patch creating process
 only without the noise that fault localization might introduce.
 
-\textbf{Construct validity:}
+\noindent\textbf{Construct validity:}
 Regarding the suitability of our evaluation metrics, we evaluate patch
 quality by running the generated patches on a second test suite created
 from a human patch, which is to a certain extent a biased measure since we can
