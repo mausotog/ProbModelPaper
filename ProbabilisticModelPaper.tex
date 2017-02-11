@@ -1540,7 +1540,7 @@ the following rules with a 0.01\% Support and 90\% Confidence.
 
 \subsection{Threats to Validity} \label{threatsVal}
 
-\paragraph{Internal validity:}
+\textbf{Internal validity:}
 Regarding possible errors in our implementation and experiments, to run our
 comparison with Genprog, we used an open-source implementation of GenProg
 targeting Java. We release our code, as well as our templates,
@@ -1558,21 +1558,22 @@ pograms, covering a diversity of applications, and distinct from the dataset
 from which the models were mined.  We also use 10-fold cross validation in
 assessing our model, to reduce the risk of training and testing on the same
 data.  
-\todo{Mention risk of excluding fault localization, as well as risk of comparing
-  to the human patches.  Hint on the last one: this only makes us look worse
-  than we are, since other solutions might work.  Also, mention risk of
-  producing bad patches, which is an open problem, and which we mitigate using
-  held out test suites as recommended by the state-of-the-art.  We do this}
+
+The authors acknowledge the risk of producing bad quality patches that would not generalize
+to a different description of the behavior the program should have. We attenuate this by 
+assessing the quality of the generated patches with a held-out test suite.
+There is risk in the fact that we are manually giving the
+faulty location to the APR tool, since APR tools do not know in advance what the 
+fault location is. This is for the purposes of evaluating the patch creating process
+only without the noise that fault localization might introduce.
 
 \textbf{Construct validity:}
 Regarding the suitability of our evaluation metrics, we evaluate patch
 quality by running the generated patches on a second test suite created
 from a human patch, which is to a certain extent a biased measure since we can
-not guarantee that the human created patch is perfect. Nevertheless, this is a
-best known practice, especially when compared to the the approach used
-previously in similar experiments in which a biased human developer would judge
-whether he/she considered the patch was correct or not. \todo{Rephrase to be
-  less snarky.}
+not guarantee that the human created patch is perfect. Nevertheless, we consider this to be a
+best known practice, since this way we provide an alternative to subjectively asking a biased human developer
+whether he/she considered the patch to be correct or not. 
 
 \section{Related Work} \label{relatedWork}
 
