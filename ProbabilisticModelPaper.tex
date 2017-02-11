@@ -1562,61 +1562,41 @@ the following rules with a 0.01\% Support and 90\% Confidence.
 %Similar to the one described above, the authors have made available the full list of association rules with over 90\% Confidence and 0.01\% Support.\footnote{https://goo.gl/omk60t}
 %REPLACE FOR CAMERA READY: https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningReplacements.txt
 
-\subsection{Discussion} \label{discussion}
-
-In this paper we are tackling specific 
-challenges regarding the way in which mutation operators are chosen, we provide 
-a probabilistic model that describes the way in which humans give preference to 
-some mutation operators over others, and have analyzed how these single edit 
-source code changes can be chained together to form multi edit changes.
-
-To do this we have analyzed the way in which humans create single edit 
-source code changes and we have created a set of association rules that describe 
-how often different sets of mutation operators can predict the change that will 
-come next and how often subsets of mutation operators are applied together.
-
-There is a tension between the Support and the Confidence in the transaction 
-base, in particular the transaction base considered in this study, in which we 
-evaluate the different mutation operators being applied to source code in bug 
-fixing commits. 
-
-If we increase the Confidence and decrease the Support we will obtain rules in 
-which the priority is that every time that the antecedent happens, the 
-consequent will happen as well. With this approach we may obtain rules that 
-do not happen very often, but every time that they happen in the analyzed corpus, 
-there is a high confidence that the rule will be correct. On the other hand, if 
-we increase the Support and decrease the Confidence we would obtain rules that 
-are guaranteed to happen in a certain percent of the corpus, which means, that 
-the relationship described by the rules, happen often, but confidence is 
-sacrificed, which means that there will be a higher percentage of the 
-transactions in which the antecedent is present, but the consequent is not. 
-
-Regarding Table~\ref{tab:singleLineBugs}, there are two of these bugs in which
-the equally distributed model performed better than the probabilistic
-model. This is due to the fact, that the mutations needed to be applied in the
-source code for it to pass all the test cases, are mutation operators that are
-not usually applied by humans, and therefore they have a smaller probability of
-being chosen by the probabilistic model, and this is exposed as a larger number
-of variants needed to find these unusual mutation operators. 
-
-We also notice that applying different probabilities when constructing variants
-does not make the patches found in either of the models more likely to pass a
-second test suite for these five bugs. Further evaluation should be performed to
-determine if one of the models creates higher quality patches than the other. 
-  
 \subsection{Threats to Validity} \label{threatsVal}
 
 \paragraph{Internal validity:}
-Regarding possible errors in our implementation and experiments, to run our comparison with Genprog, we used Genprog4Java\footnote{https://bitbucket.org/clegoues/genprog4java/}, a publicly available version of Genprog created by the original creators of Genprog. Unlike other similar versions who have tried to replicate Genprog in a Java context, this version is written by the creators of Genprog who understand and know all the details of the original implementation, therefore mitigating the possibility of errors in the translation process. Regarding the PAR templates, we have had to write the templates ourselves due to the fact that the implementation of the PAR templates has not been made publicly available by the authors of that approach. In order to mitigate this, we made our implementation of the templates publicly available 
+Regarding possible errors in our implementation and experiments, to run our
+comparison with Genprog, we used an open-source implementation of GenProg
+targeting Java. We release our code, as well as our templates,
+independently-generated tests, and mined models for scrutiny and extension by other
+researchers, to mitigate the risk of errors in our implementation or approach. 
 %REMOVE THIS FOR CAMERA READY
 %in the project mentioned before 
-to be checked and used in the future by ongoing researchers.
 
 \textbf{External validity:} 
-Regarding the generalizability of our findings, the authors acknowledge the concern that this idea might not generalize to external datasets and further real life bugs. To attenuate this concern, the authors have evaluated their experiment on a state of the art bug-mining platform which consists of five different real life well known open source projects. We analyzed 15 different real life bugs from different projects in very different areas of knowledge (eg, math, language, technology, time representation, graphical interphase). 
+Regarding the generalizability of our findings, it is possible 
+that our results will not generalize external datasets and further
+real life bugs. To mitigate this concern, we evaluate 
+on a state of the art bug-mining including bugs from well-known open-source
+pograms, covering a diversity of applications, and distinct from the dataset
+from which the models were mined.  We also use 10-fold cross validation in
+assessing our model, to reduce the risk of training and testing on the same
+data.  
+\todo{Mention risk of excluding fault localization, as well as risk of comparing
+  to the human patches.  Hint on the last one: this only makes us look worse
+  than we are, since other solutions might work.  Also, mention risk of
+  producing bad patches, which is an open problem, and which we mitigate using
+  held out test suites as recommended by the state-of-the-art.  We do this}
 
 \textbf{Construct validity:}
-Regarding the suitability of our evaluation metrics, the authors evaluate patch quality by running the generated patches through a second test suite created from a human patch, which is to a certain extent a biased measure since we can not guarantee that the human created patch is perfect. Nevertheless, this is a best known practice, especially when compared to the the approach used previously in similar experiments in which a biased human developer would judge whether he/she considered the patch was correct or not.
+Regarding the suitability of our evaluation metrics, we evaluate patch
+quality by running the generated patches on a second test suite created
+from a human patch, which is to a certain extent a biased measure since we can
+not guarantee that the human created patch is perfect. Nevertheless, this is a
+best known practice, especially when compared to the the approach used
+previously in similar experiments in which a biased human developer would judge
+whether he/she considered the patch was correct or not. \todo{Rephrase to be
+  less snarky.}
 
 \section{Related Work} \label{relatedWork}
 
@@ -1664,40 +1644,69 @@ of dominions and bug fixing styles.
 
 \section{Conclusion} \label{conclusion}
 
-In this study we analyze the way in which current state of the art automatic 
+In this paper, we analyze the way in which current state of the art automatic 
 program repair approaches select mutation operators to create candidate 
 patches. We analyze, categorize and compare the mutation operators being used by 
 state of the art approaches. We analyzed the last 100 bug fixing commits from the
-500 projects in Github with most stars, which is the largest corpus analyzed to date
-to the best of our knowledge, and we created a two level probabilistic model regarding 
-the likelihood of mutation operators to be selected as humans select them.
+500 most-starred Java projects on Github, which is the largest corpus analyzed
+to date, to the best of oour knowledge.  We created a two-level probabilistic model describing
+the likelihood of selecting bug-fixing mutation operators, according to the
+observed incidence of their use by human developers. 
 
-We evaluated our approach in three different ways: by performing an internal evaluation of 
-its predictive power through 10 fold cross 
-validation, by comparing the equally distributed model with the probabilistic
- model by running an initial case study; and finally by comparing the two models 
+We evaluated our single-edit approach in several ways: by performing an internal evaluation of 
+its predictive power (using 10 fold cross 
+validation), by comparing the equally distributed model with the probabilistic
+ model on an initial case study; and finally by comparing the two models 
  by running them on 15 bugs using the database of bugs and extensible 
 framework Defects4j. For these bugs, we measured the number of variants it takes to find the 
-patch and the quality of patches by using a second automatically created test suite using Randoop. 
-
-According to our assessment of predictive power, the probabilistic model outperforms
-the equally distributed model by a factor of 4.5 when looking at the first five
-guesses of each model. When running an initial case study with two different sets of mutation operators, the
-probabilistic model outperformed the equally distributed model by a factor of 3
-and a factor of 2 accordingly. And when running in the bugs obtained by
-Defects4j, we did not find a difference in the quality of
-patches produced by each of the approaches in this sample, but 
- the probabilistic model outperformed the equally distributed model in
-the majority of the cases. We also found that the automatic program repair process benefits
+patch as well as the quality of produced patches, using a second automatically-created test suite.
+Note that in \ref{tab:singleLineBugs}, for two bugs,
+the equally distributed model performed better than the probabilistic
+model. This is due to the fact, that the mutations needed to be applied in the
+source code for it to pass all the test cases, are mutation operators that are
+not usually applied by humans, and therefore they have a smaller probability of
+being chosen by the probabilistic model, and this is exposed as a larger number
+of variants needed to find these unusual mutation operators. \todo{Is it hte
+  case that the patches are of low quality as assessed by the second test suite?
+  If so we can punt and say the problem there is that the test suite is the
+  problem.  And then say it may not matter for quality, but remind the reader
+  that more natural patches are preferred by humans, and then say that actually
+  evaluating human preferences via a large-scale study is a problem for future work.}
+We also notice that applying different probabilities when constructing variants
+does not make the patches found in either of the models more likely to pass a
+second test suite for these five bugs. Further evaluation should be performed to
+determine if one of the models creates higher quality patches than the other. 
+Overall, however, we found that automatic program repair appears to benefit
 from having a diverse mutation operator pool containing mutation operators from both categories,
-rather than restricting their choices to just one category. 
+rather than restricting their choices to just one category, increase in search
+space size notwithstanding; future improvements in fault localization thus will
+serve to further benefit from more precise models of mutation selection. 
+
+We also constructed a set of association rules that describe 
+how often different sets of mutation operators can predict the change that will 
+come next and how often subsets of mutation operators are applied together.
+Note that there is a tension between the Support and the Confidence in our transaction 
+base, in which we 
+evaluate the different mutation operators being applied to source code in bug 
+fixing commits. 
+If we increase the Confidence and decrease Support, we obtain rules such that
+the antecedent and consequents always occur to gether.  This may produce rules that
+do not occur often, but, when they \emph{are} selected, are very likely to be
+correct. n the other hand, if 
+we increase the Support and decrease the Confidence we would obtain rules that 
+are guaranteed to happen in a certain percent of the corpus, which means, that 
+the relationship described by the rules, happen often, but confidence is 
+sacrificed, which means that there will be a higher percentage of the 
+transactions in which the antecedent is present, but the consequent is not. 
 
 Finally, we have analyzed a field that has been understudied in the past and which covers 
 the vast majority of bug fixes in software systems, which is Multi-edit source code changes. 
 We have created a set of association rules using Apriori, a state of the art
-methodology for association rule mining based on the analyzed corpus. The authors have
-made an initial analysis of how single-edit source code changes can be chained together 
-to become multi-edit source code changes the way humans do it.
+methodology for association rule mining based on the analyzed corpus. Our
+initial analysis of how single-edit source code changes can be chained together 
+to become multi-edit source code changes by following human behavior provides a
+first step towards an efficient mechanism for traversing the large search space
+of multi-edit repairs.
 
 
 
