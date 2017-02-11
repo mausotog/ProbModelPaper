@@ -1037,7 +1037,7 @@ We segregated the projects that form our corpus into 10
 different folds assigned at random. For each of the 
 folds we would take 1 fold for testing and the remaining 9 folds for training a model. 
 This is performed 10 times, one time per each fold and then it is 
-averaged\todo{or summed, we can show both, rigth? RESPONSE: Sum all the percentages? It would just give us the same number as the average but based on 1000. So if the mean is 87.7, the sum would be 877. I don't see a gain in doing this, but if you think it is useful I can easily do it.} to see how commonly is the training data able to predict the testing 
+averaged to see how commonly is the training data able to predict the testing 
 data.
 We then count the number of testing instances that are correctly predicted 
 by the first five guesses from the training sub-model.   
@@ -1204,42 +1204,36 @@ models' utility in a repair algorithm on a small case study example, constructed
 to differ from the code used in the model.  Consider the buggy method shown in
 Figure~\ref{fig:initialExample}, which is intended to  calculate the median 
 of three numbers.  The incorrect line reads 
-$ret = z;$ instead of $ret = x;$. \todo{at least describe the test cases in
-  prose, even if we don't provide them.  How many passing/failing?}
+$ret = z;$ instead of $ret = x;$. There is one failing test case and eigth passing test cases that describe the inputs and expected outputs of the method.
 
 We run our implementation of the GenProg approach targeting Java and using the
-equally- and probabilistically-constructed models to select between mutation
-operators. \todo{But not the replacement model for replacements?}\todo{Also, in
+equally- and probabilistically-constructed models to select between statement kinds in the replacements model. \todo{But not the replacement model for replacements? RESPONSE: Opposite, we ran it with the replacements model. At this point the mutations model didn't exist. So we run it with replacement only to show how the replacements work if the only option is replacement. And the second case, we let it pick between three mutations using the normal genprog way of picking mut ops and when it picks replace, it uses the replacements model. We started with this, and then up'ed the level to the mutations model}\todo{Also, in
   the next subsection you say you build the full model on 500 projects.  If
-  that's true, what is this model built on?}
+  that's true, what is this model built on? RESPONSE: The one we used here was built from 200. I wrote somewhere here that we tested this case study with a subset of the model, but that phrase probably got removed. Should I put it back again?}
 In the interest of sanity checking our approach, we 
 start by evaluating on a restricted subset of 
 the mutation operators: (1) Only using the $Replace$ mutation operator, and (2) Using only $Append,~
 Delete~and~Replace$ operators.  We measure the average number of variants
 evaluated before finding a repair, a machine- and test-suite independent proxy
-for time.\todo{Please give details on other genprog settings, as you do later as
-  well: timeout, population size, etc.}  We average results of 10 random trials,
+for time. We set the size for each population to 40, we ran 20
+seeds per trial, with a timeout of 4 hours for each run.  We average results of 10 random trials,
 as GenProg is a stochastic algorithm. We also provide the success rate across those trials. 
 
-The results are detailed in Figure 
-\ref{fig:resultsReplace}. 
-%
-In Figure~\ref{fig:resultsReplace} we consider only the mutation operator 
+In the results shown in Table~\ref{fig:resultsReplace} Left, we consider only the mutation operator 
 $Replace$,\todo{Wait so why do we
   say we assess using all of the operators if we don't?  Also I think the table
   you show both sets of results.  I think you need to update this to reflect the
-way you're actually presenting the data?} which means that the tool will disregard all other mutation 
+way you're actually presenting the data? RESPONSE: Mostly explained in my previous response. I corrected it to say we are using the replacement model, not the mut model} which means that the tool will disregard all other mutation 
 operators and will only apply Replace operations using the probabilistic model 
 of Replacements. This is because at this step we are evaluating our model in a 
 subset of the mutation operators to understand if it makes sense to move forward and 
 continue implementing the rest of the mutation operators.
 %
-In this graph we can analyze the runs with 10 different seeds, contrasting the 
-number of variants it takes to find a patch using the probabilistic approach 
-(blue bar), with the number of variants it takes to find a patch using the 
-equally distributed approach (green bar).\todo{...bars?  It's a table...}
+In this Table we can analyze the average, standard deviation and success rate of an automatic program repair tool running 10 different seeds, contrasting the 
+number of variants it takes to find a patch using the probabilistic approach, with the number of variants it takes to find a patch using the 
+equally distributed approach 
 \todo{Also this looks like it succeeds on all seeds even for the equally
-  distributed, all-operators approach.  I just want to check: is that true?}
+  distributed, all-operators approach.  I just want to check: is that true? Yeah, it is a very simple example of replacing one of the other else's into the buggy line. They will all find the solution, it will jsut take longer.}
 %
 As we can derive from the graph, the probabilistic approach was able to find a 
 patch faster than the equally distributed for all the seeds tested. On average,
@@ -1248,7 +1242,8 @@ could find a patch in 23.8 variants, while it took an average of 60.5 variants
 to find a patch using the equally distributed model.
 
 \begin{table}[ht]
-\begin{tabular}{lR{0.8cm}R{0.8cm}R{0.8cm}|R{0.8cm}R{0.8cm}R{0.8cm}}
+\begin{tabular}{l|rrr|rrr}
+  & \multicolumn{3}{|c|}{Replace only} & \multicolumn{3}{c}{Append,Remove,Replace} \\
 \hline
 \textbf{Seed}& Avrg & StdDev & Success rate & Avrg & StdDev & Success rate\\
 \hline
@@ -1262,9 +1257,7 @@ to find a patch using the equally distributed model.
 \center
   \caption{Number of variants it takes to find a patch using different sets of
     mutation operators to guide the search for a patch of the case study. Left)
-    Using Replace. Right) Using Append, Remove and Replace. \todo{Please 
-      use text to label units and provide meaning.  What is the
-    left, and what is the right, in this table?  Add column headings.}}
+    Using Replace. Right) Using Append, Remove and Replace. }
   \label{fig:resultsReplace}
 \end{table} 
 
@@ -1275,10 +1268,8 @@ to find a patch using the equally distributed model.
 %  \label{fig:resultsReplace}
 %\end{figure}
 
-In Figure~\ref{fig:resultsReplace}Right, we consider three mutation operators: Append, 
-Remove and Replace. In this case we can also notice that in seeds 7 and 10 the 
-number of variants it takes to find a patch using the probabilistic model is 
-close to 1 therefore it is hard to notice it in the graph. In this case the data 
+In Table~\ref{fig:resultsReplace} Right, we consider three mutation operators: Append, 
+Remove and Replace. In this case the data 
 shows that using the probabilistic model we obtain a mean of 22.6 variants 
 before finding the patch, while it takes an average of 41.4 variants to find the 
 patch using the equally distributed approach. In both experiments, the
