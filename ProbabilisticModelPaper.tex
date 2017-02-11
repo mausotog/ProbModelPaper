@@ -1301,6 +1301,38 @@ probabilistic model outperformed the equally distributed model on every seed.
 \subsection{Single line bug repair}
 \label{sec:single}
 
+\begin{table*}\centering
+\ra{1.3}
+	\resizebox{\textwidth}{!}{
+\begin{tabular}{|r|rr|rr|rr|rr|rr|rr|}
+\hline
+  &\multicolumn{4}{c|}{\textbf{Stmt-Edition}} & \multicolumn{4}{c|}{\textbf{Temp-Based}} & \multicolumn{4}{c|}{\textbf{All mutations}} \\  
+ \hline
+ \textbf{Bug Name}  & \multicolumn{2}{c|}{\textbf{Equally Dist}} & \multicolumn{2}{c|}{\textbf{Probabilistic}} & \multicolumn{2}{c|}{\textbf{Equally Dist}} & \multicolumn{2}{c|}{\textbf{Probabilistic}} & \multicolumn{2}{c|}{\textbf{Equally Dist}} & 
+\multicolumn{2}{c|}{\textbf{Probabilistic}} \\
+
+ Closure \#10 & \color{OliveGreen}{221.0}& \color{blue}{100\%} & \color{OliveGreen}{179.5} &\color{blue}{100\%} & \color{OliveGreen}{175.1}&\color{blue}{100\%} & \color{OliveGreen}{121.3}&\color{blue}{100\%} & \color{OliveGreen}{163.3}&\color{blue}{100\%} & \color{OliveGreen}{157.4}&\color{blue}{100\%} \\
+
+ Closure \#18 & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & \color{OliveGreen}{36.2}&\color{blue}{100\%} & \color{OliveGreen}{197.5}&\color{blue}{100\%} & \color{OliveGreen}{45.0}&\color{blue}{100\%} & \color{OliveGreen}{139.0}&\color{blue}{100\%} \\
+
+ Math \#2 & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & \color{OliveGreen}{109.4}&\color{blue}{0\%} & \color{OliveGreen}{39.6}&\color{blue}{0\%} & \color{OliveGreen}{109.4}&\color{blue}{0\%} & \color{OliveGreen}{39.6}&\color{blue}{0\%} \\
+
+ Time \#19 & \color{OliveGreen}{94.1}&\color{blue}{100\%} & \color{OliveGreen}{80.7}&\color{blue}{100\%} & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & \color{OliveGreen}{135.1}&\color{blue}{100\%} & \color{OliveGreen}{91.9}&\color{blue}{100\%} \\
+
+ Chart \#1 & \color{OliveGreen}{1.8}&\color{blue}{0\%} & \color{OliveGreen}{7.3}&\color{blue}{0\%} & \color{OliveGreen}{4.9}&\color{blue}{0\%} & \color{OliveGreen}{19.0}&\color{blue}{0\%} & \color{OliveGreen}{2.2}&\color{blue}{0\%} & \color{OliveGreen}{4.8}&\color{blue}{0\%} \\
+
+\hline
+ 
+\end{tabular}
+}
+\ra{1.3}
+		\caption{Value on the left of each slot (green): Number of variants
+          taken to find a patch in single line bugs. Value on the right of each
+          slot (blue): Percentage according to the number of patches that passed
+          the second test suite \todo{As above, please don't use color to
+            denote meaning and instead use text labels for the associated columns.}\label{tab:singleLineBugs}}
+\end{table*}
+
 In this subsection, we evaluate the success of automatic program repair with our
 model on real-world bugs  by comparing the performance of our 
 automatic program repair tool using the probabilistic model to one using the
@@ -1372,70 +1404,38 @@ Our modified APR techniques patched 5 of the 15 bugs, as shown in
 Table~\ref{tab:singleLineBugs}.\todo{Why is success rate 0 for Chart 1, given
   that repairs were obviously found?} In the first row of Table~\ref{tab:singleLineBugs} (Closure \#10) we can see
 that in all three comparisons (Statement-Edit Only, Template-Based Only, and All
-mutations), the approach using the probabilisitc model performs better than its
-counterpart using the equally distributed model. This happens as well in all
-cases of bugs Math \#2 and Time \#19 except for the cases where no patch was
-found. By contrast, for bugs Chart \#1 and Closure \#18 the equally
-distributed approach finds a patch faster in average. This is due to the fact
+mutations), the probabilisitc model outperforms
+the equally distributed model. This happens as well for
+Math \#2 and Time \#19 except for the cases where no patch was
+found. By contrast, for bugs Chart \#1 and Closure \#18, the equally
+distributed approach finds a patch faster on average. This is due to the fact
 that removal mutations such as Deletion and Expression Changer are more likely
 to be picked by the equally distributed model than the probabilistic model since
 developers use these editions less often than others. But these editions have
 been seen in the past to make the test cases pass even if the edition did not
-fixed the bug as per the opinion of developers as indicated in~\cite{kim2013}. 
+fixed the bug as per the opinion of developers as indicated
+in~\cite{kim2013}. \todo{I'm not sure I follow this point.  Try to reexplain?}
 
-Our results also show that applying mutation operators from both categories
-together, benefits the process by finding the patch faster, than when
+Our results also show that considering all available mutation operators is
+preferable to 
 restricting the mutation operator pool to just one of the categories. For the
 Statement-Edit category: 3 out of 6 were fixed faster when combining it with
 Template-Based mutations, and 3 out of 6 were slower. For the Template-Based
 category: 4 out of 8 were fixed faster when combining it with Statemtent-Edit
-mutations, 2 out of 8 were the same, and 2 out of 8 were slower. 
+mutations, 2 out of 8 were the same, and 2 out of 8 were slower. This suggests
+that the expressive power afforded by an increased set of operators may
+outweight the commensurate increase in search space size, though it is safe to
+assume that this benefit must be supported by sufficiently accurate fault
+localization. 
 
-\begin{table*}\centering
-\ra{1.3}
-	\resizebox{\textwidth}{!}{
-\begin{tabular}{|r|rr|rr|rr|rr|rr|rr|}
-\hline
-  &\multicolumn{4}{c|}{\textbf{Stmt-Edition}} & \multicolumn{4}{c|}{\textbf{Temp-Based}} & \multicolumn{4}{c|}{\textbf{All mutations}} \\  
- \hline
- \textbf{Bug Name}  & \multicolumn{2}{c|}{\textbf{Equally Dist}} & \multicolumn{2}{c|}{\textbf{Probabilistic}} & \multicolumn{2}{c|}{\textbf{Equally Dist}} & \multicolumn{2}{c|}{\textbf{Probabilistic}} & \multicolumn{2}{c|}{\textbf{Equally Dist}} & 
-\multicolumn{2}{c|}{\textbf{Probabilistic}} \\
-
- Closure \#10 & \color{OliveGreen}{221.0}& \color{blue}{100\%} & \color{OliveGreen}{179.5} &\color{blue}{100\%} & \color{OliveGreen}{175.1}&\color{blue}{100\%} & \color{OliveGreen}{121.3}&\color{blue}{100\%} & \color{OliveGreen}{163.3}&\color{blue}{100\%} & \color{OliveGreen}{157.4}&\color{blue}{100\%} \\
-
- Closure \#18 & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & \color{OliveGreen}{36.2}&\color{blue}{100\%} & \color{OliveGreen}{197.5}&\color{blue}{100\%} & \color{OliveGreen}{45.0}&\color{blue}{100\%} & \color{OliveGreen}{139.0}&\color{blue}{100\%} \\
-
- Math \#2 & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & \color{OliveGreen}{109.4}&\color{blue}{0\%} & \color{OliveGreen}{39.6}&\color{blue}{0\%} & \color{OliveGreen}{109.4}&\color{blue}{0\%} & \color{OliveGreen}{39.6}&\color{blue}{0\%} \\
-
- Time \#19 & \color{OliveGreen}{94.1}&\color{blue}{100\%} & \color{OliveGreen}{80.7}&\color{blue}{100\%} & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & \color{OliveGreen}{135.1}&\color{blue}{100\%} & \color{OliveGreen}{91.9}&\color{blue}{100\%} \\
-
- Chart \#1 & \color{OliveGreen}{1.8}&\color{blue}{0\%} & \color{OliveGreen}{7.3}&\color{blue}{0\%} & \color{OliveGreen}{4.9}&\color{blue}{0\%} & \color{OliveGreen}{19.0}&\color{blue}{0\%} & \color{OliveGreen}{2.2}&\color{blue}{0\%} & \color{OliveGreen}{4.8}&\color{blue}{0\%} \\
-
-\hline
- 
-\end{tabular}
-}
-\ra{1.3}
-		\caption{Value on the left of each slot (green): Number of variants taken to find a patch in single line bugs. Value on the right of each slot (blue): Percentage according to the number of patches that passed the second test suite}\label{tab:singleLineBugs}
-\end{table*}
-
-
-\textbf{Quality assessment:}
-To assess the quality of the patches generated by both models we need an
-independent validation mechanism. In this study
-
-
-We then ran this second test suite on the patch generated by both models and we
-obtained the results noted in Table~\ref{tab:singleLineBugs}. We noticed a
+Table~\ref{tab:singleLineBugs} also shows the results of evaluating our patches
+on the second, held-out test suites. We noticed a
 constant behavior regarding the different sets of mutations. In this sample, if
-a model is able to find a patch faster, then that also happens independent of
-the mutation set used. We notice that in the majority of cases when the
-probabilistic model was used, we were able to find a patch faster that when
-using the equally distributed approach. In this evaluation, we also notice that
-the quality of patches produced is constant; either the tool produces patches in
-the different seed that all pass the second test suite, or it produces patches
-that none of them pass the second test suite.  
-
+a model is able to find a patch faster, this appears independent of the mutation
+set.  We also notice that
+the quality of patches produced  appears constant, and unaffected by model:
+either the tool produces patches in 
+that all pass the second test suite, or it produces patches that do not. 
 %\subsection{Bugs fixed with a multi line edit within a function}
 %Last evaluation with the bugs we found had a fix
 
