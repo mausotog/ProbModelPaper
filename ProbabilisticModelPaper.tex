@@ -666,8 +666,7 @@ simple statements terminating
 with a semicolon or compound statements corresponding to control flow or
 loops. In Java, statements conceptually map to program elements expressing
 some action to be carried out, including blocks,  while loops, or single-line
-method calls. \todo{mention where the replace/append code comes from in these
-  operators for these techniques.}
+method calls. In these approaches, the statements being appended or replaced come from within the project being modified. This is grounded in the notion that source code has a high level or redundancy~\cite{gabel10}.
 
 \textbf{Template-based mutations:}
 Template-based mutation operators describe a family of approaches that instantiate
@@ -740,7 +739,7 @@ and Replace}" can be matched to \emph{Expression Adder}.
 We also considered the program modification tool Kali~\cite{Qi15}, whose
 templates correspond to subsets of certain PAR templates their extensions. 
 For example, \emph{Redirect Branch} can be seen as
-a subset \todo{Do you mean subset?}  of \emph{Expression Changer}, and Insert Return and Remove Statement are
+a subset of \emph{Expression Changer}, and \emph{Insert Return} and \emph{Remove Statement} are
 subsets of \emph{Expression Adder and Remover} accordingly. In the same way, we find
 similar mutation operators that can be seen as subsets of the extensions of the
 Par templates in studies such as~\cite{Offutt96,Offutt06}. 
