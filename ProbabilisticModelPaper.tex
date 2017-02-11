@@ -888,7 +888,7 @@ dataset, matched as described in Section~\ref{sec:mining}.  These normalized
 instances comprise a probablistic model, where mutation operator probability is
 weighted by its appearance in the dataset.  
 
-\textbf{Replacements probabilistic model:}
+\paragraph{Replacements probabilistic model:}
 If the ``Replacement" mutation operator is 
 selected,  \textit{Replacements probabilistic model} model describes the probability of replacing one statement with
 another  (referring to the 
@@ -1056,7 +1056,7 @@ by the first five guesses from the training sub-model.
   breaklines=true,
   basicstyle=\ttfamily\color{black},
   moredelim=**[is][\color{red}]{@}{@},
-  xleftmargin=20pt, frame=bt, basicstyle={\small\tt}, numbers=left, keywordstyle=\bfseries, 
+  xleftmargin=20pt, frame=bt, basicstyle={\footnotesize\tt}, numbers=left, keywordstyle=\bfseries, 
 	numberstyle=\scriptsize\tt,  moredelim=[is][\color{red}]{@}{@}, deletekeywords={}, captionpos=b, belowskip=1pt, autogobble=true
 }
 
@@ -1347,6 +1347,8 @@ In these experiments, we include all mutations described in
 Section~\ref{categorization} (in our dataset, Template-Based mutations comprise 29.26\% of the corpus; Statement-Edit mutations make up 70.74\% of the 
 corpus).
 
+\subsubsection{Repair results}
+
 We consider for repair a subset of the Defects4j~\cite{just14}
 benchmark, a database and extensible 
 framework of real bugs that enables reproducible studies in software testing 
@@ -1439,45 +1441,46 @@ that all pass the second test suite, or it produces patches that do not.
 %\subsection{Bugs fixed with a multi line edit within a function}
 %Last evaluation with the bugs we found had a fix
 
-\subsection{Examples} \label{examPatches}
+\subsubsection{Repair example} \label{examPatches}
 
 \begin{figure}[t]
 \begin{lstlisting}[frame=single,style=base]
-...
-  LegendItemCollection result=new LegendItemCollection();
-  if (this.plot == null) {
-    return result;
-  }
-  int index=this.plot.getIndexOf(this);
-  CategoryDataset dataset=this.plot.getDataset(index);
-  @-if (dataset != null) {
-   - return result;
-  -}@
-  int seriesCount=dataset.getRowCount();
-...
+LegendItemCollection result = 
+  new LegendItemCollection();
+if (this.plot == null) {
+  return result;
+}
+int index=this.plot.getIndexOf(this);
+CategoryDataset dataset = 
+  this.plot.getDataset(index);
+@-if (dataset != null) {
+ - return result;
+-}@
+int seriesCount=dataset.getRowCount();
 	\end{lstlisting}
-	\caption{Source code of the Chart 1 bug fixed using the probabilistic model. The APR tool deleted code similar to what a developer would have done.\label{fig:chart1.1}}
+	\caption{A snippet of the source code of the Chart 1 bug fixed using the probabilistic model. The APR tool deleted code similar to what a developer would have done.\label{fig:chart1.1}}
 \end{figure}
 
 \begin{figure}[t]
 \begin{lstlisting}[frame=single,style=base]
-...
-  LegendItemCollection result=new LegendItemCollection();
-  if (this.plot == null) {
-    return result;
-  }
-  int index=this.plot.getIndexOf(this);
-  CategoryDataset dataset=this.plot.getDataset(index);
-  @+ if (dataset != null) { 
-   + this.itemLabelGeneratorList=new ObjectList();
-   + this.toolTipGeneratorList=new ObjectList();
-   + this.urlGeneratorList=new ObjectList();
-   + this.legendItemLabelGenerator=new StandardCategorySeriesLabelGenerator();
-   + this.backgroundAnnotations=new ArrayList();
-   + this.foregroundAnnotations=new ArrayList();
-  + }@
-  int seriesCount=dataset.getRowCount();
-...
+LegendItemCollection result = 
+  new LegendItemCollection();
+if (this.plot == null) {
+  return result;
+}
+int index=this.plot.getIndexOf(this);
+CategoryDataset dataset = 
+  this.plot.getDataset(index);
+@+ if (dataset != null) { 
+ + this.itemLabelGeneratorList=new ObjectList();
+ + this.toolTipGeneratorList=new ObjectList();
+ + this.urlGeneratorList=new ObjectList();
+ + this.legendItemLabelGenerator = 
+ +  new StandardCategorySeriesLabelGenerator();
+ + this.backgroundAnnotations=new ArrayList();
+ + this.foregroundAnnotations=new ArrayList();
+ + }@
+int seriesCount=dataset.getRowCount();
 	\end{lstlisting}
 	\caption{Source code of Chart 1 bug fixed using the equally distributed model. The APR tool inserted code unlike a developer would have done it by deallocating global variables that will be used later.	\label{fig:chart1.3}}
 
