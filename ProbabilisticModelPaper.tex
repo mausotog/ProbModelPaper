@@ -888,7 +888,7 @@ dataset, matched as described in Section~\ref{sec:mining}.  These normalized
 instances comprise a probablistic model, where mutation operator probability is
 weighted by its appearance in the dataset.  
 
-\textbf{Replacements probabilistic model:}
+\paragraph{Replacements probabilistic model:}
 If the ``Replacement" mutation operator is 
 selected,  \textit{Replacements probabilistic model} model describes the probability of replacing one statement with
 another  (referring to the 
@@ -1048,7 +1048,7 @@ by the first five guesses from the training sub-model.
   breaklines=true,
   basicstyle=\ttfamily\color{black},
   moredelim=**[is][\color{red}]{@}{@},
-  xleftmargin=20pt, frame=bt, basicstyle={\small\tt}, numbers=left, keywordstyle=\bfseries, 
+  xleftmargin=20pt, frame=bt, basicstyle={\footnotesize\tt}, numbers=left, keywordstyle=\bfseries, 
 	numberstyle=\scriptsize\tt,  moredelim=[is][\color{red}]{@}{@}, deletekeywords={}, captionpos=b, belowskip=1pt, autogobble=true
 }
 
@@ -1339,6 +1339,8 @@ In these experiments, we include all mutations described in
 Section~\ref{categorization} (in our dataset, Template-Based mutations comprise 29.26\% of the corpus; Statement-Edit mutations make up 70.74\% of the 
 corpus).
 
+\subsubsection{Repair results}
+
 We consider for repair a subset of the Defects4j~\cite{just14}
 benchmark, a database and extensible 
 framework of real bugs that enables reproducible studies in software testing 
@@ -1378,7 +1380,7 @@ To compare the efficacy of different types of mutation operators,
 we tested three operation sets: (1) Statement-Edit mutations only (2) Template-based mutations 
 only (3) All mutations.  
 
-We assess success rate and variants to a repair (as in
+We assess number of variants to a repair (as in
 Section~\ref{sec:casestudy}).  Additionally, as a proxy for patch quality (to
 mitigate the risk of plausible but as yet incorrect patches~\cite{Qi15}), we
 evaluate patches using held-out test suite~\cite{legoues2012,Smith15} by automatically building a second
@@ -1394,7 +1396,8 @@ suites.
 
 Our modified APR techniques patched 5 of the 15 bugs, as shown in 
 Table~\ref{tab:singleLineBugs}.\todo{Why is success rate 0 for Chart 1, given
-  that repairs were obviously found?} In the first row of Table~\ref{tab:singleLineBugs} (Closure \#10) we can see
+  that repairs were obviously found?  OH BECAUSE IT'S SUCCESS RATE ON HELD OUT
+  TEST SUITE yeah please lable the table properly} In the first row of Table~\ref{tab:singleLineBugs} (Closure \#10) we can see
 that in all three comparisons (Statement-Edit Only, Template-Based Only, and All
 mutations), the probabilisitc model outperforms
 the equally distributed model. This happens as well for
@@ -1431,45 +1434,46 @@ that all pass the second test suite, or it produces patches that do not.
 %\subsection{Bugs fixed with a multi line edit within a function}
 %Last evaluation with the bugs we found had a fix
 
-\subsection{Examples} \label{examPatches}
+\subsubsection{Repair example} \label{examPatches}
 
 \begin{figure}[t]
 \begin{lstlisting}[frame=single,style=base]
-...
-  LegendItemCollection result=new LegendItemCollection();
-  if (this.plot == null) {
-    return result;
-  }
-  int index=this.plot.getIndexOf(this);
-  CategoryDataset dataset=this.plot.getDataset(index);
-  @-if (dataset != null) {
-   - return result;
-  -}@
-  int seriesCount=dataset.getRowCount();
-...
+LegendItemCollection result = 
+  new LegendItemCollection();
+if (this.plot == null) {
+  return result;
+}
+int index=this.plot.getIndexOf(this);
+CategoryDataset dataset = 
+  this.plot.getDataset(index);
+@-if (dataset != null) {
+ - return result;
+-}@
+int seriesCount=dataset.getRowCount();
 	\end{lstlisting}
-	\caption{Source code of the Chart 1 bug fixed using the probabilistic model. The APR tool deleted code similar to what a developer would have done.\label{fig:chart1.1}}
+	\caption{A snippet of the source code of the Chart 1 bug fixed using the probabilistic model. The APR tool deleted code similar to what a developer would have done.\label{fig:chart1.1}}
 \end{figure}
 
 \begin{figure}[t]
 \begin{lstlisting}[frame=single,style=base]
-...
-  LegendItemCollection result=new LegendItemCollection();
-  if (this.plot == null) {
-    return result;
-  }
-  int index=this.plot.getIndexOf(this);
-  CategoryDataset dataset=this.plot.getDataset(index);
-  @+ if (dataset != null) { 
-   + this.itemLabelGeneratorList=new ObjectList();
-   + this.toolTipGeneratorList=new ObjectList();
-   + this.urlGeneratorList=new ObjectList();
-   + this.legendItemLabelGenerator=new StandardCategorySeriesLabelGenerator();
-   + this.backgroundAnnotations=new ArrayList();
-   + this.foregroundAnnotations=new ArrayList();
-  + }@
-  int seriesCount=dataset.getRowCount();
-...
+LegendItemCollection result = 
+  new LegendItemCollection();
+if (this.plot == null) {
+  return result;
+}
+int index=this.plot.getIndexOf(this);
+CategoryDataset dataset = 
+  this.plot.getDataset(index);
+@+ if (dataset != null) { 
+ + this.itemLabelGeneratorList=new ObjectList();
+ + this.toolTipGeneratorList=new ObjectList();
+ + this.urlGeneratorList=new ObjectList();
+ + this.legendItemLabelGenerator = 
+ +  new StandardCategorySeriesLabelGenerator();
+ + this.backgroundAnnotations=new ArrayList();
+ + this.foregroundAnnotations=new ArrayList();
+ + }@
+int seriesCount=dataset.getRowCount();
 	\end{lstlisting}
 	\caption{Source code of Chart 1 bug fixed using the equally distributed model. The APR tool inserted code unlike a developer would have done it by deallocating global variables that will be used later.	\label{fig:chart1.3}}
 
@@ -1495,7 +1499,7 @@ replacements that happen commonly together, which will give us a hint regarding
 what mutation operations and replacements can be applied together to form multi-edit
 source code changes.
 
-\textbf{Mutation operator rules:}
+\paragraph{Mutation operator rules:}
 To create these association rules among several mutation operators, we mine the
 transactions made out of the commits created by humans in the corpus of projects
 studied and we look for rules that have at least 90\% Confidence, where
@@ -1506,7 +1510,8 @@ studied, every transaction that showed the antecedent also shows the consequent;
 and they are obtained with a 1\% support, which means that each of these rules
 individually show in at least a 1\% of all the transactions of the overall
 corpus. We show the 5  top association rules found for the mining of single edit
-mutation operators. 
+mutation operators. \todo{is this redundant with the content in the approach
+  section that describes the computation?}
 
 
 %Minimum support: 0 (1 instances)
@@ -1525,17 +1530,24 @@ mutation operators.
 %\item Delete \& AddNullCheck \& ParamReplacer $\implies$ Append
 \end{itemize}
 
-Append is the most common single edit mutation operator. This behavior is
+Append is the most common single edit mutation operator.\todo{In general or in
+  the multi-edit case?} This behavior is
 reflected in the fact that it is the most common consequent being the consequent
 in 5 out of 5 of the top 5 association rules. The authors are showing the top 5
-association rules to give an example of what the rules look like. If the reader
-would like to know the full list of association rules mined in this study, the
-authors have made available the full list with over 12.000 rules with over 90\%
-Confidence and 0.01\% Support.\footnote{https://goo.gl/UT8QbI} 
+association rules to give an example of what the rules look like.\footnote{We
+  will release the full list of mined association rules with over 90\%
+  confidence and 0.01\% Suppport post double-blined
+  review.} 
+%\footnote{https://goo.gl/UT8QbI} 
 %REPLACE FOR CAMERA READY: https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt
 
-\textbf{Replacement rules:}Similar to the case detailed before, we have analyzed the association rules for the replacements model. 
-We obtained the following rules with a 0.01\% Support and 90\% Confidence.
+\paragraph {Replacement rules} We have also analyzed association rules for the
+replacements model,\todo{It's not obvious to me that association rules for the
+  replacement model makes sense, actually...because it assumes that the second
+  operator after a replace should be a replace and the top-5 rules we have in
+  the preceding paragraph don't suggest that replacements are always followed by
+  replacements.  This paragraph/subsection of content may therefore be worth cutting.} obtaining
+the following rules with a 0.01\% Support and 90\% Confidence.
 10 Best rules found:
 %Minimum support: 0.0001 (1 instances)
 %Minimum metric <confidence>: 0.9
@@ -1553,7 +1565,7 @@ We obtained the following rules with a 0.01\% Support and 90\% Confidence.
 \item VariableDeclarationStatement replaces ForStatement $\implies$ IfStatement replaces TryStatement
 \end{itemize}
 
-Similar to the one described above, the authors have made available the full list of association rules with over 90\% Confidence and 0.01\% Support.\footnote{https://goo.gl/omk60t}
+%Similar to the one described above, the authors have made available the full list of association rules with over 90\% Confidence and 0.01\% Support.\footnote{https://goo.gl/omk60t}
 %REPLACE FOR CAMERA READY: https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningReplacements.txt
 
 \subsection{Discussion} \label{discussion}
