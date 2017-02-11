@@ -896,11 +896,7 @@ another  (referring to the
 %\footnote{https://goo.gl/mMFbnQ
 We consider 
 the 22 different types detailed by the Eclipse
-JDT\footnote{https://goo.gl/SX3wnA \label{stmtNames}\todo{I'd prefer if we just
-    put the statement names back in the footnote actually, this is unclear; I
-    thought you were linking the JDT spec, and also it's really important that
-    the reviewers know what these statement kinds are so as to be able to read
-    you example table from section IV.A}} as
+JDT\footnote{AssertStatement, Block, BreakStatement, ConstructorInvocation, ContinueStatement, DoStatement, EmptyStatement, EnhancedForStatement, ExpressionStatement, ForStatement, IfStatement, LabeledStatement, ReturnStatement, SuperConstructorInvocation, SwitchCase, SwitchStatement, SynchronizedStatement, ThrowStatement, TryStatement, TypeDeclarationStatement, VariableDeclarationStatement, WhileStatement} as
 direct known subclasses of the class ``Statement", and the incidence with which
 each of  
 them replaces another. For example: What is the observed probability that a \texttt{For} loop 
@@ -925,13 +921,12 @@ only (eg, TrpAutoRepair~\cite{Qi13TrpAutoR}, AE~\cite{Weimer13}, Kali~\cite{Qi15
 to approaches whose search space traversal technique can allow multi-edit 
 changes (eg. GenProg~\cite{legoues12}, Par~\cite{kim2013}, SPR~\cite{fan15SPR},
 Prophet~\cite{Long2016}, etc.) but typically find patches that reduce to
-single-edit changes.\todo{I think the above-referenced Arcuri and Briand paper
-  does talk about this and should be cited here.}
+single-edit changes~\cite{arcuri11}.
 
 Although such single-edit patches can be
 sufficient to repair non-trivial bugs in real software, many bug fixes in real
 software require multiple edits~\cite{Weimer13}.\todo{Why are we citing Weimer
-  13 for this?  That's AE, and AE is single-edit.} The combination of possible mutation
+  13 for this?  That's AE, and AE is single-edit. RESPONSE: AE Compares against Genprog 1 edit and Genprog up to 10 edits. They show the differences between the patches genprog can create with just 1 edit or up to 10, and they compare AE to that.} The combination of possible mutation
  operators to apply in a sequence increases exponentially as we add more source
  code changes, motivating a more precise mechanism to navigate the vast search
  space. 
@@ -947,8 +942,7 @@ We use the
 well-known association rule mining algorithm
 Apriori~\cite{Agrawal94,Liu98,Zaki2000}, which identifies frequent 
 individual items in sets of transactions (commits, in our context).  We extend these sets into 
-larger sets as long as those item sets appear sufficiently often in the database 
-of transactions, which in our case would be the database of transactions created 
+larger sets that appear often in the transactions, which in our case would be the transactions created 
 by each of the commits studied. We have divided our association rule mining to
 be built one from each of the models as described in Section~\ref{armRes}. 
 
@@ -975,10 +969,8 @@ Formally, we define Support as:
 $supp(X) = \dfrac{|\{t \in T; X \subseteq t\}|}{|T|}$
 \end{center}
 
-Where X is the itemset being analyzed and t is each individual transaction in the database of transactions T. 
+Where X is the itemset being analyzed and t is each individual transaction in the database of transactions T. Apriori identifies the frequent mutation operators and replacements happening together, it then extends them to larger itemsets that appear often in the transactions by applying the metrics mentioned before.
 
-\todo{...then what?  One more sentence.  How are these ideas used in the Apriori
-  algorithm to mine association rules?}
 
 \section{Evaluation} \label{evaluation}
 
