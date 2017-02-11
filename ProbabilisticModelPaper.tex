@@ -1570,40 +1570,56 @@ whether he/she considered the patch to be correct or not.
 
 \section{Related Work} \label{relatedWork}
 
-\todo{key problem 3: not nearly enough.  You do need to list the other G and V approaches mentioned earlier, even if 
-you do not need to go into a lot of detail.}
-There have been previous efforts to create a model based on human behavior by Soto et al~\cite{Soto15} 
-where the researchers built a probabilistic model of the replace mutation 
+There have been previous efforts to create a model based on human behavior.  Soto et al.~\cite{Soto15} 
+built a probabilistic model to model the replace mutation 
 operator only, based in 
 an instance count of each statement type using the platform 
-BOA,~\cite{dyer2013} and making an initial model of the replacement mutation 
-operator only. HDRepair~\cite{xuan16} has also tried to tackle this problem by 
-creating a repair approach that uses a modified stochastic search
-technique in which the researchers use fix history
-to help assess their fitness. The fitness of the generated
-fix candidates is determined by the frequency with which the changes included in a given patch occur in the corpus using a Graph-based representation of the bug fixes.
+BOA,~\cite{dyer2013}.  They do not evaluate the model in the context of a repair
+tool.  
+HDRepair~\cite{xuan16} 
+uses fix history
+to help assess patch suitability and fitness in the context of a genetic
+programming search strategy. The fitness of the generated
+fix candidates is determined by the frequency with which the changes included in
+a given patch occur in the corpus using a Graph-based representation of the bug
+fixes.  Similary, Prophet~\cite{long16proph} uses a
+probabilistic model of a subset of our considered mutation operators built on 
+the history of 8 different projects. This model is used to rank candidate
+patches for evaluation.  Our approach follows this intuition to mimic human
+behavior; unlike the previous work, we apply this knowledge when actually
+creating patch candidates rather than when evaluating them.  
 
-Prophet~\cite{long16proph} is also an approach that has done previous work in this 
-area, where the researchers built a 
-probabilistic model for a subset of the mutation operators (the SPR transformation schemas), with a training set 
-of 8 different projects. They then rank the candidate patches according to this model and evaluate them in that order. Our approach follows this intuition to mimic human behavior; we apply this knowledge when creating the patch candidates, as opposed to Prophet, which applies this knowledge afterwards. 
-
-A similar case is studied in ``An empirical study on 
-real bug fixes"~\cite{zhong15} with a smaller number of projects (6) and a 
-smaller set of 
-mutation operators (3), and also by Martinez and Monperrus~\cite{martinez15} with 14 
-projects. By contrast with these studies we have considered a full set of mutation operators and a much larger corpus of analysis.  To the best of our knowledge a full set of mutation 
-operators has not been studied and compared in the past, as neither has a study 
-consider such a vast diversity of projects to build a probabilistic model. In 
+Zhong and Su~\cite{zhong15} perform an empirical study of
+real bug fixes on six projects, studying the incidence of three mutation
+operators, among other questions about the applicability of APR.  Martinez and
+Monperrus~\cite{martinez15} similarly study mutation operator incidence across 14 
+projects. Our work considers a broader set of
+mutation operators over a larger corpus, the largest, to the best of our
+knowledge, studied in existing work. In 
 order to counter the 
 risk of overfitting to a small set of training projects as performed before, our 
-current study trains the model with 500 projects, which covers a vast diversity 
-of dominions and bug fixing styles.
+current study trains the model over 500 projects, covering a diversity 
+of domains.
 
-Par~\cite{kim2013} describes a study in which the researcher manually look for patterns in the way developers fix their code and describe 10 templates of common behavior to create patches. Our study takes into consideration a superset of these templates and also draws a comparison between these and the statement-edit mutation operators. Our study also provides steps towards accounting for multi-edit source code changes which is a understudied problem common in the majority of these studies.
+Par~\cite{kim2013} describes a manual set of 10 templates of common behavior to
+create patches, showing that such templates result in patches of higher
+human-adjuded acceptability than statement-edit-based patches.  Our study takes into consideration a superset
+of these templates, provides steps towards
+accounting for multi-edit source code changes, an understudied problem, and,
+importantly, mines and models these operators and their incidence automatically
+(rather than manually).
 
-Synthesis based repair is a family of techniques that uses constraints to build patches following the description of the constraints. These constraints may be specifications created by developers, formal verification, invariants, etc.~\cite{jin11,wei10}. In this study we do not consider synthesis based approaches since the manner in which patches are created (which is the main topic of the study) is considerably different. 
-
+There exist a broad array of APR techniques proposed, especially recently; we
+survey many of them in Section~\ref{background}, focusing on heuristic or
+syntactic generate-and-validate techniques.  Semantic-based techniques use
+semantic analysis or reasoning~\cite{nguyen13,mechtaev15,Mechtaev2016}, or
+semantic search~\cite{ke15} to construct candidate patches.  Similarly,
+synthesis based repair is a family of techniques that uses constraints to build
+patches following the description of the constraints. These constraints may be
+specifications created by developers, formal verification, invariants,
+etc.~\cite{jin11,wei10}.  Such techniques typically use synthesis to construct
+repairs, with a different mechanism for both constructing and traversing the
+search space, and our approach is thus less immediately applicable.
  
 
 \section{Conclusion} \label{conclusion}
