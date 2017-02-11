@@ -1279,34 +1279,31 @@ probabilistic model outperformed the equally distributed model on every seed.
 \label{sec:single}
 
 \begin{table*}\centering
-\ra{1.3}
-	\resizebox{\textwidth}{!}{
-\begin{tabular}{|r|rr|rr|rr|rr|rr|rr|}
-\hline
-  &\multicolumn{4}{c|}{\textbf{Stmt-Edition}} & \multicolumn{4}{c|}{\textbf{Temp-Based}} & \multicolumn{4}{c|}{\textbf{All mutations}} \\  
- \hline
- \textbf{Bug Name}  & \multicolumn{2}{c|}{\textbf{Equally Dist}} & \multicolumn{2}{c|}{\textbf{Probabilistic}} & \multicolumn{2}{c|}{\textbf{Equally Dist}} & \multicolumn{2}{c|}{\textbf{Probabilistic}} & \multicolumn{2}{c|}{\textbf{Equally Dist}} & 
-\multicolumn{2}{c|}{\textbf{Probabilistic}} \\
+\begin{tabular}{r|rr|rr|rr|rr|rr|rr}
+\toprule
+  &\multicolumn{4}{c|}{\textbf{Stmts Only}} & \multicolumn{4}{c|}{\textbf{Templates}} & \multicolumn{4}{c}{\textbf{All}} \\  
+  & \multicolumn{2}{c|}{\textbf{Equally Dist}} & \multicolumn{2}{c|}{\textbf{Probabilistic}} & \multicolumn{2}{c|}{\textbf{Equally Dist}} & \multicolumn{2}{c|}{\textbf{Probabilistic}} & \multicolumn{2}{c|}{\textbf{Equally Dist}} & 
+\multicolumn{2}{c}{\textbf{Probabilistic}} \\
 
- Closure \#10 & \color{OliveGreen}{221.0}& \color{blue}{100\%} & \color{OliveGreen}{179.5} &\color{blue}{100\%} & \color{OliveGreen}{175.1}&\color{blue}{100\%} & \color{OliveGreen}{121.3}&\color{blue}{100\%} & \color{OliveGreen}{163.3}&\color{blue}{100\%} & \color{OliveGreen}{157.4}&\color{blue}{100\%} \\
+ \textbf{Bug Name} & \textbf{Time} & \textbf{Quality} &  \textbf{Time} & \textbf{Quality} &  \textbf{Time} & \textbf{Quality}&  \textbf{Time} & \textbf{Quality}&  \textbf{Time} & \textbf{Quality}&  \textbf{Time} & \textbf{Quality} \\\midrule
 
- Closure \#18 & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & \color{OliveGreen}{36.2}&\color{blue}{100\%} & \color{OliveGreen}{197.5}&\color{blue}{100\%} & \color{OliveGreen}{45.0}&\color{blue}{100\%} & \color{OliveGreen}{139.0}&\color{blue}{100\%} \\
+ Closure \#10 & {221.0}& {100\%} & {179.5} &{100\%} & {175.1}&{100\%} & {121.3}&{100\%} & {163.3}&{100\%} & {157.4}&{100\%} \\
 
- Math \#2 & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & \color{OliveGreen}{109.4}&\color{blue}{0\%} & \color{OliveGreen}{39.6}&\color{blue}{0\%} & \color{OliveGreen}{109.4}&\color{blue}{0\%} & \color{OliveGreen}{39.6}&\color{blue}{0\%} \\
+ Closure \#18 & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & {36.2}&{100\%} & {197.5}&{100\%} & {45.0}&{100\%} & {139.0}&{100\%} \\
 
- Time \#19 & \color{OliveGreen}{94.1}&\color{blue}{100\%} & \color{OliveGreen}{80.7}&\color{blue}{100\%} & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & \color{OliveGreen}{135.1}&\color{blue}{100\%} & \color{OliveGreen}{91.9}&\color{blue}{100\%} \\
+ Math \#2 & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & {109.4}&{0\%} & {39.6}&{0\%} & {109.4}&{0\%} & {39.6}&{0\%} \\
 
- Chart \#1 & \color{OliveGreen}{1.8}&\color{blue}{0\%} & \color{OliveGreen}{7.3}&\color{blue}{0\%} & \color{OliveGreen}{4.9}&\color{blue}{0\%} & \color{OliveGreen}{19.0}&\color{blue}{0\%} & \color{OliveGreen}{2.2}&\color{blue}{0\%} & \color{OliveGreen}{4.8}&\color{blue}{0\%} \\
+ Time \#19 & {94.1}&{100\%} & {80.7}&{100\%} & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & {135.1}&{100\%} & {91.9}&{100\%} \\
 
-\hline
+ Chart \#1 & {1.8}&{0\%} & {7.3}&{0\%} & {4.9}&{0\%} & {19.0}&{0\%} & {2.2}&{0\%} & {4.8}&{0\%} \\
+
+\bottomrule
  
 \end{tabular}
-}
-\ra{1.3}
-		\caption{Value on the left of each slot: Number of variants
-          taken to find a patch in single line bugs. Value on the right of each
-          slot: Percentage of patches that passed
-          the second test suite\label{tab:singleLineBugs}}
+		\caption{Repair success of various models for three different operator
+          sets.  For each, we report time in terms of variants evaluated to a
+          repair (Time) and percentage of produced patches that pass of all of a
+          held-out second test suite. \label{tab:singleLineBugs}}
 \end{table*}
 
 In this subsection, we evaluate the success of automatic program repair with our
