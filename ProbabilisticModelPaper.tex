@@ -1278,7 +1278,7 @@ to find a patch using the equally distributed model.
   \caption{Number of variants it takes to find a patch using different sets of
     mutation operators to guide the search for a patch of the case study. Left)
     Using Replace. Right) Using Append, Remove and Replace. \todo{Please stop
-      using colors and instead use text to label units and meaning.  What is the
+      using colors and instead use text to label units and provide meaning.  What is the
     left, and what is the right, in this table?  Add column headings.}}
   \label{fig:resultsReplace}
 \end{table} 
@@ -1296,75 +1296,82 @@ number of variants it takes to find a patch using the probabilistic model is
 close to 1 therefore it is hard to notice it in the graph. In this case the data 
 shows that using the probabilistic model we obtain a mean of 22.6 variants 
 before finding the patch, while it takes an average of 41.4 variants to find the 
-patch using the equally distributed approach. We consider of importance to notice that in both experiments the probabilistic model outperformed the equally distributed model in every single case.
+patch using the equally distributed approach. In both experiments, the
+probabilistic model outperformed the equally distributed model on every seed.
 
 \subsection{Single line bug repair}
 \label{sec:single}
 
-In this subsection, we evaluate the success of automatic program repair with our model in real-world examples by comparing the performance of a state of the art automatic program repair tool using the probabilistic model, and using the equally distributed behavior. 
-
-To achieve this, we increased our data by building the whole model with 500 projects in Github with the most stars.
+In this subsection, we evaluate the success of automatic program repair with our
+model on real-world bugs  by comparing the performance of our 
+automatic program repair tool using the probabilistic model to one using the
+equally distributed model.  
+We built the whole model with 500
+projects in Github with the most stars.\todo{This is confusing with respect to
+  the previous section.  What was that model built on?}
  This is to generate the largest code base so far to the best 
 of our knowledge, surpassing all the previous state of the 
 art~\cite{long15Proph,Soto15,zhong15,martinez15,xuan16}. 
+In these experiments, we include all mutations described in
+Section~\ref{categorization} (in our dataset, Template-Based mutations comprise 29.26\% of the corpus; Statement-Edit mutations make up 70.74\% of the 
+corpus).
 
-In our dataset, Template-Based mutations comprise 29.26\% of the corpus; Statement-Edit mutations make up 70.74\% of the 
-corpus. To perform this experiment with real-world bugs, we decided to implement the rest 
-of the mutation operators to be able to compare Statement-Edit, Template-Based, and both. We implemented these 16 templates in GenProg4J, and generated the functionality 
-to be able to select which subset of mutation operators to apply in a particular 
-run.
-
-We evaluate the repair approach on a subset of the Defects4j~\cite{just14}
-benchmark.  Defects4j is a database and extensible 
-framework providing real bugs to enable reproducible studies in software testing 
-research. This database of bugs contains 357 real bugs from 5 
-real-world open source programs, and each of these cases is accompanied by a 
-comprehensive test suite with test cases that expose the bug. This database also provides 
-the corresponding human-generated patch, which is the version of the code written by a human 
-developer to patch the bug. Defects4j has been 
-subject for evaluation of previous APR approaches in the past~\cite{Durieux15}.
-
-  As part of this experiment we want to analyze if one category of mutation 
-  operators is able to fix bugs better than the other, and if 
-  mixing them is beneficial as opposed to keeping them apart. Also we are interested in 
-knowing if the patches created by one of the categories are able to create better quality
-patches than the other. For this we use a quality assessment technique in which we create a
-second test suite different from the one that was used to guide the search, and if the patch
-generalizes to this second test suite, this is evidence that the patch is of better quality than
-a patch who would not pass the test cases in the second test suite.  For this evaluation
-we tested the mutation operators using three different sets 
-of operations: 1) Statement-Edit mutations only 2) Template-based mutations 
-only 3) All mutations.  
-Since historically automatic program repair has worked better with single line 
-patches, we decided to first test bugs that required a single line edit to get 
-patched. We analyzed the first 3 bugs from each of the projects that required a 
-single line edit. The bugs that met this criteria are the following: Chart 1, 
+We consider for repair a subset of the Defects4j~\cite{just14}
+benchmark, a database and extensible 
+framework of real bugs that enables reproducible studies in software testing 
+research. This database currently contains 395 real bugs from 6
+open source programs,\footnote{Note that we initiated this study when Defects4J
+  contained 5 subjects, and thus have no bug instances from the recently-added
+  Mockito project.} along with developer-provided test suites, cases that
+expose each bug,  and
+corresponding developer-provided patches. Defects4j has been previously used
+in evaluating previous work in APR~\cite{Durieux15}.
+In keeping with APR's typical focus on smaller patches, we
+restrict attention to the first 3 bugs from each project that required a 
+single line edit: Chart 1, 
 Chart 8, Chart 20, Closure 10, Closure 14, Closure 18, Lang 6, Lang 16, Lang 21, 
-Math 2, Math 5, Math 10, Time 4, Time 16 and Time 19.
+Math 2, Math 5, Math 10, Time 4, Time 16 and Time 19.\todo{A better world would
+  put this in tabular format with lines of code and number of test cases for
+  each of Chart, Closure, Lang, Math, and Time, and would put a description line
+  for each project to say what it is.  You can look at what description
+  Defects4J uses.  You may not have time for this, though.}
+To diminish the degree of randomness in this experiment and control for the
+effect of the mutation probabilities specifically,  we manually
+set fault localization for each bug.  This controls for inefficiency and noise
+in fault localizaiton. Anecdotally, we observe that less-accurate fault localization increases the amount of
+time taken to repair these defects, as expected (results not shown). 
 
-We set the size for each population to 40 for consistency with 
+We set the size for each population to 40m for consistency with 
 previous work~\cite{legoues12,kim2013}\todo{does Par say the population size
   they use? Also add generation count, or say we used rsrepair instead of
-  genprog as a search strategy (if that's true).  RESPONSE: Yes, PAR uses 40, that is why I mention it in the cite. / Where do I get the generation count information? The config file does not say anything, so it uses the default one.}, we ran 20 seeds per each run, and a timeout of 4 hours since there is 
-the need of several generations of mutant creations needed to assess the 
-performance of this approach~\cite{arcuri11}.
+  genprog as a search strategy (if that's true).  RESPONSE: Yes, PAR uses 40,
+  that is why I mention it in the cite. / Where do I get the generation count
+  information? The config file does not say anything, so it uses the default
+  one.  RESPONSE REPSONSE: I anticipate that you are able to acertain the
+  default used in code you have been contributing to for three years}, we ran 20
+seeds per trial, with a timeout of 4 hours for each, in keeping with 
+recommendations on the assessment of stochastic techniques~\cite{arcuri11}.
+To compare the efficacy of different types of mutation operators,
+we tested three operation sets: (1) Statement-Edit mutations only (2) Template-based mutations 
+only (3) All mutations.  
 
+We assess success rate and variants to a repair (as in
+Section~\ref{sec:casestudy}).  Additionally, as a proxy for patch quality (to
+mitigate the risk of plausible but as yet incorrect patches~\cite{Qi15}), we
+evaluate patches using held-out test suite~\cite{legoues2012,Smith15} by automatically building a second
+test suite that independently describes the same behavior as the test suite that
+guides the search process. We use Randoop~\cite{pacheco07}, an established
+automatic test suite generation tool for Java, to generate this second test
+suite. 
+For each successfully-patched bug, we 
+run Randoop for ten minutes (six times the default value) on the human-patched
+version of the code.\footnote{We will release our test suites post-review.}  We
+thus additionally report patched program success on these independent test
+suites. 
 
-
-Several evaluations in the past use an off-the-shelf fault localization
-technique when evaluating a new way to navigate the search space, which
-introduces a lot of noise and randomness to the result of the patch creation and
-selection process. To diminish the degree of randomness in this experiment, to
-  control for inefficiency and isolate the effect the fault localization technique selected has an impact on the overall result, we manually
- indicate the APR approach the section of the code that contains
-the defect. In these cases we picked the faulty statements to be the statements
-which the human developers modified to patch the code. 
-
-From these 15 bugs we were able to find patches for 5 of them as described in
-Table~\ref{tab:singleLineBugs}. Results show the average of results on 
-20 different seeds.  
-
-In the first row of Table~\ref{tab:singleLineBugs} (Closure \#10) we can see
+Our modified APR techniques patched 5 of the 15 bugs, as shown in 
+Table~\ref{tab:singleLineBugs}.\todo{Why is success rate 0 for Chart 1, given
+  that repairs were obviously found?} In the first row of Table~\ref{tab:singleLineBugs} (Closure \#10) we can see
 that in all three comparisons (Statement-Edit Only, Template-Based Only, and All
 mutations), the approach using the probabilisitc model performs better than its
 counterpart using the equally distributed model. This happens as well in all
@@ -1416,24 +1423,8 @@ mutations, 2 out of 8 were the same, and 2 out of 8 were slower.
 
 \textbf{Quality assessment:}
 To assess the quality of the patches generated by both models we need an
-independent validation mechanism. In this study we use a held-out test suite 
-evaluation technique~\cite{legoues2012,Smith15} where we automatically build a second
-test suite of test cases that describes the same behavior as the test suite that
-guides the search process. This second test suite will be composed by a
-different set of test cases, so we can test the same behavior but so that we can
-also generalize the patch to different descriptions of the same behavior and not
-to overfit to a particular set of test cases taken to guide the search. To
-achieve this, we used the popular automatic test suite generation tool for Java,
-Randoop~\cite{pacheco07}. 
+independent validation mechanism. In this study
 
-For each of the bugs we were able to create a patch for, we have
-extracted
-the source code of the human patch provided by Defects4j to take this as a
-description of the behavior of the program after the bug has been fixed, and we
-have run Randoop for ten minutes (six times the default value, to make sure we
-have enough test cases to test the validity of the patch) on this version of the
-code to get a different test suite\footnote{Available at: https://goo.gl/YbFeql}
-than the one used to guide the search.  
 
 We then ran this second test suite on the patch generated by both models and we
 obtained the results noted in Table~\ref{tab:singleLineBugs}. We noticed a
