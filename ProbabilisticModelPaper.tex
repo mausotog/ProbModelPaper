@@ -1209,7 +1209,7 @@ $ret = z;$ instead of $ret = x;$. There is one failing test case and eigth passi
 We run our implementation of the GenProg approach targeting Java and using the
 equally- and probabilistically-constructed models to select between statement kinds in the replacements model. \todo{But not the replacement model for replacements? RESPONSE: Opposite, we ran it with the replacements model. At this point the mutations model didn't exist. So we run it with replacement only to show how the replacements work if the only option is replacement. And the second case, we let it pick between three mutations using the normal genprog way of picking mut ops and when it picks replace, it uses the replacements model. We started with this, and then up'ed the level to the mutations model}\todo{Also, in
   the next subsection you say you build the full model on 500 projects.  If
-  that's true, what is this model built on? RESPONSE: The one we used here was built from 200. I wrote somewhere here that we tested this case study with a subset of the model, but that phrase probably got removed. Should I put it back again?}
+  that's true, what is this model built on? RESPONSE: The one we used here was built from 200. I wrote somewhere here that we tested this case study with a subset of the model, but that phrase probably got removed. Should I put it back again? RESPONSE: YES.  Please just do things like this without asking; clearly it's confusing to me.  That's why I asked.  You don't need my permissino to put basic facts in.}
 In the interest of sanity checking our approach, we 
 start by evaluating on a restricted subset of 
 the mutation operators: (1) Only using the $Replace$ mutation operator, and (2) Using only $Append,~
