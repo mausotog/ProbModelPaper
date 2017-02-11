@@ -1480,14 +1480,16 @@ To create these association rules among several mutation operators, we mine the
 transactions made out of the commits created by humans in the corpus of projects
 studied and we look for rules that have at least 90\% Confidence, where
 Confidence is an indication of how often the rule has been found to be true.  
-These rules are ranked by their confidence; in this case, the top 5 rules shown
-below have a confidence of a 100\% which means that in 100\% of the cases
-studied, every transaction that showed the antecedent also shows the consequent;
-and they are obtained with a 1\% support, which means that each of these rules
-individually show in at least a 1\% of all the transactions of the overall
-corpus. We show the 5  top association rules found for the mining of single edit
-mutation operators. 
-
+These rules are ranked by their confidence; in this case, the top 10 rules shown
+below have a confidence of a 100\%, meaning that in 100\% of the cases
+studied, every transaction that showed the antecedent also showed the consequent.
+They are obtained with a 1\% support, which means that each of these rules
+individually appear in at least a 1\% of all the transactions of the overall
+corpus. We show the top ten association rules for the mining of single edit 
+mutation operators to indicate the structure of the rules; and release all mined
+rules with over 90\% Confidence and 0.1\% Support:\footnote{We 
+  will link the full list of mined association rules post double-blined
+  review.} 
 
 %Minimum support: 0 (1 instances)
 %Minimum metric <confidence>: 0.9
@@ -1498,26 +1500,23 @@ mutation operators.
 \item Replace \& SeqExchanger $\implies$ Append
 \item Replace \& ParamReplacer $\implies$ Append
 \item Delete \& CasteeMutator $\implies$ Append
-%\item Replace \& Delete \& ParamReplacer $\implies$ Append
-%\item Replace \& AddNullCheck $\implies$ Append
-%\item Replace \& Delete \& SeqExchanger $\implies$ Append
-%\item Delete \& ExpressionAdder $\implies$ Append
-%\item Delete \& AddNullCheck \& ParamReplacer $\implies$ Append
+\item Replace \& Delete \& ParamReplacer $\implies$ Append
+\item Replace \& AddNullCheck $\implies$ Append
+\item Replace \& Delete \& SeqExchanger $\implies$ Append
+\item Delete \& ExpressionAdder $\implies$ Append
+\item Delete \& AddNullCheck \& ParamReplacer $\implies$ Append
 \end{itemize}
 
 Append is the most common single edit mutation operator applied by developers. This behavior is
-reflected in the fact that it is the most common consequent being the consequent
-in 5 out of 5 of the top 5 association rules. We show the top 5
-association rules to indicate the structure of the rules; and release all mined rules with over 90\% Confidence and 0.1\% Support.\footnote{We
-  will link the full list of mined association rules post double-blined
-  review.} 
+reflected in the fact that it is the consequent in the all the top ten mined
+rules.  
 %\footnote{https://goo.gl/UT8QbI} 
 %REPLACE FOR CAMERA READY: https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt
 
 \paragraph {Replacement rules} We have also analyzed association rules for the
 replacements model, obtaining
 the following rules with a 0.01\% Support and 90\% Confidence.
-10 Best rules found:
+The ten best rules we found are:
 %Minimum support: 0.0001 (1 instances)
 %Minimum metric <confidence>: 0.9
 %Number of cycles performed: 20
