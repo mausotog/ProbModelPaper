@@ -468,7 +468,7 @@ the software development process, especially for large, real-world systems~\cite
 Significant recent research effort has been dedicated to
 building automatic program repair (APR) tools that are able to address
 bugs in 
-programs~\cite{legoues12,kim2013,Weimer13,fan15,long15Proph,debroy10,perkins09,wei10}. 
+programs~\cite{legoues12,kim2013,Weimer13,fan15,long16proph,debroy10,perkins09,wei10}. 
 
 One well-known class of repair techniques follows a 
 \emph{generate-and-validate} approach, which take as input a test suite, 
@@ -494,7 +494,7 @@ candidate patches creation in the heuristic or syntactic context.}
 Given a potentially-faulty location, these
 generate-and-validate approaches (e.g., GenProg~\cite{legoues12}, 
 Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13TrpAutoR}
-Prophet~\cite{long15Proph}, HDRepair~\cite{xuan16}) use heuristics or
+Prophet~\cite{long16proph}, HDRepair~\cite{xuan16}) use heuristics or
 heuristically-informed probability distributions to select between
 mutation operators
 when constructing candidate patches.
@@ -506,12 +506,12 @@ new class). In this paper, we therefore study and then simulate the behavior of 
 developers to create patches. 
 Indeed, this idea has been
 leveraged manually in the past to create more human-acceptable mutation
-operators~\cite{kim2013} and to inform patch \emph{ranking} (rather than construction)~\cite{xuan16,Long2016}.
+operators~\cite{kim2013} and to inform patch \emph{ranking} (rather than construction)~\cite{xuan16,long16proph}.
 The APR search space, including the various mutation
 operators used by different techniques, has been growing in a relatively ad hoc 
 manner. We mitigate this effect by categorizing and comparing a superset of
 mutation operators in use in a number of 
-state-of-the-art approaches~\cite{legoues12,Weimer13,kim2013,Long2016}.
+state-of-the-art approaches~\cite{legoues12,Weimer13,kim2013,long16proph}.
 We mine bug fixing commits from 
 the 500 most popular Github Java projects to model the selection probability of
 the possible mutation operators based on 
@@ -520,7 +520,7 @@ model to inform a repair approach that chooses from the set of possible
 operators based on these real-world
 probabilities.
 As a result, our work goes beyond even the prior work that leverages human bug
-fixes in a program repair context~\cite{kim2013,xuan16,Long2016} by generalizing
+fixes in a program repair context~\cite{kim2013,xuan16,long16proph} by generalizing
 to a broader and more expressive set of
 mutation operators, and using a fully-automatically-mined model much 
 earlier in the APR process, when
@@ -647,7 +647,7 @@ until it reaches a pre-defined time or variant limit is reached.
 Techniques vary in how they identify and choose between candidate mutation
 operators, and how they traverse the search space otherwise. For example, some
 mechanisms adapt the manner in which they select candidate patches by assigning
-a higher priority to some candidate patches over others based on heuristics~\cite{long15Proph};
+a higher priority to some candidate patches over others based on heuristics~\cite{long16proph};
 some others restrict their approach to apply a single edit in the variant
 creation process~\cite{Qi13TrpAutoR}; others remove similar patches and prioritize the test cases
 according to their likelihood to fail~\cite{Weimer13}; others use various other
@@ -683,7 +683,7 @@ Template-based mutation operators describe a family of approaches that instantia
 predetermined templates, more complicated than those in the first family of
 approaches, at applicable code locations.  This family includes PAR~\cite{kim2013}, 
 SPR~\cite{fan15SPR}, and 
-Prophet~\cite{Long2016}.
+Prophet~\cite{long16proph}.
 %
 PAR is the product of a study of a large number of 
 human 
@@ -901,7 +901,7 @@ weighted by its appearance in the dataset.
 
 \paragraph{Replacements probabilistic model}
 If the ``Replacement" mutation operator is 
-selected,  \textit{Replacements probabilistic model} model describes the probability of replacing one statement with
+selected, the \textit{Replacements probabilistic model} model describes the probability of replacing one statement with
 another  (referring to the 
 ``replacee" and ``replacer" statements accordingly), informing the selection of replacement fix code.
 %\footnote{https://goo.gl/mMFbnQ
@@ -931,7 +931,7 @@ code changes they apply to create a program variant to one change per variant
 only (eg, TrpAutoRepair~\cite{Qi13TrpAutoR}, AE~\cite{Weimer13}, Kali~\cite{Qi15}), and 
 to approaches whose search space traversal technique can allow multi-edit 
 changes (eg. GenProg~\cite{legoues12}, Par~\cite{kim2013}, SPR~\cite{fan15SPR},
-Prophet~\cite{Long2016}, etc.) but typically find patches that reduce to
+Prophet~\cite{long16proph}, etc.) but typically find patches that reduce to
 single-edit changes~\cite{arcuri11}.
 
 Although such single-edit patches can be
@@ -1082,7 +1082,7 @@ replacer? If it is returned for the first five instances in a model, the model
 correctly predicts this instance.  
 
 Each trained model describes the dataset via
-a distribution identifying how many times each statement is replaced 
+a distribution identifying the (normalized) frequency with which each statement is replaced 
 by another. Each combination is described by 
 $E_{n,m}$, 
 where $n$ is the statement being replaced (replacee) and $m$ the statement it is 
@@ -1226,8 +1226,7 @@ the mutation operators: (1) Only using the $Replace$ mutation operator, and (2) 
 Delete~and~Replace$ operators.  We measure the average number of variants
 evaluated before finding a repair, a machine- and test-suite independent proxy
 for time. We set the size for each population to 40, we ran 20
-seeds per trial, with a timeout of 4 hours for each run.  We average results of 10 random trials,
-as GenProg is a stochastic algorithm. We also provide the success rate across those trials. 
+seeds per trial, with a timeout of 4 hours for each run.  We average results of 10 random trials.
 
 In the results shown in Table~\ref{fig:resultsReplace} Left, we consider only the mutation operator 
 $Replace$, which means that the tool will disregard all other mutation 
@@ -1320,7 +1319,7 @@ We built the whole model with 500
 projects in Github with the most stars.
  This is to generate the largest code base so far to the best 
 of our knowledge, surpassing all the previous state of the 
-art~\cite{long15Proph,Soto15,zhong15,martinez15,xuan16}. 
+art~\cite{long16proph,Soto15,zhong15,martinez15,xuan16}. 
 In these experiments, we include all mutations described in
 Section~\ref{categorization} (in our dataset, Template-Based mutations comprise 29.26\% of the corpus; Statement-Edit mutations make up 70.74\% of the 
 corpus).
@@ -1422,7 +1421,9 @@ CategoryDataset dataset =
 -}@
 int seriesCount=dataset.getRowCount();
 	\end{lstlisting}
-	\caption{A snippet of the source code of the Chart 1 bug fixed using the probabilistic model. The APR tool deleted code similar to what a developer would have done.\label{fig:chart1.1}}
+	\caption{A snippet of the source code of the Chart 1 bug fixed using the
+      probabilistic model. The APR tool with the probabilistic model deleted code similar to what the
+      developer did.\label{fig:chart1.1}}
 \end{figure}
 
 \begin{figure}[t]
@@ -1446,18 +1447,25 @@ CategoryDataset dataset =
  + }@
 int seriesCount=dataset.getRowCount();
 	\end{lstlisting}
-	\caption{Source code of Chart 1 bug fixed using the equally distributed model. The APR tool inserted code unlike a developer would have done it by deallocating global variables that will be used later.	\label{fig:chart1.3}}
+	\caption{Source code of Chart 1 bug fixed using the equally distributed
+      model. The APR tool inserted code unlike a developer would have done it by
+      allocating global variables that may be used later.\label{fig:chart1.3}}
 
 \end{figure}
 
 
 In this subsection, we provide example patches produced using the alternative
-models, as compared to a human patch.  Consider the snippet of code corresponding
+\models, as compared to a human patch.  Consider the snippet of code corresponding
 to the first Chart bug (and its developer fix) from the Defects4J dataset
 (Figure~\ref{fig:chart1.1}).  The developer patches this bug by deleting the if
 statement.  The mined statement-level mutation model favors deletion, and thus
 our repair efforts found patches that removed either the entire \texttt{IfStatement}, or its body (line 9).
-By contrast, the equally-distributed model has a higher probability to lead to a patch as the one shown in Figure~\ref{fig:chart1.3}. This patches does not simulate what a human would do to fix this bug, and also deallocates global variables that aren't being used for the execution of this method, but will be used in the future.
+By contrast, the equally-distributed model has a higher probability of leading
+to a patch such as the one shown in Figure~\ref{fig:chart1.3}.  This test case
+passes when, in the case that \texttt{dataset} is not null, nothing is returned;
+this patch avoids this, but also allocates state variables that are not
+necessary at present (and whose state may have unknown effects in other
+executions}. 
 
 \subsection{Association Rule Mining} \label{armRes}
 
@@ -1478,8 +1486,7 @@ studied, every transaction that showed the antecedent also shows the consequent;
 and they are obtained with a 1\% support, which means that each of these rules
 individually show in at least a 1\% of all the transactions of the overall
 corpus. We show the 5  top association rules found for the mining of single edit
-mutation operators. \todo{is this redundant with the content in the approach
-  section that describes the computation? RESPONSE: There is definitely some overlapping, are you thinking of anything in particular?}
+mutation operators. 
 
 
 %Minimum support: 0 (1 instances)
@@ -1498,13 +1505,11 @@ mutation operators. \todo{is this redundant with the content in the approach
 %\item Delete \& AddNullCheck \& ParamReplacer $\implies$ Append
 \end{itemize}
 
-Append is the most common single edit mutation operator applied by developers.\todo{In general or in
-  the multi-edit case? RESPONSE: I'm not sure what this question refers to but, what it means is that when developers edit code, append is the most common mut operation so a lot of rules will imply append because it is everywhere.} This behavior is
+Append is the most common single edit mutation operator applied by developers. This behavior is
 reflected in the fact that it is the most common consequent being the consequent
-in 5 out of 5 of the top 5 association rules. The authors are showing the top 5
-association rules to give an example of what the rules look like.\footnote{We
-  will release the full list of mined association rules with over 90\%
-  confidence and 0.01\% Suppport post double-blined
+in 5 out of 5 of the top 5 association rules. We show the top 5
+association rules to indicate the structure of the rules; and release all mined rules with over 90\% Confidence and 0.1\% Support.\footnote{We
+  will link the full list of mined association rules post double-blined
   review.} 
 %\footnote{https://goo.gl/UT8QbI} 
 %REPLACE FOR CAMERA READY: https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt
@@ -1594,7 +1599,7 @@ technique in which the researchers use fix history
 to help assess their fitness. The fitness of the generated
 fix candidates is determined by the frequency with which the changes included in a given patch occur in the corpus using a Graph-based representation of the bug fixes.
 
-Prophet~\cite{long15Proph} is also an approach that has done previous work in this 
+Prophet~\cite{long16proph} is also an approach that has done previous work in this 
 area, where the researchers built a 
 probabilistic model for a subset of the mutation operators (the SPR transformation schemas), with a training set 
 of 8 different projects. They then rank the candidate patches according to this model and evaluate them in that order. Our approach follows this intuition to mimic human behavior; we apply this knowledge when creating the patch candidates, as opposed to Prophet, which applies this knowledge afterwards. 
