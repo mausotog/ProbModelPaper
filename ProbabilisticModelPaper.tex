@@ -1037,7 +1037,7 @@ We segregated the projects that form our corpus into 10
 different folds assigned at random. For each of the 
 folds we would take 1 fold for testing and the remaining 9 folds for training a model. 
 This is performed 10 times, one time per each fold and then it is 
-averaged\todo{or summed, we can show both, rigth?} to see how commonly is the training data able to predict the testing 
+averaged\todo{or summed, we can show both, rigth? RESPONSE: Sum all the percentages? It would just give us the same number as the average but based on 1000. So if the mean is 87.7, the sum would be 877. I don't see a gain in doing this, but if you think it is useful I can easily do it.} to see how commonly is the training data able to predict the testing 
 data.
 We then count the number of testing instances that are correctly predicted 
 by the first five guesses from the training sub-model.   
@@ -1068,11 +1068,11 @@ is \emph{replace}, how often will an \emph{IfStatement} be predicted as the
 replacer? If it is returned for the first five instances in a model, the model
 correctly predicts this instance.  
 
-We have a lot of these\todo{what do you mean by ``these''?} instances in the 10 folds. For example, when analyzing fold 1, we 
+We have a lot of instances like the one described before in the 10 folds. For example, when analyzing fold 1, we 
 have a distribution in that fold that describes how many times each statement is replaced 
 by other kinds of statements in this fold 
 only. This is what we denominate testing data of this fold and we represent it
-with $E_{n,m}$\todo{Should this be a vector maybe?} 
+with $E_{n,m}$\todo{Should this be a vector maybe? RESPONSE: Both testing and training data are matrixes because they describe several cases of different replacees and what they were replaced to. In the example we only analyze a row (Return), but in order to be complete in the formal description here, we should explain that it is a matrix.} 
 where $n$ is the statement being replaced (replacee) and $m$ the statement it is 
 replaced by (replacer). Likewise, we have a probabilistic sub-model created from 
 folds 2--10 inclusive $TP_{n,m}$ where $\forall n,m: 1<=n<=22 \land 1<=m<=22$, 
@@ -1123,32 +1123,40 @@ statement to pick.
 
 
 \begin{table}[ht]
-\begin{tabular}{lrr}
-Fold used to test	&Probabilistic Model&	Equally Distributed Model\\
+\begin{tabular}{l|rr|rr|rr}
+   &\multicolumn{2}{c|}{Replacements} &\multicolumn{2}{c|}{Mutations}&\multicolumn{2}{c}{Instance count} \\
+   	\hline
+Test fold	&Prob&	EqDist&Prob&	EqDist & Replac  & Mut\\
 	\hline
-1	&70\%&	14.6\%\\
-2	&100\%&	22.8\%\\
-3	&82\%	&19\%\\
-4	&81\%	&14.9\%\\
-5	&90\%	&28.7\%\\
-6	&84\%	&19.5\%\\
-7	&86\%	&17.5\%\\
-8	&96\%	&24.7\%\\
-9	&88\%	&18.9\%\\
-10	&100\%	&17.3\%\\
+1	&70\%&	25\% &  95\% & 64\% & 155 &17313 \\
+2	&100\%&	25\%  & 93\% & 63\% & 86 & 17232 \\
+3	&82\%	&23\% & 95\% & 81\% & 81 & 16754\\
+4	&81\%	&40\%  & 94\% & 9\% & 101 & 14159 \\
+5	&90\%	&27\%  & 95\% & 2\%& 99 & 17022 \\
+6	&84\%	&21\%  & 95\%& 58\%& 75 & 14945 \\
+7	&86\%	&24\%  & 93\%& 7\%& 79 & 12901 \\
+8	&96\%	&23\%  & 95\%& 27\%& 55 & 10552 \\
+9	&88\%	&8\%  & 93\%& 62\%& 82 & 14568\\
+10	&100\%	&31\%  & 95\% & 6\%& 116 & 19140\\
 	\hline
-Mean	&87.7	&19.79\\
+Mean	&87.7	&24.70  & 94.3 & 37.9 & \\
 	\hline
-Variance	&78.41&	17.63\\
+Variance	&87.12&	64.23  & 0.90 & 929.87 & \\
 	\hline
-Std dev	&8.85&	4.19\\
+Std dev	&9.33&	8.01  & 0.94 & 30.49 & \\
+	\hline
+Aggregate& 877 & 247 & 943 & 379 & 929 &  154586\\
+
+
 \hline
 \end{tabular}
 \center
   \caption{Correctly predicted percentage according to 10 fold cross
-    validation. The probabilistic model is able to predict the correct statement kind to replace a faulty one in 87\% of the times, this is an improvement of a factor of 4.5 when compared to the equally distributed model.}
-  \label{fig:results10fcv}
+    validation. The replacement probabilistic model (left) is able to predict the correct statement kind to replace a faulty one in 87\% of the times, this is an improvement of almost a factor of 4 when compared to the equally distributed model. The mutations model(middle) is able to predict the correct mutation to be applied almost by a factor of 3 when compared to the equally distribured.}
+  \label{tab:results10fcv}
 \end{table} 
+
+\todo{Fill out the missing values in the table III}
 
 
 %\begin{figure}[!h]
@@ -1156,26 +1164,12 @@ Std dev	&8.85&	4.19\\
 %    \includegraphics[scale=0.33]{sanity1}
 %  \caption{   }
 %\end{figure}
-\todo{Additionally I think this graph ight make more
-      sense as a table, with variances and averages included.  The legend to the
-      side is honestly the important part, and also too small.  Include an
-      aggregate/total row. RESPONSE: What do you mean by an aggregate?}. 
-\todo{I mean: sum the correctly predicted numbers.  Add a column for each model
-  that shows the actual number predicted correctly in top N (in addition to the
-  percentage, in its own column).  Add those numbers up.  Put the total in an
-  aggregate row at the bottom.  You can also compute the aggregate of the
-  percentages, but you need the raw numbers/ data to do that.}
 We ran this experiment with all the rows $n$ in the sub-model $TE_{n,m}$ and 
 $TP_{n,m}$ for each of the 10 
-folds. The results are detailed in Figure~\ref{fig:results10fcv}. As we can see 
-in this graph, the red bars\todo{Update the text to reflect the way the data is
-  actually presented; we don't have bars any more.} represent the results of the percentage of correctly 
-predicted instances of the testing data in each particular fold by the top five guesses of the equally distributed approach; while the blue 
-bars represent the percentage of correctly predicted instances using the top five 
-guesses of the sub-model of each of the folds. We have a mean of 19.79\% 
-correctly predicted instances through the different folds when using the equally 
-distributed schema, while we get a mean of 87.70\% correctly predicted instances 
-through the different folds when using the probabilistic model. 
+folds. The results are detailed in Table~\ref{tab:results10fcv}. As we can see 
+in the table, the first row is the fold we are considering as testing data in the 10 fold cross validation. The second and third row are the percentage of correctly 
+predicted instances of the testing data in each particular fold by the top five guesses of the equally distributed approach for the replacements model. The fourth and fifth columns represent the percentage of correctly predicted instances using the top five 
+guesses of the sub-model of each of the folds for the mutations model. Finally the sixth and seventh columns are the number of instances in each of the folds. We have a difference of 63\% between the means of the two models in the replacements model, and a difference of 56.4\% between the mean values of correctly predicted instances in the probabilistic and equally distributed models for the mutations model.
 
 \subsection{Case study}
 \label{sec:casestudy}
