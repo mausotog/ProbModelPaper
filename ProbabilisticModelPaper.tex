@@ -1223,12 +1223,10 @@ evaluated before finding a repair, a machine- and test-suite independent proxy
 for time. We set the size for each population to 40, we ran 20
 seeds per trial, with a timeout of 4 hours for each run.  We average results of 10 random trials.
 
-In the results shown in Table~\ref{fig:resultsReplace} Left, we consider only the mutation operator 
-$Replace$, which means that the tool will disregard all other mutation 
-operators and will only apply Replace operations using the probabilistic model 
-of Replacements. This is because at this step we are evaluating our model in a 
-subset of the mutation operators to understand if it makes sense to move forward and 
-continue implementing the rest of the mutation operators.
+The results shown in the left-hand side of Table~\ref{fig:resultsReplace} consider only the $Replace$ operator, meaning that the tool disregards all other mutation 
+operators, applying only $Replace$ operations using the Replacements probabilistic model.
+This allows us to evaluate our model on a 
+subset of the mutation operators, to motivate the implementation and assessment of the other mutation operators on a larger dataset. 
 %
 In this Table we can analyze the average, standard deviation and success rate of an automatic program repair tool running 10 different seeds, contrasting the 
 number of variants it takes to find a patch using the probabilistic approach, with the number of variants it takes to find a patch using the 
