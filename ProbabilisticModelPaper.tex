@@ -1574,11 +1574,6 @@ whether he/she considered the patch to be correct or not.
 
 \section{Related Work} \label{relatedWork}
 
-\todo{Key problem here: we describe the related work but not how we are
-  different; that is, we need to put ourselves in context with respect to it.
-  For related work, always say what we do differently.  Please update this
-  content accordingly.}
-\todo{Key problem number 2: PAR.  PAR PAR PAR PAR PAR.  Why are we different/better?}
 \todo{key problem 3: not nearly enough.  You do need to list the other G and V approaches mentioned earlier, even if 
 you do not need to go into a lot of detail.}
 There have been previous efforts to create a model based on human behavior by Soto et al~\cite{Soto15} 
@@ -1601,7 +1596,7 @@ A similar case is studied in ``An empirical study on
 real bug fixes"~\cite{zhong15} with a smaller number of projects (6) and a 
 smaller set of 
 mutation operators (3), and also by Martinez and Monperrus~\cite{martinez15} with 14 
-projects. To the best of our knowledge a full set of mutation 
+projects. By contrast with these studies we have considered a full set of mutation operators and a much larger corpus of analysis.  To the best of our knowledge a full set of mutation 
 operators has not been studied and compared in the past, as neither has a study 
 consider such a vast diversity of projects to build a probabilistic model. In 
 order to counter the 
@@ -1609,12 +1604,11 @@ risk of overfitting to a small set of training projects as performed before, our
 current study trains the model with 500 projects, which covers a vast diversity 
 of dominions and bug fixing styles.
 
-\todo{Note from Mau to Mau: Check what Su and Martinez cite in Rel work}
+Par~\cite{kim2013} describes a study in which the researcher manually look for patterns in the way developers fix their code and describe 10 templates of common behavior to create patches. Our study takes into consideration a superset of these templates and also draws a comparison between these and the statement-edit mutation operators. Our study also provides steps towards accounting for multi-edit source code changes which is a understudied problem common in the majority of these studies.
 
-\todo{put in description of synthesis based repair that was originally in
-  background; the sentence that we had to rephrase because it was taken from
-  smith15.  It got lost/readded in the background edit loss and I do not know how
-  you rewrote it.  Add that and the references back.}
+Synthesis based repair is a family of techniques that uses constraints to build patches following the description of the constraints. These constraints may be specifications created by developers, formal verification, invariants, etc.~\cite{jin11,wei10}. In this study we do not consider synthesis based approaches since the manner in which patches are created (which is the main topic of the study) is considerably different. 
+
+ 
 
 \section{Conclusion} \label{conclusion}
 
@@ -1645,7 +1639,7 @@ of variants needed to find these unusual mutation operators. \todo{Is it hte
   If so we can punt and say the problem there is that the test suite is the
   problem.  And then say it may not matter for quality, but remind the reader
   that more natural patches are preferred by humans, and then say that actually
-  evaluating human preferences via a large-scale study is a problem for future work.}
+  evaluating human preferences via a large-scale study is a problem for future work. }
 We also notice that applying different probabilities when constructing variants
 does not make the patches found in either of the models more likely to pass a
 second test suite for these five bugs. Further evaluation should be performed to
