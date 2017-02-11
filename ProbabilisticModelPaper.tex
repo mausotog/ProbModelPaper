@@ -1573,7 +1573,7 @@ whether he/she considered the patch to be correct or not.
 
 \section{Related Work} \label{relatedWork}
 
-There have been previous efforts to create a model based on human behavior.  Soto et al~\cite{Soto15} 
+There have been previous efforts to create a model based on human behavior.  Soto et al.~\cite{Soto15} 
 built a probabilistic model to model the replace mutation 
 operator only, based in 
 an instance count of each statement type using the platform 
@@ -1589,7 +1589,8 @@ fixes.  Similary, Prophet~\cite{long16proph} uses a
 probabilistic model of a subset of our considered mutation operators built on 
 the history of 8 different projects. This model is used to rank candidate
 patches for evaluation.  Our approach follows this intuition to mimic human
-behavior; unlike the previous work, we apply this knowledge when creating patch candidates.
+behavior; unlike the previous work, we apply this knowledge when actually
+creating patch candidates rather than when evaluating them.  
 
 Zhong and Su~\cite{zhong15} perform an empirical study of
 real bug fixes on six projects, studying the incidence of three mutation
