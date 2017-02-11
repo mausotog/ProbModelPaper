@@ -1480,7 +1480,7 @@ and they are obtained with a 1\% support, which means that each of these rules
 individually show in at least a 1\% of all the transactions of the overall
 corpus. We show the 5  top association rules found for the mining of single edit
 mutation operators. \todo{is this redundant with the content in the approach
-  section that describes the computation?}
+  section that describes the computation? RESPONSE: There is definitely some overlapping, are you thinking of anything in particular?}
 
 
 %Minimum support: 0 (1 instances)
@@ -1499,8 +1499,8 @@ mutation operators. \todo{is this redundant with the content in the approach
 %\item Delete \& AddNullCheck \& ParamReplacer $\implies$ Append
 \end{itemize}
 
-Append is the most common single edit mutation operator.\todo{In general or in
-  the multi-edit case?} This behavior is
+Append is the most common single edit mutation operator applied by developers.\todo{In general or in
+  the multi-edit case? RESPONSE: I'm not sure what this question refers to but, what it means is that when developers edit code, append is the most common mut operation so a lot of rules will imply append because it is everywhere.} This behavior is
 reflected in the fact that it is the most common consequent being the consequent
 in 5 out of 5 of the top 5 association rules. The authors are showing the top 5
 association rules to give an example of what the rules look like.\footnote{We
@@ -1515,7 +1515,8 @@ replacements model,\todo{It's not obvious to me that association rules for the
   replacement model makes sense, actually...because it assumes that the second
   operator after a replace should be a replace and the top-5 rules we have in
   the preceding paragraph don't suggest that replacements are always followed by
-  replacements.  This paragraph/subsection of content may therefore be worth cutting.} obtaining
+  replacements.  This paragraph/subsection of content may therefore be worth cutting. RESPONSE:
+  I am not sure if you are reading the rules how they are meant to be read. These two sets of rules are mined from different bodies of data. We have a bunch of commits, 1) from those commits we take only the replacements, and we create the replacements model. Then we mine that body of data (of replacements only) and we apply Apriori, and we get these association rules. Which are replacements only. These assoc rules say things like: if you replace a block by an if statement AND you also replaced an expression by an If statement THEN the next step would be to replace a block by an if statement. 2) We do that same thing, but instead of replaces only, we do it with mutation operators. The two models are independent, the same with the association rules. Let me know if I can clarify further.} obtaining
 the following rules with a 0.01\% Support and 90\% Confidence.
 10 Best rules found:
 %Minimum support: 0.0001 (1 instances)
