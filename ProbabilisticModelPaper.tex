@@ -351,21 +351,21 @@
 % use a multiple column layout for up to three different
 % affiliations
 
-\author{\IEEEauthorblockN{Authors hidden for the purposes of double blind review}
-\IEEEauthorblockA{\\
-\\
-\\}
+%\author{\IEEEauthorblockN{Authors hidden for the purposes of double blind review}
+%\IEEEauthorblockA{\\
+%\\
+%\\}
 
 %REPLACE FOR CAMERA READY:
-%\author{\IEEEauthorblockN{Mauricio Soto}
-%\IEEEauthorblockA{Carnegie Mellon University\\
-%Pittsburgh PA\\
-%mauriciosoto@cmu.edu}
-%\and
-%\IEEEauthorblockN{Claire Le Goues}
-%\IEEEauthorblockA{Carnegie Mellon University\\
-%Pittsburgh PA\\
-%clegoues@cs.cmu.edu}
+\author{\IEEEauthorblockN{Mauricio Soto}
+\IEEEauthorblockA{Carnegie Mellon University\\
+Pittsburgh PA\\
+mauriciosoto@cmu.edu}
+\and
+\IEEEauthorblockN{Claire Le Goues}
+\IEEEauthorblockA{Carnegie Mellon University\\
+Pittsburgh PA\\
+clegoues@cs.cmu.edu}
 
 
 
@@ -471,21 +471,21 @@ bugs in
 programs~\cite{legoues12,kim2013,Weimer13,fan15SPR,long16proph,debroy10,perkins09,wei10}. 
 
 One well-known class of repair techniques follows a 
-\emph{generate-and-validate} approach, which take as input a test suite, 
+\emph{generate-and-validate} approach, which takes as input a test suite, 
 including at
 least one failing test case exposing
 a defect, and source code to be 
 modified.  These approaches then \emph{generate} a large patch candidate space 
 by applying 
 mutation operators to the original source code and \emph{validate} each by
-running the patched  program against the test suite, seeking a candidate that
+running the potentially patched program against the test suite, seeking a candidate that
 leads the program to pass all input test cases. 
 
 One reason this is challenging is the vast search space of possible 
 edits that can be applied to the different sections of the source 
 code~\cite{long16}. Each such technique defines  a set of possible changes to be
 applied to the source code, which we refer to as ``Mutation operators''. 
-There is a broad diversity of such operators used in , such as deleting or inserting 
+There is a broad diversity of such operators used in automatic program repair, such as deleting or inserting 
 statements~\cite{legoues12}, applying templates~\cite{kim2013}, transformation 
 schemas~\cite{fan15SPR}, etc.\footnote{In this study, we exclude 
 from 
@@ -503,15 +503,17 @@ Our intuition is that, in bug-fixing reality, human developers use certain mutat
 much more often than 
 others (e.g., deleting a line of code is more common than adding a
 new class). In this paper, we therefore study and then simulate the behavior of human
-developers to create patches. 
+developers to create patches.
+ 
 Indeed, this idea has been
 leveraged manually in the past to create more human-acceptable mutation
 operators~\cite{kim2013} and to inform patch \emph{ranking} (rather than construction)~\cite{xuan16,long16proph}.
 The APR search space, including the various mutation
 operators used by different techniques, has been growing in a relatively ad hoc 
-manner. We mitigate this effect by categorizing and comparing a superset of
+manner by the different approaches created in the latest years. We mitigate this effect by categorizing and comparing a superset of
 mutation operators in use in a number of 
 state-of-the-art approaches~\cite{legoues12,Weimer13,kim2013,long16proph}.
+
 We mine bug fixing commits from 
 the 500 most popular Github Java projects to model the selection probability of
 the possible mutation operators based on 
@@ -519,12 +521,14 @@ empirical data that describes how human programmers fix their code.  We then use
 model to inform a repair approach that chooses from the set of possible
 operators based on these real-world
 probabilities.
-As a result, our work goes beyond even the prior work that leverages human bug
+As a result, our work goes beyond prior work that leverages human bug
 fixes in a program repair context~\cite{kim2013,xuan16,long16proph} by generalizing
 to a broader and more expressive set of
 mutation operators, and using a fully-automatically-mined model much 
 earlier in the APR process, when
-patch candidates are actually created.  Prior results suggest that this is likely to result in patches that
+patch candidates are actually created.  
+
+Prior results suggest that this is likely to result in patches that
 humans are more likely to consider acceptable~\cite{kim2013}.
 %
 We evaluate the predictive power of our mined model on its own, in terms of its
@@ -535,7 +539,7 @@ a case study setting as well as with a full set of mutation
 operators on a subset of real-world single-line defects
 from Defects4j~\cite{just14}. 
 
-We also introduce a new approach for modeling multi-edit repairs based on
+Furthermore, we introduce a new approach for modeling multi-edit repairs based on
 mining previous rules from historical edit data. Most of the
 successful repairs from current APR approaches are
 single-edit~\cite{Weimer13,Qi15,kim2013,arcuri11}.  
