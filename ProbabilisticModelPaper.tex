@@ -547,7 +547,7 @@ single-edit~\cite{Weimer13,Qi15,kim2013,arcuri11}.
 Indeed, patches
 consisting of several mutations are undertreated in this context, even though the vast majority
 of patches in existence are comprised of multiple edits~\cite{Soto15,zhong15}.
-We therefoere
+We therefore
  propose and initially validated an approach that predicts from a given 
 single-edit mutation which operation should be applied
 next to create multi-edit patches. 
@@ -555,16 +555,17 @@ next to create multi-edit patches.
 
 The primary contributions of this paper thus are:
 \begin{itemize}
+	\item \textbf{New Repair Approach}, which uses mutation operators
+    from multiple state-of-the-art approaches and
+    the above-mentioned models to choose between them, favoring those more commonly
+    used by human developers.
+    \item \textbf{Development and integration} of this approach for the Java programming language in a tool, available online, which can apply the several different mutation operators, and the probabilistic model discussed in this study.\footnote{https://bitbucket.org/clegoues/genprog4java}
     \item \textbf{Empirical model of single-edit repairs to Java code} mined
       from the 100 most recent bug fixes from the 500 most popular Java projects on
     Github. This study also provides a deeper
     understanding of which mutation operators are used by programmers to fix
     errors in source code, and the frequency of each of the mutation operators
     analyzed. 
-  \item \textbf{New Repair Approach}, that uses mutation operators
-    from multiple state-of-the-art approaches and
-    the above-mentioned models to choose between them, favoring those more commonly
-    used by human developers.
   \item \textbf{Evaluation} of the probabilistic model in several
     contexts, including as part of a new APR approach used to repair real world bugs from well
     known open source projects (independent of those used to inform model
@@ -586,7 +587,7 @@ approaches (Section~\ref{background}). Section~\ref{buildingTheModel}
 describes our approach to building probabilistic models of human 
 edits for both single- and multi-edit bug fixes. Section~\ref{evaluation}
 describes our evaluation. Section~\ref{relatedWork} describes
-related work; Section~\ref{conclusion} concludes. 
+related work; Section~\ref{conclusion} talks about the conclusions found in this study. 
 
 \section{Generate-and-validate repair and operators} 
 \label{background}
@@ -605,7 +606,7 @@ state-of-the-art and that we model, mine, and leverage in our approach
 One of the most well known approaches for automatic program repair is the
 generate-and-validate approach~\cite{legoues12} which is detailed in Figure~\ref{fig:generateandvalidate}. This approach starts with source code that
 has one or various bugs to be fixed, and a test suite which contains passing
-test cases to guide the expected behavior of the program of the program, and failing test 
+test cases to guide the expected behavior of the program, and failing test 
 cases which expose the behavior of the program that is expected but the output
 of the expected behavior does not match the output of the source code as is.
 
@@ -617,15 +618,12 @@ of the expected behavior does not match the output of the source code as is.
 \end{figure}
 
 Figure~\ref{fig:generateandvalidate} diagrams the basic generate and validate
-program repair paradigm. This approach starts with source code that
-has one or various bugs to be fixed, and a test suite with passing
-test cases that expose expected program behavior that should not change, and failing test 
-cases which expose the buggy behavior that should be repaired.  
-
-The first step of this process is to localize the error to a smaller set of
+program repair paradigm. The first step of this process is to localize the error to a smaller set of
 candidate program statements. There is an extensive set of possible approaches
-in the fault localization literature that can be adapted to this task
-task~\cite{Jones05,Jones02,Chen02,Qi2013}.  A given candidate faulty statement informs
+in the fault localization literature that can be adapted to this
+task~\cite{Jones05,Jones02,Chen02,Qi2013}.  
+
+A given candidate faulty statement informs
 the construction of 
 ``candidate patches", produced by modifying the program at such a
 statement. Candidate patches induce variations of the original program 
@@ -644,7 +642,7 @@ the bug, the candidate patch is presented as a likely repair for the bug.
 If the candidate patch does not pass all the test cases in 
 the test suite used to guide the search, the APR
 algorithm typically creates more candidate patches 
-until it reaches a pre-defined time or variant limit is reached. 
+until it reaches a pre-defined time constraint or a variant count limit is reached. 
 
 Techniques vary in how they identify and choose between candidate mutation
 operators, and how they traverse the search space otherwise. For example, some
@@ -666,7 +664,7 @@ There are a number possible mutation operators that can be applied to a location
 to modify the behavior of a program.  We categorize those used in a cross
 section of state-of-the-art techniques into two groups: 
 
-\paragraph{Statement-Edit mutations:}
+\paragraph{Statement-Edit mutations}
 One family of repair approaches, including GenProg~\cite{legoues12}, 
 TrpAutoRepair\cite{Qi13TrpAutoR}, and AE~\cite{Weimer13},
 create candidate 
@@ -680,9 +678,9 @@ loops. In Java, statements conceptually map to program elements expressing
 some action to be carried out, including blocks,  while loops, or single-line
 method calls. In these approaches, the statements being appended or replaced come from within the project being modified. This is grounded in the notion that source code has a high level or redundancy~\cite{gabel10}.
 
-\paragraph{Template-based mutations:}
+\paragraph{Template-based mutations}
 Template-based mutation operators describe a family of approaches that instantiate
-predetermined templates, more complicated than those in the first family of
+predetermined templates, more complex than those in the first family of
 approaches, at applicable code locations.  This family includes PAR~\cite{kim2013}, 
 SPR~\cite{fan15SPR}, and 
 Prophet~\cite{long16proph}.
@@ -691,7 +689,7 @@ PAR is the product of a study of a large number of
 human 
 created patches, from which human annotators abstracted 10 different templates to cover
 the most commonly-used changes in bug-fixing practice.
-The 10 considered templates are detailed in the top half of Table~\ref{approachTemplates}.
+The 10 considered templates are detailed in the top section of Table~\ref{approachTemplates}.
 
 \begin{table}[ht]
   \centering
@@ -745,8 +743,8 @@ Checker}, \emph{Class Cast Checker}, and \emph{Null Checker}. \emph{Condition Re
 generalized from \emph{Object Initializer}, \emph{Upper Bound Setter} and \emph{Lower Bound Setter}; \emph{Conditional Control Flow Introduction} can be 
 seen as a subset of \emph{Sequence Exchanger};
 \emph{Value Replacement} can be seen as a superset of \emph{Method 
-Replacer}, \emph{Parameter Replacer}, \emph{Castee Mutator} and \emph{Expression Changer}; and ``\emph{Copy 
-and Replace}" can be matched to \emph{Expression Adder}. 
+Replacer}, \emph{Parameter Replacer}, \emph{Castee Mutator} and \emph{Expression Changer}; and \emph{Copy 
+and Replace} can be matched to \emph{Expression Adder}. 
 
 We also considered the program modification tool Kali~\cite{Qi15}, whose
 templates correspond to subsets of certain PAR templates their extensions. 
@@ -764,6 +762,8 @@ changed, enabling replication. As mentioned,
 the SPR, Prophet and Kali templates are represented by one or several of the PAR
 templates, but not vice versa.  Finally, the PAR templates naturally target
 Java, the subject of our study. 
+
+It is also worth mentioning approaches such as HDRepair~\cite{xuan16} which is a hybrid approach that uses a combination of \emph{Statement-Edit mutations} and \emph{Template-based mutations} analyzing therefore a subset of the mutation operators described above.
 
 \section{Building the model} \label{buildingTheModel}
 
