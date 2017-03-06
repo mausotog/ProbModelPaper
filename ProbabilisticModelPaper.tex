@@ -1495,11 +1495,11 @@ executions).
 
 We mined our corpus using the Association Rule Mining algorithm Apriori 
 to find rules of mutation operators and 
-replacements that happen commonly together, which will give us a hint regarding
+replacements that happen commonly together, which will give us an intuition regarding
 what mutation operations and replacements can be applied together to form multi-edit
 source code changes.
 
-\paragraph{Mutation operator rules:}
+\paragraph{Mutation operator rules}
 To create these association rules among several mutation operators, we mine the
 transactions made out of the commits created by humans in the corpus of projects
 studied and we look for rules that have at least 90\% Confidence, where
@@ -1511,9 +1511,7 @@ They are obtained with a 1\% support, which means that each of these rules
 individually appear in at least a 1\% of all the transactions of the overall
 corpus. We show the top ten association rules for the mining of single edit 
 mutation operators to indicate the structure of the rules; and release all mined
-rules with over 90\% Confidence and 0.1\% Support:\footnote{We 
-  will link the full list of mined association rules post double-blined
-  review.} 
+rules with over 90\% Confidence and 0.1\% Support:\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt}} 
 
 %Minimum support: 0 (1 instances)
 %Minimum metric <confidence>: 0.9
@@ -1535,13 +1533,11 @@ rules with over 90\% Confidence and 0.1\% Support:\footnote{We
 Append is the most common single edit mutation operator applied by developers. This behavior is
 reflected in the fact that it is the consequent in the all the top ten mined
 rules.  
-%\footnote{https://goo.gl/UT8QbI} 
-%REPLACE FOR CAMERA READY: https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt
 
 \paragraph {Replacement rules} We have also analyzed association rules for the
 replacements model, obtaining
 the following rules with a 0.01\% Support and 90\% Confidence.
-The ten best rules we found are:
+We have realeased a full set of these replacement rules.\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningReplacements.txt}} The ten best rules we found are:
 %Minimum support: 0.0001 (1 instances)
 %Minimum metric <confidence>: 0.9
 %Number of cycles performed: 20
@@ -1561,7 +1557,7 @@ The ten best rules we found are:
 %Similar to the one described above, the authors have made available the full list of association rules with over 90\% Confidence and 0.01\% Support.\footnote{https://goo.gl/omk60t}
 %REPLACE FOR CAMERA READY: https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningReplacements.txt
 
-\subsection{Threats to Validity} \label{threatsVal}
+\section{Threats to Validity} \label{threatsVal}
 
 \noindent\textbf{Internal validity:}
 Regarding possible errors in our implementation and experiments, to run our
