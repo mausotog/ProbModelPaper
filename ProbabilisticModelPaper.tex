@@ -1440,9 +1440,9 @@ if (this.plot == null) {
 int index=this.plot.getIndexOf(this);
 CategoryDataset dataset = 
   this.plot.getDataset(index);
-@-if (dataset != null) {
- - return result;
--}@
+@ -if (dataset != null) {
+  - return result;
+  -}@
 int seriesCount=dataset.getRowCount();
 	\end{lstlisting}
 	\caption{A snippet of the source code of the Chart 1 bug fixed using the
@@ -1459,8 +1459,8 @@ if (this.plot == null) {
 }
 int index=this.plot.getIndexOf(this);
 CategoryDataset dataset = 
-  this.plot.getDataset(index);
-@+ if (dataset != null) { 
+  this.plot.getDataset(index); @
+ + if (dataset != null) { 
  + this.itemLabelGeneratorList=new ObjectList();
  + this.toolTipGeneratorList=new ObjectList();
  + this.urlGeneratorList=new ObjectList();
@@ -1657,7 +1657,7 @@ program repair approaches select mutation operators to create candidate
 patches. We analyze, categorize and compare the mutation operators being used by 
 state of the art approaches. We analyzed the last 100 bug fixing commits from the
 500 most-starred Java projects on Github, which is the largest corpus analyzed
-to date, to the best of oour knowledge.  We created a two-level probabilistic model describing
+to date, to the best of our knowledge.  We created a two-level probabilistic model describing
 the likelihood of selecting bug-fixing mutation operators, according to the
 observed incidence of their use by human developers. 
 
@@ -1666,11 +1666,11 @@ its predictive power (using 10 fold cross
 validation), by comparing the equally distributed model with the probabilistic
  model on an initial case study; and finally by comparing the two models 
  by running them on 15 bugs using the database of bugs and extensible 
-framework Defects4j. For these bugs, we measured the number of variants it takes to find the 
-patch as well as the quality of produced patches, using a second automatically-created test suite.
-Note that in \ref{tab:singleLineBugs}, for two bugs,
-the equally distributed model performed better than the probabilistic
-model. In these cases, unusual mutation operators were involved in the repair. 
+framework Defects4j. 
+
+For these bugs, we measured the number of variants it takes to find the 
+patch as well as the quality of produced patches, using a second automatically-created held-out test suite.
+Note that in Section \ref{tab:singleLineBugs}, for the majority of bugs, the equally distributed model performed better than their equally distributed counterpart.
 We also notice that applying different probabilities when constructing variants
 does not make the patches found in either of the models more likely to pass a
 second test suite for these five bugs. Further evaluation should be performed to
@@ -1686,17 +1686,20 @@ the vast majority of bug fixes in software systems.
 To move towards advancing this area, we constructed a set of association rules that describe 
 how often different sets of mutation operators can predict the change that will 
 come next, and how often subsets of mutation operators are applied together.
-Note that there is a tension between the Support and the Confidence in our transaction 
+
+There is a tension between the Support and the Confidence measures in our transaction 
 base, in which we 
 evaluate the different mutation operators being applied to source code in bug 
 fixing commits. 
 If we increase the Confidence and decrease Support, we obtain rules such that
-the antecedent and consequents always occur to gether.  This may produce rules that
-do not occur often, but, when they \emph{are} selected, are very likely to be
-correct. On the other hand, if 
+the antecedents and consequents have a higher rate of occurring together. By lowering Support this will produce rules that
+do not occur often.  Although, when they \emph{are} selected, are very likely to be
+correct. 
+
+On the other hand, if 
 we increase the Support and decrease the Confidence we would obtain rules that 
-are guaranteed to happen in a certain percent of the corpus, which means, that 
-the relationship described by the rules, happen often, but confidence is 
+are guaranteed to happen in a certain percent of the corpus, which means,
+the relationship described by the rules, happens often, but confidence is 
 sacrificed, which means that there will be a higher percentage of the 
 transactions in which the antecedent is present, but the consequent is not. 
 Overall, this initial analysis of how single-edit source code changes can be chained together 
