@@ -1215,7 +1215,7 @@ guesses of the sub-model of each of the folds for the mutations model. Finally t
 \end{figure}
 
 We assess our
-models' utility in a repair algorithm on a small case study example, constructed
+models' utility in a repair algorithm on a simple case study example, constructed
 to differ from the code used in the model.  Consider the buggy method shown in
 Figure~\ref{fig:initialExample}, which is intended to  calculate the median 
 of three numbers.  The incorrect line reads 
@@ -1235,15 +1235,15 @@ operators, applying only $Replace$ operations using the Replacements probabilist
 This allows us to evaluate our model on a 
 subset of the mutation operators, to motivate the implementation and assessment of the other mutation operators on a larger dataset. 
 %
-In this Table we can analyze the average, standard deviation and success rate of an automatic program repair tool running 10 different seeds, contrasting the 
+In this Table we can analyze the average and standard deviation of an automatic program repair tool running 10 different seeds, contrasting the 
 number of variants it takes to find a patch using the probabilistic approach, with the number of variants it takes to find a patch using the 
-equally distributed approach 
+equally distributed approach. 
 %
-As we can derive from the graph, the probabilistic approach was able to find a 
+The probabilistic approach was able to find a 
 patch faster than the equally distributed for all the seeds tested. On average,
 we found that by using the probabilistic model we  
 could find a patch in 23.8 variants, while it took an average of 60.5 variants 
-to find a patch using the equally distributed model.
+to find a patch using the equally distributed model when using only the \emph{Replace} mutation operator.
 
 
 \begin{table}[ht]
