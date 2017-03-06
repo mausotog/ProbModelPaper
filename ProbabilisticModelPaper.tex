@@ -792,7 +792,7 @@ etc. following the guidelines by \cite{schroter06,Cubranic05,Fischer03}.
 %\\
 We included two additional filters in our search: First, we only include commits
 that exclusively 
-modify Java source code.  Additionally, we restrict our search to commits 
+modify Java source code, since the focus of this study is to analyze the changes in this language, and not to consider changes in files of a different nature (documentation, scripts, xml files, etc).  Additionally, we restrict our search to commits 
 that modify a maximum of three files. We do this to exclude
 big merges, such as pull requests or initial commits, and because
 large commits are more likely to include changes unrelated to a bug fix~\cite{Dias15,Herzig13,Matsuda15,Kawrykow11}.
@@ -808,7 +808,7 @@ question.
 %
 We used two existing tools to identify changes 
 between code versions: Gumtree~\cite{falleri14}, a source code tree
-differencing framework, and QACrashFix~\cite{gao15}, the tool for generating
+differencing framework, and QACrashFix~\cite{gao15}, a tool for generating
 fixes via analyzing Q\&A pages.  Specifically, we adapt QACrashFix's
 differencing engine, which modifies Gumtree to account for replacements.
 These tools create an AST representation of the program files for both the 
@@ -817,9 +817,9 @@ and then use a set of heuristics to match the before-fix version
 with the after-fix version and produce a set of 
 changes performed between them. 
 
-For each bug-fixing commit, we then greedily attempt match the identified changes to the
-available 
-mutation operators. We seek the most complex template that can match a given set
+For each bug-fixing commit, we then greedily attempt to match the identified changes to the
+studied
+mutation operators. We seek each of the mutation operators that can match a given set
 of edits.  For example, to identify
 a \emph{Null Checker} application, for each action describing a commit, we check
 if the manipualted node
@@ -838,11 +838,9 @@ is a node insertion.  If so, we check if the condition in the inserted
 % \\  
 \emph{Expression} to a
 \emph{NullLiteral}. If all these conditions are met, we count this sequence of
-actions as an instance of a \emph{null checker application}.  These rules are
+actions as an instance of a \emph{null checker mutation operator}.  These rules are
 necessarily heuristic, and we do not claim perfect soundness in our matching,
-instead aggregating counted templates over a large dataset.  When a sequence of
-actions is matched to a template, it is removed from further consideration (and
-thus is only counted as matching a single template).  
+instead aggregating counted templates over a large dataset.  
 
 
 
@@ -884,9 +882,7 @@ We extend an open-source implementation of the GenProg technique adapted for Jav
 by implementing the mutation operators from
 Section~\ref{categorization} as well as a mechanism that allows the tool to
 select between the mutation operators according to the probabilities described by
-a given model.\footnote{We will release a link to our implementation to support
-  a camera ready; we obscure it in the interest of supporting double-blind
-  review.}  We construct a two-level model that effectively counts incidences of all considered
+a given model.\footnote{https://bitbucket.org/clegoues/genprog4java}  We construct a two-level model that effectively counts incidences of all considered
 mutation operators, and fix code used in replacements  (generalizing prior work
 proposing a replacement-only model~\cite{Soto15}):
 
@@ -901,19 +897,22 @@ dataset, matched as described in Section~\ref{sec:mining}.  These normalized
 instances comprise a probablistic model, where mutation operator probability is
 weighted by its appearance in the dataset.  
 
+Here we consider only the mutation operators that can be applied to the particular fault location (eg, if the fault location is a \emph{BreakStatement} we could not apply mutation operators such as \emph{Parameter replacer} or \emph{Caster mutator}).
+
 \paragraph{Replacements probabilistic model}
 If the ``Replacement" mutation operator is 
-selected, the \textit{Replacements probabilistic model} model describes the probability of replacing one statement with
+selected, the \textit{Replacements probabilistic model} describes the probability of replacing one statement with
 another  (referring to the 
 ``replacee" and ``replacer" statements accordingly), informing the selection of replacement fix code.
 %\footnote{https://goo.gl/mMFbnQ
+
 We consider 
 the 22 different types detailed by the Eclipse
 JDT\footnote{AssertStatement, Block, BreakStatement, ConstructorInvocation, ContinueStatement, DoStatement, EmptyStatement, EnhancedForStatement, ExpressionStatement, ForStatement, IfStatement, LabeledStatement, ReturnStatement, SuperConstructorInvocation, SwitchCase, SwitchStatement, SynchronizedStatement, ThrowStatement, TryStatement, TypeDeclarationStatement, VariableDeclarationStatement, WhileStatement \label{stmtNames}} as
 direct known subclasses of the class \texttt{Statement}, and the incidence with which
 each 
-replaces another. For example: What is the observed incidence of a \texttt{For} loop 
-replacing a \texttt{While} loop? Given 22 statement types, any of which may replace one
+replaces another. For example: ``What is the observed incidence of a \texttt{For} loop 
+replacing a \texttt{While} loop?" Given 22 statement types, any of which may replace one
 another, there are 484 possible replacement combinations. 
 Note that the observed probabilities are not reciprocal, meaning 
 that the probability of a \texttt{For} loop replacing a \texttt{While} loop is different from the 
@@ -937,7 +936,7 @@ Prophet~\cite{long16proph}, etc.) but typically find patches that reduce to
 single-edit changes~\cite{arcuri11}.
 
 Although such single-edit patches can be
-sufficient to repair non-trivial bugs in real software, many bug fixes in real
+sufficient to repair non-trivial bugs in real software, the majority of bug fixes in real
 software require multiple edits~\cite{zhong15,Soto15}. The combination of possible mutation
  operators to apply in a sequence increases exponentially as we add more source
  code changes, motivating a more precise mechanism to navigate the vast search
@@ -947,7 +946,7 @@ As a first step towards mitigating this limitation, we propose
 an initial analysis of multi-edit 
 source code changes by mining a more expressive model of common changes. In
 particular, we are extracting \emph{association rules} between single edit changes 
-to model chains of single edit changes, capturing the way humans create them.
+to model chains of single edit changes, capturing the way humans create these kinds of fixes.
 Association rules are if/then statements that show relationships between elements in a dataset which happen frequently together.
 
 We use the 
@@ -960,8 +959,8 @@ be built one from each of the models as described in Section~\ref{armRes}.
 
 To extract association rules from  our data, we
 transform each of the mutation operator count and replacement count from 
-each of the commits studied into a transaction to be analyzed. A transaction 
-in this context is a row of values that describes which mutation operators were applied in a single commit.
+each of the commits studied into \emph{transaction} to be analyzed. A \emph{transaction} 
+in this context is a row of values that describes which mutation operators or replacements were applied in a single commit.
 
 Two other basic concepts critical to understanding the Apriori method are the
 ideas of \emph{Confidence} and \emph{Support}.
@@ -971,9 +970,9 @@ Formally, we define Confidence as:
 $conf(X \implies Y) = \dfrac{supp(X \cup Y)}{supp(X)}$ 
 \end{center}
 
-Where X and Y are possible items in a transaction (edit operations in our
-context).  Confidence is calculated according to its Support (\emph{supp}, above), 
-an indication of how frequently the set of mutation operators (itemset) 
+Where X and Y are possible items in a transaction (mutation operators and replacements in our
+context for the Mutation operator probabilistic model and the Replacements probabilistic model accordingly). Confidence is calculated according to its Support (\emph{supp}, above), 
+an indication of how frequently the set of mutation operators or replacements (itemset) 
  occurs in the transaction base.
 Formally:
 
