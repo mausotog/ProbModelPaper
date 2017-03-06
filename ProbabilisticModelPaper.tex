@@ -1418,7 +1418,7 @@ assume that this benefit must be supported by sufficiently accurate fault
 localization. 
 
 Table~\ref{tab:singleLineBugs} also shows the results of evaluating our patches
-on the second, held-out test suites. We noticed a
+on the second, held-out test suites.\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/tree/master/Randoop10MinHeldOutTestSuites}} We noticed a
 constant behavior regarding the different sets of mutations. In this sample, if
 a model is able to find a patch faster, this appears independent of the mutation
 set.  We also notice that
@@ -1599,11 +1599,11 @@ We also rely on Randoop~\cite{pacheco07} as our test suite generation mechanism 
 \section{Related Work} \label{relatedWork}
 
 There have been previous efforts to create a model based on human behavior.  Soto et al.~\cite{Soto15} 
-built a probabilistic model to model the replace mutation 
+built a probabilistic model to describe the replace mutation 
 operator only, based in 
 an instance count of each statement type using the platform 
 BOA,~\cite{dyer2013}.  They do not evaluate the model in the context of a repair
-tool.  
+tool and model is based on an instance count of statements rather than an a more accurate analysis of AST differences, which our model was built from.  
 HDRepair~\cite{xuan16} 
 uses fix history
 to help assess patch suitability and fitness in the context of a genetic
@@ -1647,7 +1647,7 @@ patches following the description of the constraints. These constraints may be
 specifications created by developers, formal verification, invariants,
 etc.~\cite{jin11,wei10}.  Such techniques typically use synthesis to construct
 repairs, with a different mechanism for both constructing and traversing the
-search space, and our approach is thus less immediately applicable.
+search space, and our approach is thus less immediately comparable to these kinds of approaches.
  
 
 \section{Conclusion} \label{conclusion}
