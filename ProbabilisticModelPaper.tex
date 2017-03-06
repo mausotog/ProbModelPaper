@@ -1003,7 +1003,7 @@ association rules between mutation operators mined from our corpus
 %We also include a section for 
 %discussion(Section~\ref{discussion}) and threats to validity (Section~\ref{threatsVal}) 
 
-All experiments are perfomed on a server running Ubuntu 14.04.5 LTS, 
+All experiments are perfomed on a server 
 consisting of 16 processors Intel(R) Xeon(R) CPU E5-2699 v3, with 2.30 GHz each
 processor, 46080 KB cache each, and 32 GB RAM memory, operating system Ubuntu 
 14.04.5 LTS.
@@ -1037,7 +1037,7 @@ the probability of selecting any replacee statement is uniformly random.
 We therefore assess the degree to which each model correctly predicts the
 replacer statement for given replacee statements, within the top 5 produced
 choices.  Because these models are to be used in the context of program repair,
-perfect accuracy (correctness in the Top-1 most likely choice) is unecessary;
+perfect accuracy (correctness in the Top-1 most likely choice) is unecessary since automatic program repair approaches iterate through several different candidate patches until finding the appropriate fix;
 however, the noisy search problem induced by fault localization and a larger set
 of available mutation operators suggests that a relatively tight bound (top-5)
 is likely appropriate.  Additionally, we found obserationally that the top-5
@@ -1089,8 +1089,14 @@ $E_{n,m}$,
 where $n$ is the statement being replaced (replacee) and $m$ the statement it is 
 replaced by (replacer).  A predictive model $TP_{n,m}$, $\forall n,m: 1<=n<=22 \land 1<=m<=22$, 
 describes how often each statement is replaced by 
-other kinds of statements, is trained on the remaining folds. 
-Assume for illustration a sub-model $TP_{13,m}$ for return statements shown in Figure~\ref{fig:exPredReturn}.
+other kinds of statements. 
+
+Assume for illustration a sub-model which contains a row describing the 
+probabilities for the different statements that could possibly replace a return 
+statement: $TP_{13,m}$ (row 13 since \emph{ReturnStatment} is the 13th element 
+in our statement list) as shown in 
+Table~\ref{fig:exPredReturn}.
+
 %
 For our example, the most
 likely statement chosen to replace a Return Statement according to this row in 
@@ -1144,13 +1150,13 @@ Test fold	&Prob&	EqDist&Prob&	EqDist & Replac  & Mut\\
 9	&88\%	&8\%  & 93\%& 62\%& 82 & 14568\\
 10	&100\%	&31\%  & 95\% & 6\%& 116 & 19140\\
 	\hline
-Mean	&87.7	&24.70  & 94.3 & 37.9 & 192.9 & 15458.6 \\
+Mean	&87.7	&24.7  & 94.3 & 37.9 & 192.9 & 15458.6 \\
 	\hline
 Variance	&87.12&	64.23  & 0.90 & 929.87 & 102550.1 & 6402298.71 \\
 	\hline
 Std dev	&9.33&	8.01  & 0.94 & 30.49 & 320.23 & 2530.27 \\
 	\hline
-Sum& 877 & 247 & 943 & 379 & 929 &  154586\\
+Sum& 877 & 247 & 943 & 379 & 1929 &  154586\\
 
 
 \hline
