@@ -1,0 +1,107 @@
+Reviewer 1:
+- Lack of explanation for the key approach:
+(1) Two-level probabilistic model: It is not clear why this study uses two-level probabilistic models. Why is generalizing prior work [47] matter?
+(2) It is not clear how the probabilistic models are created. "To build the Mutation operator probabilistic model we normalize the number of incidences of each mutation operator observed in our dataset, matched as described in Section III-B." How could the numbers be normalized? Are the numbers of incidences matched with instances, e.g., Null Checker? "These normalized instances comprise a probabilistic model, where mutation operator probability is weighted by its appearance in the dataset." What does the `appearance' stands for in this sentence? What are the input and output of models? Before reading Section IV. Evaluation, it is difficult to understand how a model is created and works. In addition, is Table II the model? Table 2 just shows the frequency rate of subsequent statements of the return statement. How could this table be the model? Could this model be generalized in the form of mathematical equation or follows a certain type distribution? It is not quite sure if !
+ we can call Table II a model. Counting incidences is a part of steps to come up with an actual probabilistic model. After counting the frequency, the generalized model must be defined. Table II seems just an initial step to do this and there is no actual model is defined in this study. Using Table II is just an approach to find the best possible mutation operator that can have higher chance to generate acceptable patches but does not look like a model.
+
+- Misleading experimental setting:
+(1) What are baselines for this study? Table III just shows the comparison results between replacement probabilistic models and equally distributed probabilistic models. In related work, "unlike the previous work, we apply this knowledge when actually creating patch candidates rather than when evaluating them." Since the key idea of this proposed approach is actually from the previous work such as [8], [31]. The difference is when the knowledge is applied. Thus, this study must set them as baselines. Are applying the knowledge when creating patch candidates are better than that when evaluating them? This must be a research question to validate. Comparing the proposed probabilistic model with equally distributed models does not provide any interesting aspect since it is quite obvious that the proposed probabilistic model could be better than equally distributed model in some sense.
+(2) This study needs to clearly define evaluation measures to show how and why using probabilistic models are better to find better mutation operator to improve APR approach. For example, is there any measure to show how the search space was reduced after using the models? Does the proposed approach reduce more search space compared with the existing approaches such as [8] and [31]? How could the number of variants be a measure in what sense?
+
+- Results are not clear:
+(1) Random success rate is 100% in all experiments as in Table IV. caption: Does this mean there is no difference using probabilistic model and equally distributed model in terms of success rate?
+(2) Does the smaller number of variants means that the patches can be found faster? Howe much faster? With the current experimental setting and interpretation of results, it is difficult to say using probabilistic model is faster in what sense.
+
+
+* Other comments and suggestions
+- In Section II. B.: a number possible mutation operators >> a number of ...?
+- Section III. C: no a) and b) but there are c) and d)?
+- Section III. C. c): probablistic >> probabilistic?
+- The patch example in Page 5 has a typo?  i > l.size() >> i < l.size()? Otherwise the patch still cause array out of bound exception. Or, the model just predicts ifStatement regardless of having the correct if-condition?
+- Figure II in Page 6? Figure II >> Table II?
+- Page 6: equally distributed approach As we can derive. No period between "approach" and "As"?
+- Section IV. C. 1): We consider for repair a subset >> We consider for repairing a subset?
+- noise in fault localizaition >> noise in fault localization
+- Section VI: to gether >> together?
+
+Reviewer 2:
+(1) The evaluation baseline is needlessly naive. Isn't it rather obvious that a
+heuristic search that is informed by historical mutation behaviour will
+outperform a technique that randomly applies mutations? If it didn't outperform
+such a baseline, it would suggest that bug-fixing behaviour is random.
+
+Instead of the random, uniform distribution baseline, shouldn't we compare to
+the state-of-the-art? For example, the idea of using human-generated bug fixing
+behaviour to inform APR has been explored by past work (e.g., [24]). The novelty
+of this work appears to be that instead of learning fix templates from history,
+we are now using the frequency of mutation operations to guide a heuristic
+search. Couldn't one compare the proposed solutions of each approach to
+demonstrate whether one solution outperforms the other?
+
+(2) The results are not very convincing. There are a few locations where I found
+the results weak and not really suggestive of much:
+
+  - The means and standard deviation values shown in Table IV are not enough.
+  Could you provide a distribution overview (e.g., boxplots)? Also, could you
+  perform a statistical hypothesis test (e.g., Wilcoxon signed rank test) and
+  provide a measure of the effect size (e.g., Cliff's delta)? Currently, the
+  results look very unconvincing because of the large standard deviation values.
+
+  - The results are provided in terms of iterations, which makes sense; however,
+  it would also be useful to provide a measure of how much time could be saved.
+  Hours? Minutes? Seconds?
+
+(3) The association rule analysis, while interesting and certainly useful, does
+not fit with the theme of this paper. I would recommend either: (a) removing it
+or (b) spending more effort to explain how the analysis fit together to solve
+one common problem. It currently stands out as a tangential analysis that
+doesn't really contribute to the main message of the paper.
+
+Minor problems
+=-=-=-=-=-=-=-
+
+- Cross validation is not used to improve external validity. Instead, it
+addresses concerns of internal validity. To address external validity concerns,
+one needs to repeat the experiment in several settings.
+
+- Don't treat citation markers as nouns (e.g., "following the guidelines by [7],
+[14], [45].")
+
+Typos
+=-=-=
+
+- "There is a broad diversity of such operators used in *<missing word>*,"
+- "to provide necessary background and *situation* our work"
+- "can be adapted to this task *task*"
+- Several instances of "::"
+- "high level *or* redundancy"
+- "they are shown in the middle segment of Table I *Middle*."
+- "greedily attempt *<missing word>* match"
+- "the Replacements probabilistic model *model* describes"
+- "unecessary"
+- "*a* Expression"
+- "for return statements shown in *Figure* II." (I think you mean "Table").
+- "eigth"
+- "We assess *<missing word>* number"
+- "using *<missing word>* held-out test suite"
+- "have a confidence of *a* 100%"
+- "at least *a* 1% of all the transactions"
+- "oour"
+- "Note that in *<missing word>* V"
+
+Reviewer 3:
+The paper presents an approach to build a probabilistic model that predicts mutation operators performed by developers on their codes. The work first identifies the mutation operators in commits and then builds a two-facets probabilistic model that computes the probability that a mutation operator is performed at a specific code location. Through the Apriori association rule mining algorithm, the authors were able to identify operators used in combination.  The model si evaluated on a large corpus of Java projects and against a model for which the probability of selecting any replacement statement or mutation is uniformly random.
+
+The work is interesting and I liked the idea of mining commits for extracting "real" mutation operators. I must say though that the paper is  hard to read as the authors include many details before stating their claims. This implies that in some  important concepts are only outlined to leave space to other not so relevant details or details already given.
+
+For example, the Mutation operator probabilistic model and Replacements probabilistic model are only drafted: the sentence  " These normalized instances comprise a probablistic model, where mutation operator probability is weighted by its appearance in the dataset." it is not enough to understand how to build the operator probabilities and it is not clear how "instances comprise a probabilistic model".  It is not also enough to say "This model is built analogously
+to the mutation operator model, with a focus on replacer and replacement statement incidence." What do you mean with "with a focus on"?
+
+Some details can be moved in the appropriate section the ease the reading: for example, the sentence at pg. 7 "(in our dataset, Template-Based mutations comprise 29.26% of the corpus; Statement-Edit mutations make up 70.74% of the corpus)." should be put in the section on the corpus.
+
+I was expecting the authors compared the performance of their approach with the state-of-the art APRs by, for example, answering the question: are mutation operators mined from commits likelier to be performed  at a specific code location than operators identified with state-of-the-art APR? I think the authors did not answer this question clearly.
+
+Metareview:
+Analysis and evaluation: all reviewers reported the reading to be hard. Many details are left unexplained and sometimes cast some doubts on the rigour of the approach. 
+
+Comparison with the state-state-of-the-art approaches: the authors report a comparison of their approach with the random one. This is for sure a due starting point, but the readers expect a further comparison with the state-of-the-art approaches to appreciate the contribution of the paper. Such lack of comparison was somehow promised in the introductory part of the work.
