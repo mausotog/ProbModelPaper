@@ -27,6 +27,12 @@ not just applying templates like PAR does, they're expanding out staged
 templates (reread the papers if you don't believe me).  But we can make this
 clearer, and analytically compare.
 
+Another possibility on comparison is to Nopol, which targets Java, and which has
+released results as applied to Defects4J.  I think those results are on GitHub,
+dig through Martin Monperrus' website to find links. 
+
+(We won't use his GenProg/Par results though because our GenProg is better).
+
 Small point: Fix the bibtex.
 
 
