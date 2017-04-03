@@ -15,7 +15,6 @@
 %% http://www.ctan.org/pkg/ieeetran
 %% and
 %% http://www.ieee.org/
-
 %%*************************************************************************
 %% Legal Notice:
 %% This code is offered as-is without any warranty either expressed or
@@ -351,21 +350,21 @@
 % use a multiple column layout for up to three different
 % affiliations
 
-%\author{\IEEEauthorblockN{Authors hidden for the purposes of double blind review}
+\author{\IEEEauthorblockN{Authors hidden for the purposes of double blind review}
 %\IEEEauthorblockA{\\
 %\\
 %\\}
 
 %REPLACE FOR CAMERA READY:
-\author{\IEEEauthorblockN{Mauricio Soto}
-\IEEEauthorblockA{Carnegie Mellon University\\
-Pittsburgh PA\\
-mauriciosoto@cmu.edu}
-\and
-\IEEEauthorblockN{Claire Le Goues}
-\IEEEauthorblockA{Carnegie Mellon University\\
-Pittsburgh PA\\
-clegoues@cs.cmu.edu}
+%\author{\IEEEauthorblockN{Mauricio Soto}
+%\IEEEauthorblockA{Carnegie Mellon University\\
+%Pittsburgh PA\\
+%mauriciosoto@cmu.edu}
+%\and
+%\IEEEauthorblockN{Claire Le Goues}
+%\IEEEauthorblockA{Carnegie Mellon University\\
+%Pittsburgh PA\\
+%clegoues@cs.cmu.edu}
 
 
 
@@ -559,7 +558,7 @@ The primary contributions of this paper thus are:
     from multiple state-of-the-art approaches and
     the above-mentioned models to choose between them, favoring those more commonly
     used by human developers.
-    \item \textbf{Development and integration} of this approach for the Java programming language in a tool, available online, which can apply the several different mutation operators, and the probabilistic model discussed in this study.\footnote{https://bitbucket.org/clegoues/genprog4java}
+    \item \textbf{Development and integration} of this approach for the Java programming language in a tool, available online, which can apply the several different mutation operators, and the probabilistic model discussed in this study.\footnote{Hidden for double blind review}%\footnote{https://bitbucket.org/clegoues/genprog4java}
     \item \textbf{Empirical model of single-edit repairs to Java code} mined
       from the 100 most recent bug fixes from the 500 most popular Java projects on
     Github. This study also provides a deeper
@@ -882,7 +881,7 @@ We extend an open-source implementation of the GenProg technique adapted for Jav
 by implementing the mutation operators from
 Section~\ref{categorization} as well as a mechanism that allows the tool to
 select between the mutation operators according to the probabilities described by
-a given model.\footnote{https://bitbucket.org/clegoues/genprog4java}  We construct a two-level model that effectively counts incidences of all considered
+a given model.\footnote{Hidden for double blind review}%\footnote{https://bitbucket.org/clegoues/genprog4java}  We construct a two-level model that effectively counts incidences of all considered
 mutation operators, and fix code used in replacements  (generalizing prior work
 proposing a replacement-only model~\cite{Soto15}):
 
@@ -1251,7 +1250,7 @@ to find a patch using the equally distributed model when using only the \emph{Re
 \begin{tabular}{l|rr|rr}
   & \multicolumn{2}{c|}{Replace only} & \multicolumn{2}{c}{Append,Remove,Replace} \\
 \hline
-\textbf{Seed}& Avrg & StdDev & Avrg & StdDev\\
+& Avrg & StdDev & Avrg & StdDev\\
 \hline
 \textbf{Prob} & 23.8 & 24.8  & 22.6 & 23.7  \\
 
@@ -1418,7 +1417,7 @@ assume that this benefit must be supported by sufficiently accurate fault
 localization. 
 
 Table~\ref{tab:singleLineBugs} also shows the results of evaluating our patches
-on the second, held-out test suites.\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/tree/master/Randoop10MinHeldOutTestSuites}} We noticed a
+on the second, held-out test suites.\footnote{Hidden for the purposes of double blind review}%\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/tree/master/Randoop10MinHeldOutTestSuites}} We noticed a
 constant behavior regarding the different sets of mutations. In this sample, if
 a model is able to find a patch faster, this appears independent of the mutation
 set.  We also notice that
@@ -1511,7 +1510,7 @@ They are obtained with a 1\% support, which means that each of these rules
 individually appear in at least a 1\% of all the transactions of the overall
 corpus. We show the top ten association rules for the mining of single edit 
 mutation operators to indicate the structure of the rules; and release all mined
-rules with over 90\% Confidence and 0.1\% Support:\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt}} 
+rules with over 90\% Confidence and 0.1\% Support:\footnote{Hidden for the purposes of double blind review}%\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt}} 
 
 %Minimum support: 0 (1 instances)
 %Minimum metric <confidence>: 0.9
@@ -1537,7 +1536,7 @@ rules.
 \paragraph {Replacement rules} We have also analyzed association rules for the
 replacements model, obtaining
 the following rules with a 0.01\% Support and 90\% Confidence.
-We have realeased a full set of these replacement rules.\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningReplacements.txt}} The ten best rules we found are:
+We have realeased a full set of these replacement rules.\footnote{Hidden for the purposes of double blind review}%\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningReplacements.txt}} The ten best rules we found are:
 %Minimum support: 0.0001 (1 instances)
 %Minimum metric <confidence>: 0.9
 %Number of cycles performed: 20
