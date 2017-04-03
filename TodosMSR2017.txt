@@ -33,26 +33,6 @@ dig through Martin Monperrus' website to find links.
 
 Original Mau Todos:
 
-"These normalized instances comprise a probabilistic model, where mutation
-operator probability is weighted by its appearance in the dataset." What does
-the `appearance' stands for in this sentence?? What are the input and output of
-models? Before reading Section IV. Evaluation, it is difficult to understand how
-a model is created and works
-
-	Clarify text.
-
-In addition, is Table II the model? Table 2 just shows the frequency rate of
-subsequent statements of the return statement. How could this table be the
-model? Could this model be generalized in the form of mathematical equation or
-follows a certain type distribution? It is not quite sure if ! we can call Table
-II a model. Counting incidences is a part of steps to come up with an actual
-probabilistic model. After counting the frequency, the generalized model must be
-defined. Table II seems just an initial step to do this and there is no actual
-model is defined in this study. Using Table II is just an approach to find the
-best possible mutation operator that can have higher chance to generate
-acceptable patches but does not look like a model.
- 
-	Be very explicit that Table II is an example of a single line, and not the model.
 
 (1) What are baselines for this study? Table III just shows the comparison
 results between replacement probabilistic models and equally distributed

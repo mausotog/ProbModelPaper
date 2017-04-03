@@ -998,14 +998,14 @@ validation to mitigate and assess the risk of overfitting
 repair context, to precisely validate the potential increase in efficiency the
 probabilistic model affords (Section~\ref{sec:casestudy}), and 
 on fifteen real bugs from the Defects4J dataset
-(Section~\ref{sec:single}).  Finally, we assess and present the most common 
+(Section~\ref{sec:single}) by comparing it against state of the art repair techniques.  Finally, we assess and present the most common 
 association rules between mutation operators mined from our corpus
 (Section~\ref{armRes}). 
 
 %We also include a section for 
 %discussion(Section~\ref{discussion}) and threats to validity (Section~\ref{threatsVal}) 
 
-All experiments are perfomed on a server 
+All experiments are performed on a server 
 consisting of 16 processors Intel(R) Xeon(R) CPU E5-2699 v3, with 2.30 GHz each
 processor, 46080 KB cache each, and 32 GB RAM memory, operating system Ubuntu 
 14.04.5 LTS.
@@ -1096,14 +1096,14 @@ other kinds of statements.
 Assume for illustration a sub-model which contains a row describing the 
 probabilities for the different statements that could possibly replace a return 
 statement: $TP_{13,m}$ (row 13 since \emph{ReturnStatment} is the 13th element 
-in our statement list) as shown in 
+in our statement list), this row is shown in 
 Table~\ref{fig:exPredReturn}.
 
 %
 For our example, the most
 likely statement chosen to replace a Return Statement according to this row in 
-this fictional sub-model would be a Expression Statement (Ex) *$TP_{13,9} = 43\%$). 
-The second-most likely candidate is indeed an If statement ($22\%$),
+this fictional sub-model would be a Expression Statement (Ex) $TP_{13,9} = 43\%$. 
+The second-most likely candidate is indeed an If statement (If) $TP_{13,11} = 22\%$,
 meaning we count this as a correct prediction for this model (as it appears in
 the top-5 prediction list). 
 
