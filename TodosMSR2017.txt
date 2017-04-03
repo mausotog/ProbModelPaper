@@ -6,9 +6,6 @@ the full predictive success based on both models together.
 
 In some places we use 200 projects; other we use 500.  We need to unify this. 
 
-We need to have a proper table describing the Defects4J instances we study; I
-asked for this in a todo running up to the deadline but we ran out of time.
-
 Really, we need more real bugs in the evaluation.  In a perfect world, we'd
 remove the case study subsection entirely and just have a proper evaluation of
 model success on their own, and then repair success using the models (and with
@@ -33,27 +30,8 @@ dig through Martin Monperrus' website to find links.
 
 (We won't use his GenProg/Par results though because our GenProg is better).
 
-Small point: Fix the bibtex.
-
 
 Original Mau Todos:
-
-1) Two-level probabilistic model: It is not clear why this study uses two-level
-probabilistic models. Why is generalizing prior work [47] matter?
-
-	Highlight the importance and momentum of the prior work we are extending,
-	and how we started from the replacement model and then generalized to the
-	mutations model.
-
-
-(2) It is not clear how the probabilistic models are created. "To build the
-Mutation operator probabilistic model we normalize the number of incidences of
-each mutation operator observed in our dataset, matched as described in Section
-III-B." How could the numbers be normalized? Are the numbers of incidences
-matched with instances, e.g., Null Checker?
-
-	Be more clear about the numbers being instance counts of the mut operators,
-	and the fact that we use a smoothing technique to account for 0 occurrences.
 
 "These normalized instances comprise a probabilistic model, where mutation
 operator probability is weighted by its appearance in the dataset." What does

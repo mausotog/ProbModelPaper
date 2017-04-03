@@ -545,7 +545,7 @@ single-edit~\cite{Weimer13,Qi15,kim2013,arcuri11}.
 %
 Indeed, patches
 consisting of several mutations are undertreated in this context, even though the vast majority
-of patches in existence are comprised of multiple edits~\cite{Soto15,zhong15}.
+of patches in existence are comprised of multiple edits~\cite{Soto16,zhong15}.
 We therefore
  propose and initially validated an approach that predicts from a given 
 single-edit mutation which operation should be applied
@@ -558,7 +558,7 @@ The primary contributions of this paper thus are:
     from multiple state-of-the-art approaches and
     the above-mentioned models to choose between them, favoring those more commonly
     used by human developers.
-    \item \textbf{Development and integration} of this approach for the Java programming language in a tool, available online, which can apply the several different mutation operators, and the probabilistic model discussed in this study.\footnote{Hidden for double blind review}%\footnote{https://bitbucket.org/clegoues/genprog4java}
+    \item \textbf{Development and integration} of this approach for the Java programming language in a tool, available online, which can apply the several different mutation operators, and the probabilistic model discussed in this study.\footnote{Hidden for double blind review} %\footnote{https://bitbucket.org/clegoues/genprog4java}
     \item \textbf{Empirical model of single-edit repairs to Java code} mined
       from the 100 most recent bug fixes from the 500 most popular Java projects on
     Github. This study also provides a deeper
@@ -881,9 +881,9 @@ We extend an open-source implementation of the GenProg technique adapted for Jav
 by implementing the mutation operators from
 Section~\ref{categorization} as well as a mechanism that allows the tool to
 select between the mutation operators according to the probabilities described by
-a given model.\footnote{Hidden for double blind review}%\footnote{https://bitbucket.org/clegoues/genprog4java}  We construct a two-level model that effectively counts incidences of all considered
-mutation operators, and fix code used in replacements  (generalizing prior work
-proposing a replacement-only model~\cite{Soto15}):
+a given model.\footnote{Hidden for double blind review} %\footnote{https://bitbucket.org/clegoues/genprog4java}  
+We construct a two-level model as highlighted in Figure \ref{fig:probModel} that effectively counts incidences of all considered
+mutation operators, and fix code used in replacements. The two level probabilistic model is the result of a generalization from previous work in which the researchers proposed a replacement-only model~\cite{Soto16}:
 
 \paragraph{Mutation operator probabilistic model}
 The \textit{Mutation operator probabilistic model} 
@@ -891,9 +891,9 @@ describes the probabilities of choosing between the several different mutation
 operators at a particular fault location.
 %
 To build the \textit{Mutation operator probabilistic model} 
-we normalize the number of incidences of each mutation operator observed in our
-dataset, matched as described in Section~\ref{sec:mining}.  These normalized
-instances comprise a probablistic model, where mutation operator probability is
+we count the number of incidences of each mutation operator observed in our
+dataset, matched as described in Section~\ref{sec:mining}. This
+instance count comprises a probabilistic model, where mutation operator probability is
 weighted by its appearance in the dataset.  
 
 Here we consider only the mutation operators that can be applied to the particular fault location (eg, if the fault location is a \emph{BreakStatement} we could not apply mutation operators such as \emph{Parameter replacer} or \emph{Caster mutator}).
@@ -920,6 +920,9 @@ the different statement types.
 This model is built analogously to the
 mutation operator model, with a focus on replacer and replacee statement incidence.
 
+To build both models we perform an incidence count of each mutation operator and replacement observed in our
+dataset, matched as described in Section~\ref{sec:mining}, and then apply Laplace smoothing\cite{Russell10} with $\alpha$ = 1 to account for 0 occurrences.
+
 \subsection{Multiple edit association rule mining} 
 \label{multEdit}
 
@@ -936,7 +939,7 @@ single-edit changes~\cite{arcuri11}.
 
 Although such single-edit patches can be
 sufficient to repair non-trivial bugs in real software, the majority of bug fixes in real
-software require multiple edits~\cite{zhong15,Soto15}. The combination of possible mutation
+software require multiple edits~\cite{zhong15,Soto16}. The combination of possible mutation
  operators to apply in a sequence increases exponentially as we add more source
  code changes, motivating a more precise mechanism to navigate the vast search
  space. 
@@ -1321,7 +1324,7 @@ We built the whole model with 500
 projects in Github with the most stars.
  This is to generate the largest code base so far to the best 
 of our knowledge, surpassing all the previous state of the 
-art~\cite{long16proph,Soto15,zhong15,martinez15,xuan16}. 
+art~\cite{long16proph,Soto16,zhong15,martinez15,xuan16}. 
 In these experiments, we include all mutations described in
 Section~\ref{categorization} (in our dataset, Template-Based mutations comprise 29.26\% of the corpus; Statement-Edit mutations make up 70.74\% of the 
 corpus).
@@ -1417,7 +1420,8 @@ assume that this benefit must be supported by sufficiently accurate fault
 localization. 
 
 Table~\ref{tab:singleLineBugs} also shows the results of evaluating our patches
-on the second, held-out test suites.\footnote{Hidden for the purposes of double blind review}%\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/tree/master/Randoop10MinHeldOutTestSuites}} We noticed a
+on the second, held-out test suites.\footnote{Hidden for the purposes of double blind review} %\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/tree/master/Randoop10MinHeldOutTestSuites}} 
+We noticed a
 constant behavior regarding the different sets of mutations. In this sample, if
 a model is able to find a patch faster, this appears independent of the mutation
 set.  We also notice that
@@ -1510,7 +1514,7 @@ They are obtained with a 1\% support, which means that each of these rules
 individually appear in at least a 1\% of all the transactions of the overall
 corpus. We show the top ten association rules for the mining of single edit 
 mutation operators to indicate the structure of the rules; and release all mined
-rules with over 90\% Confidence and 0.1\% Support:\footnote{Hidden for the purposes of double blind review}%\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt}} 
+rules with over 90\% Confidence and 0.1\% Support:\footnote{Hidden for the purposes of double blind review} %\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt}} 
 
 %Minimum support: 0 (1 instances)
 %Minimum metric <confidence>: 0.9
@@ -1536,7 +1540,8 @@ rules.
 \paragraph {Replacement rules} We have also analyzed association rules for the
 replacements model, obtaining
 the following rules with a 0.01\% Support and 90\% Confidence.
-We have realeased a full set of these replacement rules.\footnote{Hidden for the purposes of double blind review}%\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningReplacements.txt}} The ten best rules we found are:
+We have realeased a full set of these replacement rules.\footnote{Hidden for the purposes of double blind review} %\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningReplacements.txt}} 
+The ten best rules we found are:
 %Minimum support: 0.0001 (1 instances)
 %Minimum metric <confidence>: 0.9
 %Number of cycles performed: 20
@@ -1597,7 +1602,7 @@ We also rely on Randoop~\cite{pacheco07} as our test suite generation mechanism 
 
 \section{Related Work} \label{relatedWork}
 
-There have been previous efforts to create a model based on human behavior.  Soto et al.~\cite{Soto15} 
+There have been previous efforts to create a model based on human behavior.  Soto et al.~\cite{Soto16} 
 built a probabilistic model to describe the replace mutation 
 operator only, based in 
 an instance count of each statement type using the platform 
