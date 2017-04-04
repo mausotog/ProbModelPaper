@@ -18,39 +18,8 @@ because those held-out test suites are better.  However, it's not obvious to me
 what the result would be (given that we learn the probabilities on real world
 code and IntroClass4Java is small student programs).
 
-I don't believe we can compare to SPR/Prophet really because they use machine
-learning to tune the probabilities (and also they target C).  Moreover they're
-not just applying templates like PAR does, they're expanding out staged
-templates (reread the papers if you don't believe me).  But we can make this
-clearer, and analytically compare.
-
-Another possibility on comparison is to Nopol, which targets Java, and which has
-released results as applied to Defects4J.  I think those results are on GitHub,
-dig through Martin Monperrus' website to find links. 
-
-(We won't use his GenProg/Par results though because our GenProg is better).
-
 
 Original Mau Todos:
-
-
-(1) What are baselines for this study? Table III just shows the comparison
-results between replacement probabilistic models and equally distributed
-probabilistic models. In related work, "unlike the previous work, we apply this
-knowledge when actually creating patch candidates rather than when evaluating
-them." Since the key idea of this proposed approach is actually from the
-previous work such as [8], [31]. The difference is when the knowledge is
-applied. Thus, this study must set them as baselines. Are applying the knowledge
-when creating patch candidates are better than that when evaluating them? This
-must be a research question to validate. Comparing the proposed probabilistic
-model with equally distributed models does not provide any interesting aspect
-since it is quite obvious that the proposed probabilistic model could be better
-than equally distributed model in some sense.
-
-	We can make the argument that we cannot compare our approach directly with,
-	Prophet or SPR, because these target C, therefore we can't use their
-	benchmarks. But PAR is a superset of these mutations, and we do are
-	comparing against PAR.
 
 (2) This study needs to clearly define evaluation measures to show how and why
 using probabilistic models are better to find better mutation operator to
@@ -75,18 +44,6 @@ could the number of variants be a measure in what sense?
 	reflected by the fact that we found the patch faster.
 
 
-(1) Random success rate is 100% in all experiments as in Table IV. caption: Does
-this mean there is no difference using probabilistic model and equally
-distributed model in terms of success rate?
-	
-	Be more clear about the fact that "success rate" here means that the
-	approach found at least one solution for the 20 seeds, and maybe report how
-	many of the seeds found a solution?
-	
-    --CLG: ...I'm glad we're having this convo because that's actually what I
-    meant by success rate: percentage of random seeds on which a repair is
-    found.
-
 (2) Does the smaller number of variants means that the patches can be found
 faster? Howe much faster? With the current experimental setting and
 interpretation of results, it is difficult to say using probabilistic model is
@@ -98,66 +55,8 @@ faster in what sense.
     
     --CLG: I don't really like percentage improvements but if we report both,
       that's fine. 
-	
-* Other comments and suggestions
-- In Section II. B.: a number possible mutation operators >> a number of ...?
-- Section III. C: no a) and b) but there are c) and d)?
-- Section III. C. c): probablistic >> probabilistic?
-- The patch example in Page 5 has a typo?  i > l.size() >> i < l.size()? Otherwise the patch still cause array out of bound exception. Or, the model just predicts ifStatement regardless of having the correct if-condition?
-- Figure II in Page 6? Figure II >> Table II?
-- Page 6: equally distributed approach As we can derive. No period between "approach" and "As"?
-- Section IV. C. 1): We consider for repair a subset >> We consider for repairing a subset?
-- noise in fault localizaition >> noise in fault localization
-- Section VI: to gether >> together?
 
-	
 
-	
-Instead of the random, uniform distribution baseline, shouldn't we compare to
-the state-of-the-art? For example, the idea of using human-generated bug fixing
-behaviour to inform APR has been explored by past work (e.g., [24]). The novelty
-of this work appears to be that instead of learning fix templates from history,
-we are now using the frequency of mutation operations to guide a heuristic
-search. Couldn't one compare the proposed solutions of each approach to
-demonstrate whether one solution outperforms the other?
-
-	I think we can make the argument that we are comparing to the state of the
-	art in Java APR techniques, which also is a generalization of SPR and
-	Prophet as we explained before. 
-
-	We can maybe focus it more towards we are literally comparing to exactly
-	what PAR does. PAR uses an equally distributed way to pick the mutation
-	operators from the mutation operators that are able to be applied in a
-	particular section of the code. 
-	
-	If we want to compare to SPR/Prophet, we could just take the PAR templates
-	that are a generalization of the SPR transformations and run the experiment
-	just with those and not all the PAR templates. It is obviously far from the
-	real SPR, because SPR targets C, but is this a acceptable Java
-	approximation/way to test SPR on Java? 
-	Claire, thoughts on this?
-
-    --CLG: see above.  Uniform makes sense as a comparison to PAR.  We might
-      also compare expressive power to Nopol.
-
-- The means and standard deviation values shown in Table IV are not enough.
-Could you provide a distribution overview (e.g., boxplots)? Also, could you
-perform a statistical hypothesis test (e.g., Wilcoxon signed rank test) and
-provide a measure of the effect size (e.g., Cliff's delta)? Currently, the
-results look very unconvincing because of the large standard deviation values.
-
-	I can come up with nicer graphs for this.
-
-    --CLG: agreed with the reviewer
-  
-- The results are provided in terms of iterations, which makes sense; however,
-it would also be useful to provide a measure of how much time could be saved.
-Hours? Minutes? Seconds?
-
-	This is SO machine dependent that I don't think we should provide these
-	numbers unless they are ridiculously high.
-
-	-CLG: agreed
 
 (3) The association rule analysis, while interesting and certainly useful, does
 not fit with the theme of this paper. I would recommend either: (a) removing it
@@ -167,72 +66,8 @@ doesn't really contribute to the main message of the paper.
 
 	I actually like this section a lot, although I do see why the reviewer makes
 	this point. I need to blend it more into the story of the paper.
-  
-- Cross validation is not used to improve external validity. Instead, it
-addresses concerns of internal validity. To address external validity concerns,
-one needs to repeat the experiment in several settings.
 
-	True, although that is what cross validation is for: internal validity, for
-	external validity we perform the comparison of models.
 
-    --CLG says: make sure the text says the right thing
-	
-- Don't treat citation markers as nouns (e.g., "following the guidelines by [7],
-[14], [45].")
-
-	Fix this.
-
-    --CLG says: I also say this all the time, so please start listening to me.
-	
-Typos
-=-=-=
-
-- "There is a broad diversity of such operators used in *<missing word>*,"
-- "to provide necessary background and *situation* our work"
-- "can be adapted to this task *task*"
-- Several instances of "::"
-- "high level *or* redundancy"
-- "they are shown in the middle segment of Table I *Middle*."
-- "greedily attempt *<missing word>* match"
-- "the Replacements probabilistic model *model* describes"
-- "unecessary"
-- "*a* Expression"
-- "for return statements shown in *Figure* II." (I think you mean "Table").
-- "eigth"
-- "We assess *<missing word>* number"
-- "using *<missing word>* held-out test suite"
-- "have a confidence of *a* 100%"
-- "at least *a* 1% of all the transactions"
-- "oour"
-- "Note that in *<missing word>* V"
-
-	
-the Mutation operator probabilistic model and Replacements probabilistic model
-are only drafted: the sentence " These normalized instances comprise a
-probablistic model, where mutation operator probability is weighted by its
-appearance in the dataset." it is not enough to understand how to build the
-operator probabilities and it is not clear how "instances comprise a
-probabilistic model".  It is not also enough to say "This model is built
-analogously to the mutation operator model, with a focus on replacer and
-replacement statement incidence." What do you mean with "with a focus on"?
-
-	I guess explain further how the model was built in this section?
-	
-Some details can be moved in the appropriate section the ease the reading: for
-example, the sentence at pg. 7 "(in our dataset, Template-Based mutations
-comprise 29.26% of the corpus; Statement-Edit mutations make up 70.74% of the
-corpus)." should be put in the section on the corpus.
-	
-	Move this.
-	
-I was expecting the authors compared the performance of their approach with the
-state-of-the art APRs by, for example, answering the question: are mutation
-operators mined from commits likelier to be performed at a specific code
-location than operators identified with state-of-the-art APR? I think the
-authors did not answer this question clearly.
-	
-	I already mentioned making a direct comparison to PAR.
-	
 
 	
 	
