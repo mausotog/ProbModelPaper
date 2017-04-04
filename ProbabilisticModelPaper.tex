@@ -470,7 +470,9 @@ bugs in
 programs~\cite{legoues12,kim2013,Weimer13,fan15SPR,long16proph,debroy10,perkins09,wei10}. 
 
 One well-known class of repair techniques follows a 
-\emph{generate-and-validate} approach, which takes as input a test suite, 
+\emph{generate-and-validate} approach  (e.g., GenProg~\cite{legoues12}, 
+Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13TrpAutoR}
+Prophet~\cite{long16proph}, HDRepair~\cite{xuan16}), which takes as input a test suite, 
 including at
 least one failing test case exposing
 a defect, and source code to be 
@@ -480,29 +482,44 @@ mutation operators to the original source code and \emph{validate} each by
 running the potentially patched program against the test suite, seeking a candidate that
 leads the program to pass all input test cases. 
 
-One reason this is challenging is the vast search space of possible 
-edits that can be applied to the different sections of the source 
-code~\cite{long16}. Each such technique defines  a set of possible changes to be
-applied to the source code, which we refer to as ``Mutation operators''. 
+The search space of possible patches that can repair any bug is trivially
+infinite.  The nature of this search space, and how it is constructed and managed
+introduce, key tensions in APR technique design and effectiveness.  First,
+techniques must manage the space so as to be able to traverse it in a scalable and
+effective manner.  One way that current techniques manage this problem is by
+only considering a limited set of of possible changes, or \emph{mutation operators}, that can be
+applied to source code.
 There is a broad diversity of such operators used in automatic program repair, such as deleting or inserting 
 statements~\cite{legoues12}, applying templates~\cite{kim2013}, transformation 
 schemas~\cite{fan15SPR}, etc.\footnote{In this study, we exclude 
-from 
-consideration semantic approaches, as we focus on
+from consideration semantic approaches, as we focus on
 candidate patches creation in the heuristic or syntactic context.} 
-Given a potentially-faulty location, these
-generate-and-validate approaches (e.g., GenProg~\cite{legoues12}, 
-Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13TrpAutoR}
-Prophet~\cite{long16proph}, HDRepair~\cite{xuan16}) use heuristics or
+Given a potentially-faulty location (typically identified using fault
+localization, e.g.,~\cite{example}), these APR  approaches further use heuristics or
 heuristically-informed probability distributions to select between
-mutation operators
-when constructing candidate patches.
+mutation operators when constructing candidate patches.
+Even with these heuristics and design choices, the search space of candidate
+repairs for many bugs remains intractably large.  As such, most techniques are
+limited by design to producing single-edit patches (e.g.,~\cite{examples}). 
+Even those few that can theoretically produce multi-edit patches
+(e.g.,~\cite{examples}), typically only produce small changes in
+practice~\cite{reference}. 
 
-Our intuition is that, in bug-fixing reality, human developers use certain mutation operators 
-much more often than 
-others (e.g., deleting a line of code is more common than adding a
-new class). In this paper, we therefore study and then simulate the behavior of human
-developers to create patches.
+These attempts to tackle scalability are in tension with a second major concern
+in APR research: the quality of the generated patches~\cite{references}.  One way to
+improve output quality is to use more expressive mutation operators to produce a
+richer search space~\cite{long16}.  However, more and more expressive mutation
+operators increase the size of the 
+space, and not always in a way that supports the construction of more correct
+patches.  Thus, although APR techniques would benefit from more expressive
+operators, they cannot do so without a way to choose between them that manages
+the search space explosion problem, ideally all while increasing the probability
+of finding correct patches.
+
+Our fundamental intuition is that, in bug-fixing reality, human developers use
+certain mutation operators much more often than others (e.g., deleting a line of
+code is more common than adding a new class). In this paper, we therefore study
+and then simulate the behavior of human developers to create patches.
  
 Indeed, this idea has been
 leveraged manually in the past to create more human-acceptable mutation
