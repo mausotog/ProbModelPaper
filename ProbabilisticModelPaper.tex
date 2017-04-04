@@ -483,11 +483,11 @@ running the potentially patched program against the test suite, seeking a candid
 leads the program to pass all input test cases. 
 
 The search space of possible patches that can repair any bug is trivially
-infinite.  The nature of this search space, and how it is constructed and managed
-introduce, key tensions in APR technique design and effectiveness.  First,
-techniques must manage the space so as to be able to traverse it in a scalable and
-effective manner.  One way that current techniques manage this problem is by
-only considering a limited set of of possible changes, or \emph{mutation operators}, that can be
+infinite.  The nature of this search space introduces key tensions in APR
+technique design.  First, 
+techniques must manage the space carefully so as to traverse it in a scalable and
+effective manner.  One way that current techniques manage this problem is to
+only consider a limited set of of possible changes, or \emph{mutation operators}, that can be
 applied to source code.
 There is a broad diversity of such operators used in automatic program repair, such as deleting or inserting 
 statements~\cite{legoues12}, applying templates~\cite{kim2013}, transformation 
@@ -498,14 +498,15 @@ Given a potentially-faulty location (typically identified using fault
 localization, e.g.,~\cite{example}), these APR  approaches further use heuristics or
 heuristically-informed probability distributions to select between
 mutation operators when constructing candidate patches.
-Even with these heuristics and design choices, the search space of candidate
-repairs for many bugs remains intractably large.  As such, most techniques are
+
+However, even with these heuristics and design choices, the search space of candidate
+repairs for many bugs remains intractably large.  Most techniques are thus
 limited by design to producing single-edit patches (e.g.,~\cite{examples}). 
-Even those few that can theoretically produce multi-edit patches
-(e.g.,~\cite{examples}), typically only produce small changes in
+Those few that can theoretically produce multi-edit patches
+(e.g.,~\cite{examples}) typically still only produce small changes in
 practice~\cite{Qi15,kim2013,arcuri11}. 
 Indeed, patches
-consisting of several mutations are undertreated in this context, even though the vast majority
+consisting of several mutations are undertreated in the APR context, even though the vast majority
 of patches in existence are comprised of multiple edits~\cite{Soto16,zhong15}.
 
 These attempts to tackle scalability are in tension with a second major concern
@@ -521,15 +522,15 @@ of finding correct patches.
 
 Fundamentally, in bug-fixing reality, human developers use
 certain mutation operators much more often than others (e.g., deleting a line of
-code is \emph{probably} more common than adding a whole new class). In this
-work, we therefore propose to study
+code is \emph{probably} more common than adding a whole new class)~\cite{references}. In this
+work, we propose to study
 and then systematically simulate the behavior of human developers to create
 patches. This idea has been leveraged manually in the past to create
 mutation operators that produce more human-acceptable patches~\cite{kim2013} and
 to inform patch \emph{ranking} (rather than
 construction) when traversing the search space~\cite{xuan16,long16proph}. 
-Our key supposition is thus that our approach can scalably support a richer
-search space that contains more expressive mutation operators, that are more
+Our key supposition is that our approach can scalably support a richer
+search space constructed via more expressive mutation operators that are more
 likely to produce high-quality patches.  
 
 To this end, we mine bug fixing commits from 
@@ -541,8 +542,7 @@ operators used by different techniques, has been growing in a relatively ad hoc
 manner by the different approaches created in the latest years. We mitigate this effect by categorizing and comparing a superset of
 mutation operators in use in a number of 
 state-of-the-art approaches~\cite{legoues12,Weimer13,kim2013,long16proph}.
-We use this
-model to inform a repair approach that chooses from the set of possible
+We use this model to inform a repair approach that chooses from the set of possible
 operators based on these real-world probabilities.
 As a result, our work goes beyond prior work  by generalizing
 to a broader and more expressive set of
@@ -559,10 +559,7 @@ We evaluate the predictive power of our mined models on tgeur own, in terms of t
 accuracy in predicting the operators used in real-world bug fixes.  We also
 integrate the single-edit model into a new repair algorithm that we demonstrate
 in comparison to several previous techniques on a subset of real-world defects from Defects4j~\cite{just14}. 
-
 %
-
-
 The primary contributions of this paper thus are:
 \begin{itemize}
 	\item \textbf{New Repair Approach}, which uses mutation operators
