@@ -460,14 +460,14 @@ studied, and that using the superset of all mutation operators performs better t
 
 \section{Introduction} \label{introduction}
 % no \IEEEPARstart
-Repairing errors is one of the most expensive\cite{Tassey02,Britton13} and 
-resource consuming~\cite{Weiss07} tasks in 
-the software development process, especially for large, real-world systems~\cite{Liblit03,Anvik05}.
+Repairing errors is one of the most 
+resource intensive tasks in 
+the software development process~\cite{Weiss07,Tassey02,Britton13}, especially for large, real-world systems~\cite{Liblit03,Anvik05}.
 %
 Significant recent research effort has been dedicated to
 building automatic program repair (APR) tools that are able to address
 bugs in 
-programs~\cite{legoues12,kim2013,Weimer13,fan15SPR,long16proph,debroy10,perkins09,wei10}. 
+programs (e.g.~\cite{legoues12,kim2013,Weimer13,fan15SPR,long16proph,debroy10,perkins09,wei10}).
 
 One well-known class of repair techniques follows a 
 \emph{generate-and-validate} approach  (e.g., GenProg~\cite{legoues12}, 
@@ -495,22 +495,22 @@ schemas~\cite{fan15SPR}, etc.\footnote{In this study, we exclude
 from consideration semantic approaches, as we focus on
 candidate patches creation in the heuristic or syntactic context.} 
 Given a potentially-faulty location (typically identified using fault
-localization, e.g.,~\cite{example}), these APR  approaches further use heuristics or
+localization, e.g. Tarantula~\cite{Jones02}), these APR  approaches further use heuristics or
 heuristically-informed probability distributions to select between
 mutation operators when constructing candidate patches.
 
 However, even with these heuristics and design choices, the search space of candidate
 repairs for many bugs remains intractably large.  Most techniques are thus
-limited by design to producing single-edit patches (e.g.,~\cite{examples}). 
+limited by design to producing single-edit patches (e.g. TrpAutoRepair~\cite{Qi13TrpAutoR}). 
 Those few that can theoretically produce multi-edit patches
-(e.g.,~\cite{examples}) typically still only produce small changes in
+(e.g.GenProg~\cite{legoues12}) typically still only produce small changes in
 practice~\cite{Qi15,kim2013,arcuri11}. 
 Indeed, patches
 consisting of several mutations are undertreated in the APR context, even though the vast majority
 of patches in existence are comprised of multiple edits~\cite{Soto16,zhong15}.
 
 These attempts to tackle scalability are in tension with a second major concern
-in APR research: the quality of the generated patches~\cite{references}.  One way to
+in APR research: the quality of the generated patches~\cite{kim2013}.  One way to
 improve output quality is to use more expressive mutation operators to produce a
 richer search space~\cite{long16}.  However, more and more expressive mutation
 operators increase the size of the 
@@ -521,8 +521,7 @@ the search space explosion problem, ideally all while increasing the probability
 of finding correct patches.
 
 Fundamentally, in bug-fixing reality, human developers use
-certain mutation operators much more often than others (e.g., deleting a line of
-code is \emph{probably} more common than adding a whole new class)~\cite{references}. In this
+certain mutation operators much more often than others (e.g., adding an $IfStatement$ is \emph{probably} \todo{I guess this word "probably" here means that the probabilities are higher, but it sounds weird in the context} more common than adding a $TypeDeclarationStatement$)~\cite{Soto16}. In this
 work, we propose to study
 and then systematically simulate the behavior of human developers to create
 patches. This idea has been leveraged manually in the past to create
@@ -555,24 +554,24 @@ single-edit mutation which operation should be applied
 next.  This serves  as a first step towards
 scalable traversal of the multi-edit patch space. 
 
-We evaluate the predictive power of our mined models on tgeur own, in terms of their
+We evaluate the predictive power of our mined models on their own, in terms of their
 accuracy in predicting the operators used in real-world bug fixes.  We also
 integrate the single-edit model into a new repair algorithm that we demonstrate
 in comparison to several previous techniques on a subset of real-world defects from Defects4j~\cite{just14}. 
 %
 The primary contributions of this paper thus are:
 \begin{itemize}
-	\item \textbf{New Repair Approach}, which uses mutation operators
-    from multiple state-of-the-art approaches and
-    the above-mentioned models to choose between them, favoring those more commonly
-    used by human developers.
-    \item \textbf{Development and integration} of this approach for the Java programming language in a tool, available online, which can apply the several different mutation operators, and the probabilistic model discussed in this study.\footnote{Hidden for double blind review} %\footnote{https://bitbucket.org/clegoues/genprog4java}
-    \item \textbf{Empirical model of single-edit repairs to Java code} mined
+\item \textbf{Empirical model of single-edit repairs to Java code} mined
       from the 100 most recent bug fixes from the 500 most popular Java projects on
     Github. This study also provides a deeper
     understanding of which mutation operators are used by programmers to fix
     errors in source code, and the frequency of each of the mutation operators
     analyzed. 
+	\item \textbf{New Repair Approach}, which uses mutation operators
+    from multiple state-of-the-art approaches and
+    the above-mentioned models to choose between them, favoring those more commonly
+    used by human developers.
+    \item \textbf{Development and integration} of this approach for the Java programming language in a tool, available online, which can apply the several different mutation operators, and the probabilistic model discussed in this study.\footnote{We will release the tool post blind-review.} %\footnote{https://bitbucket.org/clegoues/genprog4java}
   \item \textbf{Evaluation} of the probabilistic model in several
     contexts, including as part of a new APR approach used to repair real world bugs from well
     known open source projects (independent of those used to inform model
@@ -580,7 +579,7 @@ The primary contributions of this paper thus are:
     suite. We conclude that by creating candidate patches using human behavior
     we are able to find patches faster than a technique that does not use such
     mined probabilities, and that the patch creation
-    process benefits from combining mutation operator categories.  
+    process benefits from combining mutation operator categories. We also evaluate the quality of the patches found by our approach by comparing them to patches created by current state of the art tools in the same bugs.
   \item \textbf{Multi-edit repair approach} A proposed technique, and an initial
     validation thereof, to construct 
     bug-fixing patches requiring several mutations by mining and then applying association
@@ -610,12 +609,9 @@ state-of-the-art and that we model, mine, and leverage in our approach
 \label{sec-paradigm}
 
 
-One of the most well known approaches for automatic program repair is the
-generate-and-validate approach~\cite{legoues12} which is detailed in Figure~\ref{fig:generateandvalidate}. This approach starts with source code that
-has one or various bugs to be fixed, and a test suite which contains passing
-test cases to guide the expected behavior of the program, and failing test 
-cases which expose the behavior of the program that is expected but the output
-of the expected behavior does not match the output of the source code as is.
+Figure~\ref{fig:generateandvalidate} outlines the general paradigm for generate-and-validate repair. This approach starts with source code with one or more bugs and a test suite. The test suite contains passing
+test cases to witness the correct program behavior, and failing test 
+cases exposing the behavior to be repaired.
 
 \begin{figure}[!h]
   \centering
@@ -624,24 +620,16 @@ of the expected behavior does not match the output of the source code as is.
   \label{fig:generateandvalidate}
 \end{figure}
 
-Figure~\ref{fig:generateandvalidate} diagrams the basic generate and validate
-program repair paradigm. The first step of this process is to localize the error to a smaller set of
-candidate program statements. There is an extensive set of possible approaches
-in the fault localization literature that can be adapted to this
-task~\cite{Jones05,Jones02,Chen02,Qi2013}.  
-
-A given candidate faulty statement informs
-the construction of 
-``candidate patches", produced by modifying the program at such a
-statement. Candidate patches induce variations of the original program 
-that seek to repair the bug in question. To 
+Given the inputs, a generic generate-and-validate APR approach
+localizes the error to a smaller set of
+candidate program statements (typically using off-the-shelf approach, e.g. Tarantula~\cite{Jones02}). 
+Candidate patches are produced by modifying the program at identified faulty 
+statements. To 
 create such a candidate patch, these techniques typically identify a subset of
-available mutation operators that are applicable to a given location (for
+a given set of mutation operators applicable to a given location. For
 example, such a filter would exclude the insertion of a call to
 \texttt{super();} in the middle of a method, as such calls are only legal at the
-first line of a constructor). 
-
-Each candidate patch is applied to the input program, which is run on
+first line of a constructor. Each candidate patch is applied to the input program, which is run on
 one or more of the input test cases for evaluation.  If a patch leads the
 program to 
 pass all the test cases in the test suite, including those originally witnessing
@@ -1317,8 +1305,7 @@ outweight the commensurate increase in search space size, though it is safe to
 assume that this benefit must be supported by sufficiently accurate fault
 localization. 
 
-Table~\ref{tab:singleLineBugs} also shows the results of evaluating our patches
-on the second, held-out test suites.\footnote{Hidden for the purposes of double blind review} %\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/tree/master/Randoop10MinHeldOutTestSuites}} 
+ %\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/tree/master/Randoop10MinHeldOutTestSuites}} 
 We noticed a
 constant behavior regarding the different sets of mutations. In this sample, if
 a model is able to find a patch faster, this appears independent of the mutation
@@ -1517,8 +1504,8 @@ studied, every transaction that showed the antecedent also showed the consequent
 They are obtained with a 1\% support, which means that each of these rules
 individually appear in at least 1\% of all the transactions of the overall
 corpus. We show the top ten association rules for the mining of single edit 
-mutation operators to indicate the structure of the rules; and release all mined
-rules with over 90\% Confidence and 0.1\% Support:\footnote{Hidden for the purposes of double blind review} %\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt}} 
+mutation operators to indicate the structure of the rules; and release the full set of mined
+rules with over 90\% Confidence and 0.1\% Support:\footnote{We will release the full list of mutation operator rules post blind-review.} %\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt}} 
 
 %Minimum support: 0 (1 instances)
 %Minimum metric <confidence>: 0.9
@@ -1544,7 +1531,7 @@ rules.
 \paragraph {Replacement rules} We have also analyzed association rules for the
 replacements model, obtaining
 the following rules with a 0.01\% Support and 90\% Confidence.
-We have realeased a full set of these replacement rules.\footnote{Hidden for the purposes of double blind review} %\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningReplacements.txt}} 
+We have released a full set of these replacement rules.\footnote{We will release the full list of replacement rules post blind-review.} %\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningReplacements.txt}} 
 The ten best rules we found are:
 %Minimum support: 0.0001 (1 instances)
 %Minimum metric <confidence>: 0.9
@@ -1587,32 +1574,43 @@ on a state of the art bug-mining including bugs from well-known open-source
 programs, covering a diversity of applications, and distinct from the dataset
 from which the models were mined. 
 
-The authors acknowledge the risk of producing bad quality patches that would not generalize
-to a different description of the behavior the program should have. We attenuate this by 
+The authors acknowledge the risk of producing bad quality patches that would not 
+generalize
+to a different description of the behavior the program should have. We attenuate 
+this by 
 assessing the quality of the generated patches with a held-out test suite.
 There is risk in the fact that we are manually giving the
 faulty location to the APR tool, since APR tools do not know in advance what the 
-fault location is. This is for the purposes of evaluating the patch creating process
+fault location is. This is for the purposes of evaluating the patch creating 
+process
 only without the noise that fault localization might introduce.
 
 \noindent\textbf{Construct validity:}
 Regarding the suitability of our evaluation metrics, we evaluate patch
 quality by running the generated patches on a second test suite created
 from a human patch, which is to a certain extent a biased measure since we can
-not guarantee that the human created patch is perfect. Nevertheless, we consider this to be a
-best known practice, since this way we provide an alternative to subjectively asking a biased human developer
+not guarantee that the human created patch is perfect. Nevertheless, we consider 
+this to be a
+best known practice, since this way we provide an alternative to subjectively 
+asking a biased human developer
 whether he/she considered the patch to be correct or not. 
 
-We also rely on Randoop~\cite{pacheco07} as our test suite generation mechanism for the held-out test suite used for evaluation, and we acknowledge that the test suites created by this tool may not be perfect, nor provide full coverage. But nonetheless, this is a state of the art test suite generation tool that provides high quality test suites, in our case, for evaluation purposes.
+We also rely on Randoop~\cite{pacheco07} as our test suite generation mechanism 
+for the held-out test suite used for evaluation, and we acknowledge that the 
+test suites created by this tool may not be perfect, nor provide full coverage. 
+But nonetheless, this is a state of the art test suite generation tool that 
+provides high quality test suites, in our case, for evaluation purposes.
 
 \section{Related Work} \label{relatedWork}
 
-There have been previous efforts to create a model based on human behavior.  Soto et al.~\cite{Soto16} 
+There have been previous efforts to create a model based on human behavior.  
+Soto et al.~\cite{Soto16} 
 built a probabilistic model to describe the replace mutation 
 operator only, based in 
 an instance count of each statement type using the platform 
 BOA,~\cite{dyer2013}.  They do not evaluate the model in the context of a repair
-tool and model is based on an instance count of statements rather than an a more accurate analysis of AST differences, which our model was built from.  
+tool and model is based on an instance count of statements rather than an a more 
+accurate analysis of AST differences, which our model was built from.  
 HDRepair~\cite{xuan16} 
 uses fix history
 to help assess patch suitability and fitness in the context of a genetic
@@ -1624,12 +1622,15 @@ probabilistic model of a subset of our considered mutation operators built on
 the history of 8 different projects. This model is used to rank candidate
 patches for evaluation.  Our approach follows this intuition to mimic human
 behavior; unlike the previous work, we apply this knowledge when actually
-creating patch candidates rather than when evaluating them which reduces the search space at the time of creation, and we are guaranteed that all the mutations created are closer to the actual goal.  
+creating patch candidates rather than when evaluating them which reduces the 
+search space at the time of creation, and we are guaranteed that all the 
+mutations created are closer to the actual goal.  
 
 Zhong and Su~\cite{zhong15} perform an empirical study of
 real bug fixes on six projects, studying the incidence of three mutation
 operators, among other questions about the applicability of APR.  Martinez and
-Monperrus~\cite{martinez15} similarly study mutation operator incidence across 14 
+Monperrus~\cite{martinez15} similarly study mutation operator incidence across 
+14 
 projects. Our work considers a broader set of
 mutation operators over a larger corpus, the largest, to the best of our
 knowledge, studied in existing work. In 
@@ -1640,7 +1641,8 @@ of domains.
 
 Par~\cite{kim2013} describes a manual set of 10 templates of common behavior to
 create patches, showing that such templates result in patches of higher
-human-adjuded acceptability than statement-edit-based patches.  Our study takes into consideration a superset
+human-adjuded acceptability than statement-edit-based patches.  Our study takes 
+into consideration a superset
 of these templates, provides steps towards
 accounting for multi-edit source code changes, an understudied problem, and,
 importantly, mines and models these operators and their incidence automatically
@@ -1656,7 +1658,8 @@ patches following the description of the constraints. These constraints may be
 specifications created by developers, formal verification, invariants,
 etc.~\cite{jin11,wei10}.  Such techniques typically use synthesis to construct
 repairs, with a different mechanism for both constructing and traversing the
-search space, and our approach is thus less immediately comparable to these kinds of approaches.
+search space, and our approach is thus less immediately comparable to these 
+kinds of approaches.
  
 
 \section{Conclusion} \label{conclusion}
@@ -1664,44 +1667,60 @@ search space, and our approach is thus less immediately comparable to these kind
 In this paper, we analyze the way in which current state of the art automatic 
 program repair approaches select mutation operators to create candidate 
 patches. We analyze, categorize and compare the mutation operators being used by 
-state of the art approaches. We analyzed the last 100 bug fixing commits from the
+state of the art approaches. We analyzed the last 100 bug fixing commits from 
+the
 500 most-starred Java projects on Github, which is the largest corpus analyzed
-to date, to the best of our knowledge.  We created a two-level probabilistic model describing
+to date, to the best of our knowledge.  We created a two-level probabilistic 
+model describing
 the likelihood of selecting bug-fixing mutation operators, according to the
-observed incidence of their use by human developers. 
+observed incidence of their use by human developers. All the data gathered, 
+tools and test suites used in this study are publicly available for open peer review 
+and scrutiny.
 
-We evaluated our single-edit approach in several ways: by performing an internal evaluation of 
+We evaluated our single-edit approach in several ways: by performing an internal 
+evaluation of 
 its predictive power (using 10 fold cross 
-validation), by comparing the speed of the model by comparing it to an equally distributed model and  
+validation), by comparing the speed of the model by comparing it to an equally 
+distributed model and  
  running them on 15 bugs using the database of bugs and extensible 
-framework Defects4j, and finally by comparing the quality of the patches generated against patches created for these same bugs by other state of the art approaches. 
+framework Defects4j, and finally by comparing the quality of the patches 
+generated against patches created for these same bugs by other state of the art 
+approaches. 
 
 For these bugs, we measured the number of variants it takes to find the 
-patch as well as the quality of produced patches, using a second automatically-created held-out test suite.
-Note that in Section \ref{tab:singleLineBugs}, for the majority of bugs, the equally distributed model performed better than their equally distributed counterpart.
+patch as well as the quality of produced patches, using a second 
+automatically-created held-out test suite.
+Note that in Section \ref{tab:singleLineBugs}, for the majority of bugs, the 
+equally distributed model performed better than their equally distributed 
+counterpart.
 We also notice that applying different probabilities when constructing variants
 does not make the patches found in either of the models more likely to pass a
 second test suite for these five bugs. Further evaluation should be performed to
 determine if one of the models creates higher quality patches than the other. 
 Overall, however, we found that automatic program repair appears to benefit
-from having a diverse mutation operator pool containing mutation operators from both categories,
+from having a diverse mutation operator pool containing mutation operators from 
+both categories,
 rather than restricting their choices to just one category, increase in search
 space size notwithstanding; future improvements in fault localization thus will
 serve to further benefit from more precise models of mutation selection. 
 
 Multi-edit source code changes are understudied, but cover
 the vast majority of bug fixes in software systems. 
-To move towards advancing this area, we constructed a set of association rules that describe 
+To move towards advancing this area, we constructed a set of association rules 
+that describe 
 how often different sets of mutation operators can predict the change that will 
 come next, and how often subsets of mutation operators are applied together.
 
-There is a tension between the Support and the Confidence measures in our transaction 
+There is a tension between the Support and the Confidence measures in our 
+transaction 
 base, in which we 
 evaluate the different mutation operators being applied to source code in bug 
 fixing commits. 
 If we increase the Confidence and decrease Support, we obtain rules such that
-the antecedents and consequents have a higher rate of occurring together. By lowering Support this will produce rules that
-do not occur often.  Although, when they \emph{are} selected, are very likely to be
+the antecedents and consequents have a higher rate of occurring together. By 
+lowering Support this will produce rules that
+do not occur often.  Although, when they \emph{are} selected, are very likely to 
+be
 correct. 
 
 On the other hand, if 
@@ -1710,10 +1729,12 @@ are guaranteed to happen in a certain percent of the corpus, which means,
 the relationship described by the rules, happens often, but confidence is 
 sacrificed, which means that there will be a higher percentage of the 
 transactions in which the antecedent is present, but the consequent is not. 
-Overall, this initial analysis of how single-edit source code changes can be chained together 
+Overall, this initial analysis of how single-edit source code changes can be 
+chained together 
 to become multi-edit source code changes by following human behavior provides a
 first step towards an efficient mechanism for traversing the large search space
 of multi-edit repairs.
+
 
 
 
