@@ -1415,11 +1415,18 @@ thus additionally report patched program success on these independent test
 suites. 
 Table \ref{stateOfTheArtComparison} shows the status of the different patches found by each of the different approaches and next to each patch a description regarding if the patch passed the held out test suite or failed it.
 
+These held out test suites contain the following number of test cases:
+Chart1    : 4285,                
+Closure10 : 1493,                
+Closure18 : 1615,                
+Math2     : 6933,                
+Time19    : 3650.                
+
 We notice from Table \ref{stateOfTheArtComparison} that from the eleven patches created by our approach, five of them pass the held-out test suite (45.5\% success rate), while compared to the behavior of the other state of the art tools on these bugs, we can see a 0\% success rate (all the patches created failed the held-out test suite) in GenProg, TRPAutoRepair and PAR, and a 25\% success rate in Nopol. Our approach creates patches that passed the held-out test suite more often than all the other state of the art tools, which gives strong evidence regarding the generalizability of our approach when faced to a different set of tests that describe the same behavior of the program, and it gives evidence that our approach is less likely to overfit to the test suite used to create the patch.
 
-One example in which we can very clearly see the success of our approach when applying the probabilistic model is Closure 18 as seen in Figure \ref{closure18prob} where, not only did our approach created the exact same patch as the human did, but also our approach was able to find the patch within the time frame specified before the execution is shutdown by one of the constraints per execution. 
+One example in which we can very clearly see the success of our approach when applying the probabilistic model is Closure 18 as seen in Figure \ref{closure18prob} where, not only did our approach created the exact same patch as the human did, but also our approach was able to find the patch within the time frame specified before the execution is shutdown by one of the constraints per execution while other approaches that are able to create this patch, couldn't because they ran out of time. 
 
-This example was fixed by the human by removing an expression from an $IfStatement$. PAR in particular has a mutation operator specially created to perform this task, and even so, it was not able to find this patch due to the vast search space and the fact that it searches through this space with an equally distributed manner to pick its mutation operators. Nopol was able to create a patch for this example as shown in Figure \ref{closure18nopol}, but this patch is not able to generalize to a held-out test suite.
+This example was fixed by the human by removing an expression from an $IfStatement$ as seen in Figure \ref{closure18prob}. PAR in particular has a mutation operator specially created to perform this task, and even so, it was not able to find this patch due to the vast search space and the fact that it searches through this space in an equally distributed manner to pick its mutation operators. Nopol was able to create a patch for this example as shown in Figure \ref{closure18nopol}, but this patch is not able to generalize to a held-out test suite.
 
 
 \begin{figure}[t]
@@ -1462,29 +1469,29 @@ boolean staleInputs = false;
 \centering
 \label{my-label}
 \begin{tabular}{l|ll|ll|ll|ll|ll}
- & Probabilistic Model & Quality & GenProg & Quality & TRP & Quality & PAR & Quality & Nopol  & Quality  \\
+ & Probabilistic Model & NFTC & GenProg & NFTC & TRP & NFTC & PAR & NFTC & Nopol  & NFTC  \\
  \hline
-Closure 10 & SequenceExchange & Passed & No patch & - & No patch & - & No patch & - & Found & Failed   \\
- & SequenceExchange & Passed & - & - & - &-  & - & - & - & -   \\
+Closure 10 & SequenceExchange & 0 & No patch & - & No patch & - & No patch & - & Found & 28   \\
+ & SequenceExchange & 0 & - & - & - &-  & - & - & - & -   \\
  \hline
-Closure 18 & ExpRemove & Passed  & No patch & - & No patch & - & No patch & - &Found &  Failed  \\
+Closure 18 & ExpRemove & 0  & No patch & - & No patch & - & No patch & - &Found &  1  \\
 \hline
-Math 2 & MethodReplace & Failed  & No patch & - & No patch & - & MetthodReplace & Failed & Found & Passed  \\
+Math 2 & MethodReplace & 170 & No patch & - & No patch & - & MetthodReplace & 170 & Found & 0  \\
 \hline
-Time 19 & Append & Passed & Append & Failed & Append & Failed & No patch & - & Found &  Failed \\
- & Replace & Passed & - & - & - & - & - & - & - & - \\
+Time 19 & Append & 0 & Append & 188 & Append & 188 & No patch & - & Found &  188 \\
+ & Replace & 0 & - & - & - & - & - & - & - & - \\
 \hline
-Chart 1 & SequenceExchange & Failed & Replace & Failed  & Delete & Failed & ExpAdd & Failed & No patch &   \\
- & Delete & Failed & Delete & Failed & Replace &Failed  & ExpReplace & Failed & - & -   \\
- & Delete & Failed & Replace & Failed & Delete & Failed &  -& -& - & -  \\
- & SequenceExchange & Failed & Delete & Failed & Delete &Failed  & - & - & - & -   \\
- & ExpReplace & Failed & Delete & Failed &- & - & - & - & - & -   \\
- & - & - & Replace & Failed & - & - & - & - & - & -  \\
+Chart 1 & SequenceExchange & 1 & Replace & 1  & Delete & 1 & ExpAdd & 1 & No patch &   \\
+ & Delete & 1 & Delete & 1 & Replace &1  & ExpReplace & 1 & - & -   \\
+ & Delete & 1 & Replace & 1 & Delete & 1 &  -& -& - & -  \\
+ & SequenceExchange & 1 & Delete & 1 & Delete &1  & - & - & - & -   \\
+ & ExpReplace & 1 & Delete & 1 &- & - & - & - & - & -   \\
+ & - & - & Replace & 1 & - & - & - & - & - & -  \\
  
 \end{tabular}
 \newline
 \center
-  \caption{Quality assessment between the probabilistic model and other state of the art approaches. The Quality column reads "Passed" if the patch found passed the held out test suite or "Failed" otherwise.}
+  \caption{Quality assessment between the probabilistic model and other state of the art approaches. The NFTC column stands for Number of Failed Test Cases, it represents the number of test cases the patch failed in the held-out test suite. If it contains a 0, it means the patch was able to fully generalize to the the held-out test suite}
   \label{stateOfTheArtComparison}
 \end{table*}
 
