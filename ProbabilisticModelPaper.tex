@@ -1417,6 +1417,46 @@ Table \ref{stateOfTheArtComparison} shows the status of the different patches fo
 
 We notice from Table \ref{stateOfTheArtComparison} that from the eleven patches created by our approach, five of them pass the held-out test suite (45.5\% success rate), while compared to the behavior of the other state of the art tools on these bugs, we can see a 0\% success rate (all the patches created failed the held-out test suite) in GenProg, TRPAutoRepair and PAR, and a 25\% success rate in Nopol. Our approach creates patches that passed the held-out test suite more often than all the other state of the art tools, which gives strong evidence regarding the generalizability of our approach when faced to a different set of tests that describe the same behavior of the program, and it gives evidence that our approach is less likely to overfit to the test suite used to create the patch.
 
+One example in which we can very clearly see the success of our approach when applying the probabilistic model is Closure 18 as seen in Figure \ref{closure18prob} where, not only did our approach created the exact same patch as the human did, but also our approach was able to find the patch within the time frame specified before the execution is shutdown by one of the constraints per execution. 
+
+This example was fixed by the human by removing an expression from an $IfStatement$. PAR in particular has a mutation operator specially created to perform this task, and even so, it was not able to find this patch due to the vast search space and the fact that it searches through this space with an equally distributed manner to pick its mutation operators. Nopol was able to create a patch for this example as shown in Figure \ref{closure18nopol}, but this patch is not able to generalize to a held-out test suite.
+
+
+\begin{figure}[t]
+\begin{lstlisting}[frame=single,style=base]
+boolean staleInputs = false;
+@-if(options.dependencyOptions.needsManagement() && options.closurePass){
++if(options.dependencyOptions.needsManagement()){
+@  for (CompilerInput input : inputs) {
+    // Forward-declare all the provided types, so that they
+    // are not flagged even if they are dropped from the process.
+    for (String provide : input.getProvides()) {
+      getTypeRegistry().forwardDeclareType(provide);
+    }  
+  }
+	\end{lstlisting}
+	\caption{A snippet of the source code of the Closure 18 bug fixed using the
+      probabilistic model. This patch is identical to what the developer did, and it was able to find the patch while other approaches were not.\label{closure18prob}}
+\end{figure}
+
+
+\begin{figure}[t]
+\begin{lstlisting}[frame=single,style=base]
+boolean staleInputs = false;
+@-if(options.dependencyOptions.needsManagement() && options.closurePass){
++if (com.google.javascript.rhino.Node.this.type <= com.google.javascript.rhino.Node.IS_DISPATCHER) {
+@  for (CompilerInput input : inputs) {
+    // Forward-declare all the provided types, so that they
+    // are not flagged even if they are dropped from the process.
+    for (String provide : input.getProvides()) {
+      getTypeRegistry().forwardDeclareType(provide);
+    }  
+  }
+	\end{lstlisting}
+	\caption{A snippet of the source code of the Closure 18 bug fixed using Nopol. This patch is not able to generalize to a held-out test suite.\label{closure18nopol}}
+\end{figure}
+
+
 
  \begin{table*}[]
 \centering
