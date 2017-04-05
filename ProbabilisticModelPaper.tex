@@ -975,11 +975,11 @@ Time	& Joda-Time & Date and time classes \\
 \end{tabular}
 \newline
 \center
-  \caption{Description of projects that comform Defects4j}
+  \caption{Description of projects that conform Defects4j}
   \label{defects4j}
 \end{table} 
 
-We consider for repairing a subset of the Defects4j~\cite{just14}
+We consider for repair a subset of the Defects4j~\cite{just14}
 benchmark, a database and extensible 
 framework of real bugs that enables reproducible studies in software testing 
 research. This database currently contains 395 real bugs from 6
@@ -1035,23 +1035,30 @@ Time 19 & 3650 & 75.4\% & 58.0\%
 \label{sec:generalize}
   
 
-%\begin{table}[ht]
-%\begin{tabular}{llllllllllllllllllllll}
-%\hline
-%As & Bl & Br & Cl & Co & Do & Em & EF & Ex & Fo & If \\
-%0\%&2\%&0\%&2\%&5\%&0\%&0\%&0\%&43\%&0\%&22\% \\
-%\hline 
-%La & Re & SC & Ca & Sw & Sy & Th & Tr & TD & VD & Wh \\
-%0\%&0\%&2\%&2\%&0\%&0\%&3\%&2\%&0\%&19\%&0\% \\
-%\hline
-%\end{tabular}
-%\\
-%\caption{Example of the Return Statement row of a sub-model created from 
-%the training data. Replacee probabillities of the replacer ReturnStatement. %The acronyms represent the statement kinds detailed in footnote \ref{stmtNames}}
-% \label{fig:exPredReturn} 
-%\end{table} 
+\begin{table}[ht]
+\begin{tabular}{llllllllllllllllllllll}
+\hline
+As & Bl & Br & Cl & Co & Do & Em & EF & Ex & Fo & If \\
+0\%&2\%&0\%&2\%&5\%&0\%&0\%&0\%&43\%&0\%&22\% \\
+\hline 
+La & Re & SC & Ca & Sw & Sy & Th & Tr & TD & VD & Wh \\
+0\%&0\%&2\%&2\%&0\%&0\%&3\%&2\%&0\%&19\%&0\% \\
+\hline
+\end{tabular}
+\\
+\caption{Example of the Return Statement row of a sub-model created from 
+the training data. Replacee probabillities of the replacer ReturnStatement. The acronyms represent the statement kinds detailed in footnote \ref{stmtNames} \todo{The notes said to remove this, but we can't explain the following section without it, so I am keeping it for now}}
+ \label{fig:exPredReturn} 
+\end{table} 
 
-In this section we want to evaluate the consistency of the corpus and provide internal validity to our results by performing a 10 fold cross validation over our model.
+In this section we want to evaluate the consistency of the corpus and provide internal validity to our results by performing a 10 fold cross validation over our model. We built the model with the 500
+projects in Github with the most stars.
+ This is to generate the largest code base so far to the best 
+of our knowledge, surpassing all the previous state of the 
+art~\cite{long16proph,Soto16,zhong15,martinez15,xuan16}. 
+In these experiments, we include all mutations described in
+Section~\ref{categorization}.
+
 First, we evaluate the predictive power of our 
 replacements model. Our high-level research question concerns whether 
 our mined models are likely to identify the correct fix code across a large
@@ -1060,24 +1067,18 @@ compare its predictive accuracy to an \emph{equally distributed} model, in which
 the probability of selecting any replacee statement is uniformly random. 
 We assess the degree to which each model correctly predicts the
 replacer statement for given replacee statements, within the top 5 produced
-choices.  Because these models are to be used in the context of program repair,
-perfect accuracy (correctness in the Top-1 most likely choice) is unnecessary since automatic program repair approaches iterate through several different candidate patches until finding the appropriate fix;
-however, the noisy search problem induced by fault localization and a larger set
-of available mutation operators suggests that a relatively tight bound (top-5)
-is likely appropriate.  Additionally, we found obserationally that the top-5
+choices. Perfect accuracy (correctness in the Top-1 most likely choice) is unnecessary, since automatic program repair approaches iterate through several different candidate patches until finding the appropriate fix;
+however, the noisy search problem suggests that a relatively tight bound (top-5)
+is likely appropriate.  Additionally, we found observationally that the top-5
 choices serves as a point of inflection between the mined and equal model
 performance. 
 
-To mitigate and assess the risk of overfitting and avoid testing and training on
-the same data, we use 
-10-fold cross validation~\cite{kohavi95} to structure our experiment. 
-We segregated the projects that form our corpus into 10 
-different folds assigned at random. For each of the 
-folds we would take 1 fold for testing and the remaining 9 folds for training a model. 
-This is performed 10 times, one time per each fold and then it is 
-averaged to see how commonly is the training data able to predict the testing 
-data.
-We then count the number of testing instances that are correctly predicted 
+We use 
+10-fold cross validation~\cite{kohavi95} to mitigate and assess the risk of overfitting and avoid testing and training on
+the same data. 
+We segregated the projects in our corpus into 10 
+random folds. For each 
+fold, we use one fold for testing, and the remaining nine for training. We aggregate the results over all 10 folds counting the number of testing instances that are correctly predicted 
 by the first five guesses from the training sub-model.   
 
 \lstdefinestyle{base}{
@@ -1090,7 +1091,7 @@ by the first five guesses from the training sub-model.
 	numberstyle=\scriptsize\tt,  moredelim=[is][\color{red}]{@}{@}, deletekeywords={}, captionpos=b, belowskip=1pt, autogobble=true
 }
 
-To illustrate the point, consider a simple example. Assume the following
+To illustrate, consider a simple example. Assume the following
 simple bug-fixing patch from our corpus: 
 
 \begin{lstlisting}[frame=single,style=base]
@@ -1099,11 +1100,11 @@ simple bug-fixing patch from our corpus:
 +  }    
 \end{lstlisting}
 
-In effect, the developer has replaced the original \texttt{return} with an
+The developer has replaced the original \texttt{return} with an
 \texttt{if-then} statement that wraps it.  Our goal in assessing our model is,
 assuming the selected mutation operator 
 is \emph{replace}, how often will an \emph{IfStatement} be predicted as the
-replacer? If it is returned for the first five instances in a model, the model
+replacer? If it is returned in the first five instances in a model, the model
 correctly predicts this instance.  
 
 Each trained model describes the dataset via
@@ -1157,26 +1158,25 @@ random for each prediction.
 %the testing set.  
 
 
-\begin{table}[ht]
-\begin{tabular}{l|rr|rr|rr}
-   &\multicolumn{2}{c|}{Replacements} &\multicolumn{2}{c|}{Mutations}&\multicolumn{2}{c}{Instance count} \\
+\begin{figure}[ht]
+\tabcolsep=0.11cm
+\begin{tabular}{l|p{1cm}rr|rrr}
+   &\multicolumn{3}{c|}{Replacements} &\multicolumn{3}{c}{Mutations} \\
    	\hline
-Test fold	&Prob&	EqDist&Prob&	EqDist & Replac  & Mut\\
+Test fold	& Instances&Prob&	EqDist&Instances&Prob&	EqDist \\
 	\hline
-1	&70\%&	25\% &  95\% & 64\% & 155 &17313 \\
-2	&100\%&	25\%  & 93\% & 63\% & 86 & 17232 \\
-3	&82\%	&23\% & 95\% & 81\% & 81 & 16754\\
-4	&81\%	&40\%  & 94\% & 9\% & 101 & 14159 \\
-5	&90\%	&27\%  & 95\% & 2\%& 99 & 17022 \\
-6	&84\%	&21\%  & 95\%& 58\%& 75 & 14945 \\
-7	&86\%	&24\%  & 93\%& 7\%& 79 & 12901 \\
-8	&96\%	&23\%  & 95\%& 27\%& 55 & 10552 \\
-9	&88\%	&8\%  & 93\%& 62\%& 82 & 14568\\
-10	&100\%	&31\%  & 95\% & 6\%& 116 & 19140\\
+1	& 155&70\%&	25\% &17313&  95\% & 64\%   \\
+2	& 86&100\%&	25\%  & 17232& 93\% & 63\%   \\
+3	& 81&82\%	&23\%  & 16754& 95\% & 81\% \\
+4	& 101&81\%	&40\%  & 14159& 94\% & 9\%   \\
+5	& 99&90\%	&27\%  & 17022& 95\% & 2\%  \\
+6	& 75&84\%	&21\%  & 14945& 95\%& 58\%  \\
+7	& 79&86\%	&24\%  & 12901& 93\%& 7\%  \\
+8	& 55&96\%	&23\%  & 10552& 95\%& 27\%  \\
+9	& 82&88\%	&8\%  & 14568& 93\%& 62\% \\
+10	& 116&100\%	&31\% & 19140 & 95\% & 6\% \\
 	\hline
 Mean	&87.7	&24.7  & 94.3 & 37.9 & 192.9 & 15458.6 \\
-	\hline
-Variance	&87.12&	64.23  & 0.90 & 929.87 & 102550.1 & 6402298.71 \\
 	\hline
 Std dev	&9.33&	8.01  & 0.94 & 30.49 & 320.23 & 2530.27 \\
 	\hline
@@ -1193,9 +1193,9 @@ Sum& 877 & 247 & 943 & 379 & 1929 &  154586\\
     this is an improvement of almost a factor of 4 when compared to the equally
     distributed model. The mutations model(middle) is able to predict the
     correct mutation to be applied almost by a factor of 3 when compared to the
-    equally distribured.} 
-  \label{tab:results10fcv}
-\end{table} 
+    equally distribured. The instance count, is the number of actual instances in each fold when running cross validation on each of the different models.} 
+  \label{results10fcv}
+\end{figure} 
 
 
 %\begin{figure}[!h]
@@ -1203,13 +1203,13 @@ Sum& 877 & 247 & 943 & 379 & 1929 &  154586\\
 %    \includegraphics[scale=0.33]{sanity1}
 %  \caption{   }
 %\end{figure}
-The results of this evaluation over all 10 folds are detailed in
-Table~\ref{tab:results10fcv}. For each fold, we show the percentage of correctly 
-predicted instances of the testing data in each particular fold by the top five
-guesses of the equally distributed approach for the replacements model. The
-fourth and fifth columns show the percentage of correctly predicted
+Results are shown in Figure~\ref{results10fcv}. For each fold, we show the instance count and percentage of correctly 
+predicted instances within the top five
+guesses of both the equally distributed and the replacements model. The
+third and fourth columns show the percentage of correctly predicted
 instances using the top five  
-guesses of the sub-model of each of the folds for the mutations model. Finally the sixth and seventh columns are the number of instances in each of the folds. We have a difference of 63\% between the means of the two models in the replacements model, and a difference of 56.4\% between the mean values of correctly predicted instances in the probabilistic and equally distributed models for the mutations model.
+guesses of the sub-model of each of the folds for the replacements model. The sixth and seventh columns are percentage of correctly predicted instances for the mutations model. Columns two and five show
+the number of instances in each of the folds. We have a difference of 63\% between the means of the two models in the replacements model, and a difference of 56.4\% between the mean values of correctly predicted instances in the probabilistic and equally distributed models for the mutations model. \todo{a)is it statistically significant?, b)what did we learn?}
 
 
 \subsection{Single line bug repair}
@@ -1243,17 +1243,10 @@ guesses of the sub-model of each of the folds for the mutations model. Finally t
 
 \end{table*}
 
-In this subsection, we evaluate the success of automatic program repair with our
-model on real-world bugs  by comparing the performance of our 
+In this subsection, we compare the performance of an
 automatic program repair tool using the probabilistic model to one using the
 equally distributed model.  
-We built the whole model with 500
-projects in Github with the most stars.
- This is to generate the largest code base so far to the best 
-of our knowledge, surpassing all the previous state of the 
-art~\cite{long16proph,Soto16,zhong15,martinez15,xuan16}. 
-In these experiments, we include all mutations described in
-Section~\ref{categorization}.
+
 
 \subsubsection{Repair results}   \label{repResults}
 Our modified APR technique patched 5 of the 15 bugs, as shown in 
