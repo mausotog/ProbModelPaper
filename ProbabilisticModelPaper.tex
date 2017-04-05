@@ -717,7 +717,7 @@ shown in the Bottom section of Table~\ref{approachTemplates}.
 3) Value Replacement  & 6) Condition Introduction \\
 \\
 \end{tabular}
-  \caption{(Top) PAR fix templates. (Middle) PAR extra templates. (Bottom) SPR transformation schemas. \todo{this one takes much less space as table than figure}}
+  \caption{(Top) PAR fix templates. (Middle) PAR extra templates. (Bottom) SPR transformation schemas. \todo{I tried making everything a Figure, but it takes so much more space that way that I made some of them tables}}
   \label{approachTemplates}
 \end{table}
 
@@ -811,7 +811,7 @@ instead aggregating counted templates over a large dataset.
 
 
 
-%\begin{figure}[!]
+%\begin{table}[!]
 %\begin{verbatim}
 %var res = 0
 %for (ac <- actions) {
@@ -832,18 +832,18 @@ instead aggregating counted templates over a large dataset.
 %}
 %\end{verbatim}
 %\caption{Example of heuristic to spot the template Add Null Checker}\label{fig:codeSnippet}
-%\end{figure}
+%\end{table}
 
 
 
 \subsection{Two-level probabilistic model for repair}
 
-%\begin{figure}[!h]
+%\begin{table}[!h]
 %  \centering
 %    \includegraphics[scale=0.4]{Picture2}
 %  \caption{Two level probabilistic model}
 %  \label{fig:probModel}
-%\end{figure}
+%\end{table}
 
 We extend an open-source implementation of the GenProg technique adapted for Java
 by implementing the mutation operators from
@@ -935,6 +935,11 @@ the database of transactions $T$. Apriori identifies the frequent mutation
 operators and replacements that happen together, iteratively extending them to larger
 itemsets that appear often in the transactions as identified by these metrics.
 
+To create these association rules among several mutation operators, we mine the
+transactions made out of the commits created by humans in the corpus of projects
+studied and we look for rules that have at least 90\% Confidence, where
+Confidence is an indication of how often the rule has been found to be true.
+
 
 \section{Evaluation} \label{evaluation}
 
@@ -959,7 +964,7 @@ processor, 46080 KB cache each, and 32 GB RAM memory, operating system Ubuntu
 \todo{You mentioned to update this specs with the new specs, but this part of the experiment was ran with the old specs (detailed here), so I think it makes sense to keep these?}
 
 
-\begin{figure}[ht]
+\begin{table}[ht]
 \centering
 \tabcolsep=0.01cm
 \begin{tabular}{lllll}
@@ -978,13 +983,13 @@ Time	& Joda-Time & Date and time classes  & & \\
 \center
   \caption{Description of projects that conform Defects4j \todo{re check the number in the last column}}
   \label{defects4j}
-\end{figure} 
+\end{table} 
 
 We consider for repair a subset of the Defects4j~\cite{just14}
 benchmark, a database and extensible 
 framework of real bugs that enables reproducible studies in software testing 
 research. This database currently contains 395 real bugs from six
-open source programs as stated in Figure~\ref{defects4j}, along with developer-provided test suites, cases that
+open source programs as stated in Table~\ref{defects4j}, along with developer-provided test suites, cases that
 expose each bug,  and
 corresponding developer-provided patches.\footnote{Note that we initiated this study when Defects4J
   contained five subjects, and thus have no bug instances from the recently-added
@@ -1008,13 +1013,17 @@ To compare the efficacy of different types of mutation operators,
 we tested three operation sets: (1) Statement-Edit mutations only (2) Template-based mutations 
 only (3) All mutations.  We average (the number of variants necessary to create a repair) overall seeds. We use number of variants as a measure for speed since it is a machine- and test suite-independent proxy for time.
 
-To evaluate quality of the patches we use held out test suites.
-Figure~\ref{heldOut} describes the specifics of the held out test suites. We use Randoop~\cite{pacheco07}, an established
+As a proxy for patch quality (to
+mitigate the risk of plausible but as yet incorrect patches~\cite{Qi15}), we
+evaluate patches using a held-out test suite~\cite{legoues2012,Smith15} by automatically building a second
+test suite that independently describes the same behavior as the test suite that
+guides the search process. 
+
+Table~\ref{heldOut} describes the specifics of the held out test suites. We use Randoop~\cite{pacheco07}, an established
 automatic test suite generation tool for Java, to generate this second test
-suite and Cobertura\footnote{http://cobertura.github.io/cobertura/} to calculate the coverage of the test suite over the class that contains the human fix. 
+suite. We run Randoop with a ten minute budget (six times the default value) to create the held-out test suites.\footnote{We will release our test suites post-review.}  We also use Cobertura\footnote{http://cobertura.github.io/cobertura/} to calculate the coverage of the test suite over the class that contains the human fix. 
 
-
-\begin{figure}[]
+\begin{table}[]
 \centering
 \begin{tabular}{llll}
 Project & Number of test cases & Line coverage & Branch coverage \\
@@ -1028,15 +1037,15 @@ Time 19 & 3650 & 75.4\% & 58.0\%
 \newline
 \caption{Held-out test suite data. These test suites were created using Randoop with a budget of 10 minutes and evaluated coverage using Cobertura.}
 \label{heldOut}
-\end{figure}    
+\end{table}    
 
 
 \subsection{Model generalization}
 \label{sec:generalize}
   
 
-\begin{figure}[ht]
-\tabcolsep=0.11cm
+\begin{table}[ht]
+\tabcolsep=0.18cm
 \begin{tabular}{llllllllllllllllllllll}
 \hline
 As & Bl & Br & Cl & Co & Do & Em & EF & Ex & Fo & If \\
@@ -1050,7 +1059,7 @@ La & Re & SC & Ca & Sw & Sy & Th & Tr & TD & VD & Wh \\
 \caption{Example of the Return Statement row of a sub-model created from 
 the training data. Replacee probabillities of the replacer ReturnStatement. The acronyms represent the statement kinds detailed in footnote \ref{stmtNames} \todo{The notes said to remove this, but we can't explain the following section without it, so I am keeping it for now}}
  \label{fig:exPredReturn} 
-\end{figure} 
+\end{table} 
 
 In this section we want to evaluate the consistency of the corpus and provide internal validity to our results by performing a 10 fold cross validation over our model. We built the model with the 500
 projects in Github with the most stars.
@@ -1121,7 +1130,7 @@ Assume for illustration a sub-model which contains a row describing the
 probabilities for the different statements that could possibly replace a return 
 statement: $TP_{13,m}$ (row 13 since \emph{ReturnStatment} is the 13th element 
 in our statement list), this row is shown in 
-Figure~\ref{fig:exPredReturn}.
+Table~\ref{fig:exPredReturn}.
 
 %
 For our example, the most
@@ -1159,8 +1168,8 @@ random for each prediction.
 %the testing set.  
 
 
-\begin{figure}[ht]
-\tabcolsep=0.11cm
+\begin{table}[ht]
+
 \begin{tabular}{l|p{1cm}rr|rrr}
    &\multicolumn{3}{c|}{Replacements} &\multicolumn{3}{c}{Mutations} \\
    	\hline
@@ -1196,15 +1205,15 @@ Sum& 877 & 247 & 943 & 379 & 1929 &  154586\\
     correct mutation to be applied almost by a factor of 3 when compared to the
     equally distribured. The instance count, is the number of actual instances in each fold when running cross validation on each of the different models.} 
   \label{results10fcv}
-\end{figure} 
+\end{table} 
 
 
-%\begin{figure}[!h]
+%\begin{table}[!h]
 %  \centering
 %    \includegraphics[scale=0.33]{sanity1}
 %  \caption{   }
-%\end{figure}
-Results are shown in Figure~\ref{results10fcv}. For each fold, we show the instance count and percentage of correctly 
+%\end{table}
+Results are shown in Table~\ref{results10fcv}. For each fold, we show the instance count and percentage of correctly 
 predicted instances within the top five
 guesses of both the equally distributed and the replacements model. The
 third and fourth columns show the percentage of correctly predicted
@@ -1216,7 +1225,7 @@ the number of instances in each of the folds. We have a difference of 63\% betwe
 \subsection{Single line bug repair}
 \label{sec:single}
 
-\begin{figure*}\centering
+\begin{table*}\centering
 \begin{tabular}{r|rr|rr|rr|rr|rr|rr}
 \hline
  &\multicolumn{4}{c|}{Statement-Edit Only} & \multicolumn{4}{c|}{Template-based Only} & \multicolumn{4}{c}{All Mutations} \\ 
@@ -1245,7 +1254,7 @@ Math \#2 & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & {10
           sets.  For each, we report time in terms of variants evaluated to a
           repair, and quality as the percentage of patches created for that bug that pass the held-out test suite. \label{tab:singleLineBugs}}
 
-\end{figure*}
+\end{table*}
 
 In this subsection, we compare the performance of an
 automatic program repair tool using the probabilistic model to one using the
@@ -1254,7 +1263,7 @@ equally distributed model.
 
 \subsubsection{Repair results}   \label{repResults}
 \todo{re visit this parragraph after we have the latest results}Our modified APR technique patched 5 of the 15 bugs, as shown in 
-Figure~\ref{tab:singleLineBugs}. In the first row of Figure~\ref{tab:singleLineBugs} (Closure \#10) we can see
+Table~\ref{tab:singleLineBugs}. In the first row of Table~\ref{tab:singleLineBugs} (Closure \#10) we can see
 that in all three comparisons (Statement-Edit Only, Template-Based Only, and All
 mutations), the probabilisitc model outperforms
 the equally distributed model. This happens as well for
@@ -1352,32 +1361,17 @@ necessary at present (and whose state may have unknown effects in other
 executions). 
 
 \subsection{Comparison against state of the art approaches}
-We have already evaluated the speed of the proposed approach in the previous section comparing the number of mutations it takes in average to achieve a successful patch, and we have compared how the pool of mutation operators behaves when we have a combined mutation operation pool against a segregated mutation operation pool.
-In this section we compare the quality of the patches found by our approach when using all the mutation operations and the probabilistic model, against patches found in the same benchmark by different state of the art tools.
+In this section we compare our approach, using all the mutation operations and the probabilistic model, against those patches found in the same benchmark by different state of the art tools.
+We evaluate against four different state of the art tools targeting Java: GenProg, TrpAutoRepair, PAR and Nopol.
+We extend an available open-source implementation of GenProg adapted for Java to include the behavior and mutation operators of these first three approaches, since they were originally built to target C (GenProg and TRPAutoRepair), or have not made their code available (PAR). We also compare our approach to Nopol\cite{xuanNopol}, an automatic repair tool of conditional statement for Java programs. The authors have created patches for the same benchmark used in this study\cite{martinez2016} and made their results publicly available.\footnote{https://github.com/Spirals-Team/defects4j-repair/tree/master/results/2017-march} For the comparison with Nopol we have used the more up-to-date dataset available in their website marked as ``March 2017".\todo{pending to add more justification depending on Martin's response}
+In this study we do not compare directly to SPR/Prophet~\cite{long16proph} mutation operators because they use machine learning to tune the probabilities to pick their schemas and is thus much harder to re implement faithfully.
 
-We evaluate against four different state of the art tools for Java: GenProg, TRPAutoRepair, PAR and Nopol.
-For the first three mentioned approaches, we extended an open-source implementation of GenProg adapted for Java to include the behavior and mutation operators used by these approaches since they were originally built to target C (GenProg and TRPAutoRepair), or have not made their code available (PAR). We also compare our approach to Nopol\cite{xuanNopol}, an automatic repair tool of conditional statement for Java programs. The authors have created patches for the same benchmark used in this study\cite{martinez2016} and made their results publicly available.\footnote{https://github.com/Spirals-Team/defects4j-repair/tree/master/results/2017-march} For the comparison with Nopol we have used the more up-to-date dataset available in their website marked as "March 2017".
+Table~\ref{stateOfTheArtComparison} shows the status of the different patches found by each of the different approaches and next to each patch a description regarding if the patch passed the held out test suite or failed it.          
+Table~\ref{stateOfTheArtComparison} shows the patches created by our approach, five of them pass the held-out test suite (45.5\%). None of the GenProg, TRPAutorRepair, or PAR patches fully generalize; and 25\% of Nopol's patches are able to generalize. This gives us confidence that our approach produces high quality patches in comparison with the alternatives created by state-of-the-art tools.
 
-In this study we do not compare directly to SPR/Prophet~\cite{long16proph} because this approach creates transformation schemas from C language constructs, which makes them fundamentally different from the mutation operators analyzed by our approach and that fall within the scope of this study. Unlike this approach, GenProg and TRPAutoRepair also originally target C, but their mutation operators are sufficiently coarse grained that their intuition can be translated directly to Java without losing the fundamental idea behind the approach. 
+One example in which we can very clearly see the success of our approach when applying the probabilistic model is Closure 18 as seen in Figure~\ref{closure18prob} where, not only did our approach created the exact same patch as the human did, but also our approach was able to find the patch within the time frame specified before the execution is shutdown by one of the constraints per execution while other approaches that are able to create this patch, couldn't because they ran out of time. 
 
-As a proxy for patch quality (to
-mitigate the risk of plausible but as yet incorrect patches~\cite{Qi15}), we
-evaluate patches using a held-out test suite~\cite{legoues2012,Smith15} by automatically building a second
-test suite that independently describes the same behavior as the test suite that
-guides the search process. 
-
-For each successfully-patched bug, we 
-run Randoop for ten minutes (six times the default value) on the human-patched
-version of the code.\footnote{We will release our test suites post-review.}  We
-thus additionally report patched program success on these independent test
-suites. 
-Figure~\ref{stateOfTheArtComparison} shows the status of the different patches found by each of the different approaches and next to each patch a description regarding if the patch passed the held out test suite or failed it.          
-
-We notice from Figure~\ref{stateOfTheArtComparison} that from the eleven patches created by our approach, five of them pass the held-out test suite (45.5\% success rate), while compared to the behavior of the other state of the art tools on these bugs, we can see a 0\% success rate (all the patches created failed the held-out test suite) in GenProg, TRPAutoRepair and PAR, and a 25\% success rate in Nopol. Our approach creates patches that passed the held-out test suite more often than all the other state of the art tools, which gives strong evidence regarding the generalizability of our approach when faced to a different set of tests that describe the same behavior of the program, and it gives evidence that our approach is less likely to overfit to the test suite used to create the patch.
-
-One example in which we can very clearly see the success of our approach when applying the probabilistic model is Closure 18 as seen in Figure \ref{closure18prob} where, not only did our approach created the exact same patch as the human did, but also our approach was able to find the patch within the time frame specified before the execution is shutdown by one of the constraints per execution while other approaches that are able to create this patch, couldn't because they ran out of time. 
-
-This example was fixed by the human by removing an expression from an $IfStatement$ as seen in Figure \ref{closure18prob}. PAR in particular has a mutation operator specially created to perform this task, and even so, it was not able to find this patch due to the vast search space and the fact that it searches through this space in an equally distributed manner to pick its mutation operators. Nopol was able to create a patch for this example as shown in Figure \ref{closure18nopol}, but this patch is not able to generalize to a held-out test suite.
+This example was fixed by the human by removing an expression from an $IfStatement$ as seen in Figure~\ref{closure18prob}. PAR in particular has a mutation operator specially created to perform this task, and even so, it was not able to find this patch due to the vast search space and the fact that it searches through this space in an equally distributed manner to pick its mutation operators. Nopol was able to create a patch for this example as shown in Figure~\ref{closure18nopol}, but this patch is not able to generalize to a held-out test suite.
 
 
 \begin{figure}[t]
@@ -1416,7 +1410,7 @@ boolean staleInputs = false;
 
 
 
- \begin{figure*}[]
+ \begin{table*}[]
 \centering
 \label{my-label}
 \begin{tabular}{l|ll|ll|ll|ll|ll}
@@ -1444,7 +1438,7 @@ Chart 1 & SequenceExchange & 1 & Replace & 1  & Delete & 1 & ExpAdd & 1 & No pat
 \center
   \caption{Quality assessment between the probabilistic model and other state of the art approaches. The NFTC column stands for Number of Failed Test Cases, it represents the number of test cases the patch failed in the held-out test suite. If it contains a 0, it means the patch was able to fully generalize to the the held-out test suite}
   \label{stateOfTheArtComparison}
-\end{figure*}
+\end{table*}
 
 
 
@@ -1453,16 +1447,13 @@ Chart 1 & SequenceExchange & 1 & Replace & 1  & Delete & 1 & ExpAdd & 1 & No pat
 
 We mined our corpus using the Association Rule Mining algorithm Apriori 
 to find rules of mutation operators and 
-replacements that happen commonly together, which will give us an intuition regarding
-what mutation operations and replacements can be applied together to form multi-edit
+replacements that commonly happen together providing an intuition regarding
+how to form multi-edit
 source code changes.
 
 \paragraph{Mutation operator rules}
-To create these association rules among several mutation operators, we mine the
-transactions made out of the commits created by humans in the corpus of projects
-studied and we look for rules that have at least 90\% Confidence, where
-Confidence is an indication of how often the rule has been found to be true.  
-These rules are ranked by their confidence; in this case, the top 10 rules shown
+We mine rules from our corpus as described in Section~\ref{multEdit}.  
+These rules are ranked by their confidence; in this case, the top 10 \todo{we can shorten this to 5 rules if we need space} rules shown
 below have a confidence of 100\%, meaning that in 100\% of the cases
 studied, every transaction that showed the antecedent also showed the consequent.
 They are obtained with a 1\% support, which means that each of these rules
@@ -1654,7 +1645,7 @@ approaches.
 For these bugs, we measured the number of variants it takes to find the 
 patch as well as the quality of produced patches, using a second 
 automatically-created held-out test suite.
-Note that in Section \ref{tab:singleLineBugs}, for the majority of bugs, the 
+Note that in Table~\ref{tab:singleLineBugs}, for the majority of bugs, the 
 equally distributed model performed better than their equally distributed 
 counterpart.
 We also notice that applying different probabilities when constructing variants
