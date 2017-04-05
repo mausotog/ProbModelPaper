@@ -717,7 +717,7 @@ shown in the Bottom section of Table~\ref{approachTemplates}.
 3) Value Replacement  & 6) Condition Introduction \\
 \\
 \end{tabular}
-  \caption{(Top) PAR fix templates. (Middle) PAR extra templates. (Bottom) SPR transformation schemas.}
+  \caption{(Top) PAR fix templates. (Middle) PAR extra templates. (Bottom) SPR transformation schemas. \todo{this one takes much less space as table than figure}}
   \label{approachTemplates}
 \end{table}
 
@@ -959,62 +959,62 @@ processor, 46080 KB cache each, and 32 GB RAM memory, operating system Ubuntu
 \todo{You mentioned to update this specs with the new specs, but this part of the experiment was ran with the old specs (detailed here), so I think it makes sense to keep these?}
 
 
-\begin{table}[ht]
+\begin{figure}[ht]
 \centering
-\begin{tabular}{lll}
+\tabcolsep=0.01cm
+\begin{tabular}{lllll}
 \hline
-Identifier & Project name & Description\\
+Identifier & Project name & Description & Test cases & Bugs considered \\
 \hline
 Chart & JFreechart & Java chart library \\
-Closure	& Closure compiler	 & JavaScript handling tool\\
-Lang	& Apache commons-lang & String manipulation classes\\
-Math	& Apache commons-math & Mathematics components for Java \\
-Mockito &	Mockito	 & Mocking framework for junit tests \\
-Time	& Joda-Time & Date and time classes \\
+Closure	& Closure compiler	 & JavaScript handling tool & & \\
+Lang	& Apache commons-lang & String manipulation classes  & &\\
+Math	& Apache commons-math & Mathematics components for Java & & \\
+Mockito &	Mockito	 & Mocking framework for junit tests & & \\
+Time	& Joda-Time & Date and time classes  & & \\
 \hline
 \end{tabular}
 \newline
 \center
-  \caption{Description of projects that conform Defects4j}
+  \caption{Description of projects that conform Defects4j \todo{re check the number in the last column}}
   \label{defects4j}
-\end{table} 
+\end{figure} 
 
 We consider for repair a subset of the Defects4j~\cite{just14}
 benchmark, a database and extensible 
 framework of real bugs that enables reproducible studies in software testing 
-research. This database currently contains 395 real bugs from 6
-open source programs as stated in Table \ref{defects4j}, along with developer-provided test suites, cases that
+research. This database currently contains 395 real bugs from six
+open source programs as stated in Figure~\ref{defects4j}, along with developer-provided test suites, cases that
 expose each bug,  and
 corresponding developer-provided patches.\footnote{Note that we initiated this study when Defects4J
-  contained 5 subjects, and thus have no bug instances from the recently-added
+  contained five subjects, and thus have no bug instances from the recently-added
   Mockito project.} Defects4j has been previously used
 in evaluating previous work in APR~\cite{Durieux15}.
 In keeping with APR's typical focus on smaller patches, we
-restrict attention to the first 3 bugs from each project that required a 
-single line edit: Chart 1, 
-Chart 8, Chart 20, Closure 10, Closure 14, Closure 18, Lang 6, Lang 16, Lang 21, 
-Math 2, Math 5, Math 10, Time 4, Time 16 and Time 19.
+restrict attention to the first three \todo{re check this number} bugs from each project that required a 
+single line edit.
 To diminish the degree of randomness in this experiment and control for the
-effect of the mutation probabilities specifically,  we manually
-set fault localization for each bug.  This controls for inefficiency and noise
-in fault localization. Anecdotally, we observe that less-accurate fault localization increases the amount of
-time taken to repair these defects. 
+effect of the mutation probabilities specifically rather than inefficiency and noise
+in fault localization,  we manually
+set fault localization for each bug. Anecdotally, we observe that less-accurate fault localization increases the amount of
+time taken to repair these defects, but does not decrease expressive power. 
 
-We set the size for each population to 40 for consistency with 
+When running this experiment, we set the size for each population to 40 for consistency with 
 previous work~\cite{legoues12,kim2013}, we ran 20
 seeds per trial, 10 generations, a timeout of 4 hours for each run, in keeping with 
 recommendations on the assessment of stochastic techniques~\cite{arcuri11}.
+
 To compare the efficacy of different types of mutation operators,
 we tested three operation sets: (1) Statement-Edit mutations only (2) Template-based mutations 
-only (3) All mutations.  We assess the number of variants necessary to create a repair for several different seeds and then average the seeds. 
+only (3) All mutations.  We average (the number of variants necessary to create a repair) overall seeds. We use number of variants as a measure for speed since it is a machine- and test suite-independent proxy for time.
 
 To evaluate quality of the patches we use held out test suites.
-Table \ref{heldOut} describes the specifics of the held out test suites. We use Randoop~\cite{pacheco07}, an established
+Figure~\ref{heldOut} describes the specifics of the held out test suites. We use Randoop~\cite{pacheco07}, an established
 automatic test suite generation tool for Java, to generate this second test
 suite and Cobertura\footnote{http://cobertura.github.io/cobertura/} to calculate the coverage of the test suite over the class that contains the human fix. 
 
 
-\begin{table}[]
+\begin{figure}[]
 \centering
 \begin{tabular}{llll}
 Project & Number of test cases & Line coverage & Branch coverage \\
@@ -1028,14 +1028,15 @@ Time 19 & 3650 & 75.4\% & 58.0\%
 \newline
 \caption{Held-out test suite data. These test suites were created using Randoop with a budget of 10 minutes and evaluated coverage using Cobertura.}
 \label{heldOut}
-\end{table}    
+\end{figure}    
 
 
 \subsection{Model generalization}
 \label{sec:generalize}
   
 
-\begin{table}[ht]
+\begin{figure}[ht]
+\tabcolsep=0.11cm
 \begin{tabular}{llllllllllllllllllllll}
 \hline
 As & Bl & Br & Cl & Co & Do & Em & EF & Ex & Fo & If \\
@@ -1049,7 +1050,7 @@ La & Re & SC & Ca & Sw & Sy & Th & Tr & TD & VD & Wh \\
 \caption{Example of the Return Statement row of a sub-model created from 
 the training data. Replacee probabillities of the replacer ReturnStatement. The acronyms represent the statement kinds detailed in footnote \ref{stmtNames} \todo{The notes said to remove this, but we can't explain the following section without it, so I am keeping it for now}}
  \label{fig:exPredReturn} 
-\end{table} 
+\end{figure} 
 
 In this section we want to evaluate the consistency of the corpus and provide internal validity to our results by performing a 10 fold cross validation over our model. We built the model with the 500
 projects in Github with the most stars.
@@ -1120,7 +1121,7 @@ Assume for illustration a sub-model which contains a row describing the
 probabilities for the different statements that could possibly replace a return 
 statement: $TP_{13,m}$ (row 13 since \emph{ReturnStatment} is the 13th element 
 in our statement list), this row is shown in 
-Table~\ref{fig:exPredReturn}.
+Figure~\ref{fig:exPredReturn}.
 
 %
 For our example, the most
@@ -1215,23 +1216,26 @@ the number of instances in each of the folds. We have a difference of 63\% betwe
 \subsection{Single line bug repair}
 \label{sec:single}
 
-\begin{table*}\centering
-\begin{tabular}{r|r|r|r|r|r|r}
+\begin{figure*}\centering
+\begin{tabular}{r|rr|rr|rr|rr|rr|rr}
 \hline
-  &\multicolumn{2}{c|}{{Statement-Edit Only}} & \multicolumn{2}{c|}{{Template-based Only}} & \multicolumn{2}{c}{{All Mutations}} \\  
+ &\multicolumn{4}{c|}{Statement-Edit Only} & \multicolumn{4}{c|}{Template-based Only} & \multicolumn{4}{c}{All Mutations} \\ 
   \hline
- {Bug Name}  & {Equally Dist} & {Probabilistic} & {Equally Dist} & {Probabilistic} &{Equally Dist} & 
-{Probabilistic} \\
+ & \multicolumn{2}{c|}{Equally Dist} & \multicolumn{2}{c|}{Probabilistic} & \multicolumn{2}{c|}{Equally Dist} & \multicolumn{2}{c|}{Probabilistic} & \multicolumn{2}{c|}{Equally Dist} & 
+ \multicolumn{2}{c}{Probabilistic} \\
 \hline
- Closure 10 & {221.0} & {179.5}  & {175.1} & {121.3} & {163.3} & {157.4} \\
+Bug Name & Time & Quality &  Time & Quality &  Time & Quality&  Time & Quality&  Time & Quality&  Time & Quality \\
+  \hline
+ 
+  Closure \#10 & {221.0}& {100\%} & {179.5} &{100\%} & {175.1}&{100\%} & {121.3}&{100\%} & {163.3}&{100\%} & {157.4}&{100\%} \\
 
- Closure 18 &Not found & Not found & {36.2} & {197.5} & {45.0} & {139.0} \\
+ Closure \#18 & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & {36.2}&{100\%} & {197.5}&{100\%} & {45.0}&{100\%} & {139.0}&{100\%} \\
 
- Math 2 & {Not found} & {Not found} & {109.4} & {39.6} & {109.4} & {39.6} \\
+Math \#2 & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & {109.4}&{0\%} & {39.6}&{0\%} & {109.4}&{0\%} & {39.6}&{0\%} \\
 
- Time 19 & {94.1} & {80.7} & {Not found} &{Not found} & {135.1} & {91.9} \\
+ Time \#19 & {94.1}&{100\%} & {80.7}&{100\%} & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & {135.1}&{100\%} & {91.9}&{100\%} \\
 
- Chart 1 & {1.8} & {7.3} & {4.9} & {19.0} & {2.2} & {4.8} \\
+ Chart \#1 & {1.8}&{0\%} & {7.3}&{0\%} & {4.9}&{0\%} & {19.0}&{0\%} & {2.2}&{0\%} & {4.8}&{0\%} \\
 \hline
 
 \end{tabular}
@@ -1239,9 +1243,9 @@ the number of instances in each of the folds. We have a difference of 63\% betwe
 \center
 		\caption{Repair success of various models for three different operator
           sets.  For each, we report time in terms of variants evaluated to a
-          repair \label{tab:singleLineBugs}}
+          repair, and quality as the percentage of patches created for that bug that pass the held-out test suite. \label{tab:singleLineBugs}}
 
-\end{table*}
+\end{figure*}
 
 In this subsection, we compare the performance of an
 automatic program repair tool using the probabilistic model to one using the
@@ -1249,21 +1253,21 @@ equally distributed model.
 
 
 \subsubsection{Repair results}   \label{repResults}
-Our modified APR technique patched 5 of the 15 bugs, as shown in 
-Table~\ref{tab:singleLineBugs}. In the first row of Table~\ref{tab:singleLineBugs} (Closure \#10) we can see
+\todo{re visit this parragraph after we have the latest results}Our modified APR technique patched 5 of the 15 bugs, as shown in 
+Figure~\ref{tab:singleLineBugs}. In the first row of Figure~\ref{tab:singleLineBugs} (Closure \#10) we can see
 that in all three comparisons (Statement-Edit Only, Template-Based Only, and All
 mutations), the probabilisitc model outperforms
 the equally distributed model. This happens as well for
 Math \#2 and Time \#19 except for the cases where no patch was
 found. By contrast, for bugs Chart \#1 and Closure \#18, the equally
 distributed approach finds a patch faster on average. This is due to the fact
-that these bugs are patched with a mutation that is rare to apply by developers,
+that these bugs are patched with mutations that are rarely to applied by developers (Expression Replace, and Replacement accordingly),
 therefore it is more likely that the mutation operator will be chosen by randomness
-than by an informed model trying to replicate how developers behave.
+than by the developer-informed model.
 
 Our results also show that considering all available mutation operators is
 preferable to 
-restricting the mutation operator pool to just one of the categories. For the
+restricting the mutation operator pool to just one of the categories \todo{revisit this after we have more results}. For the
 Statement-Edit category: 3 out of 6 were fixed faster when combining it with
 Template-Based mutations, and 3 out of 6 were slower. For the Template-Based
 category: 4 out of 8 were fixed faster when combining it with Statemtent-Edit
@@ -1367,9 +1371,9 @@ run Randoop for ten minutes (six times the default value) on the human-patched
 version of the code.\footnote{We will release our test suites post-review.}  We
 thus additionally report patched program success on these independent test
 suites. 
-Table \ref{stateOfTheArtComparison} shows the status of the different patches found by each of the different approaches and next to each patch a description regarding if the patch passed the held out test suite or failed it.          
+Figure~\ref{stateOfTheArtComparison} shows the status of the different patches found by each of the different approaches and next to each patch a description regarding if the patch passed the held out test suite or failed it.          
 
-We notice from Table \ref{stateOfTheArtComparison} that from the eleven patches created by our approach, five of them pass the held-out test suite (45.5\% success rate), while compared to the behavior of the other state of the art tools on these bugs, we can see a 0\% success rate (all the patches created failed the held-out test suite) in GenProg, TRPAutoRepair and PAR, and a 25\% success rate in Nopol. Our approach creates patches that passed the held-out test suite more often than all the other state of the art tools, which gives strong evidence regarding the generalizability of our approach when faced to a different set of tests that describe the same behavior of the program, and it gives evidence that our approach is less likely to overfit to the test suite used to create the patch.
+We notice from Figure~\ref{stateOfTheArtComparison} that from the eleven patches created by our approach, five of them pass the held-out test suite (45.5\% success rate), while compared to the behavior of the other state of the art tools on these bugs, we can see a 0\% success rate (all the patches created failed the held-out test suite) in GenProg, TRPAutoRepair and PAR, and a 25\% success rate in Nopol. Our approach creates patches that passed the held-out test suite more often than all the other state of the art tools, which gives strong evidence regarding the generalizability of our approach when faced to a different set of tests that describe the same behavior of the program, and it gives evidence that our approach is less likely to overfit to the test suite used to create the patch.
 
 One example in which we can very clearly see the success of our approach when applying the probabilistic model is Closure 18 as seen in Figure \ref{closure18prob} where, not only did our approach created the exact same patch as the human did, but also our approach was able to find the patch within the time frame specified before the execution is shutdown by one of the constraints per execution while other approaches that are able to create this patch, couldn't because they ran out of time. 
 
@@ -1412,7 +1416,7 @@ boolean staleInputs = false;
 
 
 
- \begin{table*}[]
+ \begin{figure*}[]
 \centering
 \label{my-label}
 \begin{tabular}{l|ll|ll|ll|ll|ll}
@@ -1440,7 +1444,7 @@ Chart 1 & SequenceExchange & 1 & Replace & 1  & Delete & 1 & ExpAdd & 1 & No pat
 \center
   \caption{Quality assessment between the probabilistic model and other state of the art approaches. The NFTC column stands for Number of Failed Test Cases, it represents the number of test cases the patch failed in the held-out test suite. If it contains a 0, it means the patch was able to fully generalize to the the held-out test suite}
   \label{stateOfTheArtComparison}
-\end{table*}
+\end{figure*}
 
 
 
