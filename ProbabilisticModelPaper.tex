@@ -880,30 +880,18 @@ direct known subclasses of the class \texttt{Statement}, and the incidence with 
 each 
 replaces another. For example: ``What is the observed incidence of a \texttt{For} loop 
 replacing a \texttt{While} loop?" Given 22 statement types, any of which may replace one
-another, there are 484 possible replacement combinations. 
-Note that the observed probabilities are not reciprocal, meaning 
+another, there are 484 possible combinations. 
+Note that the observed probabilities are not reciprocal, e.g. 
 that the probability of a \texttt{For} loop replacing a \texttt{While} loop is different from the 
-probability of a \texttt{While} loop replacing a \texttt{For} loop, and the same applies to all 
-the different statement types.
+probability of a \texttt{While} loop replacing a \texttt{For} loop.
 This model is built analogously to the
-mutation operator model, but with the goal of predicting the replacer given a replacee statement based on replacer/replacee statement incidence. 
+mutation operator model, based on replacer/replacee statement incidence. 
 
 To build both models we perform an incidence count of each mutation operator and replacement observed in our
 dataset, matched as described in Section~\ref{sec:mining}, and then apply Laplace smoothing\cite{Russell10} with $\alpha$ = 1 to account for 0 occurrences.
 
 \subsection{Multiple edit association rule mining} 
 \label{multEdit}
-
-Single-mutation (or single-edit) source code changes are the most 
-common subject of analysis in 
-state of the art bug-fixing
-approaches. This applies to both, approaches that limit the number of source 
-code changes they apply to create a program variant to one change per variant 
-only (eg, TrpAutoRepair~\cite{Qi13TrpAutoR}, AE~\cite{Weimer13}, Kali~\cite{Qi15}), and 
-to approaches whose search space traversal technique can allow multi-edit 
-changes (eg. GenProg~\cite{legoues12}, Par~\cite{kim2013}, SPR~\cite{fan15SPR},
-Prophet~\cite{long16proph}, etc.) but typically find patches that reduce to
-single-edit changes~\cite{arcuri11}.
 
 Although such single-edit patches can be
 sufficient to repair non-trivial bugs in real software, the majority of bug fixes in real
@@ -915,25 +903,17 @@ software require multiple edits~\cite{zhong15,Soto16}. The combination of possib
 As a first step towards mitigating this limitation, we propose 
 an initial analysis of multi-edit 
 source code changes by mining a more expressive model of common changes. In
-particular, we are extracting \emph{association rules} between single edit changes 
+particular, we extract \emph{association rules} between single edits 
 to model chains of single edit changes, capturing the way humans create these kinds of fixes.
-Association rules are if/then statements that show relationships between elements in a dataset which happen frequently together.
 
-We use the 
+Association rules are if/then statements that show relationships between elements in a dataset which happen frequently together. We use the 
 well-known association rule mining algorithm
-Apriori~\cite{Agrawal94,Liu98,Zaki2000}, which identifies frequent 
+Apriori~\cite{Agrawal94}, which identifies frequent 
 individual items in sets of transactions (commits, in our context).  We extend these sets into 
-larger sets that appear often in the transactions, which in our case would be the transactions created 
-by each of the commits studied. We have divided our association rule mining to
-be built one from each of the models as described in Section~\ref{armRes}. 
+larger sets that appear often in the transactions. We mine association rules from each of the models described in Section~\ref{armRes} by transforming each of the mutation operator count and replacement count from 
+each of the commits studied into a \emph{transaction} to be analyzed. 
 
-To extract association rules from  our data, we
-transform each of the mutation operator count and replacement count from 
-each of the commits studied into \emph{transaction} to be analyzed. A \emph{transaction} 
-in this context is a row of values that describes which mutation operators or replacements were applied in a single commit.
-
-Two other basic concepts critical to understanding the Apriori method are the
-ideas of \emph{Confidence} and \emph{Support}.
+Two other basic concepts critical to the Apriori method are \emph{Confidence} and \emph{Support}.
 Formally, we define Confidence as:
 
 \begin{center}
@@ -941,7 +921,7 @@ $conf(X \implies Y) = \dfrac{supp(X \cup Y)}{supp(X)}$
 \end{center}
 
 Where X and Y are possible items in a transaction (mutation operators and replacements in our
-context for the Mutation operator probabilistic model and the Replacements probabilistic model accordingly). Confidence is calculated according to its Support (\emph{supp}, above), 
+context for the Mutation operator probabilistic model and the Replacements probabilistic model accordingly). Confidence is calculated according to its Support (\emph{supp}), 
 an indication of how frequently the set of mutation operators or replacements (itemset) 
  occurs in the transaction base.
 Formally:
@@ -962,47 +942,123 @@ We evaluate our model both independently and as part of an automatic repair
 technique.  We first evaluate the predictive power of the model by analyzing the
 number of correctly predicted mutation operators across a large dataset, using 10 fold cross
 validation to mitigate and assess the risk of overfitting
-(Section~\ref{sec:generalize}). We evaluate our new APR approach both in speed, measured in the number of variants it takes to find a patch and to precisely validate the potential increase in efficiency the
-probabilistic model affords on fifteen real bugs from the Defects4J dataset
-(Section~\ref{sec:single}), and in quality of the create patches, by comparing it against the patches created for these same bugs by other state of the art repair techniques.  Finally, we assess and present the most common 
-association rules between mutation operators mined from our corpus
+(Section~\ref{sec:generalize}). We evaluate our new APR approach on 15 \todo{maybe change this 15 if we get more results} different bugs from the Defects4j platform (Section \ref{repResults}) both in terms of speed, measured in the number of variants it takes to find a patch, and quality, by comparing against the patches created for these same bugs by other state-of-the-art repair techniques.  Finally, we present the most common 
+association rules between mutation operators in our corpus
 (Section~\ref{armRes}). 
 
 %We also include a section for 
 %discussion(Section~\ref{discussion}) and threats to validity (Section~\ref{threatsVal}) 
 
+
+
+\subsection{Setting up the experiment}
 All experiments are performed on a server 
 consisting of 16 processors Intel(R) Xeon(R) CPU E5-2699 v3, with 2.30 GHz each
 processor, 46080 KB cache each, and 32 GB RAM memory, operating system Ubuntu 
 14.04.5 LTS.
+\todo{You mentioned to update this specs with the new specs, but this part of the experiment was ran with the old specs (detailed here), so I think it makes sense to keep these?}
+
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lll}
+\hline
+Identifier & Project name & Description\\
+\hline
+Chart & JFreechart & Java chart library \\
+Closure	& Closure compiler	 & JavaScript handling tool\\
+Lang	& Apache commons-lang & String manipulation classes\\
+Math	& Apache commons-math & Mathematics components for Java \\
+Mockito &	Mockito	 & Mocking framework for junit tests \\
+Time	& Joda-Time & Date and time classes \\
+\hline
+\end{tabular}
+\newline
+\center
+  \caption{Description of projects that comform Defects4j}
+  \label{defects4j}
+\end{table} 
+
+We consider for repairing a subset of the Defects4j~\cite{just14}
+benchmark, a database and extensible 
+framework of real bugs that enables reproducible studies in software testing 
+research. This database currently contains 395 real bugs from 6
+open source programs as stated in Table \ref{defects4j}, along with developer-provided test suites, cases that
+expose each bug,  and
+corresponding developer-provided patches.\footnote{Note that we initiated this study when Defects4J
+  contained 5 subjects, and thus have no bug instances from the recently-added
+  Mockito project.} Defects4j has been previously used
+in evaluating previous work in APR~\cite{Durieux15}.
+In keeping with APR's typical focus on smaller patches, we
+restrict attention to the first 3 bugs from each project that required a 
+single line edit: Chart 1, 
+Chart 8, Chart 20, Closure 10, Closure 14, Closure 18, Lang 6, Lang 16, Lang 21, 
+Math 2, Math 5, Math 10, Time 4, Time 16 and Time 19.
+To diminish the degree of randomness in this experiment and control for the
+effect of the mutation probabilities specifically,  we manually
+set fault localization for each bug.  This controls for inefficiency and noise
+in fault localization. Anecdotally, we observe that less-accurate fault localization increases the amount of
+time taken to repair these defects. 
+
+We set the size for each population to 40 for consistency with 
+previous work~\cite{legoues12,kim2013}, we ran 20
+seeds per trial, 10 generations, a timeout of 4 hours for each run, in keeping with 
+recommendations on the assessment of stochastic techniques~\cite{arcuri11}.
+To compare the efficacy of different types of mutation operators,
+we tested three operation sets: (1) Statement-Edit mutations only (2) Template-based mutations 
+only (3) All mutations.  We assess the number of variants necessary to create a repair for several different seeds and then average the seeds. 
+
+To evaluate quality of the patches we use held out test suites.
+Table \ref{heldOut} describes the specifics of the held out test suites. We use Randoop~\cite{pacheco07}, an established
+automatic test suite generation tool for Java, to generate this second test
+suite and Cobertura\footnote{http://cobertura.github.io/cobertura/} to calculate the coverage of the test suite over the class that contains the human fix. 
+
+
+\begin{table}[]
+\centering
+\begin{tabular}{llll}
+Project & Number of test cases & Line coverage & Branch coverage \\
+\hline
+Chart 1 & 4285 & 32.9\% & 24.0\% \\
+Closure 10 & 1493 & 5.5\% & 3.0\% \\
+Closure 18 & 1615 & 32.1\% & 17.6\% \\
+Math 2 & 6933 & 100\% & 100\% \\
+Time 19 & 3650 & 75.4\% & 58.0\%
+\end{tabular}
+\newline
+\caption{Held-out test suite data. These test suites were created using Randoop with a budget of 10 minutes and evaluated coverage using Cobertura.}
+\label{heldOut}
+\end{table}    
+
 
 \subsection{Model generalization}
 \label{sec:generalize}
   
 
-\begin{table}[ht]
-\begin{tabular}{llllllllllllllllllllll}
-\hline
-As & Bl & Br & Cl & Co & Do & Em & EF & Ex & Fo & If \\
-0\%&2\%&0\%&2\%&5\%&0\%&0\%&0\%&43\%&0\%&22\% \\
-\hline 
-La & Re & SC & Ca & Sw & Sy & Th & Tr & TD & VD & Wh \\
-0\%&0\%&2\%&2\%&0\%&0\%&3\%&2\%&0\%&19\%&0\% \\
-\hline
-\end{tabular}
-\\
-\caption{Example of the Return Statement row of a sub-model created from 
-the training data. Replacee probabillities of the replacer ReturnStatement. The acronyms represent the statement kinds detailed in footnote \ref{stmtNames}}
- \label{fig:exPredReturn} 
-\end{table} 
+%\begin{table}[ht]
+%\begin{tabular}{llllllllllllllllllllll}
+%\hline
+%As & Bl & Br & Cl & Co & Do & Em & EF & Ex & Fo & If \\
+%0\%&2\%&0\%&2\%&5\%&0\%&0\%&0\%&43\%&0\%&22\% \\
+%\hline 
+%La & Re & SC & Ca & Sw & Sy & Th & Tr & TD & VD & Wh \\
+%0\%&0\%&2\%&2\%&0\%&0\%&3\%&2\%&0\%&19\%&0\% \\
+%\hline
+%\end{tabular}
+%\\
+%\caption{Example of the Return Statement row of a sub-model created from 
+%the training data. Replacee probabillities of the replacer ReturnStatement. %The acronyms represent the statement kinds detailed in footnote \ref{stmtNames}}
+% \label{fig:exPredReturn} 
+%\end{table} 
 
+In this section we want to evaluate the consistency of the corpus and provide internal validity to our results by performing a 10 fold cross validation over our model.
 First, we evaluate the predictive power of our 
 replacements model. Our high-level research question concerns whether 
 our mined models are likely to identify the correct fix code across a large
 dataset, suggesting its potential utility in a repair context.  To this end, we
 compare its predictive accuracy to an \emph{equally distributed} model, in which
 the probability of selecting any replacee statement is uniformly random. 
-We therefore assess the degree to which each model correctly predicts the
+We assess the degree to which each model correctly predicts the
 replacer statement for given replacee statements, within the top 5 produced
 choices.  Because these models are to be used in the context of program repair,
 perfect accuracy (correctness in the Top-1 most likely choice) is unnecessary since automatic program repair approaches iterate through several different candidate patches until finding the appropriate fix;
@@ -1128,6 +1184,7 @@ Sum& 877 & 247 & 943 & 379 & 1929 &  154586\\
 
 
 \hline
+\newline
 \end{tabular}
 \center
   \caption{Correctly predicted percentage according to 10 fold cross
@@ -1198,58 +1255,7 @@ art~\cite{long16proph,Soto16,zhong15,martinez15,xuan16}.
 In these experiments, we include all mutations described in
 Section~\ref{categorization}.
 
-\subsubsection{Repair results}
-
-
-\begin{table}[ht]
-\centering
-\begin{tabular}{lll}
-\hline
-Identifier & Project name & Description\\
-\hline
-Chart & JFreechart & Java chart library \\
-Closure	& Closure compiler	 & JavaScript handling tool\\
-Lang	& Apache commons-lang & String manipulation classes\\
-Math	& Apache commons-math & Mathematics components for Java \\
-Mockito &	Mockito	 & Mocking framework for junit tests \\
-Time	& Joda-Time & Date and time classes \\
-\hline
-\end{tabular}
-\newline
-\center
-  \caption{Description of projects that comform Defects4j}
-  \label{defects4j}
-\end{table} 
-
-We consider for repairing a subset of the Defects4j~\cite{just14}
-benchmark, a database and extensible 
-framework of real bugs that enables reproducible studies in software testing 
-research. This database currently contains 395 real bugs from 6
-open source programs as stated in Table \ref{defects4j}, along with developer-provided test suites, cases that
-expose each bug,  and
-corresponding developer-provided patches.\footnote{Note that we initiated this study when Defects4J
-  contained 5 subjects, and thus have no bug instances from the recently-added
-  Mockito project.} Defects4j has been previously used
-in evaluating previous work in APR~\cite{Durieux15}.
-In keeping with APR's typical focus on smaller patches, we
-restrict attention to the first 3 bugs from each project that required a 
-single line edit: Chart 1, 
-Chart 8, Chart 20, Closure 10, Closure 14, Closure 18, Lang 6, Lang 16, Lang 21, 
-Math 2, Math 5, Math 10, Time 4, Time 16 and Time 19.
-To diminish the degree of randomness in this experiment and control for the
-effect of the mutation probabilities specifically,  we manually
-set fault localization for each bug.  This controls for inefficiency and noise
-in fault localizaiton. Anecdotally, we observe that less-accurate fault localization increases the amount of
-time taken to repair these defects. 
-
-We set the size for each population to 40 for consistency with 
-previous work~\cite{legoues12,kim2013}, we ran 20
-seeds per trial, 10 generations, a timeout of 4 hours for each run, in keeping with 
-recommendations on the assessment of stochastic techniques~\cite{arcuri11}.
-To compare the efficacy of different types of mutation operators,
-we tested three operation sets: (1) Statement-Edit mutations only (2) Template-based mutations 
-only (3) All mutations.  We assess the number of variants necessary to create a repair for several different seeds and then average the seeds. 
-
+\subsubsection{Repair results}   \label{repResults}
 Our modified APR technique patched 5 of the 15 bugs, as shown in 
 Table~\ref{tab:singleLineBugs}. In the first row of Table~\ref{tab:singleLineBugs} (Closure \#10) we can see
 that in all three comparisons (Statement-Edit Only, Template-Based Only, and All
@@ -1361,31 +1367,14 @@ As a proxy for patch quality (to
 mitigate the risk of plausible but as yet incorrect patches~\cite{Qi15}), we
 evaluate patches using a held-out test suite~\cite{legoues2012,Smith15} by automatically building a second
 test suite that independently describes the same behavior as the test suite that
-guides the search process. We use Randoop~\cite{pacheco07}, an established
-automatic test suite generation tool for Java, to generate this second test
-suite and Cobertura\footnote{http://cobertura.github.io/cobertura/} to calculate the coverage of the test suite over the class that contains the human fix. 
+guides the search process. 
+
 For each successfully-patched bug, we 
 run Randoop for ten minutes (six times the default value) on the human-patched
 version of the code.\footnote{We will release our test suites post-review.}  We
 thus additionally report patched program success on these independent test
 suites. 
-Table \ref{stateOfTheArtComparison} shows the status of the different patches found by each of the different approaches and next to each patch a description regarding if the patch passed the held out test suite or failed it. The data regarding the held out test suites used in this study is described in Table \ref{heldOut}. 
-
-\begin{table}[]
-\centering
-\begin{tabular}{llll}
-Project & Number of test cases & Class line coverage & Class branch coverage \\
-\hline
-Chart 1 & 4285 & 32.9\% & 24.0\% \\
-Closure 10 & 1493 & 5.5\% & 3.0\% \\
-Closure 18 & 1615 & 32.1\% & 17.6\% \\
-Math 2 & 6933 & 100\% & 100\% \\
-Time 19 & 3650 & 75.4\% & 58.0\%
-\end{tabular}
-\newline
-\caption{Held-out test suite data. These test suites were created using Randoop with a budget of 10 minutes and evaluated coverage using Cobertura.}
-\label{heldOut}
-\end{table}             
+Table \ref{stateOfTheArtComparison} shows the status of the different patches found by each of the different approaches and next to each patch a description regarding if the patch passed the held out test suite or failed it.          
 
 We notice from Table \ref{stateOfTheArtComparison} that from the eleven patches created by our approach, five of them pass the held-out test suite (45.5\% success rate), while compared to the behavior of the other state of the art tools on these bugs, we can see a 0\% success rate (all the patches created failed the held-out test suite) in GenProg, TRPAutoRepair and PAR, and a 25\% success rate in Nopol. Our approach creates patches that passed the held-out test suite more often than all the other state of the art tools, which gives strong evidence regarding the generalizability of our approach when faced to a different set of tests that describe the same behavior of the program, and it gives evidence that our approach is less likely to overfit to the test suite used to create the patch.
 
