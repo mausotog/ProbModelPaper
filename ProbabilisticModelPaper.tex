@@ -746,31 +746,27 @@ included templates.  We have chosen the PAR templates to represent this category
 \section{Building the model} \label{buildingTheModel}
 
 In this section we describe how we mined a probabilistic
-model of human bug-fixing edits from a large set of popular Java projects on GitHub. 
+model of human bug-fixing edits from a large set of popular Java projects on GitHub. The probabilistic model is built from the instance count of the mutation operators and replacements performed historically from developers' bug fixing in popular Github projects. 
 
 \subsection{Selecting the corpus}
 
 We cloned the 500 most-starred Java projects on Github 
-as of August 2016. The methodology of 
-gathering large,
-popular, and active open source Java software repositories is common in
-empirical studies (e.g.,~\cite{Ray14}). 
-%
-We compiled the most recent 100 bug fixing commits per each project. Identifying
-bug fixing commits is a difficult
-problem in repository mining~\cite{Bird09}. We filter these by applying a
-regular expression to the commit message in each of the commits in each of the
-projects that looks for words such as ``fix", ``bug", ``issue", ``problem",
-etc. following the guidelines of previous work \cite{schroter06,Cubranic05,Fischer03}. 
+as of August 2016 and
+identified the most recent 100 bug fixing commits per each project. Identifying
+such commits is a difficult
+problem~\cite{Bird09}. We filter these by applying a
+regular expression to each commit message that looks for words such as $``fix", ``bug", ``issue", ``problem",$
+etc. following the guidelines of previous work \cite{schroter06}.
+%\cite{schroter06,Cubranic05,Fischer03}. 
 %
 %\\
 %\\
 %$[Ff]ix(ed|es|ing)?(\backslash s)*([Bb]ug|[Ii]ssue|[Pp]roblem)?(s)?$
 %\\
 %\\
-We included two additional filters in our search: First, we only include commits
+We further only include commits
 that exclusively 
-modify Java source code, since the focus of this study is to analyze the changes in this language, and not to consider changes in files of a different nature (documentation, scripts, xml files, etc).  Additionally, we restrict our search to commits 
+modify Java source code, since we focus on such bugs. Additionally, we restrict our search to commits 
 that modify a maximum of three files. We do this to exclude
 big merges, such as pull requests or initial commits, and because
 large commits are more likely to include changes unrelated to a bug fix~\cite{Dias15,Herzig13,Matsuda15,Kawrykow11}.
@@ -779,28 +775,21 @@ large commits are more likely to include changes unrelated to a bug fix~\cite{Di
 \label{sec:mining}
 
 For each bug fixing commit, we refer to the code before the fix as the
-``before-fix" version and the code after as the ``after-fix" version.
+$``before$-$fix"$ version and the code after as the $``after$-$fix"$ version.
 We next seek to identify the changes performed between the before-fix and
-after-fix versions, to analyze how often they match the mutation operators in
+after-fix versions, to analyze how often they match our candidate mutation operators in
 question. 
-%
-We used two existing tools to identify changes 
-between code versions: Gumtree~\cite{falleri14}, a source code tree
-differencing framework, and QACrashFix~\cite{gao15}, a tool for generating
-fixes via analyzing Q\&A pages.  Specifically, we adapt QACrashFix's
-differencing engine, which modifies Gumtree to account for replacements.
-These tools create an AST representation of the program files for both the 
-before-fix and after-fix representations of the programs for each modified file,
-and then use a set of heuristics to match the before-fix version 
-with the after-fix version and produce a set of 
+We used Gumtree~\cite{falleri14}, a source code tree
+differencing framework to identify deletions and insertions, and QACrashFix~\cite{gao15} which accounts for replacements.
+These tools create an AST representation of each program file, both before- and after-fix; and produce a set of 
 changes performed between them. 
 
-For each bug-fixing commit, we then greedily attempt to match the identified changes to the
+The output of these tools is a list of changes performed from before-fix to after-fix, and the mutation operators we are identifying are sets of particular changes, therefore there is no one-to-one correspondence between the list of changes and the mutation operator identification. We then greedily attempt to match the identified changes to the
 studied
 mutation operators. We seek each of the mutation operators that can match a given set
 of edits.  For example, to identify
 a \emph{Null Checker} application, for each action describing a commit, we check
-if the manipualted node
+if the manipulated node
 is an \emph{IfStatement}.  If so, we check whether the action
 is a node insertion.  If so, we check if the condition in the inserted
 \emph{IfStatement} is an 
@@ -815,8 +804,8 @@ is a node insertion.  If so, we check if the condition in the inserted
 % \\
 % \\  
 \emph{Expression} to a
-\emph{NullLiteral}. If all these conditions are met, we count this sequence of
-actions as an instance of a \emph{null checker mutation operator}.  These rules are
+\emph{NullLiteral}. If so, we count this sequence of
+actions as an instance of a \emph{Null Checker} mutation operator.  These rules are
 necessarily heuristic, and we do not claim perfect soundness in our matching,
 instead aggregating counted templates over a large dataset.  
 
@@ -849,20 +838,20 @@ instead aggregating counted templates over a large dataset.
 
 \subsection{Two-level probabilistic model for repair}
 
-\begin{figure}[!h]
-  \centering
-    \includegraphics[scale=0.4]{Picture2}
-  \caption{Two level probabilistic model}
-  \label{fig:probModel}
-\end{figure}
+%\begin{figure}[!h]
+%  \centering
+%    \includegraphics[scale=0.4]{Picture2}
+%  \caption{Two level probabilistic model}
+%  \label{fig:probModel}
+%\end{figure}
 
 We extend an open-source implementation of the GenProg technique adapted for Java
 by implementing the mutation operators from
 Section~\ref{categorization} as well as a mechanism that allows the tool to
 select between the mutation operators according to the probabilities described by
 a given model.\footnote{Hidden for double blind review} %\footnote{https://bitbucket.org/clegoues/genprog4java}  
-We construct a two-level model as highlighted in Figure \ref{fig:probModel} that effectively counts incidences of all considered
-mutation operators, and fix code used in replacements. The two level probabilistic model is the result of a generalization from previous work in which the researchers proposed a replacement-only model~\cite{Soto16}:
+We construct a two-level model that effectively counts incidences of all considered
+mutation operators, and fix code used in replacements. The two-level probabilistic model generalizes previous work proposing a replacement-only model~\cite{Soto16}:
 
 \subsubsection{Mutation operator probabilistic model}
 The \textit{Mutation operator probabilistic model} 
@@ -871,22 +860,19 @@ operators at a particular fault location.
 %
 To build the \textit{Mutation operator probabilistic model} 
 we count the number of incidences of each mutation operator observed in our
-dataset, matched as described in Section~\ref{sec:mining}. This
-instance count comprises a probabilistic model, where mutation operator probability is
+dataset, matched as described in Section~\ref{sec:mining}. Mutation operator probability is then
 weighted by its appearance in the dataset.  
 
-Here we consider only the mutation operators that can be applied to the particular fault location (eg, if the fault location is a \emph{BreakStatement} we could not apply mutation operators such as \emph{Parameter replacer} or \emph{Caster mutator}).
+For repair of a given statement, we consider only the mutation operators applicable (e.g. we can not apply \emph{Parameter replacer} to a \emph{BreakStatement}).
 
-In our dataset, Template-Based mutations comprise 29.26\% of the corpus; Statement-Edit mutations make up 70.74\% of the 
+In our dataset overall, the Template-Based mutations comprise 29.26\% of the corpus; Statement-Edit mutations make up 70.74\% of the 
 corpus.
 
 \subsubsection{Replacements probabilistic model}
 If the ``Replacement" mutation operator is 
-selected, the \textit{Replacements probabilistic model} describes the probability of replacing one statement with
-another  (referring to the 
-``replacee" and ``replacer" statements accordingly), informing the selection of replacement fix code.
+selected, the \textit{Replacements probabilistic model} describes the probability of replacing one statement (``replacee") with
+another (``replacer"), thus informing the selection of replacement fix code.
 %\footnote{https://goo.gl/mMFbnQ
-
 We consider 
 the 22 different types detailed by the Eclipse
 JDT\footnote{AssertStatement, Block, BreakStatement, ConstructorInvocation, ContinueStatement, DoStatement, EmptyStatement, EnhancedForStatement, ExpressionStatement, ForStatement, IfStatement, LabeledStatement, ReturnStatement, SuperConstructorInvocation, SwitchCase, SwitchStatement, SynchronizedStatement, ThrowStatement, TryStatement, TypeDeclarationStatement, VariableDeclarationStatement, WhileStatement \label{stmtNames}} as
@@ -1377,20 +1363,29 @@ evaluate patches using a held-out test suite~\cite{legoues2012,Smith15} by autom
 test suite that independently describes the same behavior as the test suite that
 guides the search process. We use Randoop~\cite{pacheco07}, an established
 automatic test suite generation tool for Java, to generate this second test
-suite. 
+suite and Cobertura\footnote{http://cobertura.github.io/cobertura/} to calculate the coverage of the test suite over the class that contains the human fix. 
 For each successfully-patched bug, we 
 run Randoop for ten minutes (six times the default value) on the human-patched
 version of the code.\footnote{We will release our test suites post-review.}  We
 thus additionally report patched program success on these independent test
 suites. 
-Table \ref{stateOfTheArtComparison} shows the status of the different patches found by each of the different approaches and next to each patch a description regarding if the patch passed the held out test suite or failed it.
+Table \ref{stateOfTheArtComparison} shows the status of the different patches found by each of the different approaches and next to each patch a description regarding if the patch passed the held out test suite or failed it. The data regarding the held out test suites used in this study is described in Table \ref{heldOut}. 
 
-These held out test suites contain the following number of test cases:
-Chart1    : 4285,                
-Closure10 : 1493,                
-Closure18 : 1615,                
-Math2     : 6933,                
-Time19    : 3650.                
+\begin{table}[]
+\centering
+\begin{tabular}{llll}
+Project & Number of test cases & Class line coverage & Class branch coverage \\
+\hline
+Chart 1 & 4285 & 32.9\% & 24.0\% \\
+Closure 10 & 1493 & 5.5\% & 3.0\% \\
+Closure 18 & 1615 & 32.1\% & 17.6\% \\
+Math 2 & 6933 & 100\% & 100\% \\
+Time 19 & 3650 & 75.4\% & 58.0\%
+\end{tabular}
+\newline
+\caption{Held-out test suite data. These test suites were created using Randoop with a budget of 10 minutes and evaluated coverage using Cobertura.}
+\label{heldOut}
+\end{table}             
 
 We notice from Table \ref{stateOfTheArtComparison} that from the eleven patches created by our approach, five of them pass the held-out test suite (45.5\% success rate), while compared to the behavior of the other state of the art tools on these bugs, we can see a 0\% success rate (all the patches created failed the held-out test suite) in GenProg, TRPAutoRepair and PAR, and a 25\% success rate in Nopol. Our approach creates patches that passed the held-out test suite more often than all the other state of the art tools, which gives strong evidence regarding the generalizability of our approach when faced to a different set of tests that describe the same behavior of the program, and it gives evidence that our approach is less likely to overfit to the test suite used to create the patch.
 

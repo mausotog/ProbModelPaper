@@ -4,8 +4,6 @@ The two-level model would be improved if the insertions model were also weighted
 probabilistically; the evaluation would be improved if it actually broke down
 the full predictive success based on both models together.
 
-In some places we use 200 projects; other we use 500.  We need to unify this. 
-
 Really, we need more real bugs in the evaluation.  In a perfect world, we'd
 remove the case study subsection entirely and just have a proper evaluation of
 model success on their own, and then repair success using the models (and with
