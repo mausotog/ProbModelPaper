@@ -633,21 +633,17 @@ first line of a constructor. Each candidate patch is applied to the input progra
 one or more of the input test cases for evaluation.  If a patch leads the
 program to 
 pass all the test cases in the test suite, including those originally witnessing
-the bug, the candidate patch is presented as a likely repair for the bug. 
-If the candidate patch does not pass all the test cases in 
-the test suite used to guide the search, the APR
+the bug, it is presented as a likely repair for the bug. 
+If not, the APR
 algorithm typically creates more candidate patches 
-until it reaches a pre-defined time constraint or a variant count limit is reached. 
+until it reaches a pre-defined time or resource limit. 
 
 Techniques vary in how they identify and choose between candidate mutation
 operators, and how they traverse the search space otherwise. For example, some
-mechanisms adapt the manner in which they select candidate patches by assigning
-a higher priority to some candidate patches over others based on heuristics~\cite{long16proph};
-some others restrict their approach to apply a single edit in the variant
-creation process~\cite{Qi13TrpAutoR}; others remove similar patches and prioritize the test cases
-according to their likelihood to fail~\cite{Weimer13}; others use various other
+approaches assign
+a higher priority to some candidate patches over others based on heuristics~\cite{long16proph}; others are explicitly single-edit approaches~\cite{Qi13TrpAutoR,xuanNopol,Weimer13}; others use various other
 random search heuristics, like a random walk~\cite{debroy10} or genetic
-programming~\cite{kim2013,legoues12}. 
+programming~\cite{kim2013,legoues12}. The quality of the patches created by APR techniques is commonly evaluated by using a held-out test suite (a test suite that is from the one used to guide the search, but it outlines the same expected behavior). If the generated patch is able to pass all the test cases from the held-out test suite it is said that the patch is more likely to generalize to different tests of the same expected behavior. If the patch fails test cases from the held-out test suite it is said that the patch overfits to the test suite used for guiding and does not generalize.
 
 We discuss other techniques for automatic program repair in
 Section~\ref{relatedWork}.
@@ -655,36 +651,39 @@ Section~\ref{relatedWork}.
 \subsection{Generate and validate mutation operators} 
 \label{categorization}
 
-There are a number of possible mutation operators that can be applied to a location 
-to modify the behavior of a program.  We categorize those used in a cross
+We categorize mutation operators used to create patches from a cross
 section of state-of-the-art techniques into two groups: 
 
 \paragraph{Statement-Edit mutations}
 One family of repair approaches, including GenProg~\cite{legoues12}, 
 TrpAutoRepair\cite{Qi13TrpAutoR}, and AE~\cite{Weimer13},
 create candidate 
-patches by applying coarse-grained mutation operators (such as append, delete, or 
-replace) which modify statements of source code to 
-repair programs. These prior techniques target the C programming language, where
-a statement is grammar nonterminal corresponding intuitively to blocks,
-simple statements terminating
-with a semicolon or compound statements corresponding to control flow or
-loops. In Java, statements conceptually map to program elements expressing
-some action to be carried out, including blocks,  while loops, or single-line
-method calls. In these approaches, the statements being appended or replaced come from within the project being modified. This is grounded in the notion that source code has a high level of redundancy~\cite{gabel10}.
+patches by applying coarse-grained mutation operators (such as $append$, $delete$, or 
+$replace$) which modify source code. These prior techniques target the C programming language, where
+a statement is a grammar nonterminal corresponding intuitively to blocks,
+simple statements that terminate
+with a semicolon, or compound statements corresponding to control flow or
+loops. In Java, statements conceptually map to similar program elements, including blocks,  while loops, or single-line
+method calls. In these approaches, the statements being appended or replaced typically come from within the project being modified. This is grounded in the notion that source code has a high level of redundancy~\cite{gabel10}.
 
 \paragraph{Template-based mutations}
-Template-based mutation operators describe a family of approaches that instantiate
+Another family of approaches instantiates
 predetermined templates, more complex than those in the first family of
 approaches, at applicable code locations.  This family includes PAR~\cite{kim2013}, 
 SPR~\cite{fan15SPR}, and 
 Prophet~\cite{long16proph}.
-%
+
 PAR is the product of a study of a large number of 
 human 
 created patches, from which human annotators abstracted 10 different templates to cover
 the most commonly-used changes in bug-fixing practice.
-The 10 considered templates are detailed in the top section of Table~\ref{approachTemplates}.
+The 10 considered templates are detailed in the top section of Table~\ref{approachTemplates}. In the interest of completeness, we also include six extra templates 
+mentioned on the PAR website.\footnote{\url{https://sites.google.com/site/autofixhkust/home/fix-templates}} 
+These extra templates provide new mutation operators drawn from human edits, that help us compare and
+generalize to the other approaches; they are shown in the middle segment of
+Table~\ref{approachTemplates}. 
+The SPR and Prophet approaches make use of a set of transformation schemas,
+shown in the Bottom section of Table~\ref{approachTemplates}.
 
 \begin{table}[ht]
   \centering
@@ -722,15 +721,6 @@ The 10 considered templates are detailed in the top section of Table~\ref{approa
   \label{approachTemplates}
 \end{table}
 
-In the interest of completeness, we also include six extra templates 
-mentioned on the website associated with the Par
-approach.\footnote{\url{https://sites.google.com/site/autofixhkust/home/fix-templates}} 
-These extra templates provide new mutation operators that helps us compare and
-generalize to the other approaches; they are shown in the middle segment of
-Table~\ref{approachTemplates}. 
-The SPR and Prophet approaches make use of a set of transformation schemas,
-shown in the Bottom section of Table~\ref{approachTemplates}.
-
 The SPR/Prophet transformation schema can be seen as a generalization of certain PAR 
 templates. For example, \emph{Condition Introduction} can be seen as a superset of 
 \emph{Range Checker}, \emph{Collection Size 
@@ -742,23 +732,16 @@ Replacer}, \emph{Parameter Replacer}, \emph{Castee Mutator} and \emph{Expression
 and Replace} can be matched to \emph{Expression Adder}. 
 
 We also considered the program modification tool Kali~\cite{Qi15}, whose
-templates correspond to subsets of certain PAR templates their extensions. 
+templates also correspond to subsets of certain PAR templates their extensions. 
 For example, \emph{Redirect Branch} can be seen as
 a subset of \emph{Expression Changer}, and \emph{Insert Return} and \emph{Remove Statement} are
-subsets of \emph{Expression Adder and Remover} accordingly. In the same way,
-many other mutation operators~\cite{Offutt96,Offutt06}, as used in
+subsets of \emph{Expression Adder and Remover} accordingly. Similarly,
+many other mutation operators~\cite{Offutt06}, as used in
 APR~\cite{debroy10,xuan16} can be seen as subsets of the extensions of the 
 Par templates.
 
 To summarize, these approaches have significant similarities between their
-included templates.  We have chosen the PAR templates to represent this category 
-since these templates provide a more concrete description of how the code is 
-changed, enabling replication. As mentioned, 
-the SPR, Prophet and Kali templates are represented by one or several of the PAR
-templates, but not vice versa.  Finally, the PAR templates naturally target
-Java, the subject of our study. 
-
-It is also worth mentioning approaches such as HDRepair~\cite{xuan16} which is a hybrid approach that uses a combination of \emph{Statement-Edit mutations} and \emph{Template-based mutations} analyzing therefore a subset of the mutation operators described above.
+included templates.  We have chosen the PAR templates to represent this category for the following reasons: 1) PAR comprehends the other techniques' mutation operators, 2) it provides a concrete description of how the code is changed, enabling replication, and 3) it explicitly targets Java (note that SPR, Prophet and Kali target C programs). 
 
 \section{Building the model} \label{buildingTheModel}
 
@@ -1384,7 +1367,7 @@ We have already evaluated the speed of the proposed approach in the previous sec
 In this section we compare the quality of the patches found by our approach when using all the mutation operations and the probabilistic model, against patches found in the same benchmark by different state of the art tools.
 
 We evaluate against four different state of the art tools for Java: GenProg, TRPAutoRepair, PAR and Nopol.
-For the first three mentioned approaches, we extended an open-source implementation of GenProg adapted for Java to include the behavior and mutation operators used by these approaches since they were originally built to target C (GenProg and TRPAutoRepair), or have not made their code available (PAR). We also compare our approach to Nopol\cite{xuan:hal-01285008}, an automatic repair tool of conditional statement for Java programs. The authors have created patches for the same benchmark used in this study\cite{martinez2016} and made their results publicly available.\footnote{https://github.com/Spirals-Team/defects4j-repair/tree/master/results/2017-march} For the comparison with Nopol we have used the more up-to-date dataset available in their website marked as "March 2017".
+For the first three mentioned approaches, we extended an open-source implementation of GenProg adapted for Java to include the behavior and mutation operators used by these approaches since they were originally built to target C (GenProg and TRPAutoRepair), or have not made their code available (PAR). We also compare our approach to Nopol\cite{xuanNopol}, an automatic repair tool of conditional statement for Java programs. The authors have created patches for the same benchmark used in this study\cite{martinez2016} and made their results publicly available.\footnote{https://github.com/Spirals-Team/defects4j-repair/tree/master/results/2017-march} For the comparison with Nopol we have used the more up-to-date dataset available in their website marked as "March 2017".
 
 In this study we do not compare directly to SPR/Prophet~\cite{long16proph} because this approach creates transformation schemas from C language constructs, which makes them fundamentally different from the mutation operators analyzed by our approach and that fall within the scope of this study. Unlike this approach, GenProg and TRPAutoRepair also originally target C, but their mutation operators are sufficiently coarse grained that their intuition can be translated directly to Java without losing the fundamental idea behind the approach. 
 
