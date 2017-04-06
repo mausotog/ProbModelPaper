@@ -346,6 +346,7 @@ basicstyle=\ttfamily\bfseries\scriptsize,
 \usepackage{microtype}
 \usepackage{lipsum}
 \usepackage{multicol}
+\usepackage{multirow}
 
 \usepackage{array}
 \usepackage{tabulary}
@@ -1316,25 +1317,6 @@ techniques~\cite{arcuri11}.
 \subsection{Mutation operator and model utility} \label{sec:oputil}
 
 
-\begin{figure}
-\centering
-\begin{tabular}{llll}
-\toprule
-         &             & \multicolumn{2}{c}{Coverage} \\
-Project & \# tests & Line & Condition \\
-\midrule
-Chart 1 & 4285 & 32.9\% & 24.0\% \\
-Closure 10 & 1493 & 5.5\% & 3.0\% \\
-Closure 18 & 1615 & 32.1\% & 17.6\% \\
-Math 2 & 6933 & 100\% & 100\% \\
-Time 19 & 3650 & 75.4\% & 58.0\% \\
-\bottomrule
-\end{tabular}
-\caption{Held-out test suite data; suites created using Randoop, with a budget
-  of 10 minutes. Coverage is evaluated using Cobertura.}
-\label{heldOut}
-\end{figure}    
-
 \newcommand\mII[1]{\multicolumn{2}{c|}{#1}}
 
 \begin{figure*}\centering
@@ -1470,38 +1452,66 @@ compares our new technique to the previous state-of-the-art.
 \subsection{Comparison to other approaches}
 \label{sec:comparison}
 
+
+% \begin{figure}
+% \centering
+% \begin{tabular}{llll}
+% \toprule
+%          &             & \multicolumn{2}{c}{Coverage} \\
+% Project & \# tests & Line & Condition \\
+% \midrule
+% Chart 1 & 4285 & 32.9\% & 24.0\% \\
+% Closure 10 & 1493 & 5.5\% & 3.0\% \\
+% Closure 18 & 1615 & 32.1\% & 17.6\% \\
+% Math 2 & 6933 & 100\% & 100\% \\
+% Time 19 & 3650 & 75.4\% & 58.0\% \\
+% \bottomrule
+% \end{tabular}
+% \caption{Held-out test suite data; suites created using Randoop, with a budget
+%   of 10 minutes. Coverage is evaluated using Cobertura.}
+% \label{heldOut}
+% \end{figure}    
+
+\newcommand\mR[2]{\multirow{#1}{*}{#2}}
+\newcommand\mCR[2]{\mII{\mR{#1}{#2}}}
+\newcommand \mC[1]{\multicolumn{2}{c}{#1}}
  \begin{figure*}
 \centering
-\begin{tabular}{l|l|ll|ll|ll|ll|ll}
+{\footnotesize
+\begin{tabular}{l|c|lr|lr|lr|lr|lr}
 \toprule
-& & \multicolumn{2}{c|}{Probabilistic Model} & \multicolumn{2}{c|}{GenProg} & \multicolumn{2}{c|}{TrpAutoRepair} & \multicolumn{2}{c|}{PAR} & \multicolumn{2}{c|}{Nopol} \\
+             & \multicolumn{1}{c|}{Held-out // Line}     & \mII{Probabilistic Model} & \mII{GenProg} & \mII{TrpAutoRepair} & \mII{PAR} & \mC{Nopol} \\
+Bug ID       &  \multicolumn{1}{c|}{tests // Coverage} & Edit & NFTC & Edit & NFTC & Edit & NFTC & Edit & NFTC & Edit  & NFTC  \\ 
 \midrule
-  & Number of test cases & Edit & NFTC & Edit & NFTC & Edit & NFTC & Edit & NFTC & Edit  & NFTC  \\ 
+\mR{2}{Closure \#10} & \mR{2}{1493 // 5.5\%} & SeqEx & 0 & \mCR{2}{Not found}  & \mCR{2}{Not found} & \mCR{2}{Not found} & \mR{2}{Found} & \mR{2}{28}   \\
+             &                               & SeqEx & 0 &        &              &        &        &      &       &      \\
 \midrule
-Closure 10 &1493 & SequenceExchange & 0 & No patch & No patch & No patch & No patch & No patch & No patch & Found & 28   \\
- & & SequenceExchange & 0 & No patch & No patch & No patch &No patch  & No patch & No patch & No patch & No patch   \\
+Closure \# 18 & 1615 // 32.1\%      & ExpRem & 0    & \mII{Not found}  & \mII{Not found} & \mII{Not found}  &Found &  1  \\
 \midrule
-Closure 18 & 1615 & ExpRemove & 0  & No patch & No patch & No patch & No patch & No patch & No patch &Found &  1  \\
+Math \#2      & 6933 // 100\%  & MethodRep & 170 & \mII{Not found} & \mII{Not found} & MethodRep & 170 & Found & 0  \\
 \midrule
-Math 2 & 6933 & MethodReplace & 170 & No patch & No patch & No patch & No patch & MetthodReplace & 170 & Found & 0  \\
+\mR{2}{Time \#19}     & \mR{2}{3650 // 75.4\%}  & Append & 0 & \mR{2}{Append} & \mR{2}{188} & \mR{2}{Append} & \mR{2}{188} & \mCR{2}{Not found} & \mR{2}{Found} &  \mR{2}{188} \\
+              &                 & Replace & 0 &  &        &     &     &    &    &     & \\
 \midrule
-Time 19 & 3650  & Append & 0 & Append & 188 & Append & 188 & No patch & No patch & Found &  188 \\
- & & Replace & 0 & No patch & No patch & No patch & No patch & No patch & No patch & No patch & No patch \\
-\midrule
-Chart 1 &  4285 & SequenceExchange & 1 & Replace & 1  & Delete & 1 & ExpAdd & 1 & No patch &   \\
- & & Delete & 1 & Delete & 1 & Replace &1  & ExpReplace & 1 & No patch & No patch   \\
- && Delete & 1 & Replace & 1 & Delete & 1 &  No patch& No patch& No patch & No patch  \\
- && SequenceExchange & 1 & Delete & 1 & Delete &1  & No patch & No patch & No patch & No patch   \\
- & & ExpReplace & 1 & Delete & 1 &No patch & No patch & No patch & No patch & No patch & No patch   \\
- & & No patch & No patch & Replace & 1 & No patch & No patch & No patch & No patch & No patch & No patch  \\
- \bottomrule
-\end{tabular}
-  \caption{Quality assessment between the probabilistic model-based repair and
+\mR{6}{Chart \#1} & \mR{6}{4285 // 32.9\%} & SeqEx & 1 & Replace & 1  & Delete & 1 & ExpAdd & 1 & \mC{\mR{6}{Not found}}   \\
+                  &                        & Delete & 1 & Delete & 1 & Replace &1  & ExpReplace & 1 &  & \\
+                  &                        & Delete & 1 & Replace & 1 & Delete & 1 &    & &  & \\
+                  &                        & SeqEx & 1 & Delete & 1 & Delete   &1  &    & &  & \\
+                  &                        & ExpReplace & 1 & Delete & 1 &    & &    &  &  & \\
+                  &                        &    &       & Replace & 1 &  & &     &  & & \\
+       \bottomrule
+\end{tabular}}
+  \caption{Comparison between the probabilistic model-based repair and
     other state of the art approaches. The NFTC column shows Number of Failed
-    Test Cases, for each patch, evaluated against the held-out test suite.  NFTC
+    Test Cases, for each patch, evaluated against the generated held-out test suites.  Lower is better; an NFTC
     of 0 means the patch fully generalized to the the held-out test
-    suite.\todo{mau, please fix this as discussed on Monday so that the column
-      headers make sense, and then I'll make the figure fit.} \label{stateOfTheArtComparison}} 
+    suite. Because each randomized technique is run several times, some
+    techniques find multiple unique patches per bug. The ``Edit'' column shows
+    the types of edits employed in each (unique) patch.\todo{Mau, can you look
+      at the Nopol patches and indicate what time of edit they use? I think
+      they can only do a few, like ``Condition insertion'', ``deletion'', and
+      maybe something else.  We may even be able to map them to the templates
+      we use.} \label{stateOfTheArtComparison}} 
 \end{figure*}
 
 
