@@ -1321,12 +1321,7 @@ CategoryDataset dataset =
   -}@
 int seriesCount=dataset.getRowCount();
 	\end{lstlisting}
-	\caption{A snippet of the source code of the Chart 1 bug fixed using the
-      probabilistic model. The APR tool with the probabilistic model deleted code similar to what the
-      developer did.\label{fig:chart1.1}}
-\end{figure}
 
-\begin{figure}[t]
 \begin{lstlisting}[frame=single]
 LegendItemCollection result = 
   new LegendItemCollection();
@@ -1347,21 +1342,24 @@ CategoryDataset dataset =
  + }@
 int seriesCount=dataset.getRowCount();
 	\end{lstlisting}
-	\caption{Source code of Chart 1 bug fixed using the equally distributed
-      model. The APR tool inserted code unlike a developer would have done it by
-      allocating global variables that may be used later.\label{fig:chart1.3}}
-
+	\caption{Top: A snippet of the source code of the Chart 1 bug fixed using the
+      probabilistic model, with a deletion similar to the developer
+      patch. Bottom: the same bug, fixed using the equally distributed
+      model by 
+      allocating global variables that may be used later, much unlike the human
+      patch.\todo{Mau, please have these listings numbers start at a number
+        like the one where it starts in the actual code.}\label{fig:chart1.3}}
 \end{figure}
 
 
 In this subsection, we provide example patches produced using the alternative
 models, as compared to a human patch.  Consider the snippet of code corresponding
 to the first Chart bug (and its developer fix) from the Defects4J dataset
-(Figure~\ref{fig:chart1.1}).  The developer patches this bug by deleting the if
+(Figure~\ref{fig:chart1.1}, top).  The developer patches this bug by deleting the if
 statement.  The mined statement-level mutation model favors deletion, and thus
 our repair efforts found patches that removed either the entire \texttt{IfStatement}, or only its body (line 9).
 By contrast, the equally-distributed model has a higher probability of leading
-to a patch such as the one shown in Figure~\ref{fig:chart1.3}.  This test case
+to a patch such as the one shown in the bottom of Figure~\ref{fig:chart1.1}.  This test case
 passes when, in the case that \texttt{dataset} is not null, nothing is returned;
 this patch avoids this, but also allocates state variables that are not
 necessary at present (and whose state may have unknown effects in other
@@ -1479,12 +1477,11 @@ constraints per execution while other approaches that are able to create this
 patch, couldn't because they ran out of time.
 
 This example was fixed by the human by removing an expression from an
-\emph{IfStatement} as seen in Figure~\ref{closure18prob}. PAR in particular has
-a mutation operator specially created to perform this task, and even so, it was
-not able to find this patch due to the vast search space and the fact that it
-searches through this space in an equally distributed manner to pick its
-mutation operators. Nopol was able to create a patch for this example as shown
-in Figure~\ref{closure18nopol}, but this patch is not able to generalize to a
+\emph{IfStatement} as seen at the top of Figure~\ref{closure18prob}. 
+Although PAR includes this a mutation operator for this task, its uniform
+weighting scheme appears less efficient than our probabilistic model. Nopol was
+able to create a patch for this example as shown at the bottom of 
+Figure~\ref{closure18prob}, but this patch is not able to generalize to a
 held-out test suite.
 
 \subsection{Association Rule Mining} \label{armRes}
