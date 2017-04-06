@@ -1174,8 +1174,11 @@ show the number of attempted instances per fold.  The ``Prob.'' columns show the
 accuracy (correct prediction rate) of the mined model on that fold, for each model; ``EqDist'',
 the accuracy of the equally distributed model.  For the Replacements model,
 the average accuracy of the Probabilistic model is 63\% higher than the EqDist
-model; the difference is 56.4\% for the Mutations model.  \todo{a)is it statistically
-  significant?} This indicates that the probabilistic approach is
+model; the difference is 56.4\% for the Mutations model.
+
+When we applied a Two sample t-test for means to the different sets of results when predicting replacements, we obtain a p-value of 0.00000003 which is far below our alpha level of 5\% which means there is a very marked statistical significance between the two populations. When applying the same test predicting mutation operators, we obtain a p-value of 0.00012 which is still far below 5\% meaning that there is a strong statistical significance.
+
+This indicates that the probabilistic approach is
 significantly more accurate than an equally-distributed baseline (used in
 several syntactic APR approaches) in predicting bug-fixing edits.  This suggests
 that the model, incorporated into an APR approach, may be more likely to produce
