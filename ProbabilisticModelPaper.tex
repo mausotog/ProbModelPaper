@@ -500,7 +500,7 @@ programs (e.g.~\cite{legoues12,kim2013,Weimer13,fan15SPR,long16proph,debroy10,pe
 One well-known class of repair techniques follows a 
 \emph{generate-and-validate} approach  (e.g. GenProg~\cite{legoues12}, 
 Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13TrpAutoR}
-Prophet~\cite{long16proph}, HDRepair~\cite{xuan16}, Angelix~\cite{angelix},
+Prophet~\cite{long16proph}, HDRepair~\cite{xuan16}, Angelix~\cite{Mechtaev2016},
 Nopol~\cite{nopol}).  This approach takes as input a test suite, 
 including at
 least one failing test case exposing
@@ -513,23 +513,23 @@ construct or identify a patch that
 leads the program to pass all input test cases. 
 
 The search space of possible patches that can repair any bug is trivially
-infinite, which introduces key tensions in APR
+infinite, introducing key tensions in APR
 technique design.  First, 
 techniques must manage the space carefully so as to traverse it in a scalable and
 effective manner.  One way that current techniques manage this problem is to
 only consider a limited set of of possible changes, or \emph{mutation operators}, 
-to apply to only potentially-fault code (typically identified using off-the-shelf fault 
+applied to potentially-fault code (typically identified using off-the-shelf fault 
 localization, e.g. Tarantula~\cite{Jones02}).  
 Techniques differ in the mutation operators they consider, and how those operators
 are instantiated.  Syntactically-informed APR techniques typically instantiate
 mutations by selecting repair code heuristically from elsewhere in the same
-file, module, or program.  As a simple example, example, GenProg~\cite{legoues12} can either
+file, module, or program.  As a simple example, GenProg~\cite{legoues12Genprog} can either
 delete program statements, replace one statement for another, or insert one
 statement after another; the ``fix'' statements are selected from elsewhere in
 the same program.  There is a broad diversity of such syntactic operators used
 by other APR techniques, including more complicated templated modifications~\cite{kim2013} and transformation 
 schemas~\cite{long16proph,long15SPR}.  Semantically-informed
-techniques~\cite{semfix,angelix,nopol} differ in that they use synthesis to
+techniques~\cite{nguyen13,Mechtaev2016,xuanNopol} differ in that they use synthesis to
 construct the fix code used in instantiating program modifications.  
 Regardless, any such technique uses heuristics or heuristically-informed
 probability distributions to select between either mutation operators or fix
@@ -540,29 +540,29 @@ repairs for many bugs remains intractably large.  Most techniques are thus
 limited by design to producing single-edit patches (e.g. TrpAutoRepair~\cite{Qi13TrpAutoR}). 
 Those few that can theoretically produce multi-edit patches
 typically still only produce small changes in
-practice~\cite{Qi15,arcuri11,angelix}. 
+practice~\cite{Qi15,arcuri11,Mechtaev2016}. 
 Indeed, patches
 consisting of several mutations are undertreated in the APR context, even though the vast majority
 of real bug-fixing patches are comprised of multiple edits~\cite{Soto16,zhong15}.
 
 These attempts to tackle scalability are in tension with a second major concern
 in APR research: the quality of the generated patches~\cite{Qi15}.  One way to
-improve output quality is to use more expressive mutation operators to produce a
+improve output quality is to use more expressive mutation operators, producing a
 richer search space~\cite{long16}.  However, more and more expressive mutation
 operators increase the size of the 
 space, and not always in a way that supports the construction of more correct
 patches.  Thus, although APR techniques would benefit from more expressive
 operators, they cannot do so without a way to choose between them that manages
-the search space explosion problem, ideally all while increasing the probability
-of finding correct patches.
+the search space explosion problem, ideally while increasing the probability
+of finding truly correct patches.
 
-Fundamentally, in bug-fixing reality, human developers use
+In bug-fixing reality, human developers use
 certain mutation operators much more often than others (e.g. adding an \emph{IfStatement} is more common than adding a \emph{TypeDeclarationStatement})~\cite{Soto16}. In this
 work, we propose to study
 and then systematically simulate the behavior of human developers to create
-patches. This idea has been leveraged manually in the past to create
+patches. This idea has been leveraged manually, to create
 mutation operators that produce more human-acceptable patches~\cite{kim2013} and
-to inform patch \emph{ranking} (rather than
+automatically, to inform patch \emph{ranking} (rather than
 construction) when traversing the search space~\cite{xuan16,long16proph}. 
 Our key supposition is that our approach can scalably support a richer
 search space constructed via more expressive mutation operators that are more
@@ -574,7 +574,8 @@ the possible mutation operators based on
 empirical data that describes how human programmers fix their code.  
 The APR search space, including the various mutation
 operators used by different techniques, has been growing in a relatively ad hoc 
-manner by the different approaches created in the latest years. We mitigate this effect by categorizing and comparing a superset of
+manner through the various approaches proposed in recent years. We thus
+categorize, compare, and validate a superset of
 mutation operators in use in a number of 
 state-of-the-art approaches~\cite{legoues12,Weimer13,kim2013,long16proph}.
 We use this model to inform a repair approach that chooses from the set of possible
@@ -606,20 +607,22 @@ The primary contributions of this paper thus are:
 	\item \textbf{New Repair Approach}, which uses mutation operators
     from multiple state-of-the-art approaches and
     the above-mentioned models to choose between them, favoring those more commonly
-    used by human developers.
+    used by human developers.  We validate the use of this model, as well as a
+    good set of operators to use for expressive, high-quality repair.
     \item \textbf{Development and integration} of this approach for the Java
       programming language in a tool, available online, which can apply the
       several different mutation operators, and the probabilistic model
       discussed in this study.\footnote{We will release all artifacts, code, and
         data, including generated test suites, associated with this publication post blind-review.} %\footnote{https://bitbucket.org/clegoues/genprog4java}
-  \item \textbf{Evaluation} of the probabilistic model in several
-    contexts, including as part of a new APR approach used to repair real world bugs from well
+  \item \textbf{Comparative evaluation} of the new repair approach on real world bugs from well
     known open source projects (independent of those used to inform model
     construction). We independently evaluate patch quality using a held-out test
     suite. We conclude that by creating candidate patches using human behavior
     we are able to find patches faster than a technique that does not use such
     mined probabilities, and that the patch creation
-    process benefits from combining mutation operator categories. We also evaluate the quality of the patches found by our approach by running an automatically generated held-out test suite, and comparing the degree to which our patches generalize. We compare against patches created by current state of the art tools in the same bugs and how they generalize to the held-out test suite.
+    process benefits from combining mutation operator categories. We compare to
+    other state-of-the-art tools on the same bugs, assessing expressiveness and
+    output quality. 
   \item \textbf{Multi-edit repair approach} A proposed technique, and an initial
     validation thereof, to construct 
     bug-fixing patches requiring several mutations by mining and then applying association
@@ -1034,20 +1037,27 @@ We look for rules that have at least 90\% Confidence.
 \section{Evaluation} \label{evaluation}
 
 We evaluate our model both independently and as part of an automatic repair
-technique.  We first evaluate the predictive power of the model by analyzing the
-number of correctly predicted mutation operators across a large dataset
-(Section~\ref{sec:generalize}). We evaluate our new APR approach on 18 \todo{
-  change this number if we get more results} different bugs from the Defects4j
-platform (Section~\ref{repResults}) both in terms of speed, measured in the
-number of variants it takes to find a patch; and quality, using held-out test
-suites.  We compare against other state-of-the-art repair approaches.  Finally, we present the most common  
-association rules between mutation operators in our corpus
-(Section~\ref{armRes}). 
+technique.  We have four high-level research questions:
+
+\begin{itemize}
+\item \textbf{RQ1:} How accurate are our mined models in predicting mutation
+  operators and replacement code across a large dataset?
+(Section~\ref{sec:generalize})
+\item \textbf{RQ2:} Which syntactic operators and selection models are most
+  useful for repair? (Section~\ref{sec:oputil})
+\item \textbf{RQ3:} How does our model-informed APR tool compare to the
+    state-of-the-art in APR? (Section~\ref{sec:comparison})
+\item \textbf{RQ4:} What are the most common multi-edit modification rules in
+    practice? (Section~\ref{armRes})
+\end{itemize}
+
 
 All experiments are performed on a server 
 consisting of 16 processors Intel(R) Xeon(R) CPU E5-2699 v3, with 2.30 GHz each
 processor, 46080 KB cache each, and 32 GB RAM memory, operating system Ubuntu 
-14.04.5 LTS.
+14.04.5 LTS.  In addition to addressing our research questions as described in
+the above roadmap, we provide additional detail on the experimental setup for
+all repair experiments in Section~\ref{sec:repairSetup}. 
 
 \subsection{Model generalization}
 \label{sec:generalize}
@@ -1172,12 +1182,9 @@ that the model, incorporated into an APR approach, may be more likely to produce
 correct patches.  We directly address this question next.
 
 
-\subsection{Single line bug repair}
-\label{sec:single}
+\subsection{Repair experiment setup}
+\label{sec:repairSetup}
 
-\todo{Maybe a roadmap}
-
-\subsubsection{Experimental questions and setup}
 \begin{figure}[ht]
 \centering
 
@@ -1219,15 +1226,19 @@ Time 19 & 3650 & 75.4\% & 58.0\% \\
 \label{heldOut}
 \end{figure}    
 
-
-We consider two high-level research questions related to the utility of our
+As mentioned, we have two high-level research concerns related to the utility of our
 learned models for repair: 
+(1) Which syntactic operators and selection models are most
+  useful for repair? (Section~\ref{sec:oputil}) and (2)
+How does our model-informed APR tool compare to the
+    state-of-the-art in APR? (Section~\ref{sec:comparison})
 
-\vspace{1ex}
-\noindent\textbf{RQ1: Which syntactic operators and selection models are most useful for repair?}  As
-  mentioned, the considered operators have been growing in an ad hoc manner in
-  existing APR work.  We thus first we evaluate the utility of our models in the
-  context of several different set of mutation operators (Section~\ref{oputil}). We
+\paragraph{Validation of models in context} We first we evaluate the utility of our models in the
+context of several different set of mutation operators.  We do this to
+independently validate that the models are useful in context (rather than simply
+as predictors, as established in the previous subsections), and second to
+identify which sets of syntactic mutation operators appear more useful in
+practice.  To do this, we
 instantiate our tool with each of 
 two models (the Equally Distributed baseline from Section~\ref{sec:generalize}
 and the learned Probabilistic models), and three different operator sets (1) Statement-Edit mutations only (2)
@@ -1243,9 +1254,7 @@ bug. Anecdotally, we observe that less-accurate fault localization increases the
 amount of time our tool needs to repair these defects, but does not decrease expressive
 power.  
 
-\vspace{1ex}
-\noindent\textbf{RQ2: How does our model-informed APR tool compare to the
-    state-of-the-art in APR?}  We compare our tool, using the best set of
+\paragraph{Comparison to previous techniques} Second, we compare our tool, using the best set of
   operators as identified in the first question, to four previously-prosed APR
   tools:  GenProg, TrpAutoRepair, PAR and Nopol.\todo{add
   a reference for each of these.} GenProg and TrpAutoRepair use
@@ -1279,7 +1288,7 @@ localization (which is not held constant between the techniques) and thus would
 be less informative, and because we do not have the requisite data for
 Nopol.\todo{That's true, right?}
 
-\vspace{1ex}
+\paragraph{Dataset}
 We consider for repair a subset of the Defects4j~\cite{just14}
 benchmark, a database and extensible 
 framework of real bugs that enables reproducible studies in software testing and
@@ -1294,14 +1303,7 @@ restrict attention to a subset of the Defects4J bugs with single-line human
 patches. \todo{Mau, I may have cut this accidentally in my reorg, but add how
   many bugs we consider from each.}
 
-For the genetic programming based techniques (including our own), our population
-size is 40 (consistent with previous work), and our max generation size is 10.
-For non-GP-based techniques, our maximum considered variant count is 400; for
-all techniques, we set a timeout of 4 hours per run.  These settings are
-conssitent with prior work.  We run 20 seeds per randomized repair trial, in
-keeping with recommendations on the assessment of stochastic
-techniques~\cite{arcuri11}.
-
+\paragraph{Patch quality}
 As a proxy for patch quality (to mitigate the risk of plausible but as yet
 incorrect patches~\cite{Qi15}), we evaluate patches using a held-out test
 suite~\cite{legoues12GenProg,smith15} by automatically building a second test
@@ -1315,8 +1317,15 @@ held-out test suites. We also use
 Cobertura\footnote{http://cobertura.github.io/cobertura/} to calculate the
 coverage of the test suite over the class that contains the human fix.
 
+\paragraph{Settings} For the genetic programming based techniques (including our own), our population
+size is 40 (consistent with previous work), and our max generation size is 10.
+For non-GP-based techniques, our maximum considered variant count is 400; for
+all techniques, we set a timeout of 4 hours per run.  These settings are
+conssitent with prior work.  We run 20 seeds per randomized repair trial, in
+keeping with recommendations on the assessment of stochastic
+techniques~\cite{arcuri11}.
 
-
+\subsection{Mutation operator and model utility} \label{oputil}
 
 \begin{figure*}\centering
 \begin{tabular}{r|rr|rr|rr|rr|rr|rr}
@@ -1349,14 +1358,15 @@ Math \#2 & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & {10
 
 \end{figure*}
 
-
-\subsubsection{Mutation operator utility} \label{oputil}
-
 In this subsection, we compare the performance of a program repair tool using
 each of several considered operator sets, as well as using the probabilistic
 versus the equally distributed model. 
 \todo{re visit this paragraph after we have the latest results}Our modified APR techniques patched 5 of the 18 bugs, as shown in 
-Figure~\ref{tab:singleLineBugs}. In the first row of Figure~\ref{tab:singleLineBugs} (Closure \#10) we can see
+Figure~\ref{tab:singleLineBugs}.
+
+\subsubsection{Results} 
+
+ In the first row of Figure~\ref{tab:singleLineBugs} (Closure \#10) we can see
 that in all three comparisons (Statement-Edit Only, Template-Based Only, and All
 mutations), the probabilisitc model outperforms
 the equally distributed model. This happens as well for
@@ -1387,71 +1397,72 @@ set.  We also notice that
 the quality of patches produced  appears constant, and unaffected by model:
 either the tool produces patches in 
 that all pass the second test suite, or it produces patches that do not. 
+
+
+\todo{Summary about conclusions from this study. segue into next subsection}
+
 %\subsection{Bugs fixed with a multi line edit within a function}
 %Last evaluation with the bugs we found had a fix
 
-\subsubsection{Repair example} \label{examPatches}
+% \begin{figure}[t]
+% \begin{lstlisting}[frame=single]
+% LegendItemCollection result = 
+%   new LegendItemCollection();
+% if (this.plot == null) {
+%   return result;
+% }
+% int index=this.plot.getIndexOf(this);
+% CategoryDataset dataset = 
+%   this.plot.getDataset(index);
+% @ -if (dataset != null) {
+%   - return result;
+%   -}@
+% int seriesCount=dataset.getRowCount();
+% 	\end{lstlisting}
 
-\begin{figure}[t]
-\begin{lstlisting}[frame=single]
-LegendItemCollection result = 
-  new LegendItemCollection();
-if (this.plot == null) {
-  return result;
-}
-int index=this.plot.getIndexOf(this);
-CategoryDataset dataset = 
-  this.plot.getDataset(index);
-@ -if (dataset != null) {
-  - return result;
-  -}@
-int seriesCount=dataset.getRowCount();
-	\end{lstlisting}
+% \begin{lstlisting}[frame=single]
+% LegendItemCollection result = 
+%   new LegendItemCollection();
+% if (this.plot == null) {
+%   return result;
+% }
+% int index=this.plot.getIndexOf(this);
+% CategoryDataset dataset = 
+%   this.plot.getDataset(index); @
+%  + if (dataset != null) { 
+%  + this.itemLabelGeneratorList=new ObjectList();
+%  + this.toolTipGeneratorList=new ObjectList();
+%  + this.urlGeneratorList=new ObjectList();
+%  + this.legendItemLabelGenerator = 
+%  +  new StandardCategorySeriesLabelGenerator();
+%  + this.backgroundAnnotations=new ArrayList();
+%  + this.foregroundAnnotations=new ArrayList();
+%  + }@
+% int seriesCount=dataset.getRowCount();
+% 	\end{lstlisting}
+% 	\caption{Top: A snippet of the source code of the Chart 1 bug fixed using the
+%       probabilistic model, with a deletion similar to the developer
+%       patch. Bottom: the same bug, fixed using the equally distributed
+%       model by 
+%       allocating global variables that may be used later, much unlike the human
+%       patch.\todo{Mau, please have these listings numbers start at a number
+%         like the one where it starts in the actual code.}\label{fig:chart1.3}}
+% \end{figure}
 
-\begin{lstlisting}[frame=single]
-LegendItemCollection result = 
-  new LegendItemCollection();
-if (this.plot == null) {
-  return result;
-}
-int index=this.plot.getIndexOf(this);
-CategoryDataset dataset = 
-  this.plot.getDataset(index); @
- + if (dataset != null) { 
- + this.itemLabelGeneratorList=new ObjectList();
- + this.toolTipGeneratorList=new ObjectList();
- + this.urlGeneratorList=new ObjectList();
- + this.legendItemLabelGenerator = 
- +  new StandardCategorySeriesLabelGenerator();
- + this.backgroundAnnotations=new ArrayList();
- + this.foregroundAnnotations=new ArrayList();
- + }@
-int seriesCount=dataset.getRowCount();
-	\end{lstlisting}
-	\caption{Top: A snippet of the source code of the Chart 1 bug fixed using the
-      probabilistic model, with a deletion similar to the developer
-      patch. Bottom: the same bug, fixed using the equally distributed
-      model by 
-      allocating global variables that may be used later, much unlike the human
-      patch.\todo{Mau, please have these listings numbers start at a number
-        like the one where it starts in the actual code.}\label{fig:chart1.3}}
-\end{figure}
+% One indicative example that illustrates the utility of the probablistic model
+% and more expressive operator sets is the first Chart bug (and its developer fix) from the Defects4J dataset
+% (Figure~\ref{fig:chart1.1}, top).  The developer patches this bug by deleting the if
+% statement.  The mined statement-level mutation model favors deletion, and thus
+% our repair efforts found patches that removed either the entire \texttt{IfStatement}, or only its body (line 9).
+% By contrast, the equally-distributed model has a higher probability of leading
+% to a patch such as the one shown in the bottom of Figure~\ref{fig:chart1.1}.  This test case
+% passes when, in the case that \texttt{dataset} is not null, nothing is returned;
+% this patch avoids this, but also allocates state variables that are not
+% necessary at present (and whose state may have unknown effects in other
+% executions). 
 
-
-In this subsection, we provide example patches produced using the alternative
-models, as compared to a human patch.  Consider the snippet of code corresponding
-to the first Chart bug (and its developer fix) from the Defects4J dataset
-(Figure~\ref{fig:chart1.1}, top).  The developer patches this bug by deleting the if
-statement.  The mined statement-level mutation model favors deletion, and thus
-our repair efforts found patches that removed either the entire \texttt{IfStatement}, or only its body (line 9).
-By contrast, the equally-distributed model has a higher probability of leading
-to a patch such as the one shown in the bottom of Figure~\ref{fig:chart1.1}.  This test case
-passes when, in the case that \texttt{dataset} is not null, nothing is returned;
-this patch avoids this, but also allocates state variables that are not
-necessary at present (and whose state may have unknown effects in other
-executions). 
-
-\subsection{Comparison against state of the art approaches}
+\subsection{Comparison to other approaches}
+\label{sec:comparison}
 
  \begin{figure*}
 \centering
