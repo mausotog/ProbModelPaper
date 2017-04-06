@@ -749,7 +749,7 @@ as of August 2016 and
 identified the most recent 100 bug fixing commits per each project. Identifying
 such commits is a difficult
 problem~\cite{Bird09}. We filter these by applying a
-regular expression to each commit message that looks for words such as $``fix", ``bug", ``issue", ``problem",$
+regular expression to each commit message that looks for words such as \emph{``fix", ``bug", ``issue", ``problem",}
 etc. following the guidelines of previous work~\cite{schroter06}.
 %\cite{schroter06,Cubranic05,Fischer03}. 
 %
@@ -769,7 +769,7 @@ large commits are more likely to include changes unrelated to a bug fix~\cite{Di
 \label{sec:mining}
 
 For each bug fixing commit, we refer to the code before the fix as the
-$``before$-$fix"$ version and the code after as the $``after$-$fix"$ version.
+\emph{``before-fix"} version and the code after as the \emph{``after-fix"} version.
 We next seek to identify the changes performed between the before-fix and
 after-fix versions, to analyze how often they match our candidate mutation operators in
 question. 
@@ -924,8 +924,8 @@ Formally:
 $supp(X) = \dfrac{|\{t \in T; X \subseteq t\}|}{|T|}$
 \end{center}
 
-Where X is the itemset and $t$ is each individual transaction in
-the database of transactions $T$. Apriori identifies the frequent mutation
+Where X is the itemset and \emph{t} is each individual transaction in
+the database of transactions \emph{T}. Apriori identifies the frequent mutation
 operators and replacements that happen together, iteratively extending them to larger
 itemsets that appear often in the transactions as identified by these metrics.
 
@@ -1117,7 +1117,7 @@ Each trained model describes the dataset via
 a distribution identifying the (normalized) frequency with which each statement is replaced 
 by another. Each combination is described by 
 $E_{n,m}$, 
-where $n$ is the statement being replaced (replacee) and $m$ the statement it is 
+where \emph{n} is the statement being replaced (replacee) and \emph{m} the statement it is 
 replaced by (replacer).  A predictive model $TP_{n,m}$, $\forall n,m: 1<=n<=22 \land 1<=m<=22$, 
 describes how often each statement is replaced by 
 other kinds of statements. 
@@ -1364,7 +1364,7 @@ Figure~\ref{stateOfTheArtComparison} shows the patches created by our approach, 
 
 One example in which we can very clearly see the success of our approach when applying the probabilistic model is Closure 18 as seen in Figure~\ref{closure18prob} where, not only did our approach created the exact same patch as the human did, but also our approach was able to find the patch within the time frame specified before the execution is shutdown by one of the constraints per execution while other approaches that are able to create this patch, couldn't because they ran out of time. 
 
-This example was fixed by the human by removing an expression from an $IfStatement$ as seen in Figure~\ref{closure18prob}. PAR in particular has a mutation operator specially created to perform this task, and even so, it was not able to find this patch due to the vast search space and the fact that it searches through this space in an equally distributed manner to pick its mutation operators. Nopol was able to create a patch for this example as shown in Figure~\ref{closure18nopol}, but this patch is not able to generalize to a held-out test suite.
+This example was fixed by the human by removing an expression from an \emph{IfStatement} as seen in Figure~\ref{closure18prob}. PAR in particular has a mutation operator specially created to perform this task, and even so, it was not able to find this patch due to the vast search space and the fact that it searches through this space in an equally distributed manner to pick its mutation operators. Nopol was able to create a patch for this example as shown in Figure~\ref{closure18nopol}, but this patch is not able to generalize to a held-out test suite.
 
 
 \begin{figure}[t]
@@ -1406,26 +1406,27 @@ boolean staleInputs = false;
  \begin{figure*}[]
 \centering
 \label{my-label}
-\begin{tabular}{l|ll|ll|ll|ll|ll}
+
+\begin{tabular}{l|l|ll|ll|ll|ll|ll}
 \toprule
- & Probabilistic Model & NFTC & GenProg & NFTC & TRP & NFTC & PAR & NFTC & Nopol  & NFTC  \\
+& Number of test cases & Probabilistic Model & NFTC & GenProg & NFTC & TRP & NFTC & PAR & NFTC & Nopol  & NFTC  \\
 \midrule
-Closure 10 & SequenceExchange & 0 & No patch & - & No patch & - & No patch & - & Found & 28   \\
- & SequenceExchange & 0 & - & - & - &-  & - & - & - & -   \\
+Closure 10 &1493 & SequenceExchange & 0 & No patch & No patch & No patch & No patch & No patch & No patch & Found & 28   \\
+ & & SequenceExchange & 0 & No patch & No patch & No patch &No patch  & No patch & No patch & No patch & No patch   \\
 \midrule
-Closure 18 & ExpRemove & 0  & No patch & - & No patch & - & No patch & - &Found &  1  \\
+Closure 18 & 1615 & ExpRemove & 0  & No patch & No patch & No patch & No patch & No patch & No patch &Found &  1  \\
 \midrule
-Math 2 & MethodReplace & 170 & No patch & - & No patch & - & MetthodReplace & 170 & Found & 0  \\
+Math 2 & 6933 & MethodReplace & 170 & No patch & No patch & No patch & No patch & MetthodReplace & 170 & Found & 0  \\
 \midrule
-Time 19 & Append & 0 & Append & 188 & Append & 188 & No patch & - & Found &  188 \\
- & Replace & 0 & - & - & - & - & - & - & - & - \\
+Time 19 & 3650  & Append & 0 & Append & 188 & Append & 188 & No patch & No patch & Found &  188 \\
+ & & Replace & 0 & No patch & No patch & No patch & No patch & No patch & No patch & No patch & No patch \\
 \midrule
-Chart 1 & SequenceExchange & 1 & Replace & 1  & Delete & 1 & ExpAdd & 1 & No patch &   \\
- & Delete & 1 & Delete & 1 & Replace &1  & ExpReplace & 1 & - & -   \\
- & Delete & 1 & Replace & 1 & Delete & 1 &  -& -& - & -  \\
- & SequenceExchange & 1 & Delete & 1 & Delete &1  & - & - & - & -   \\
- & ExpReplace & 1 & Delete & 1 &- & - & - & - & - & -   \\
- & - & - & Replace & 1 & - & - & - & - & - & -  \\
+Chart 1 &  4285 & SequenceExchange & 1 & Replace & 1  & Delete & 1 & ExpAdd & 1 & No patch &   \\
+ & & Delete & 1 & Delete & 1 & Replace &1  & ExpReplace & 1 & No patch & No patch   \\
+ && Delete & 1 & Replace & 1 & Delete & 1 &  No patch& No patch& No patch & No patch  \\
+ && SequenceExchange & 1 & Delete & 1 & Delete &1  & No patch & No patch & No patch & No patch   \\
+ & & ExpReplace & 1 & Delete & 1 &No patch & No patch & No patch & No patch & No patch & No patch   \\
+ & & No patch & No patch & Replace & 1 & No patch & No patch & No patch & No patch & No patch & No patch  \\
  \bottomrule
 \end{tabular}
   \caption{Quality assessment between the probabilistic model-based repair and
