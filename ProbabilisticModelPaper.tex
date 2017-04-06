@@ -649,8 +649,8 @@ cases to expose the behavior to be repaired.
 
 \begin{figure}[!h]
   \centering
-    \includegraphics[scale=0.25]{Picture1}
-  \caption{Generate and validate approach}
+    \includegraphics[width=\columnwidth]{Picture1}
+  \caption{Generate-and-validate repair approach.}
   \label{fig:generateandvalidate}
 \end{figure}
 
@@ -659,24 +659,22 @@ localizes the error to a smaller set of
 candidate program statements (typically using an off-the-shelf approach).  It
 then constructs one or more candidate patches that seek to fix the buggy
 behavior without breaking any previously-correct behavior.  
-Syntactic or heuristic approaches~\cite{examples} construct candidate patches out of one or
-more Abstract Syntax Tree (AST)-level program modifications, applied at
-at likely-faulty program locations. 
-To construct a new modification, given a likely-faulty statement, a mutation operator is selected from a
-predefined set of such operators.  This process typically excludes those that are not applicable to the
-given location or that would lead to a compilation failure. For
-example, such a filter would exclude the insertion of a call to
-\texttt{super();} in the middle of a method, as such calls are only legal at the
-first line of a constructor.  Most mutation operators (with the exception of deletion) require ``fix'' code to fill in
-one or more ``holes'' (\emph{insert}, for example, requires code to insert at a
-location); this code is typically selected from elsewhere in the same file,
-program, or module.  
-
-Semantics-guided generate-and-validate APR~\cite{examples,esp,nopol} differ from
-the syntactic approaches described above in the types of modifications they
-consider and how they are instantiated.  
-
-Regardless of how the mutations are selec
+Techniques vary in (1) the mutation operators they consider, (2) how they select
+between those operators, and how they identify or
+construct the fix code used to instantiate them, and (3) how they traverse
+the search space otherwise.  
+Most mutation operators (with the exception of deletion) require new code to
+fill in ``holes.''  For example, an operator that replaces one statement with
+another must select replacement code; an operator that wraps a statement
+in a null check must select the object to be checked against null.
+Syntactic approaches~\cite{examples} typically select this code from within the
+same function, module, file, or program.  Semantic approaches instead use synthesis to
+construct fix code.  
+In both cases, heuristics inform code selection.  For example, some syntactic approaches
+choose between fix code uniformly at random or using other set probability distributions~\cite{examples}; others used learned
+models to do so~\cite{long16proph}.  Semantic approaches use heuristics to
+decide which program components should be made available to the synthesis
+engine~\cite{examples}. 
 
 Once so constructed (of one or more such mutations), each candidate patch is
 applied to the input program, which is then run on
@@ -686,26 +684,26 @@ pass all the test cases in the test suite, including those originally witnessing
 the bug, it is presented as a likely repair for the bug. 
 If not, the APR algorithm typically creates more candidate patches 
 until it reaches a pre-defined resource limit. 
+Here, too, search strategies vary: some techniques 
+are explicitly single-edit~\cite{Qi13TrpAutoR,Weimer13,nopol}; others use
+random search strategies, like a random walk~\cite{debroy10} or genetic
+programming~\cite{kim2013,legoues12,xuan16}; etc. 
 
-Techniques vary in how they identify and choose between candidate mutation
-operators, and how they traverse the search space otherwise. For example, some
-approaches assign
-a higher priority to some candidate patches over others based on heuristics~\cite{long16proph}; others are explicitly single-edit approaches~\cite{Qi13TrpAutoR,Weimer13}; others use various other
-random search heuristics, like a random walk~\cite{debroy10} or genetic
-programming~\cite{kim2013,legoues12,xuan16}. 
-
-
-The quality of the patches created
-by APR techniques is commonly evaluated by using a held-out test suite (a test
-suite that is from the one used to guide the search, but it outlines the same
-expected behavior). If the generated patch is able to pass all the test cases
+Patch quality is an important concern in APR research~\cite{cite}: ideally,
+created patches will generalize beyond the test cases used to inform their
+construction~\cite{Smith15fse}, and conform to other non-functional standards of
+acceptability~\cite{zakmaintainbility,par}.  Although assessing patch quality is an
+unsolved reasearch problem, one mechanism to evaluate functional patch
+correctness is to evaluate generated patches on a held-out test suite, separate
+from the tests used to construct the patches. 
+If the generated patch is able to pass all the test cases
 from the held-out test suite it is said that the patch is more likely to
 generalize to different tests of the same expected behavior. If the patch fails
 test cases from the held-out test suite it is said that the patch overfits to
 the test suite used for guiding and does not generalize. 
 
 
-\subsection{Generate-and0validate mutation operators} 
+\subsection{Generate-and-validate mutation operators} 
 \label{categorization}
 
 We categorize mutation operators used to create patches from a cross
