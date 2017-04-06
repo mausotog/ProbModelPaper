@@ -667,7 +667,7 @@ cases to expose the behavior to be repaired.
 
 A generic generate-and-validate APR approach first
 localizes the error to a smaller set of
-candidate program statements (typically using an off-the-shelf approach).  It
+candidate program statements (typically using an off-the-shelf statistical approach~\cite{Jones02}).  It
 then constructs one or more candidate patches that seek to fix the buggy
 behavior without breaking any previously-correct behavior.  
 Techniques vary in (1) the mutation operators they consider, (2) how they select
@@ -678,16 +678,16 @@ Most mutation operators (with the exception of deletion) require new code to
 fill in ``holes.''  For example, an operator that replaces one statement with
 another must select replacement code; an operator that wraps a statement
 in a null check must select the object to be checked against null.
-Syntactic approaches~\cite{examples} typically select this code from within the
+Syntactic approaches (e.g.,~\cite{legoues12Genprog,long16proph,kim2013,xuan16}) typically select this code from within the
 same function, module, file, or program.  Semantic approaches instead use synthesis to
 construct fix code.  
 In both cases, heuristics inform code selection.  For example, some syntactic approaches
 choose between fix code uniformly at random or using other set probability distributions~\cite{examples}; others used learned
 models to do so~\cite{long16proph}.  Semantic approaches use heuristics to
 decide which program components should be made available to the synthesis
-engine~\cite{examples}. 
+engine~\cite{Mechtaev2016,xuanNopol}. 
 
-Once so constructed (of one or more such mutations), each candidate patch is
+Once constructed of one or more such mutations, each candidate patch is
 applied to the input program, which is then run on
 one or more of the input test cases for evaluation.  If a patch leads the
 program to 
@@ -700,18 +700,17 @@ are explicitly single-edit~\cite{Qi13TrpAutoR,Weimer13,nopol}; others use
 random search strategies, like a random walk~\cite{debroy10} or genetic
 programming~\cite{kim2013,legoues12,xuan16}; etc. 
 
-Patch quality is an important concern in APR research~\cite{cite}: ideally,
+Patch quality is an important concern in APR research~\cite{Qi15}: Ideally,
 created patches will generalize beyond the test cases used to inform their
-construction~\cite{Smith15fse}, and conform to other non-functional standards of
-acceptability~\cite{zakmaintainbility,par}.  Although assessing patch quality is an
-unsolved reasearch problem, one mechanism to evaluate functional patch
-correctness is to evaluate generated patches on a held-out test suite, separate
+construction~\cite{smith15}, and conform to other non-functional standards of
+acceptability~\cite{fry2010,kim2013}.  Although assessing patch quality is an
+unsolved reasearch problem~\cite{monperrus14critical}, one mechanism to evaluate functional patch
+correctness is to evaluate generated patches on a held-out test suite~\cite{smith15,legoues12Genprog}, separate
 from the tests used to construct the patches. 
-If the generated patch is able to pass all the test cases
-from the held-out test suite it is said that the patch is more likely to
-generalize to different tests of the same expected behavior. If the patch fails
-test cases from the held-out test suite it is said that the patch overfits to
-the test suite used for guiding and does not generalize. 
+If the generated patch allows the program to pass all held-out tests, it is more likely to
+\emph{generalize} to the desired but unwritten specification. If the patched
+program fails held-out tests, the patch is said to \emph{overfit} to 
+the test suite used to guide the repair. 
 
 
 \subsection{Generate-and-validate mutation operators} 
@@ -768,7 +767,7 @@ Method Replacer & Collection Size Checker \\
 Expression Replacer &  Range Checker\\
 Object Initializer & Class Cast Checker\\
 \midrule
-\multicolumn{2}{c}{PAR extra templates} \\
+\multicolumn{2}{c}{PAR ``extra'' templates} \\
 \midrule
 Caster Mutator & Lower Bound Setter  \\
 Castee Mutator & Upper Bound Setter  \\
@@ -781,12 +780,14 @@ Copy and Replace & Condition Control Flow Introduction  \\
 Value Replacement  & Condition Introduction \\
 \bottomrule
 \end{tabular}
-  \caption{(Top) PAR fix templates. (Middle) PAR extra templates. (Bottom) SPR transformation schemas.   \label{approachTemplates}}
+  \caption{(Top) PAR fix templates. (Middle) PAR ``extra'' templates. (Bottom)
+    SPR transformation schemas. We use the templates in the top and middle
+    portions of this table as representative of the class of Template-based mutations. \label{approachTemplates}}
 }
 
 \end{figure}
 
-The SPR/Prophet transformation schema can be seen as a generalization of certain PAR 
+The SPR/Prophet transformation schema can be mapped to certain PAR 
 templates. For example, \emph{Condition Introduction} can be seen as a superset of 
 \emph{Range Checker}, \emph{Collection Size 
 Checker}, \emph{Class Cast Checker}, and \emph{Null Checker}. \emph{Condition Refinement} includes \emph{Expression Adder and Remover}. \emph{Insert Initialization} can be 
@@ -795,7 +796,7 @@ seen as a subset of \emph{Sequence Exchanger};
 \emph{Value Replacement} can be seen as a superset of \emph{Method 
 Replacer}, \emph{Parameter Replacer}, \emph{Castee Mutator} and \emph{Expression Changer}; and \emph{Copy 
 and Replace} can be matched to \emph{Expression Adder}. 
-These operators similarly generalize those used in semantics-based approaches~\cite{examples},
+These operators similarly generalize those used in semantics-based approaches,
 which replace expressions used either in conditions or on the right-hand-side of
 assignments (the operators are the same; the difference lies in how the fix code
 is selected/constructed). 
@@ -810,7 +811,7 @@ APR~\cite{debroy10,xuan16} can be seen as subsets of the extensions of the
 Par templates.  
 
 To summarize, these approaches have significant similarities between their
-included templates.  We have chosen the PAR templates to represent this category
+included templates.  We use the PAR templates to represent this category
 for the following reasons: (1) PAR \todo{Mau: comprehends is the wrong word, what do you mean
   instead?} comprehends the other techniques' mutation operators, (2) it
 provides a concrete description of how the code is changed, enabling
@@ -818,11 +819,11 @@ replication, and (3) it explicitly targets Java (SPR, Prophet and Kali
 target C), reducing the extent to which we must apply subjective judgement to
 determine how to reimplement and use them in our context.
 
-\section{Syntactic repair via a learned probabilistic edit model} \label{buildingTheModel}
+\section{Program repair via a learned probabilistic edit model} \label{buildingTheModel}
 
 In this section we describe how we mined a probabilistic
 model of human bug-fixing edits from a large set of popular Java projects on
-GitHub. The intuition behind this model is to be able to apply human
+GitHub.\todo{to what end/purpose?} The intuition behind this model is to be able to apply human
 knowledge\todo{Mau: this sentence stops existing. Can you please expand it to
   give a roadmap for the section as well as a high-level idea of how repair works?}
 
@@ -862,14 +863,15 @@ after-fix versions, match them to our considered mutation operators
 in the edits in our corpus. 
 We used Gumtree~\cite{falleri14}, a source code tree
 differencing framework to identify deletions and insertions, as augmented by a
-component of QACrashFix~\cite{gao15}, which allows it to account for
-replacements (in addition to insertions and deletions).
+component of QACrashFix~\cite{gao15}, which allows it to more accurately account for
+replacement edits. 
 These tools create an AST representation of each program file, both before- and after-fix, and produce a set of 
 changes performed between them. 
 
-\todo{CLG left off here in this subsection waiting for update on what the tools
-  actually output.}
-The output of these tools is a list of changes performed from before-fix to after-fix, and the mutation operators we are identifying are sets of particular changes, therefore there is no one-to-one correspondence between the list of changes and the mutation operator identification. We then greedily attempt to match the identified changes to the
+The changes output by these tools do not all directly map to the template- and
+statement-based operators we consider.  That is, there is no one-to-one
+correspondence between the list of changes and the mutation operator
+identification. We thus greedily attempt to match the identified changes to the 
 studied
 mutation operators. We seek each of the mutation operators that can match a given set
 of edits.  For example, to identify
@@ -1309,7 +1311,7 @@ patches. \todo{Mau, I may have cut this accidentally in my reorg, but add how
 \paragraph{Patch quality}
 As a proxy for patch quality (to mitigate the risk of plausible but as yet
 incorrect patches~\cite{Qi15}), we evaluate patches using a held-out test
-suite~\cite{legoues12GenProg,smith15} by automatically building a second test
+suite~\cite{legoues12Genprog,smith15} by automatically building a second test
 suite that independently describes the same behavior as the test suite that
 guides the search process.  \todo{maybe move this explanation, or maybe expand
   to say it's only for the bugs we found patches for} Figure~\ref{heldOut} describes the specifics of the
