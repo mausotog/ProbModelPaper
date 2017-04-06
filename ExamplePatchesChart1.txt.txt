@@ -11,6 +11,7 @@ PAR Expression Add:
          }
          int seriesCount = dataset.getRowCount();
 		 
+
 GP replace:
 --- ./chart1Buggy/repair/home/ubuntu/defects4j/ExamplesCheckedOut/chart1Buggy/tmp/original/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java	2016-10-18 19:34:13.000000000 +0000
 +++ ./chart1Buggy/repair/home/ubuntu/defects4j/ExamplesCheckedOut/chart1Buggy/tmp/variant5/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java	2016-10-19 09:38:47.000000000 +0000
@@ -26,6 +27,7 @@ GP replace:
          if (plot.getRowRenderingOrder().equals(SortOrder.ASCENDING)) {
              for (int i = 0; i < seriesCount; i++) {
 			 
+
 GP delete:
 --- ./chart1Buggy/repair/home/ubuntu/defects4j/ExamplesCheckedOut/chart1Buggy/tmp/original/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java	2016-10-18 19:34:13.000000000 +0000
 +++ ./chart1Buggy/repair/home/ubuntu/defects4j/ExamplesCheckedOut/chart1Buggy/tmp/variant19/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java	2016-10-18 22:11:26.000000000 +0000

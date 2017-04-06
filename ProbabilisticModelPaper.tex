@@ -603,7 +603,11 @@ The primary contributions of this paper thus are:
     from multiple state-of-the-art approaches and
     the above-mentioned models to choose between them, favoring those more commonly
     used by human developers.
-    \item \textbf{Development and integration} of this approach for the Java programming language in a tool, available online, which can apply the several different mutation operators, and the probabilistic model discussed in this study.\footnote{We will release all artifacts, code, and data associated with this publication post blind-review.} %\footnote{https://bitbucket.org/clegoues/genprog4java}
+    \item \textbf{Development and integration} of this approach for the Java
+      programming language in a tool, available online, which can apply the
+      several different mutation operators, and the probabilistic model
+      discussed in this study.\footnote{We will release all artifacts, code, and
+        data, including generated test suites, associated with this publication post blind-review.} %\footnote{https://bitbucket.org/clegoues/genprog4java}
   \item \textbf{Evaluation} of the probabilistic model in several
     contexts, including as part of a new APR approach used to repair real world bugs from well
     known open source projects (independent of those used to inform model
@@ -812,7 +816,8 @@ determine how to reimplement and use them in our context.
 In this section we describe how we mined a probabilistic
 model of human bug-fixing edits from a large set of popular Java projects on
 GitHub. The intuition behind this model is to be able to apply human
-knowledge\todo{Mau: this sentence stops existing.}
+knowledge\todo{Mau: this sentence stops existing. Can you please expand it to
+  give a roadmap for the section as well as a high-level idea of how repair works?}
 
 \subsection{Selecting the corpus}
 
@@ -835,21 +840,26 @@ that exclusively
 modify Java source code, since we focus on such bugs. Additionally, we restrict our search to commits 
 that modify a maximum of three files. We do this to exclude
 big merges, such as pull requests or initial commits, and because
-large commits are more likely to include changes unrelated to a bug fix~\cite{Dias15,Herzig13,Matsuda15,Kawrykow11}.
+large commits are more likely to include changes unrelated to a bug fix~\cite{Herzig13,Kawrykow11}.
 
 \subsection{Identifying mutations in developer commits}
 \label{sec:mining}
 
-For each bug fixing commit, we refer to the code before the fix as the
+For each considered commit, we refer to the code before the fix as the
 \emph{``before-fix"} version and the code after as the \emph{``after-fix"} version.
-We next seek to identify the changes performed between the before-fix and
-after-fix versions, to analyze how often they match our candidate mutation operators in
-question. 
+We seek to identify the changes performed between the before-fix and
+after-fix versions, match them to our considered mutation operators
+(Section~\ref{categorization}), and count how many times each operator is used
+in the edits in our corpus. 
 We used Gumtree~\cite{falleri14}, a source code tree
-differencing framework to identify deletions and insertions, and QACrashFix~\cite{gao15} which accounts for replacements.
-These tools create an AST representation of each program file, both before- and after-fix; and produce a set of 
+differencing framework to identify deletions and insertions, as augmented by a
+component of QACrashFix~\cite{gao15}, which allows it to account for
+replacements (in addition to insertions and deletions).
+These tools create an AST representation of each program file, both before- and after-fix, and produce a set of 
 changes performed between them. 
 
+\todo{CLG left off here in this subsection waiting for update on what the tools
+  actually output.}
 The output of these tools is a list of changes performed from before-fix to after-fix, and the mutation operators we are identifying are sets of particular changes, therefore there is no one-to-one correspondence between the list of changes and the mutation operator identification. We then greedily attempt to match the identified changes to the
 studied
 mutation operators. We seek each of the mutation operators that can match a given set
@@ -873,7 +883,7 @@ is a node insertion.  If so, we check if the condition in the inserted
 \emph{NullLiteral}. If so, we count this sequence of
 actions as an instance of a \emph{Null Checker} mutation operator.  These rules are
 necessarily heuristic, and we do not claim perfect soundness in our matching,
-instead aggregating counted templates over a large dataset.  
+instead aggregating results over a large dataset.  
 
 
 
@@ -902,22 +912,35 @@ instead aggregating counted templates over a large dataset.
 
 
 
-\subsection{Two-level probabilistic model for repair}
+\subsection{APR using a two-level probabilistic model}
 
-%\begin{figure}[!h]
-%  \centering
-%    \includegraphics[scale=0.4]{Picture2}
-%  \caption{Two level probabilistic model}
-%  \label{fig:probModel}
-%\end{figure}
+\begin{figure}[!h]
+ \centering
+    \includegraphics[width=\columnwidth]{Picture2}
+  \caption{Two level probabilistic model to inform operator selection and instantiation. \label{fig:probModel}}
+\end{figure}
 
-We extend an open-source implementation of the GenProg technique adapted for Java
-by implementing the mutation operators from
-Section~\ref{categorization} as well as a mechanism that allows the tool to
+We propose a novel syntactic generate-and-validate repair
+technique that differs
+from prior work first, in the range of mutation operators considered
+(Section~\ref{categorization}) and second, in how it chooses between those
+operators and instantiates them.  
+We instantiate this technique by extending an open-source implementation of
+GenProg~\cite{legoues12} adapted for Java.  We add the newly-considered mutation
+operators, and a mechanism that allows the tool to
 select between the mutation operators according to the probabilities described by
-a given model. %\footnote{https://bitbucket.org/clegoues/genprog4java}  
-We construct a two-level model that effectively counts incidences of all considered
-mutation operators, and fix code used in replacements. The two-level probabilistic model generalizes previous work proposing a replacement-only model~\cite{Soto16}:
+a provided model.\footnote{As with other artifacts, we will release a link to
+  this implementation post-blind review; the open-source repository contains
+  significant clues as to author identities.}
+Building on an existing heuristic search technique allows us to more precisely
+control for the effects of our novelties in our evaluation.  
+
+Our approach uses a two-level model (Figure~\ref{fig:probModel}) in operator
+selection/instantiation.  The first level informs the selection of the given
+mutation operator, from a set of legal operators at a given potentially-faulty
+location (e.g. \emph{Parameter replacer} cannot be applied to a \emph{BreakStatement})) .  If the operator selected is \emph{replace}, the second level of the
+model informs the seleciton of the replacement code.  These two models are
+constructed as follows: 
 
 \subsubsection{Mutation operator probabilistic model}
 The \textit{Mutation operator probabilistic model} 
@@ -928,9 +951,7 @@ To build the \textit{Mutation operator probabilistic model}
 we count the number of incidences of each mutation operator observed in our
 dataset, matched as described in Section~\ref{sec:mining}. Mutation operator probability is then
 weighted by its appearance in the dataset.  
-
-For repair of a given statement, we consider only the mutation operators applicable (e.g. we can not apply \emph{Parameter replacer} to a \emph{BreakStatement}).
-
+%
 In our dataset overall, the Template-Based mutations comprise 29.26\% of the corpus; Statement-Edit mutations make up 70.74\% of the 
 corpus.
 
@@ -953,6 +974,7 @@ probability of a \texttt{While} loop replacing a \texttt{For} loop.
 This model is built analogously to the
 mutation operator model, based on replacer/replacee statement incidence. 
 
+\vspace{1ex}
 To build both models we perform an incidence count of each mutation operator and replacement observed in our
 dataset, matched as described in Section~\ref{sec:mining}, and then apply Laplace smoothing~\cite{Russell10} with $\alpha$ = 1 to account for 0 occurrences.
 
@@ -1638,6 +1660,7 @@ built a probabilistic model to describe the replace
 operator only. They do not evaluate the model in the context of a repair
 tool, and the model is based on an instance count of statements rather than an a more 
 accurate analysis of AST differences, which our model was built from.  
+Our two-level probabilistic model thus generalizes this previous work~\cite{Soto16}:
 HDRepair~\cite{xuan16} 
 uses fix history
 to help assess patch suitability and fitness in the context of a genetic
