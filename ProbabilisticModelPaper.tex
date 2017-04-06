@@ -789,19 +789,25 @@ which replace expressions used either in conditions or on the right-hand-side of
 assignments (the operators are the same; the difference lies in how the fix code
 is selected/constructed). 
 
-We also considered the program modification tool Kali~\cite{Qi15}, whose
-templates also correspond to subsets of certain PAR templates their extensions. 
+The templates used in the program modification tool Kali~\cite{Qi15}
+also correspond to subsets of certain PAR templates or their extensions. 
 For example, \emph{Redirect Branch} can be seen as
 a subset of \emph{Expression Changer}, and \emph{Insert Return} and \emph{Remove Statement} are
 subsets of \emph{Expression Adder and Remover} accordingly. Similarly,
-many other mutation operators~\cite{Offutt06}, as used in
+many other operators from the field of mutation testing~\cite{Offutt06}, as used in
 APR~\cite{debroy10,xuan16} can be seen as subsets of the extensions of the 
 Par templates.  
 
 To summarize, these approaches have significant similarities between their
-included templates.  We have chosen the PAR templates to represent this category for the following reasons: (1) PAR comprehends the other techniques' mutation operators, (2) it provides a concrete description of how the code is changed, enabling replication, and (3) it explicitly targets Java (note that SPR, Prophet and Kali target C programs). 
+included templates.  We have chosen the PAR templates to represent this category
+for the following reasons: (1) PAR \todo{Mau: comprehends is the wrong word, what do you mean
+  instead?} comprehends the other techniques' mutation operators, (2) it
+provides a concrete description of how the code is changed, enabling
+replication, and (3) it explicitly targets Java (SPR, Prophet and Kali
+target C), reducing the extent to which we must apply subjective judgement to
+determine how to reimplement and use them in our context.
 
-\section{Building the model} \label{buildingTheModel}
+\section{Syntactic repair via a learned probabilistic edit model} \label{buildingTheModel}
 
 In this section we describe how we mined a probabilistic
 model of human bug-fixing edits from a large set of popular Java projects on
