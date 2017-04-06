@@ -1559,26 +1559,23 @@ Nonetheless, this is a state of the art test suite generation tool that mitigate
 
 There have been previous efforts to create a model based on human behavior.  
 Soto et al.~\cite{Soto16} 
-built a probabilistic model to describe the replace mutation 
-operator only, based in 
-an instance count of each statement type using the platform 
-BOA,~\cite{dyer2013}.  They do not evaluate the model in the context of a repair
-tool and model is based on an instance count of statements rather than an a more 
+built a probabilistic model to describe the replace 
+operator only. They do not evaluate the model in the context of a repair
+tool, and the model is based on an instance count of statements rather than an a more 
 accurate analysis of AST differences, which our model was built from.  
 HDRepair~\cite{xuan16} 
 uses fix history
 to help assess patch suitability and fitness in the context of a genetic
 programming search strategy. The fitness of the generated
 fix candidates is determined by the frequency with which the changes included in
-a given patch occur in the corpus using a Graph-based representation of the bug
-fixes.  Similary, Prophet~\cite{long16proph} uses a
+a given patch occur in the corpus, using a Graph-based representation of the bug
+fixes.  Similarly, Prophet~\cite{long16proph} uses a
 probabilistic model of a subset of our considered mutation operators built on 
-the history of 8 different projects. This model is used to rank candidate
-patches for evaluation.  Our approach follows this intuition to mimic human
+the history of 8 different projects to rank candidate
+patches.  Our approach follows this intuition to mimic human
 behavior; unlike the previous work, we apply this knowledge when actually
-creating patch candidates rather than when evaluating them which reduces the 
-search space at the time of creation, and we are guaranteed that all the 
-mutations created are closer to the actual goal.  
+creating patch candidates rather than when evaluating them, which reduces the 
+search space at the time of creation.  
 
 Zhong and Su~\cite{zhong15} perform an empirical study of
 real bug fixes on six projects, studying the incidence of three mutation
@@ -1587,8 +1584,7 @@ Monperrus~\cite{martinez15} similarly study mutation operator incidence across
 14 
 projects. Our work considers a broader set of
 mutation operators over a larger corpus, the largest, to the best of our
-knowledge, studied in existing work. In 
-order to counter the 
+knowledge, studied in existing work. To counter the 
 risk of overfitting to a small set of training projects as performed before, our 
 current study trains the model over 500 projects, covering a diversity 
 of domains.
@@ -1607,13 +1603,12 @@ survey many of them in Section~\ref{background}, focusing on heuristic or
 syntactic generate-and-validate techniques.  Semantic-based techniques use
 semantic analysis or reasoning~\cite{nguyen13,mechtaev15,Mechtaev2016}, or
 semantic search~\cite{ke15} to construct candidate patches.  Similarly,
-synthesis based repair is a family of techniques that uses constraints to build
-patches following the description of the constraints. These constraints may be
+synthesis-based repair is a family of techniques that uses constraints to build
+patches following the description of the constraints~\cite{jin11,wei10}. These constraints may be
 specifications created by developers, formal verification, invariants,
 etc.~\cite{jin11,wei10}.  Such techniques typically use synthesis to construct
 repairs, with a different mechanism for both constructing and traversing the
-search space, and our approach is thus less immediately comparable to these 
-kinds of approaches.
+search space, and our approach is thus less immediately comparable.
  
 
 \section{Conclusion} \label{conclusion}
