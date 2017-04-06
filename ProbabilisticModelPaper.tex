@@ -1183,7 +1183,7 @@ Chart & JFreechart & Java chart library & 2205 & 3\\
 Closure	& Closure compiler	 & JavaScript handling tool & 7927 & 4\\
 Lang	& Apache commons-lang & String manipulation classes  & 2245 & 4\\
 Math	& Apache commons-math & Mathematics components for Java & 3602 & 4\\
-Mockito &	Mockito	 & Mocking framework for junit tests & \todo{I can't find this data} & 0 \\
+%Mockito &	Mockito	 & Mocking framework for junit tests & \todo{I can't find this data} & 0 \\
 Time	& Joda-Time & Date and time classes  & 4130 & 3\\
 \bottomrule
 \end{tabular}
@@ -1194,31 +1194,28 @@ Time	& Joda-Time & Date and time classes  & 4130 & 3\\
 
 \subsubsection{Experimental setup} We consider a subset of the Defects4j~\cite{just14}
 benchmark, a database and extensible 
-framework of real bugs that enables reproducible studies in software testing 
-research. This database currently contains 395 real bugs from six
-open source programs shown in Figure~\ref{defects4j}, along with developer-provided test suites, cases that
+framework of real bugs that enables reproducible studies in software testing and
+has been preivously used to evaluate APR~\cite{Duriux15}. 
+It currently contains 395 real bugs from 6
+open source programs, along with developer-provided test suites, cases that
 expose each bug,  and
-corresponding developer-provided patches.\footnote{Note that we initiated this study when Defects4J
-  contained five subjects, and thus have no bug instances from the recently-added
-  Mockito project.} Defects4j has been previously used
-in evaluating previous work in APR~\cite{Durieux15}.
-In keeping with APR's typical focus on smaller patches, we
-restrict attention to the first bugs from each project that required a 
-single line edit.
-To diminish the degree of randomness in this experiment and control for the
-effect of the mutation probabilities specifically rather than inefficiency and noise
-in fault localization,  we manually
-set fault localization for each bug. Anecdotally, we observe that less-accurate fault localization increases the amount of
-time taken to repair these defects, but does not decrease expressive power. 
+corresponding developer-provided patches.  Figure~\ref{defects4j} characterizes
+the dataset.\footnote{Note that we initiated this study before Defects4J added
+  the Mockito project.} Because we compare to single-edit techniques, we
+restrict attention to the Defects4J bugs with single-line human patches. 
 
-When running this experiment, we set the size for each population to 40 for consistency with 
-previous work~\cite{legoues12,kim2013}, ran 20
-seeds per trial, 10 generations, a timeout of 4 hours for each run, in keeping with 
+We perform two types of repair comparisons.  First, we compare the expressive
+power (in terms of bugs fixed), variants to repair (a machine- and test
+suite-independent proxy for time), and patch quality of different sets of
+mutation operators.  That is, we instantiate our tool with three different
+operator sets:  (1) Statement-Edit mutations only (2) Template-based
+mutations only, and (3) All mutations.
+
+\todo{CLG left off here in her reorg; will return in 30 minutes, after Cody meeting.}
+When running this experiment, we set the size for each population to 40 for
+consistency with previous work~\cite{legoues12,kim2013}, ran 20 seeds per trial,
+10 generations, a timeout of 4 hours for each run, in keeping with
 recommendations on the assessment of stochastic techniques~\cite{arcuri11}.
-
-To compare the efficacy of different types of mutation operators,
-we tested three operation sets: (1) Statement-Edit mutations only (2) Template-based mutations 
-only (3) All mutations.  We average (the number of variants necessary to create a repair) overall seeds. We use number of variants as a measure for speed since it is a machine- and test suite-independent proxy for time.
 
 As a proxy for patch quality (to
 mitigate the risk of plausible but as yet incorrect patches~\cite{Qi15}), we
@@ -1287,6 +1284,19 @@ equally distributed model.
 
 
 \subsubsection{Repair results}   \label{repResults}
+
+
+To diminish the degree of randomness in this experiment and control for the
+effect of the mutation probabilities specifically rather than inefficiency and noise
+in fault localization,  we manually
+set fault localization for each bug. Anecdotally, we observe that less-accurate fault localization increases the amount of
+time taken to repair these defects, but does not decrease expressive power. 
+
+To compare the efficacy of different types of mutation operators, we tested
+three operation sets:  We average (the number of variants necessary
+to create a repair) overall seeds. We use number of variants as a measure for
+
+
 \todo{re visit this paragraph after we have the latest results}Our modified APR technique patched 5 of the 18 bugs, as shown in 
 Figure~\ref{tab:singleLineBugs}. In the first row of Figure~\ref{tab:singleLineBugs} (Closure \#10) we can see
 that in all three comparisons (Statement-Edit Only, Template-Based Only, and All
