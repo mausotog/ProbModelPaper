@@ -483,6 +483,10 @@ studied, and that using the superset of all mutation operators performs better t
 
 
 \section{Introduction} \label{introduction}
+
+\todo{note to CLG/self: say something about how fix localization is totally
+  understudied, and mention it again in the conclusion about our contribution.}
+
 % no \IEEEPARstart
 Repairing errors is one of the most 
 resource intensive tasks in 
@@ -1171,6 +1175,9 @@ correct patches.  We directly address this question next.
 \subsection{Single line bug repair}
 \label{sec:single}
 
+\todo{Maybe a roadmap}
+
+\subsubsection{Experimental questions and setup}
 \begin{figure}[ht]
 \centering
 
@@ -1192,42 +1199,8 @@ Time	& Joda-Time & Date and time classes  & 4130 & 3\\
   \label{defects4j}
 \end{figure} 
 
-\subsubsection{Experimental setup} We consider a subset of the Defects4j~\cite{just14}
-benchmark, a database and extensible 
-framework of real bugs that enables reproducible studies in software testing and
-has been preivously used to evaluate APR~\cite{Duriux15}. 
-It currently contains 395 real bugs from 6
-open source programs, along with developer-provided test suites, cases that
-expose each bug,  and
-corresponding developer-provided patches.  Figure~\ref{defects4j} characterizes
-the dataset.\footnote{Note that we initiated this study before Defects4J added
-  the Mockito project.} Because we compare to single-edit techniques, we
-restrict attention to the Defects4J bugs with single-line human patches. 
 
-We perform two types of repair comparisons.  First, we compare the expressive
-power (in terms of bugs fixed), variants to repair (a machine- and test
-suite-independent proxy for time), and patch quality of different sets of
-mutation operators.  That is, we instantiate our tool with three different
-operator sets:  (1) Statement-Edit mutations only (2) Template-based
-mutations only, and (3) All mutations.
-
-\todo{CLG left off here in her reorg; will return in 30 minutes, after Cody meeting.}
-When running this experiment, we set the size for each population to 40 for
-consistency with previous work~\cite{legoues12,kim2013}, ran 20 seeds per trial,
-10 generations, a timeout of 4 hours for each run, in keeping with
-recommendations on the assessment of stochastic techniques~\cite{arcuri11}.
-
-As a proxy for patch quality (to
-mitigate the risk of plausible but as yet incorrect patches~\cite{Qi15}), we
-evaluate patches using a held-out test suite~\cite{legoues2012,smith15} by automatically building a second
-test suite that independently describes the same behavior as the test suite that
-guides the search process. 
-
-Figure~\ref{heldOut} describes the specifics of the held out test suites. We use Randoop~\cite{pacheco07}, an established
-automatic test suite generation tool for Java, to generate this second test
-suite. We run Randoop with a ten minute budget (six times the default value) to create the held-out test suites. We also use Cobertura\footnote{http://cobertura.github.io/cobertura/} to calculate the coverage of the test suite over the class that contains the human fix. 
-
-\begin{figure}[]
+\begin{figure}
 \centering
 \begin{tabular}{llll}
 \toprule
@@ -1247,12 +1220,110 @@ Time 19 & 3650 & 75.4\% & 58.0\% \\
 \end{figure}    
 
 
+We consider two high-level research questions related to the utility of our
+learned models for repair: 
+
+\vspace{1ex}
+\noindent\textbf{RQ1: Which syntactic operators and selection models are most useful for repair?}  As
+  mentioned, the considered operators have been growing in an ad hoc manner in
+  existing APR work.  We thus first we evaluate the utility of our models in the
+  context of several different set of mutation operators (Section~\ref{oputil}). We
+instantiate our tool with each of 
+two models (the Equally Distributed baseline from Section~\ref{sec:generalize}
+and the learned Probabilistic models), and three different operator sets (1) Statement-Edit mutations only (2)
+Template-based mutations only, and (3) All mutations. We evaluate each verison
+for expressive power (in terms of bugs fixed), variants to repair (a machine-
+and test suite-independent proxy for time), and quality of the produced patches
+(evaluated as described below). 
+
+To diminish the degree of randomness in this experiment and control for the
+effect of the mutation probabilities specifically rather than inefficiency and
+noise in fault localization, we manually set the fault localization for each
+bug. Anecdotally, we observe that less-accurate fault localization increases the
+amount of time our tool needs to repair these defects, but does not decrease expressive
+power.  
+
+\vspace{1ex}
+\noindent\textbf{RQ2: How does our model-informed APR tool compare to the
+    state-of-the-art in APR?}  We compare our tool, using the best set of
+  operators as identified in the first question, to four previously-prosed APR
+  tools:  GenProg, TrpAutoRepair, PAR and Nopol.\todo{add
+  a reference for each of these.} GenProg and TrpAutoRepair use
+statement-level edits, differing in their search strategies (GenProg uses a
+genetic programming strategy; TrpAutoRepair, also known as RSRepair, a random
+walk). PAR uses GenProg's genetic programming search strategy but a different
+set of templated mutation operators, as discussed.  Nopol is a semantics-guided
+generate-and-validate repair approach that thus uses a fix code identification
+strategy that is quite different from the operators we consider.  
+
+The open-source implementation of GenProg for Java that we use implements 
+the behavior and mutation operators of these first three approaches, translated
+from their C versions (for GenProg and TRPAutoRepair) or online documentation
+and publication (for PAR, which is not released).  We use patch results released
+by the Nopol authors on this same dataset, and do not rerun their experiments.
+The authors have created patches for the same benchmark used in
+this study~\cite{martinez2016} and made their results publicly
+available.\footnote{https://github.com/Spirals-Team/defects4j-repair/tree/master/results/2017-march}
+For the comparison with Nopol we have used the more up-to-date dataset available
+in their website marked as ``March 2017".\todo{pending to add more justification
+  depending on Martin's response} 
+Note that, in this study we do not compare directly to SPR/Prophet~\cite{long16proph},
+because they use machine learning to tune the probabilities
+to rank their schemas instantiation and are thus much more difficult to reimplement
+faithfully; additionally, as established, their schemas are generlaized by the
+extended PAR templates we consider. \todo{this thought makes more sense in related work.}
+
+For the comparitive experiments, we look at expressive power (bugs repaired) and
+patch quality.  We do not compare time to repair, which is influenced by fault
+localization (which is not held constant between the techniques) and thus would
+be less informative, and because we do not have the requisite data for
+Nopol.\todo{That's true, right?}
+
+\vspace{1ex}
+We consider for repair a subset of the Defects4j~\cite{just14}
+benchmark, a database and extensible 
+framework of real bugs that enables reproducible studies in software testing and
+has been preivously used to evaluate APR~\cite{Duriux15}. 
+It currently contains 395 real bugs from 6
+open source programs, along with developer-provided test suites, cases that
+expose each bug,  and
+corresponding developer-provided patches.  Figure~\ref{defects4j} characterizes
+the dataset.\footnote{Note that we initiated this study before Defects4J added
+  the Mockito project.} Because we compare to single-edit techniques, we
+restrict attention to a subset of the Defects4J bugs with single-line human
+patches. \todo{Mau, I may have cut this accidentally in my reorg, but add how
+  many bugs we consider from each.}
+
+For the genetic programming based techniques (including our own), our population
+size is 40 (consistent with previous work), and our max generation size is 10.
+For non-GP-based techniques, our maximum considered variant count is 400; for
+all techniques, we set a timeout of 4 hours per run.  These settings are
+conssitent with prior work.  We run 20 seeds per randomized repair trial, in
+keeping with recommendations on the assessment of stochastic
+techniques~\cite{arcuri11}.
+
+As a proxy for patch quality (to mitigate the risk of plausible but as yet
+incorrect patches~\cite{Qi15}), we evaluate patches using a held-out test
+suite~\cite{legoues12GenProg,smith15} by automatically building a second test
+suite that independently describes the same behavior as the test suite that
+guides the search process.  \todo{maybe move this explanation, or maybe expand
+  to say it's only for the bugs we found patches for} Figure~\ref{heldOut} describes the specifics of the
+held out test suites. We use Randoop~\cite{pacheco07}, an established automatic
+test suite generation tool for Java, to generate this second test suite. We run
+Randoop with a ten minute budget (six times the default value) to create the
+held-out test suites. We also use
+Cobertura\footnote{http://cobertura.github.io/cobertura/} to calculate the
+coverage of the test suite over the class that contains the human fix.
+
+
+
+
 \begin{figure*}\centering
 \begin{tabular}{r|rr|rr|rr|rr|rr|rr}
 \hline
  &\multicolumn{4}{c|}{Statement-Edit Only} & \multicolumn{4}{c|}{Template-based Only} & \multicolumn{4}{c}{All Mutations} \\ 
   \hline
- & \multicolumn{2}{c|}{Equally Dist} & \multicolumn{2}{c|}{Probabilistic} & \multicolumn{2}{c|}{Equally Dist} & \multicolumn{2}{c|}{Probabilistic} & \multicolumn{2}{c|}{Equally Dist} & 
+ & \multicolumn{2}{c|}{EqDist} & \multicolumn{2}{c|}{Prob} & \multicolumn{2}{c|}{EqDist} & \multicolumn{2}{c|}{Prob} & \multicolumn{2}{c|}{EqDist} & 
  \multicolumn{2}{c}{Probabilistic} \\
 \hline
 Bug Name & Time & Quality &  Time & Quality &  Time & Quality&  Time & Quality&  Time & Quality&  Time & Quality \\
@@ -1278,26 +1349,13 @@ Math \#2 & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & {10
 
 \end{figure*}
 
-In this subsection, we compare the performance of an
-automatic program repair tool using the probabilistic model to one using the
-equally distributed model.  
 
+\subsubsection{Mutation operator utility} \label{oputil}
 
-\subsubsection{Repair results}   \label{repResults}
-
-
-To diminish the degree of randomness in this experiment and control for the
-effect of the mutation probabilities specifically rather than inefficiency and noise
-in fault localization,  we manually
-set fault localization for each bug. Anecdotally, we observe that less-accurate fault localization increases the amount of
-time taken to repair these defects, but does not decrease expressive power. 
-
-To compare the efficacy of different types of mutation operators, we tested
-three operation sets:  We average (the number of variants necessary
-to create a repair) overall seeds. We use number of variants as a measure for
-
-
-\todo{re visit this paragraph after we have the latest results}Our modified APR technique patched 5 of the 18 bugs, as shown in 
+In this subsection, we compare the performance of a program repair tool using
+each of several considered operator sets, as well as using the probabilistic
+versus the equally distributed model. 
+\todo{re visit this paragraph after we have the latest results}Our modified APR techniques patched 5 of the 18 bugs, as shown in 
 Figure~\ref{tab:singleLineBugs}. In the first row of Figure~\ref{tab:singleLineBugs} (Closure \#10) we can see
 that in all three comparisons (Statement-Edit Only, Template-Based Only, and All
 mutations), the probabilisitc model outperforms
@@ -1467,26 +1525,6 @@ boolean staleInputs = false;
         (rather than at 1)}}
 \end{figure}
 
-In this section we compare the patches produced by our approach, using all the
-mutation operations and the probabilistic model, against
-four previously-proposed tools:  GenProg, TrpAutoRepair, PAR and Nopol.\todo{add
-  a reference for each of these.}
-
-We extend an available open-source implementation of GenProg adapted for Java to
-include the behavior and mutation operators of these first three approaches,
-since they were originally built to target C (GenProg and TRPAutoRepair), or
-have not made their code available (PAR). We also compare our approach to
-Nopol~\cite{xuanNopol}, an automatic repair tool of conditional statement for
-Java programs. The authors have created patches for the same benchmark used in
-this study~\cite{martinez2016} and made their results publicly
-available.\footnote{https://github.com/Spirals-Team/defects4j-repair/tree/master/results/2017-march}
-For the comparison with Nopol we have used the more up-to-date dataset available
-in their website marked as ``March 2017".\todo{pending to add more justification
-  depending on Martin's response} 
-In this study we do not compare directly to SPR/Prophet~\cite{long16proph}
-mutation operators because they use machine learning to tune the probabilities
-to pick their schemas and is thus much harder to re implement
-faithfully. \todo{this thought makes more sense in related work.}
 
 Figure~\ref{stateOfTheArtComparison} shows results, including, for each patch,
 the number of held-out tests the patched program fails. Of the \todo{how many?}
