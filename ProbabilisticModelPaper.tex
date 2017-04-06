@@ -1322,18 +1322,18 @@ techniques~\cite{arcuri11}.
 
 \begin{figure*}\centering
 {\footnotesize
-\begin{tabular}{l|rr|rr|rr|rr|rr|rr|rr}
+\begin{tabular}{l|c|rr|rr|rr|rr|rr|rr}
 \toprule
-&& &\multicolumn{4}{c|}{Statement-Edit Only} & \multicolumn{4}{c|}{Template-based Only} & \multicolumn{4}{c}{All Mutations} \\ 
-& Held-out & Line & \multicolumn{2}{c|}{EqDist} & \multicolumn{2}{c|}{Prob} & \multicolumn{2}{c|}{EqDist} & \multicolumn{2}{c|}{Prob} & \multicolumn{2}{c|}{EqDist} & 
- \multicolumn{2}{c}{Probabilistic} \\
-Bug ID       & tests & Coverage & Time & Quality &  Time & Quality &  Time & Quality&  Time & Quality&  Time & Quality&  Time & Quality \\
+& &\multicolumn{4}{c|}{Statement-Edit Only} & \multicolumn{4}{c|}{Template-based Only} & \multicolumn{4}{c}{All Mutations} \\ 
+            &  \multicolumn{1}{c|}{Held-out // Line} & \multicolumn{2}{c|}{EqDist} & \multicolumn{2}{c|}{Prob} & \multicolumn{2}{c|}{EqDist} & \multicolumn{2}{c|}{Prob} & \multicolumn{2}{c|}{EqDist} &  \multicolumn{2}{c}{Prob} \\
+
+Bug ID       &  \multicolumn{1}{c|}{tests // Coverage} & Time & Quality &  Time & Quality &  Time & Quality&  Time & Quality&  Time & Quality&  Time & Quality \\
 \midrule
-Closure \#10 &  1493 & 5.5\% & 221.0& 100\%  & {179.5} &{100\%} & {175.1}&{100\%} & {121.3}&{100\%} & {163.3}&{100\%} & {157.4}&{100\%} \\
-Closure \#18 & 1615 & 32.1\% & \mII{Not found} & \mII{Not found} & {36.2}&{100\%} & {197.5}&{100\%} & {45.0}&{100\%} & {139.0}&{100\%} \\
-Math \#2     & 6933 & 100\%  & \mII{Not found} & \mII{Not found} & {109.4}&{0\%} & {39.6}&{0\%} & {109.4}&{0\%} & {39.6}&{0\%} \\
-Time \#19    & 3650 & 75.4\% & 94.1&{100\%} & {80.7}&{100\%} & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & {135.1}&{100\%} & {91.9}&{100\%} \\
-Chart \#1    & 4285 & 32.9\% & 1.8&{0\%} & {7.3}&{0\%} & {4.9}&{0\%} & {19.0}&{0\%} & {2.2}&{0\%} & {4.8}&{0\%} \\
+Closure \#10 & 1493 // 5.5\% & 221.0& 100\%  & {179.5} &{100\%} & {175.1}&{100\%} & {121.3}&{100\%} & {163.3}&{100\%} & {157.4}&{100\%} \\
+Closure \#18 & 1615 // 32.1\% & \mII{Not found} & \mII{Not found} & {36.2}&{100\%} & {197.5}&{100\%} & {45.0}&{100\%} & {139.0}&{100\%} \\
+Math \#2     & 6933 // 100\%  & \mII{Not found} & \mII{Not found} & {109.4}&{0\%} & {39.6}&{0\%} & {109.4}&{0\%} & {39.6}&{0\%} \\
+Time \#19    & 3650 // 75.4\% & 94.1&{100\%} & {80.7}&{100\%} & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & {135.1}&{100\%} & {91.9}&{100\%} \\
+Chart \#1    & 4285 // 32.9\% & 1.8&{0\%} & {7.3}&{0\%} & {4.9}&{0\%} & {19.0}&{0\%} & {2.2}&{0\%} & {4.8}&{0\%} \\
 \bottomrule
 \end{tabular}}
 \caption{Repair success of various models for three different operator sets.
@@ -1481,8 +1481,8 @@ compares our new technique to the previous state-of-the-art.
 {\footnotesize
 \begin{tabular}{l|c|lr|lr|lr|lr|lr}
 \toprule
-             & \multicolumn{1}{c|}{Held-out // Line}     & \mII{Probabilistic Model} & \mII{GenProg} & \mII{TrpAutoRepair} & \mII{PAR} & \mC{Nopol} \\
-Bug ID       &  \multicolumn{1}{c|}{tests // Coverage} & Edit & NFTC & Edit & NFTC & Edit & NFTC & Edit & NFTC & Edit  & NFTC  \\ 
+             & Held-out // Line     & \mII{Prob. Model} & \mII{GenProg} & \mII{TrpAutoRepair} & \mII{PAR} & \mC{Nopol} \\
+Bug ID       & tests // Coverage & Edit & NFTC & Edit & NFTC & Edit & NFTC & Edit & NFTC & Edit  & NFTC  \\ 
 \midrule
 \mR{2}{Closure \#10} & \mR{2}{1493 // 5.5\%} & SeqEx & 0 & \mCR{2}{Not found}  & \mCR{2}{Not found} & \mCR{2}{Not found} & \mR{2}{Found} & \mR{2}{28}   \\
              &                               & SeqEx & 0 &        &              &        &        &      &       &      \\
