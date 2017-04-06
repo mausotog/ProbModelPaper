@@ -494,44 +494,52 @@ bugs in
 programs (e.g.~\cite{legoues12,kim2013,Weimer13,long15SPR,long16proph,debroy10,perkins09,wei10}).
 
 One well-known class of repair techniques follows a 
-\emph{generate-and-validate} approach  (e.g., GenProg~\cite{legoues12}, 
+\emph{generate-and-validate} approach  (e.g. GenProg~\cite{legoues12}, 
 Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13TrpAutoR}
-Prophet~\cite{long16proph}, HDRepair~\cite{xuan16}), which takes as input a test suite, 
+Prophet~\cite{long16proph}, HDRepair~\cite{xuan16}, Angelix~\cite{angelix},
+Nopol~\cite{nopol}).  This approach takes as input a test suite, 
 including at
 least one failing test case exposing
 a defect, and source code to be 
-modified.  These approaches then \emph{generate} a large patch candidate space 
+modified.  These approaches then \emph{generate} candidate patches
 by applying 
 mutation operators to the original source code and \emph{validate} each by
-running the potentially patched program against the test suite, seeking a candidate that
+running the potentially patched program against the test suite.  The goal is to
+construct or identify a patch that
 leads the program to pass all input test cases. 
 
 The search space of possible patches that can repair any bug is trivially
-infinite.  The nature of this search space introduces key tensions in APR
+infinite, which introduces key tensions in APR
 technique design.  First, 
 techniques must manage the space carefully so as to traverse it in a scalable and
 effective manner.  One way that current techniques manage this problem is to
 only consider a limited set of of possible changes, or \emph{mutation operators}, 
-to apply to the code.
-There is a broad diversity of such operators used in automatic program repair, such as deleting or inserting 
-statements~\cite{legoues12}, applying templates~\cite{kim2013}, transformation 
-schemas~\cite{long16proph,long15SPR}, etc.\footnote{In this study, we exclude 
-from consideration semantic approaches, as we focus on
-candidate patches creation in the heuristic or syntactic context.} 
-Given a potentially-faulty location (typically identified using off-the-shelf fault
-localization, e.g. Tarantula~\cite{Jones02}), these APR  approaches further use heuristics or
-heuristically-informed probability distributions to select between
-mutation operators when constructing candidate patches.
+to apply to only potentially-fault code (typically identified using off-the-shelf fault 
+localization, e.g. Tarantula~\cite{Jones02}).  
+Techniques differ in the mutation operators they consider, and how those operators
+are instantiated.  Syntactically-informed APR techniques typically instantiate
+mutations by selecting repair code heuristically from elsewhere in the same
+file, module, or program.  As a simple example, example, GenProg~\cite{legoues12} can either
+delete program statements, replace one statement for another, or insert one
+statement after another; the ``fix'' statements are selected from elsewhere in
+the same program.  There is a broad diversity of such syntactic operators used
+by other APR techniques, including more complicated templated modifications~\cite{kim2013} and transformation 
+schemas~\cite{long16proph,long15SPR}.  Semantically-informed
+techniques~\cite{semfix,angelix,nopol} differ in that they use synthesis to
+construct the fix code used in instantiating program modifications.  
+Regardless, any such technique uses heuristics or heuristically-informed
+probability distributions to select between either mutation operators or fix
+code (or both) when constructing candidate patches. 
 
-However, even with these heuristics and design choices, the search space of candidate
+However, even with these design choices, the search space of candidate
 repairs for many bugs remains intractably large.  Most techniques are thus
-limited by design to producing single-edit patches (e.g., TrpAutoRepair~\cite{Qi13TrpAutoR}). 
+limited by design to producing single-edit patches (e.g. TrpAutoRepair~\cite{Qi13TrpAutoR}). 
 Those few that can theoretically produce multi-edit patches
-(e.g., GenProg~\cite{legoues12}) typically still only produce small changes in
-practice~\cite{Qi15,arcuri11}. 
+typically still only produce small changes in
+practice~\cite{Qi15,arcuri11,angelix}. 
 Indeed, patches
 consisting of several mutations are undertreated in the APR context, even though the vast majority
-of patches in existence are comprised of multiple edits~\cite{Soto16,zhong15}.
+of real bug-fixing patches are comprised of multiple edits~\cite{Soto16,zhong15}.
 
 These attempts to tackle scalability are in tension with a second major concern
 in APR research: the quality of the generated patches~\cite{Qi15}.  One way to
@@ -545,7 +553,7 @@ the search space explosion problem, ideally all while increasing the probability
 of finding correct patches.
 
 Fundamentally, in bug-fixing reality, human developers use
-certain mutation operators much more often than others (e.g., adding an \emph{IfStatement} is more common than adding a \emph{TypeDeclarationStatement})~\cite{Soto16}. In this
+certain mutation operators much more often than others (e.g. adding an \emph{IfStatement} is more common than adding a \emph{TypeDeclarationStatement})~\cite{Soto16}. In this
 work, we propose to study
 and then systematically simulate the behavior of human developers to create
 patches. This idea has been leveraged manually in the past to create
@@ -625,8 +633,10 @@ related work; Section~\ref{conclusion} concludes.
 
 In this section, we outline generate and validate repair at a high level
 (Section~\ref{sec-paradigm}), to provide the necessary background to understand our
-work, and then detail and categorize the mutation operators used in the
-state-of-the-art and that we model, mine, and leverage in our approach
+work.\footnote{We focus on relevant background in this section, and describe
+  other techniques for automatic program repair in Section~\ref{relatedWork}.}
+  We then detail and categorize the mutation operators used in prior approaches
+  for syntactic program repair and that we model, mine, and leverage in our approach
 (Section~\ref{categorization}).  
  
  
@@ -634,9 +644,9 @@ state-of-the-art and that we model, mine, and leverage in our approach
 \label{sec-paradigm}
 
 
-Figure~\ref{fig:generateandvalidate} outlines the general paradigm for generate-and-validate repair. This approach starts with source code with one or more bugs and a test suite. The test suite contains passing
-test cases to witness the correct program behavior, and failing test 
-cases exposing the behavior to be repaired.
+Figure~\ref{fig:generateandvalidate} outlines the general paradigm for generate-and-validate repair. This approach starts with source code with one or more bugs, and a test suite. The test suite contains passing
+test cases to witness the correct program behavior, and one or more failing test 
+cases to expose the behavior to be repaired.
 
 \begin{figure}[!h]
   \centering
@@ -645,35 +655,58 @@ cases exposing the behavior to be repaired.
   \label{fig:generateandvalidate}
 \end{figure}
 
-Given the inputs, a generic generate-and-validate APR approach
+A generic generate-and-validate APR approach first
 localizes the error to a smaller set of
-candidate program statements (typically using an off-the-shelf approach, e.g. Tarantula~\cite{Jones02}). 
-Candidate patches are produced by modifying the program at identified faulty 
-statements. To 
-create such a candidate patch, these techniques typically identify a subset of
-a given set of mutation operators applicable to a given location. For
+candidate program statements (typically using an off-the-shelf approach).  It
+then constructs one or more candidate patches that seek to fix the buggy
+behavior without breaking any previously-correct behavior.  
+Syntactic or heuristic approaches~\cite{examples} construct candidate patches out of one or
+more Abstract Syntax Tree (AST)-level program modifications, applied at
+at likely-faulty program locations. 
+To construct a new modification, given a likely-faulty statement, a mutation operator is selected from a
+predefined set of such operators.  This process typically excludes those that are not applicable to the
+given location or that would lead to a compilation failure. For
 example, such a filter would exclude the insertion of a call to
 \texttt{super();} in the middle of a method, as such calls are only legal at the
-first line of a constructor. Each candidate patch is applied to the input program, which is run on
+first line of a constructor.  Most mutation operators (with the exception of deletion) require ``fix'' code to fill in
+one or more ``holes'' (\emph{insert}, for example, requires code to insert at a
+location); this code is typically selected from elsewhere in the same file,
+program, or module.  
+
+Semantics-guided generate-and-validate APR~\cite{examples,esp,nopol} differ from
+the syntactic approaches described above in the types of modifications they
+consider and how they are instantiated.  
+
+Regardless of how the mutations are selec
+
+Once so constructed (of one or more such mutations), each candidate patch is
+applied to the input program, which is then run on
 one or more of the input test cases for evaluation.  If a patch leads the
 program to 
 pass all the test cases in the test suite, including those originally witnessing
 the bug, it is presented as a likely repair for the bug. 
-If not, the APR
-algorithm typically creates more candidate patches 
+If not, the APR algorithm typically creates more candidate patches 
 until it reaches a pre-defined resource limit. 
 
 Techniques vary in how they identify and choose between candidate mutation
 operators, and how they traverse the search space otherwise. For example, some
 approaches assign
-a higher priority to some candidate patches over others based on heuristics~\cite{long16proph}; others are explicitly single-edit approaches~\cite{Qi13TrpAutoR,xuanNopol,Weimer13}; others use various other
+a higher priority to some candidate patches over others based on heuristics~\cite{long16proph}; others are explicitly single-edit approaches~\cite{Qi13TrpAutoR,Weimer13}; others use various other
 random search heuristics, like a random walk~\cite{debroy10} or genetic
-programming~\cite{kim2013,legoues12}. The quality of the patches created by APR techniques is commonly evaluated by using a held-out test suite (a test suite that is from the one used to guide the search, but it outlines the same expected behavior). If the generated patch is able to pass all the test cases from the held-out test suite it is said that the patch is more likely to generalize to different tests of the same expected behavior. If the patch fails test cases from the held-out test suite it is said that the patch overfits to the test suite used for guiding and does not generalize.
+programming~\cite{kim2013,legoues12,xuan16}. 
 
-We discuss other techniques for automatic program repair in
-Section~\ref{relatedWork}.
 
-\subsection{Generate and validate mutation operators} 
+The quality of the patches created
+by APR techniques is commonly evaluated by using a held-out test suite (a test
+suite that is from the one used to guide the search, but it outlines the same
+expected behavior). If the generated patch is able to pass all the test cases
+from the held-out test suite it is said that the patch is more likely to
+generalize to different tests of the same expected behavior. If the patch fails
+test cases from the held-out test suite it is said that the patch overfits to
+the test suite used for guiding and does not generalize. 
+
+
+\subsection{Generate-and0validate mutation operators} 
 \label{categorization}
 
 We categorize mutation operators used to create patches from a cross
