@@ -491,7 +491,7 @@ the software development process~\cite{Weiss07,Tassey02,Britton13}, especially f
 Significant recent research effort has been dedicated to
 building automatic program repair (APR) tools that are able to address
 bugs in 
-programs (e.g.~\cite{legoues12,kim2013,Weimer13,long15SPR,long16proph,debroy10,perkins09,wei10}).
+programs (e.g.~\cite{legoues12,kim2013,Weimer13,fan15SPR,long16proph,debroy10,perkins09,wei10}).
 
 One well-known class of repair techniques follows a 
 \emph{generate-and-validate} approach  (e.g. GenProg~\cite{legoues12}, 
@@ -560,7 +560,7 @@ patches. This idea has been leveraged manually in the past to create
 mutation operators that produce more human-acceptable patches~\cite{kim2013} and
 to inform patch \emph{ranking} (rather than
 construction) when traversing the search space~\cite{xuan16,long16proph}. 
-Our primary supposition is that our approach can scalably support a richer
+Our key supposition is that our approach can scalably support a richer
 search space constructed via more expressive mutation operators that are more
 likely to produce high-quality patches.  
 
@@ -570,14 +570,14 @@ the possible mutation operators based on
 empirical data that describes how human programmers fix their code.  
 The APR search space, including the various mutation
 operators used by different techniques, has been growing in a relatively ad hoc 
-manner.  We mitigate this effect by categorizing and comparing a superset of
+manner by the different approaches created in the latest years. We mitigate this effect by categorizing and comparing a superset of
 mutation operators in use in a number of 
-state-of-the-art approaches.
-We use the constructed model to inform a repair approach that chooses from the set of possible
-operators based on these real-world incidences.
-As a result, we go beyond prior work  by generalizing
+state-of-the-art approaches~\cite{legoues12,Weimer13,kim2013,long16proph}.
+We use this model to inform a repair approach that chooses from the set of possible
+operators based on these real-world probabilities.
+As a result, our work goes beyond prior work  by generalizing
 to a broader and more expressive set of
-mutation operators, and using a fully-automatically-mined probability model much 
+mutation operators, and using a fully-automatically-mined model much 
 earlier in the APR process, when patch candidates are actually \emph{created.}
 Furthermore, we propose and initially validate a new approach for modeling
 multi-edit repairs based on mining previous rules from historical edit data, 
@@ -597,7 +597,8 @@ The primary contributions of this paper thus are:
       from the 100 most recent bug fixes from the 500 most popular Java projects on
     Github. This study also provides a deeper
     understanding of which mutation operators are used by programmers to fix
-    errors in source code.
+    errors in source code, and the frequency of each of the mutation operators
+    analyzed. 
 	\item \textbf{New Repair Approach}, which uses mutation operators
     from multiple state-of-the-art approaches and
     the above-mentioned models to choose between them, favoring those more commonly
@@ -606,13 +607,11 @@ The primary contributions of this paper thus are:
   \item \textbf{Evaluation} of the probabilistic model in several
     contexts, including as part of a new APR approach used to repair real world bugs from well
     known open source projects (independent of those used to inform model
-    construction). We independently evaluate generate patch quality using a held-out test
+    construction). We independently evaluate patch quality using a held-out test
     suite. We conclude that by creating candidate patches using human behavior
     we are able to find patches faster than a technique that does not use such
     mined probabilities, and that the patch creation
-    process benefits from combining mutation operator categories.  We compare
-    our approach to several state-of-the-art approaches in terms of patch
-    success and quality. 
+    process benefits from combining mutation operator categories. We also evaluate the quality of the patches found by our approach by running an automatically generated held-out test suite, and comparing the degree to which our patches generalize. We compare against patches created by current state of the art tools in the same bugs and how they generalize to the held-out test suite.
   \item \textbf{Multi-edit repair approach} A proposed technique, and an initial
     validation thereof, to construct 
     bug-fixing patches requiring several mutations by mining and then applying association
@@ -626,7 +625,7 @@ approaches (Section~\ref{background}). Section~\ref{buildingTheModel}
 describes our approach to building probabilistic models of human 
 edits for both single- and multi-edit bug fixes. Section~\ref{evaluation}
 describes our evaluation. Section~\ref{relatedWork} describes
-related work; Section~\ref{conclusion} concludes. 
+related work; Section~\ref{conclusion} talks about the conclusions found in this study. 
 
 \section{Generate-and-validate repair and operators} 
 \label{background}
@@ -728,7 +727,7 @@ method calls. In these approaches, the statements being appended or replaced typ
 Another family of approaches instantiates
 predetermined templates, more complex than those in the first family of
 approaches, at applicable code locations.  This family includes PAR~\cite{kim2013}, 
-SPR~\cite{long15SPR}, and 
+SPR~\cite{fan15SPR}, and 
 Prophet~\cite{long16proph}.
 
 PAR is the product of a study of a large number of 
@@ -796,11 +795,10 @@ Par templates.
 To summarize, these approaches have significant similarities between their
 included templates.  We have chosen the PAR templates to represent this category for the following reasons: (1) PAR comprehends the other techniques' mutation operators, (2) it provides a concrete description of how the code is changed, enabling replication, and (3) it explicitly targets Java (note that SPR, Prophet and Kali target C programs). 
 
-\section{Model-based program repair} \label{buildingTheModel}
+\section{Building the model} \label{buildingTheModel}
 
 In this section we describe how we mined a probabilistic
 model of human bug-fixing edits from a large set of popular Java projects on GitHub. The intuition behind this model is to be able to apply human knowledge
-
 
 \subsection{Selecting the corpus}
 

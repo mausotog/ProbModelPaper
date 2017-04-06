@@ -1,0 +1,110 @@
+PAR Expression Add:
+--- ./chart1Buggy/repair/home/ubuntu/defects4j/ExamplesCheckedOut/chart1Buggy/tmp/original/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java	2017-01-31 22:43:25.000000000 +0000
++++ ./chart1Buggy/repair/home/ubuntu/defects4j/ExamplesCheckedOut/chart1Buggy/tmp/variant139/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java	2017-02-01 07:06:39.000000000 +0000
+@@ -1794,7 +1794,7 @@
+         }
+         int index = this.plot.getIndexOf(this);
+         CategoryDataset dataset = this.plot.getDataset(index);
+-        if (dataset != null) {
++        if (dataset != null && this.plot == null) {
+             return result;
+         }
+         int seriesCount = dataset.getRowCount();
+		 
+GP replace:
+--- ./chart1Buggy/repair/home/ubuntu/defects4j/ExamplesCheckedOut/chart1Buggy/tmp/original/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java	2016-10-18 19:34:13.000000000 +0000
++++ ./chart1Buggy/repair/home/ubuntu/defects4j/ExamplesCheckedOut/chart1Buggy/tmp/variant5/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java	2016-10-19 09:38:47.000000000 +0000
+@@ -1794,9 +1794,7 @@
+         }
+         int index = this.plot.getIndexOf(this);
+         CategoryDataset dataset = this.plot.getDataset(index);
+-        if (dataset != null) {
+-            return result;
+-        }
++        this.itemLabelGeneratorList = new ObjectList();
+         int seriesCount = dataset.getRowCount();
+         if (plot.getRowRenderingOrder().equals(SortOrder.ASCENDING)) {
+             for (int i = 0; i < seriesCount; i++) {
+			 
+GP delete:
+--- ./chart1Buggy/repair/home/ubuntu/defects4j/ExamplesCheckedOut/chart1Buggy/tmp/original/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java	2016-10-18 19:34:13.000000000 +0000
++++ ./chart1Buggy/repair/home/ubuntu/defects4j/ExamplesCheckedOut/chart1Buggy/tmp/variant19/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java	2016-10-18 22:11:26.000000000 +0000
+@@ -1795,7 +1795,8 @@
+         int index = this.plot.getIndexOf(this);
+         CategoryDataset dataset = this.plot.getDataset(index);
+         if (dataset != null) {
+-            return result;
++            {
++			}
+         }
+         int seriesCount = dataset.getRowCount();
+         if (plot.getRowRenderingOrder().equals(SortOrder.ASCENDING)) {
+		 
+		 
+GP replace:
+--- ./chart1Buggy/repair/home/ubuntu/defects4j/ExamplesCheckedOut/chart1Buggy/tmp/original/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java	2016-10-18 19:34:13.000000000 +0000
++++ ./chart1Buggy/repair/home/ubuntu/defects4j/ExamplesCheckedOut/chart1Buggy/tmp/variant79/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java	2016-10-19 01:48:22.000000000 +0000
+@@ -1794,9 +1794,9 @@
+         }
+         int index = this.plot.getIndexOf(this);
+         CategoryDataset dataset = this.plot.getDataset(index);
+-        if (dataset != null) {
+-            return result;
+-        }
++        if (plot == null) {
++			throw new IllegalArgumentException("Null 'plot' argument.");
++		}
+         int seriesCount = dataset.getRowCount();
+         if (plot.getRowRenderingOrder().equals(SortOrder.ASCENDING)) {
+             for (int i = 0; i < seriesCount; i++) {
+			 
+			 
+TRP delete:
+--- ./chart1Buggy/repair/home/ubuntu/defects4j/ExamplesCheckedOut/chart1Buggy/tmp/original/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java	2016-09-12 22:17:22.000000000 +0000
++++ ./chart1Buggy/repair/home/ubuntu/defects4j/ExamplesCheckedOut/chart1Buggy/tmp/variant32/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java	2016-09-12 23:28:03.000000000 +0000
+@@ -1795,8 +1795,7 @@
+         int index = this.plot.getIndexOf(this);
+         CategoryDataset dataset = this.plot.getDataset(index);
+         if (dataset != null) {
+-            return result;
+-        }
++		}
+         int seriesCount = dataset.getRowCount();
+         if (plot.getRowRenderingOrder().equals(SortOrder.ASCENDING)) {
+             for (int i = 0; i < seriesCount; i++) {
+			 
+Prob delete:
+diff -r -w chart1control/source/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java chart1d601/source/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java
+1797,1798c1797
+<         if (dataset != null) {
+<             return result;
+---
+>         {
+
+Prob replace:
+diff -r -w chart1control/source/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java chart1r602_154/source/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java
+1797,1799c1797,1798
+<         if (dataset != null) {
+<             return result;
+<         }
+---
+>         if (dataset != null)
+> 			this.rowCount = dataset.getRowCount();
+
+
+Prob sequence exchange:
+diff -r -w chart1control/source/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java chart1sqncEx601_177/source/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java
+1797,1798c1797,1798
+<         if (dataset != null) {
+<             return result;
+---
+>         if (dataset == null) {
+> 			return null;
+
+
+Prob sequence exchange:
+diff -r -w chart1control/source/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java chart1sqncEx601_596/source/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java
+1797c1797
+<         if (dataset != null) {
+---
+>         if (this.plot == null) {
