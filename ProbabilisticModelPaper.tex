@@ -521,7 +521,7 @@ the search space explosion problem, ideally all while increasing the probability
 of finding correct patches.
 
 Fundamentally, in bug-fixing reality, human developers use
-certain mutation operators much more often than others (e.g., adding an \emph{IfStatement} is \emph{probably} \todo{I guess this word "probably" here means that the probabilities are higher, but it sounds weird in the context} more common than adding a \emph{TypeDeclarationStatement})~\cite{Soto16}. In this
+certain mutation operators much more often than others (e.g., adding an \emph{IfStatement} is \emph{probably} more common than adding a \emph{TypeDeclarationStatement})~\cite{Soto16}. In this
 work, we propose to study
 and then systematically simulate the behavior of human developers to create
 patches. This idea has been leveraged manually in the past to create
@@ -717,7 +717,7 @@ shown in the Bottom section of Figure~\ref{approachTemplates}.
 3) Value Replacement  & 6) Condition Introduction \\
 \\
 \end{tabular}
-  \caption{(Top) PAR fix templates. (Middle) PAR extra templates. (Bottom) SPR transformation schemas. \todo{I tried making everything a Figure, but it takes so much more space that way that I made some of them tables}}
+  \caption{(Top) PAR fix templates. (Middle) PAR extra templates. (Bottom) SPR transformation schemas.}
   \label{approachTemplates}
 \end{figure}
 
@@ -947,7 +947,7 @@ We evaluate our model both independently and as part of an automatic repair
 technique.  We first evaluate the predictive power of the model by analyzing the
 number of correctly predicted mutation operators across a large dataset, using 10 fold cross
 validation to mitigate and assess the risk of overfitting
-(Section~\ref{sec:generalize}). We evaluate our new APR approach on 15 \todo{maybe change this 15 if we get more results} different bugs from the Defects4j platform (Section \ref{repResults}) both in terms of speed, measured in the number of variants it takes to find a patch, and quality, by comparing against the patches created for these same bugs by other state-of-the-art repair techniques.  Finally, we present the most common 
+(Section~\ref{sec:generalize}). We evaluate our new APR approach on 18 \todo{ change this number if we get more results} different bugs from the Defects4j platform (Section~\ref{repResults}) both in terms of speed, measured in the number of variants it takes to find a patch, and quality, by comparing against the patches created for these same bugs by other state-of-the-art repair techniques.  Finally, we present the most common 
 association rules between mutation operators in our corpus
 (Section~\ref{armRes}). 
 
@@ -956,12 +956,12 @@ association rules between mutation operators in our corpus
 
 
 
-\subsection{Setting up the experiment}
+\subsection{Experimental setup}
 All experiments are performed on a server 
 consisting of 16 processors Intel(R) Xeon(R) CPU E5-2699 v3, with 2.30 GHz each
 processor, 46080 KB cache each, and 32 GB RAM memory, operating system Ubuntu 
 14.04.5 LTS.
-\todo{You mentioned to update this specs with the new specs, but this part of the experiment was ran with the old specs (detailed here), so I think it makes sense to keep these?}
+
 
 
 \begin{figure}[ht]
@@ -971,32 +971,32 @@ processor, 46080 KB cache each, and 32 GB RAM memory, operating system Ubuntu
 \hline
 Identifier & Project name & Description & Test cases & Bugs considered \\
 \hline
-Chart & JFreechart & Java chart library \\
-Closure	& Closure compiler	 & JavaScript handling tool & & \\
-Lang	& Apache commons-lang & String manipulation classes  & &\\
-Math	& Apache commons-math & Mathematics components for Java & & \\
-Mockito &	Mockito	 & Mocking framework for junit tests & & \\
-Time	& Joda-Time & Date and time classes  & & \\
+Chart & JFreechart & Java chart library & 2205 & 3\\
+Closure	& Closure compiler	 & JavaScript handling tool & 7927 & 4\\
+Lang	& Apache commons-lang & String manipulation classes  & 2245 & 4\\
+Math	& Apache commons-math & Mathematics components for Java & 3602 & 4\\
+Mockito &	Mockito	 & Mocking framework for junit tests & \todo{I can't find this data} & 0 \\
+Time	& Joda-Time & Date and time classes  & 4130 & 3\\
 \hline
 \end{tabular}
 \newline
 \center
-  \caption{Description of projects that conform Defects4j \todo{re check the number in the last column}}
+  \caption{Description of projects that comprise Defects4j \todo{re visit the number in the last column to see if we have found a new patch}}
   \label{defects4j}
 \end{figure} 
 
-We consider for repair a subset of the Defects4j~\cite{just14}
+We consider a subset of the Defects4j~\cite{just14}
 benchmark, a database and extensible 
 framework of real bugs that enables reproducible studies in software testing 
 research. This database currently contains 395 real bugs from six
-open source programs as stated in Figure~\ref{defects4j}, along with developer-provided test suites, cases that
+open source programs shown in Figure~\ref{defects4j}, along with developer-provided test suites, cases that
 expose each bug,  and
 corresponding developer-provided patches.\footnote{Note that we initiated this study when Defects4J
   contained five subjects, and thus have no bug instances from the recently-added
   Mockito project.} Defects4j has been previously used
 in evaluating previous work in APR~\cite{Durieux15}.
 In keeping with APR's typical focus on smaller patches, we
-restrict attention to the first three \todo{re check this number} bugs from each project that required a 
+restrict attention to the first bugs from each project that required a 
 single line edit.
 To diminish the degree of randomness in this experiment and control for the
 effect of the mutation probabilities specifically rather than inefficiency and noise
@@ -1005,7 +1005,7 @@ set fault localization for each bug. Anecdotally, we observe that less-accurate 
 time taken to repair these defects, but does not decrease expressive power. 
 
 When running this experiment, we set the size for each population to 40 for consistency with 
-previous work~\cite{legoues12,kim2013}, we ran 20
+previous work~\cite{legoues12,kim2013}, ran 20
 seeds per trial, 10 generations, a timeout of 4 hours for each run, in keeping with 
 recommendations on the assessment of stochastic techniques~\cite{arcuri11}.
 
@@ -1165,11 +1165,11 @@ Test fold	& Instances&Prob&	EqDist&Instances&Prob&	EqDist \\
 9	& 82&88\%	&8\%  & 14568& 93\%& 62\% \\
 10	& 116&100\%	&31\% & 19140 & 95\% & 6\% \\
 	\hline
-Mean	&87.7	&24.7  & 94.3 & 37.9 & 192.9 & 15458.6 \\
+Mean	& 192.9 &87.7	&24.7& 15458.6  & 94.3 & 37.9  \\
 	\hline
-Std dev	&9.33&	8.01  & 0.94 & 30.49 & 320.23 & 2530.27 \\
+Std dev	& 320.23&9.33&	8.01 & 2530.27 & 0.94 & 30.49   \\
 	\hline
-Sum& 877 & 247 & 943 & 379 & 1929 &  154586\\
+Sum & 1929&877 & 247 &  154586& 943 & 379  \\
 
 
 \hline
@@ -1182,7 +1182,7 @@ Sum& 877 & 247 & 943 & 379 & 1929 &  154586\\
     this is an improvement of almost a factor of 4 when compared to the equally
     distributed model. The mutations model(middle) is able to predict the
     correct mutation to be applied almost by a factor of 3 when compared to the
-    equally distribured. The instance count, is the number of actual instances in each fold when running cross validation on each of the different models.} 
+    equally distribured. The instance count is the number of actual instances in each fold when running cross validation on each of the different models.} 
   \label{results10fcv}
 \end{figure} 
 
@@ -1198,7 +1198,7 @@ guesses of both the equally distributed and the replacements model. The
 third and fourth columns show the percentage of correctly predicted
 instances using the top five  
 guesses of the sub-model of each of the folds for the replacements model. The sixth and seventh columns are percentage of correctly predicted instances for the mutations model. Columns two and five show
-the number of instances in each of the folds. We have a difference of 63\% between the means of the two models in the replacements model, and a difference of 56.4\% between the mean values of correctly predicted instances in the probabilistic and equally distributed models for the mutations model. \todo{a)is it statistically significant?, b)what did we learn?}
+the number of instances in each of the folds. We have a difference of 63\% between the means of the two models in the replacements model, and a difference of 56.4\% between the mean values of correctly predicted instances in the probabilistic and equally distributed models for the mutations model. \todo{a)is it statistically significant?} We can infer from the data presented that the use of a probabilistic model is beneficial to find the correct mutation operator to patch a bug faster and with higher accuracy. We can also infer that when using the probabilistic model the search space is built in an informed manner, therefore the probabilities of obtaining the correct patch are higher due to the fact that this approach doesn't have to blindly look in all the search space as the equally distributed approach.
 
 
 \subsection{Single line bug repair}
@@ -1241,7 +1241,7 @@ equally distributed model.
 
 
 \subsubsection{Repair results}   \label{repResults}
-\todo{re visit this parragraph after we have the latest results}Our modified APR technique patched 5 of the 15 bugs, as shown in 
+\todo{re visit this paragraph after we have the latest results}Our modified APR technique patched 5 of the 18 bugs, as shown in 
 Figure~\ref{tab:singleLineBugs}. In the first row of Figure~\ref{tab:singleLineBugs} (Closure \#10) we can see
 that in all three comparisons (Statement-Edit Only, Template-Based Only, and All
 mutations), the probabilisitc model outperforms
@@ -1342,7 +1342,7 @@ executions).
 \subsection{Comparison against state of the art approaches}
 In this section we compare our approach, using all the mutation operations and the probabilistic model, against those patches found in the same benchmark by different state of the art tools.
 We evaluate against four different state of the art tools targeting Java: GenProg, TrpAutoRepair, PAR and Nopol.
-We extend an available open-source implementation of GenProg adapted for Java to include the behavior and mutation operators of these first three approaches, since they were originally built to target C (GenProg and TRPAutoRepair), or have not made their code available (PAR). We also compare our approach to Nopol~\cite{xuanNopol}, an automatic repair tool of conditional statement for Java programs. The authors have created patches for the same benchmark used in this study~\cite{martinez2016} and made their results publicly available.\footnote{https://github.com/Spirals-Team/defects4j-repair/tree/master/results/2017-march} For the comparison with Nopol we have used the more up-to-date dataset available in their website marked as ``March 2017".\todo{pending to add more justification depending on Martin's response}
+We extend an available open-source implementation of GenProg adapted for Java to include the behavior and mutation operators of these first three approaches, since they were originally built to target C (GenProg and TRPAutoRepair), or have not made their code available (PAR). We also compare our approach to Nopol~\cite{xuanNopol}, an automatic repair tool of conditional statement for Java programs. The authors have created patches for the same benchmark used in this study~\cite{martinez2016} and made their results publicly available.\footnote{https://github.com/Spirals-Team/defects4j-repair/tree/master/results/2017-march} For the comparison with Nopol we have used the more up-to-date dataset available in their website marked as ``March 2017".
 In this study we do not compare directly to SPR/Prophet~\cite{long16proph} mutation operators because they use machine learning to tune the probabilities to pick their schemas and is thus much harder to re implement faithfully.
 
 Figure~\ref{stateOfTheArtComparison} shows the status of the different patches found by each of the different approaches and next to each patch a description regarding if the patch passed the held out test suite or failed it.          
@@ -1462,7 +1462,7 @@ rules with over 90\% Confidence and 0.1\% Support:\footnote{We will release the 
 \end{itemize}
 
 Append is the most common single edit mutation operator applied by developers. This behavior is
-reflected in the fact that it is the consequent in the all the top ten mined
+reflected in the fact that it is the consequent in the all the top mined
 rules.  
 
 \paragraph {Replacement rules} We also analyzed association rules for the
@@ -1488,7 +1488,7 @@ The best rules we found are: \todo{we can shorten this to 5 if necessary}
 %Similar to the one described above, the authors have made available the full list of association rules with over 90\% Confidence and 0.01\% Support.\footnote{https://goo.gl/omk60t}
 %REPLACE FOR CAMERA READY: https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningReplacements.txt
 
-Association rules are able to provide an intuition of which common patterns of behavior developers use. These rules tell us what edits happen frequently together, which will help us further understand multi-edit source code changes, an understudied area that covers the majority of real life patches.
+Association rules provide an intuition of which common patterns of behavior developers use. These rules tell us what edits happen frequently together, which will help us further understand multi-edit source code changes, an understudied area that covers the majority of real life patches.
 
 \section{Threats to Validity} \label{threatsVal}
 
