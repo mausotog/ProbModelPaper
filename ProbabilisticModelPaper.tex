@@ -1015,7 +1015,7 @@ only (3) All mutations.  We average (the number of variants necessary to create 
 
 As a proxy for patch quality (to
 mitigate the risk of plausible but as yet incorrect patches~\cite{Qi15}), we
-evaluate patches using a held-out test suite~\cite{legoues2012,Smith15} by automatically building a second
+evaluate patches using a held-out test suite~\cite{legoues2012,smith15} by automatically building a second
 test suite that independently describes the same behavior as the test suite that
 guides the search process. 
 
@@ -1453,12 +1453,12 @@ source code changes.
 
 \paragraph{Mutation operator rules}
 We mine rules from our corpus as described in Section~\ref{multEdit}.  
-These rules are ranked by their confidence; in this case, the top 10 \todo{we can shorten this to 5 rules if we need space} rules shown
+These rules are ranked by their confidence. In this case, the top 10 \todo{we can shorten this to 5 rules if we need space} rules shown
 below have a confidence of 100\%, meaning that in 100\% of the cases
 studied, every transaction that showed the antecedent also showed the consequent.
 They are obtained with a 1\% support, which means that each of these rules
-individually appear in at least 1\% of all the transactions of the overall
-corpus. We show the top ten association rules for the mining of single edit 
+individually appear in at least 1\% of all the transactions in the
+corpus. We show the top association rules for the mining of single edit 
 mutation operators to indicate the structure of the rules; and release the full set of mined
 rules with over 90\% Confidence and 0.1\% Support:\footnote{We will release the full list of mutation operator rules post blind-review.} %\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt}} 
 
@@ -1483,11 +1483,10 @@ Append is the most common single edit mutation operator applied by developers. T
 reflected in the fact that it is the consequent in the all the top ten mined
 rules.  
 
-\paragraph {Replacement rules} We have also analyzed association rules for the
+\paragraph {Replacement rules} We also analyzed association rules for the
 replacements model, obtaining
-the following rules with a 0.01\% Support and 90\% Confidence.
-We have released a full set of these replacement rules.\footnote{We will release the full list of replacement rules post blind-review.} %\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningReplacements.txt}} 
-The ten best rules we found are:
+the following rules with a 0.01\% Support and 90\% Confidence.\footnote{We will release the full list of replacement rules post blind-review.} %\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningReplacements.txt}} 
+The best rules we found are: \todo{we can shorten this to 5 if necessary}
 %Minimum support: 0.0001 (1 instances)
 %Minimum metric <confidence>: 0.9
 %Number of cycles performed: 20
@@ -1507,6 +1506,8 @@ The ten best rules we found are:
 %Similar to the one described above, the authors have made available the full list of association rules with over 90\% Confidence and 0.01\% Support.\footnote{https://goo.gl/omk60t}
 %REPLACE FOR CAMERA READY: https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningReplacements.txt
 
+Association rules are able to provide an intuition of which common patterns of behavior developers use. These rules tell us what edits happen frequently together, which will help us further understand multi-edit source code changes, an understudied area that covers the majority of real life patches.
+
 \section{Threats to Validity} \label{threatsVal}
 
 \noindent\textbf{Internal validity:}
@@ -1522,16 +1523,15 @@ data.
 %in the project mentioned before 
 
 \noindent\textbf{External validity:} 
-Regarding the generalizability of our findings, it is possible 
-that our results will not generalize external datasets and further
-real life bugs. To mitigate this concern, we evaluate 
-on a state of the art bug-mining including bugs from well-known open-source
+It is possible 
+that our results will not generalize to external datasets and to
+real bugs. To mitigate this concern, we build our model from well-known open-source
 programs, covering a diversity of applications, and distinct from the dataset
-from which the models were mined. 
+from which the models were mined, and we evaluate our approach with bugs from an open-source framework.
 
-The authors acknowledge the risk of producing bad quality patches that would not 
+There is also risk of producing low quality patches that would not 
 generalize
-to a different description of the behavior the program should have. We attenuate 
+to a different description of desired program behavior. We attenuate 
 this by 
 assessing the quality of the generated patches with a held-out test suite.
 There is risk in the fact that we are manually giving the
@@ -1544,7 +1544,7 @@ only without the noise that fault localization might introduce.
 Regarding the suitability of our evaluation metrics, we evaluate patch
 quality by running the generated patches on a second test suite created
 from a human patch, which is to a certain extent a biased measure since we can
-not guarantee that the human created patch is perfect. Nevertheless, we consider 
+not guarantee that the human created patch is perfect~\cite{smith15}. Nevertheless, we consider 
 this to be a
 best known practice, since this way we provide an alternative to subjectively 
 asking a biased human developer
@@ -1553,8 +1553,7 @@ whether he/she considered the patch to be correct or not.
 We also rely on Randoop~\cite{pacheco07} as our test suite generation mechanism 
 for the held-out test suite used for evaluation, and we acknowledge that the 
 test suites created by this tool may not be perfect, nor provide full coverage. 
-But nonetheless, this is a state of the art test suite generation tool that 
-provides high quality test suites, in our case, for evaluation purposes.
+Nonetheless, this is a state of the art test suite generation tool that mitigates the risk of bias in manually constructing evaluation test suites.
 
 \section{Related Work} \label{relatedWork}
 
