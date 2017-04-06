@@ -108,6 +108,30 @@
 % The latest version can be obtained at:
 % http://www.ctan.org/pkg/cite
 % The documentation is contained in the cite.sty file itself.
+\lstset{language=Java}
+\definecolor{dkgreen}{rgb}{0,0.5,0}
+\definecolor{dkred}{rgb}{0.5,0,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\lstset{
+basicstyle=\ttfamily\bfseries\scriptsize,
+  morekeywords={virtualinvoke}, 
+  keywordstyle=\color{blue},
+  ndkeywordstyle=\color{red},
+  commentstyle=\color{dkred},
+  stringstyle=\color{dkgreen},
+  numbers=left,
+  breaklines=true,
+  numberstyle=\ttfamily\footnotesize\color{gray},
+  stepnumber=1,
+  numbersep=10pt,
+  backgroundcolor=\color{white},
+  tabsize=4,
+  showspaces=false,
+  frame=bt,
+  showstringspaces=false,
+  xleftmargin=.23in,
+  moredelim=[is][\color{red}]{@}{@}, deletekeywords={}, captionpos=b, belowskip=1pt
+}
 
 
 
@@ -1087,20 +1111,10 @@ random folds. For each
 fold, we use one fold for testing, and the remaining nine for training. We aggregate the results over all 10 folds counting the number of testing instances that are correctly predicted 
 by the first five guesses from the training sub-model.   
 
-\lstdefinestyle{base}{
-  language=Java,
-  emptylines=1,
-  breaklines=true,
-  basicstyle=\ttfamily\color{black},
-  moredelim=**[is][\color{red}]{@}{@},
-  xleftmargin=20pt, frame=bt, basicstyle={\footnotesize\tt}, numbers=left, keywordstyle=\bfseries, 
-	numberstyle=\scriptsize\tt,  moredelim=[is][\color{red}]{@}{@}, deletekeywords={}, captionpos=b, belowskip=1pt, autogobble=true
-}
-
 To illustrate, consider a simple example. Assume the following
 simple bug-fixing patch from our corpus: 
 
-\begin{lstlisting}[frame=single,style=base]
+\begin{lstlisting}[frame=single]
 + if(i > l.size()) {
     return l.get(i); @//original faulty location@
 +  }    
@@ -1293,7 +1307,7 @@ that all pass the second test suite, or it produces patches that do not.
 \subsubsection{Repair example} \label{examPatches}
 
 \begin{figure}[t]
-\begin{lstlisting}[frame=single,style=base]
+\begin{lstlisting}[frame=single]
 LegendItemCollection result = 
   new LegendItemCollection();
 if (this.plot == null) {
@@ -1313,7 +1327,7 @@ int seriesCount=dataset.getRowCount();
 \end{figure}
 
 \begin{figure}[t]
-\begin{lstlisting}[frame=single,style=base]
+\begin{lstlisting}[frame=single]
 LegendItemCollection result = 
   new LegendItemCollection();
 if (this.plot == null) {
@@ -1354,59 +1368,9 @@ necessary at present (and whose state may have unknown effects in other
 executions). 
 
 \subsection{Comparison against state of the art approaches}
-In this section we compare our approach, using all the mutation operations and the probabilistic model, against those patches found in the same benchmark by different state of the art tools.
-We evaluate against four different state of the art tools targeting Java: GenProg, TrpAutoRepair, PAR and Nopol.
-We extend an available open-source implementation of GenProg adapted for Java to include the behavior and mutation operators of these first three approaches, since they were originally built to target C (GenProg and TRPAutoRepair), or have not made their code available (PAR). We also compare our approach to Nopol~\cite{xuanNopol}, an automatic repair tool of conditional statement for Java programs. The authors have created patches for the same benchmark used in this study~\cite{martinez2016} and made their results publicly available.\footnote{https://github.com/Spirals-Team/defects4j-repair/tree/master/results/2017-march} For the comparison with Nopol we have used the more up-to-date dataset available in their website marked as ``March 2017".\todo{pending to add more justification depending on Martin's response}
-In this study we do not compare directly to SPR/Prophet~\cite{long16proph} mutation operators because they use machine learning to tune the probabilities to pick their schemas and is thus much harder to re implement faithfully.
 
-Figure~\ref{stateOfTheArtComparison} shows the status of the different patches found by each of the different approaches and next to each patch a description regarding if the patch passed the held out test suite or failed it.          
-Figure~\ref{stateOfTheArtComparison} shows the patches created by our approach, five of them pass the held-out test suite (45.5\%). None of the GenProg, TRPAutorRepair, or PAR patches fully generalize; and 25\% of Nopol's patches are able to generalize. This gives us confidence that our approach produces high quality patches in comparison with the alternatives created by state-of-the-art tools.
-
-One example in which we can very clearly see the success of our approach when applying the probabilistic model is Closure 18 as seen in Figure~\ref{closure18prob} where, not only did our approach created the exact same patch as the human did, but also our approach was able to find the patch within the time frame specified before the execution is shutdown by one of the constraints per execution while other approaches that are able to create this patch, couldn't because they ran out of time. 
-
-This example was fixed by the human by removing an expression from an \emph{IfStatement} as seen in Figure~\ref{closure18prob}. PAR in particular has a mutation operator specially created to perform this task, and even so, it was not able to find this patch due to the vast search space and the fact that it searches through this space in an equally distributed manner to pick its mutation operators. Nopol was able to create a patch for this example as shown in Figure~\ref{closure18nopol}, but this patch is not able to generalize to a held-out test suite.
-
-
-\begin{figure}[t]
-\begin{lstlisting}[frame=single,style=base]
-boolean staleInputs = false;
-@-if(options.dependencyOptions.needsManagement() && options.closurePass){
-+if(options.dependencyOptions.needsManagement()){
-@  for (CompilerInput input : inputs) {
-    // Forward-declare all the provided types, so that they
-    // are not flagged even if they are dropped from the process.
-    for (String provide : input.getProvides()) {
-      getTypeRegistry().forwardDeclareType(provide);
-    }  
-  }
-	\end{lstlisting}
-	\caption{A snippet of the source code of the Closure 18 bug fixed using the
-      probabilistic model. This patch is identical to what the developer did, and it was able to find the patch while other approaches were not.\label{closure18prob}}
-\end{figure}
-
-
-\begin{figure}[t]
-\begin{lstlisting}[frame=single,style=base]
-boolean staleInputs = false;
-@-if(options.dependencyOptions.needsManagement() && options.closurePass){
-+if (com.google.javascript.rhino.Node.this.type <= com.google.javascript.rhino.Node.IS_DISPATCHER) {
-@  for (CompilerInput input : inputs) {
-    // Forward-declare all the provided types, so that they
-    // are not flagged even if they are dropped from the process.
-    for (String provide : input.getProvides()) {
-      getTypeRegistry().forwardDeclareType(provide);
-    }  
-  }
-	\end{lstlisting}
-	\caption{A snippet of the source code of the Closure 18 bug fixed using Nopol. This patch is not able to generalize to a held-out test suite.\label{closure18nopol}}
-\end{figure}
-
-
-
- \begin{figure*}[]
+ \begin{figure*}
 \centering
-\label{my-label}
-
 \begin{tabular}{l|l|ll|ll|ll|ll|ll}
 \toprule
 & Number of test cases & Probabilistic Model & NFTC & GenProg & NFTC & TRP & NFTC & PAR & NFTC & Nopol  & NFTC  \\
@@ -1434,12 +1398,94 @@ Chart 1 &  4285 & SequenceExchange & 1 & Replace & 1  & Delete & 1 & ExpAdd & 1 
     Test Cases, for each patch, evaluated against the held-out test suite.  NFTC
     of 0 means the patch fully generalized to the the held-out test
     suite.\todo{mau, please fix this as discussed on Monday so that the column
-      headers make sense, and then I'll make the figure fit.}}
-  \label{stateOfTheArtComparison}
+      headers make sense, and then I'll make the figure fit.} \label{stateOfTheArtComparison}} 
 \end{figure*}
 
 
+\begin{figure}[t]
+\begin{lstlisting}[frame=single]
+boolean staleInputs = false;
+@-if(options.dependencyOptions.needsManagement() && options.closurePass){
++if(options.dependencyOptions.needsManagement()){
+@  for (CompilerInput input : inputs) {
+    // Forward-declare all the provided types, so that they
+    // are not flagged even if they are dropped from the process.
+    for (String provide : input.getProvides()) {
+      getTypeRegistry().forwardDeclareType(provide);
+    }  
+  }
+	\end{lstlisting}
 
+
+\begin{lstlisting}[frame=single]
+boolean staleInputs = false;
+@-if(options.dependencyOptions.needsManagement() && options.closurePass){
++if (com.google.javascript.rhino.Node.this.type <= com.google.javascript.rhino.Node.IS_DISPATCHER) {
+@  for (CompilerInput input : inputs) {
+    // Forward-declare all the provided types, so that they
+    // are not flagged even if they are dropped from the process.
+    for (String provide : input.getProvides()) {
+      getTypeRegistry().forwardDeclareType(provide);
+    }  
+  }
+	\end{lstlisting}
+
+	\caption{Top: A snippet of the source code of the Closure 18 bug as fixed using the
+      probabilistic model, identically to the developer patch. None of the other
+      approaches found an identical patch.  Bottom: the Nopol fix for the
+      Closure 18 bug, which does not generalize to a held-out test
+      suite.\label{closure18prob}\todo{Mau, please have the lstings start the
+        numbering at the line number of the actual sourcecode in question
+        (rather than at 1)}}
+\end{figure}
+
+In this section we compare the patches produced by our approach, using all the
+mutation operations and the probabilistic model, against
+four previously-proposed tools:  GenProg, TrpAutoRepair, PAR and Nopol.\todo{add
+  a reference for each of these.}
+
+We extend an available open-source implementation of GenProg adapted for Java to
+include the behavior and mutation operators of these first three approaches,
+since they were originally built to target C (GenProg and TRPAutoRepair), or
+have not made their code available (PAR). We also compare our approach to
+Nopol~\cite{xuanNopol}, an automatic repair tool of conditional statement for
+Java programs. The authors have created patches for the same benchmark used in
+this study~\cite{martinez2016} and made their results publicly
+available.\footnote{https://github.com/Spirals-Team/defects4j-repair/tree/master/results/2017-march}
+For the comparison with Nopol we have used the more up-to-date dataset available
+in their website marked as ``March 2017".\todo{pending to add more justification
+  depending on Martin's response} 
+In this study we do not compare directly to SPR/Prophet~\cite{long16proph}
+mutation operators because they use machine learning to tune the probabilities
+to pick their schemas and is thus much harder to re implement
+faithfully. \todo{this thought makes more sense in related work.}
+
+Figure~\ref{stateOfTheArtComparison} shows results, including, for each patch,
+the number of held-out tests the patched program fails. Of the \todo{how many?}
+patches created by our approach, 
+five pass all held-out test suite (45.5\%). None of the GenProg,
+TRPAutorRepair, or PAR patches fully generalize; 25\% of Nopol's patches do.
+This gives us confidence that our approach produces high
+quality patches in comparison with the alternatives created by state-of-the-art
+tools. 
+
+One example demonstrating the quality improvement afforded by the probabilistic
+model-based approach is evident for the Clousre 18 bug.  in which we can very clearly see the success of our approach when
+applying the probabilistic model is Closure 18 as seen in
+Figure~\ref{closure18prob} where, not only did our approach created the exact
+same patch as the human did, but also our approach was able to find the patch
+within the time frame specified before the execution is shutdown by one of the
+constraints per execution while other approaches that are able to create this
+patch, couldn't because they ran out of time.
+
+This example was fixed by the human by removing an expression from an
+\emph{IfStatement} as seen in Figure~\ref{closure18prob}. PAR in particular has
+a mutation operator specially created to perform this task, and even so, it was
+not able to find this patch due to the vast search space and the fact that it
+searches through this space in an equally distributed manner to pick its
+mutation operators. Nopol was able to create a patch for this example as shown
+in Figure~\ref{closure18nopol}, but this patch is not able to generalize to a
+held-out test suite.
 
 \subsection{Association Rule Mining} \label{armRes}
 
