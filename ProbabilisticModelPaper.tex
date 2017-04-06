@@ -941,7 +941,7 @@ GenProg~\cite{legoues12} adapted for Java.  We add the newly-considered mutation
 operators, and a mechanism that allows the tool to
 select between the mutation operators according to the probabilities described by
 a provided model.\footnote{As with other artifacts, we will release a link to
-  this implementation post-blind review; the open-source repository contains
+  this implementation post-blind review; the open-source repository in question contains
   significant clues as to author identities.}
 Building on an existing heuristic search technique allows us to more precisely
 control for the effects of our novelties in our evaluation.  
@@ -949,7 +949,7 @@ control for the effects of our novelties in our evaluation.
 Our approach uses a two-level model (Figure~\ref{fig:probModel}) in operator
 selection/instantiation.  The first level informs the selection of the given
 mutation operator, from a set of legal operators at a given potentially-faulty
-location (e.g. \emph{Parameter replacer} cannot be applied to a \emph{BreakStatement})) .  If the operator selected is \emph{replace}, the second level of the
+location (e.g. \emph{Parameter replacer} cannot be applied to a \emph{BreakStatement}).  If the operator selected is \emph{replace}, the second level of the
 model informs the seleciton of the replacement code.  These two models are
 constructed as follows: 
 
@@ -1121,11 +1121,9 @@ The replacement probabilistic model (left) predicts
 \end{figure} 
 
 
-In this section, we independently evaluate our models' predictive
-accuracy, to validate the underlying intuition.  
-We include all Statement-level and Templated mutations
-(taken from Par), as described in
-Section~\ref{categorization}.
+We begin by independently evaluating our models' predictive accuracy, to
+validate the underlying intuition.  We include all Statement-level and Templated
+mutations (taken from Par), as described in Section~\ref{categorization}.
 
 \subsubsection{Setup}
 Our high-level research question concerns whether 
@@ -1156,10 +1154,10 @@ The developer has replaced the original \texttt{return} with an
 we ask, assuming the selected mutation operator 
 is \emph{replace}, how often will an \emph{IfStatement} be predicted as the
 replacer for a \emph{ReturnStatement}? If it is returned in the first five
-instances in a model, the model correctly predicts this instance.
-\todo{How many random choices do we average for the equal model?}
+instances in a model, the model correctly predicts this instance.  For the
+equally distributed model, we select five operators/replacees at random. 
 
-We use 10-fold cross validation~\cite{kohavi95} to mitigate and assess the risk
+We use 10-fold cross validation~\cite{kohavi95} to mitigate the risk
 of overfitting and avoid testing and training on the same data.  We segregated
 the projects in our corpus into 10 random folds. For each fold, we use one fold
 for testing, and the remaining nine for training. We aggregate the results over
@@ -1231,7 +1229,7 @@ Time 19 & 3650 & 75.4\% & 58.0\% \\
 \label{heldOut}
 \end{figure}    
 
-As mentioned, we have two high-level research concerns related to the utility of our
+We have two high-level research concerns related to the utility of our
 learned models for repair: 
 (1) Which syntactic operators and selection models are most
   useful for repair? (Section~\ref{sec:oputil}) and (2)
@@ -1330,7 +1328,7 @@ conssitent with prior work.  We run 20 seeds per randomized repair trial, in
 keeping with recommendations on the assessment of stochastic
 techniques~\cite{arcuri11}.
 
-\subsection{Mutation operator and model utility} \label{oputil}
+\subsection{Mutation operator and model utility} \label{sec:oputil}
 
 \begin{figure*}\centering
 \begin{tabular}{r|rr|rr|rr|rr|rr|rr}
