@@ -841,6 +841,8 @@ modify Java source code, since we focus on such bugs. Additionally, we restrict 
 that modify a maximum of three files. We do this to exclude
 big merges, such as pull requests or initial commits, and because
 large commits are more likely to include changes unrelated to a bug fix~\cite{Herzig13,Kawrykow11}.
+To our knowledge, this is the largest set of bug-fixing commits mined to inform
+program repair in the existing literature~\cite{long16proph,Soto16,zhong15,martinez15,xuan16}. 
 
 \subsection{Identifying mutations in developer commits}
 \label{sec:mining}
@@ -1029,24 +1031,145 @@ We look for rules that have at least 90\% Confidence.
 
 We evaluate our model both independently and as part of an automatic repair
 technique.  We first evaluate the predictive power of the model by analyzing the
-number of correctly predicted mutation operators across a large dataset, using 10 fold cross
-validation to mitigate and assess the risk of overfitting
-(Section~\ref{sec:generalize}). We evaluate our new APR approach on 18 \todo{ change this number if we get more results} different bugs from the Defects4j platform (Section~\ref{repResults}) both in terms of speed, measured in the number of variants it takes to find a patch, and quality, by comparing against the patches created for these same bugs by other state-of-the-art repair techniques.  Finally, we present the most common 
+number of correctly predicted mutation operators across a large dataset
+(Section~\ref{sec:generalize}). We evaluate our new APR approach on 18 \todo{
+  change this number if we get more results} different bugs from the Defects4j
+platform (Section~\ref{repResults}) both in terms of speed, measured in the
+number of variants it takes to find a patch; and quality, using held-out test
+suites.  We compare against other state-of-the-art repair approaches.  Finally, we present the most common  
 association rules between mutation operators in our corpus
 (Section~\ref{armRes}). 
 
-%We also include a section for 
-%discussion(Section~\ref{discussion}) and threats to validity (Section~\ref{threatsVal}) 
-
-
-
-\subsection{Experimental setup}
 All experiments are performed on a server 
 consisting of 16 processors Intel(R) Xeon(R) CPU E5-2699 v3, with 2.30 GHz each
 processor, 46080 KB cache each, and 32 GB RAM memory, operating system Ubuntu 
 14.04.5 LTS.
 
+\subsection{Model generalization}
+\label{sec:generalize}
+  
 
+%\begin{figure}[ht]
+%\tabcolsep=0.18cm
+%\begin{tabular}{llllllllllllllllllllll}
+%\hline
+%As & Bl & Br & Cl & Co & Do & Em & EF & Ex & Fo & If \\
+%0\%&2\%&0\%&2\%&5\%&0\%&0\%&0\%&43\%&0\%&22\% \\
+%\hline 
+%La & Re & SC & Ca & Sw & Sy & Th & Tr & TD & VD & Wh \\
+%0\%&0\%&2\%&2\%&0\%&0\%&3\%&2\%&0\%&19\%&0\% \\
+%\hline
+%\end{tabular}
+%\\
+%\caption{Example of the Return Statement row of a sub-model created from 
+%the training data. Replacee probabillities of the replacer ReturnStatement. The acronyms represent the statement kinds detailed in footnote \ref{stmtNames} \todo{The notes said to remove this, but we can't explain the following section without it, so I am keeping it for now}}
+% \label{fig:exPredReturn} 
+%\end{figure} 
+
+
+\begin{figure}[ht]
+{\footnotesize
+{\centering
+\begin{tabular}{l|rrr|rrr}
+\toprule
+   &\multicolumn{3}{c|}{Replacements} &\multicolumn{3}{c}{Mutations} \\
+\midrule
+Fold	& \# &Prob& EqDist& \#&Prob& EqDist \\
+\midrule
+1	& 155&70\%&	25\% &17313&  95\% & 64\%   \\
+2	& 86&100\%&	25\%  & 17232& 93\% & 63\%   \\
+3	& 81&82\%	&23\%  & 16754& 95\% & 81\% \\
+4	& 101&81\%	&40\%  & 14159& 94\% & 9\%   \\
+5	& 99&90\%	&27\%  & 17022& 95\% & 2\%  \\
+6	& 75&84\%	&21\%  & 14945& 95\%& 58\%  \\
+7	& 79&86\%	&24\%  & 12901& 93\%& 7\%  \\
+8	& 55&96\%	&23\%  & 10552& 95\%& 27\%  \\
+9	& 82&88\%	&8\%  & 14568& 93\%& 62\% \\
+10	& 116&100\%	&31\% & 19140 & 95\% & 6\% \\
+\midrule
+Mean	& 192.9 &87.7	&24.7& 15458.6  & 94.3 & 37.9  \\
+\midrule
+Std dev	& 320.23&9.33&	8.01 & 2530.27 & 0.94 & 30.49   \\
+\midrule
+Sum & 1929&877 & 247 &  154586& 943 & 379  \\
+\bottomrule
+\end{tabular}
+\center
+  \caption{Correctly predicted edits, across 10 folds of data.
+The replacement probabilistic model (left) predicts
+    the correct replacement statement 87\% of the time,
+    an improvement of almost a factor of 4 over the equally-distributed model. 
+    The mutations model (right) outperforms the equally-distributed model by 
+    almost a factor of 3. The \# columns show raw instance count per fold. \label{results10fcv}} 
+}}
+\end{figure} 
+
+
+In this section, we independently evaluate our models' predictive
+accuracy, to validate the underlying intuition.  
+We include all Statement-level and Templated mutations
+(taken from Par), as described in
+Section~\ref{categorization}.
+
+\subsubsection{Setup}
+Our high-level research question concerns whether 
+our mined models are likely to identify the correct fix code across a large
+dataset, suggesting their potential utility in a repair context.  We therefore
+compare the accuracy of the models to an \emph{equally distributed} baseline,
+which selects a mutation (or replacement) uniformly at random. 
+We measure how often each model correctly predicts the mutation operator (or
+replacer statement, for a given replacee statement), within the top 5 produced
+choices. Perfect accuracy (correctness in the Top-1 most likely choice) is
+unnecessary, since our APR approach can iterate through several
+different candidates before a fix; 
+however, the noisy search problem suggests that a relatively tight bound (top-5)
+is likely appropriate (and, observationally, is the point of inflection between
+mined and equally-distributed model performance.)
+
+To illustrate, consider a simple example. Assume the following
+simple bug-fixing patch from our corpus: 
+
+\begin{lstlisting}[frame=single]
++ if(i > l.size()) {
+    return l.get(i); @//original faulty location@
++  }    
+\end{lstlisting}
+
+The developer has replaced the original \texttt{return} with an
+\texttt{if-then} statement that wraps it.  In assessing the replacement model,
+we ask, assuming the selected mutation operator 
+is \emph{replace}, how often will an \emph{IfStatement} be predicted as the
+replacer for a \emph{ReturnStatement}? If it is returned in the first five
+instances in a model, the model correctly predicts this instance.
+\todo{How many random choices do we average for the equal model?}
+
+We use 10-fold cross validation~\cite{kohavi95} to mitigate and assess the risk
+of overfitting and avoid testing and training on the same data.  We segregated
+the projects in our corpus into 10 random folds. For each fold, we use one fold
+for testing, and the remaining nine for training. We aggregate the results over
+all 10 folds counting the number of testing instances that are correctly
+predicted by the first five guesses from the training sub-model.
+
+\subsubsection{Results} 
+
+Figure~\ref{results10fcv} shows results. For each fold, we show the instance
+count and percentage of correctly predicted instances within the top five
+guesses of both the equally distributed and the probablistic models for both the
+Replacements (middle) and Mutations (right) models. The \# columns 
+show the number of attempted instances per fold.  The ``Prob.'' columns show the
+accuracy (correct prediction rate) of the mined model on that fold, for each model; ``EqDist'',
+the accuracy of the equally distributed model.  For the Replacements model,
+the average accuracy of the Probabilistic model is 63\% higher than the EqDist
+model; the difference is 56.4\% for the Mutations model.  \todo{a)is it statistically
+  significant?} This indicates that the probabilistic approach is
+significantly more accurate than an equally-distributed baseline (used in
+several syntactic APR approaches) in predicting bug-fixing edits.  This suggests
+that the model, incorporated into an APR approach, may be more likely to produce
+correct patches.  We directly address this question next.
+
+
+\subsection{Single line bug repair}
+\label{sec:single}
 
 \begin{figure}[ht]
 \centering
@@ -1069,7 +1192,7 @@ Time	& Joda-Time & Date and time classes  & 4130 & 3\\
   \label{defects4j}
 \end{figure} 
 
-We consider a subset of the Defects4j~\cite{just14}
+\subsubsection{Experimental setup} We consider a subset of the Defects4j~\cite{just14}
 benchmark, a database and extensible 
 framework of real bugs that enables reproducible studies in software testing 
 research. This database currently contains 395 real bugs from six
@@ -1126,161 +1249,6 @@ Time 19 & 3650 & 75.4\% & 58.0\% \\
 \label{heldOut}
 \end{figure}    
 
-
-\subsection{Model generalization}
-\label{sec:generalize}
-  
-
-%\begin{figure}[ht]
-%\tabcolsep=0.18cm
-%\begin{tabular}{llllllllllllllllllllll}
-%\hline
-%As & Bl & Br & Cl & Co & Do & Em & EF & Ex & Fo & If \\
-%0\%&2\%&0\%&2\%&5\%&0\%&0\%&0\%&43\%&0\%&22\% \\
-%\hline 
-%La & Re & SC & Ca & Sw & Sy & Th & Tr & TD & VD & Wh \\
-%0\%&0\%&2\%&2\%&0\%&0\%&3\%&2\%&0\%&19\%&0\% \\
-%\hline
-%\end{tabular}
-%\\
-%\caption{Example of the Return Statement row of a sub-model created from 
-%the training data. Replacee probabillities of the replacer ReturnStatement. The acronyms represent the statement kinds detailed in footnote \ref{stmtNames} \todo{The notes said to remove this, but we can't explain the following section without it, so I am keeping it for now}}
-% \label{fig:exPredReturn} 
-%\end{figure} 
-
-In this section we want to evaluate the consistency of the corpus and provide internal validity to our results by performing a 10 fold cross validation over our model. We built the model with the 500
-projects in Github with the most stars.
- This is to generate the largest code base so far to the best 
-of our knowledge, surpassing all the previous state of the 
-art~\cite{long16proph,Soto16,zhong15,martinez15,xuan16}. 
-In these experiments, we include all mutations described in
-Section~\ref{categorization}.
-
-First, we evaluate the predictive power of our 
-replacements model. Our high-level research question concerns whether 
-our mined models are likely to identify the correct fix code across a large
-dataset, suggesting its potential utility in a repair context.  To this end, we
-compare its predictive accuracy to an \emph{equally distributed} model, in which
-the probability of selecting any replacee statement is uniformly random. 
-We assess the degree to which each model correctly predicts the
-replacer statement for given replacee statements, within the top 5 produced
-choices. Perfect accuracy (correctness in the Top-1 most likely choice) is unnecessary, since automatic program repair approaches iterate through several different candidate patches until finding the appropriate fix;
-however, the noisy search problem suggests that a relatively tight bound (top-5)
-is likely appropriate.  Additionally, we found observationally that the top-5
-choices serves as a point of inflection between the mined and equal model
-performance. 
-
-We use 
-10-fold cross validation~\cite{kohavi95} to mitigate and assess the risk of overfitting and avoid testing and training on
-the same data. 
-We segregated the projects in our corpus into 10 
-random folds. For each 
-fold, we use one fold for testing, and the remaining nine for training. We aggregate the results over all 10 folds counting the number of testing instances that are correctly predicted 
-by the first five guesses from the training sub-model.   
-
-To illustrate, consider a simple example. Assume the following
-simple bug-fixing patch from our corpus: 
-
-\begin{lstlisting}[frame=single]
-+ if(i > l.size()) {
-    return l.get(i); @//original faulty location@
-+  }    
-\end{lstlisting}
-
-The developer has replaced the original \texttt{return} with an
-\texttt{if-then} statement that wraps it.  Our goal in assessing our model is,
-assuming the selected mutation operator 
-is \emph{replace}, how often will an \emph{IfStatement} be predicted as the
-replacer? If it is returned in the first five instances in a model, the model
-correctly predicts this instance. We aggregate correctly predicted instances over all folds.
-
-Each trained model describes the dataset via
-a distribution identifying the (normalized) frequency with which each statement is replaced 
-by another. Each combination is described by 
-$E_{n,m}$, 
-where \emph{n} is the statement being replaced (replacee) and \emph{m} the statement it is 
-replaced by (replacer).  A predictive model $TP_{n,m}$, $\forall n,m: 1<=n<=22 \land 1<=m<=22$, 
-describes how often each statement is replaced by 
-other kinds of statements. 
-
-%For example, if the approach picks at random the statements: Assert Statement 
-%$TE_{13,1}$, 
-%Do Statement $TE_{13,6}$, Expression Statement $TE_{13,9}$, Throw Statement 
-%$TE_{13,18}$ and Try Statement $TE_{13,19}$. Then we 
-%would match how many of the instances in the testing data were correctly 
-%predicted by this equally distributed schema.
-
-%In this example, the 4 instances of Expression Statement $E_{13,9} = 4$, the 
-%instance of Do 
-%Statement  $E_{13,6} = 1$, and the instance of Try Statement $E_{13,19} = 1$ 
-%would be considered to be correctly 
-%predicted; while the 2 instances of If Statement $E_{13,11} = 2$, and the 2 
-%instances of 
-%Continue Statement $E_{13,5} = 2$ would be considered to be incorrectly 
-%predicted. Since the 
-%equally distributed approach in this example correctly guessed 6 out of 10 
-%instances of the testing data, we would then say that in this particular case, 
-%the equally distributed approach correctly predicted 60\% of the instances in 
-%the testing set.  
-
-
-\begin{figure}[ht]
-{\footnotesize
-{\centering
-\begin{tabular}{l|rrr|rrr}
-\toprule
-   &\multicolumn{3}{c|}{Replacements} &\multicolumn{3}{c}{Mutations} \\
-\midrule
-Fold	& \# &Prob& EqDist& \#&Prob& EqDist \\
-\midrule
-1	& 155&70\%&	25\% &17313&  95\% & 64\%   \\
-2	& 86&100\%&	25\%  & 17232& 93\% & 63\%   \\
-3	& 81&82\%	&23\%  & 16754& 95\% & 81\% \\
-4	& 101&81\%	&40\%  & 14159& 94\% & 9\%   \\
-5	& 99&90\%	&27\%  & 17022& 95\% & 2\%  \\
-6	& 75&84\%	&21\%  & 14945& 95\%& 58\%  \\
-7	& 79&86\%	&24\%  & 12901& 93\%& 7\%  \\
-8	& 55&96\%	&23\%  & 10552& 95\%& 27\%  \\
-9	& 82&88\%	&8\%  & 14568& 93\%& 62\% \\
-10	& 116&100\%	&31\% & 19140 & 95\% & 6\% \\
-\midrule
-Mean	& 192.9 &87.7	&24.7& 15458.6  & 94.3 & 37.9  \\
-\midrule
-Std dev	& 320.23&9.33&	8.01 & 2530.27 & 0.94 & 30.49   \\
-\midrule
-Sum & 1929&877 & 247 &  154586& 943 & 379  \\
-\bottomrule
-
-\newline
-\end{tabular}
-\center
-  \caption{Correctly predicted edits, across 10 folds of data.
-The replacement probabilistic model (left) predicts
-    the correct replacement statement 87\% of the time,
-    an improvement of almost a factor of 4 over the equally-distributed model. 
-    The mutations model (right) outperforms the equally-distributed model by 
-    almost a factor of 3. The \# columns show raw instance count per fold. \label{results10fcv}} 
-}}
-
-\end{figure} 
-
-
-%\begin{figure}[!h]
-%  \centering
-%    \includegraphics[scale=0.33]{sanity1}
-%  \caption{   }
-%\end{figure}
-Results are shown in Figure~\ref{results10fcv}. For each fold, we show the instance count and percentage of correctly 
-predicted instances within the top five
-guesses of both the equally distributed and the replacements model. The
-third and fourth columns show the percentage of correctly predicted
-instances using the top five  
-guesses of the sub-model of each of the folds for the replacements model. The sixth and seventh columns are percentage of correctly predicted instances for the mutations model. Columns two and five show
-the number of instances in each of the folds. We have a difference of 63\% between the means of the two models in the replacements model, and a difference of 56.4\% between the mean values of correctly predicted instances in the probabilistic and equally distributed models for the mutations model. \todo{a)is it statistically significant?} We can infer from the data presented that the use of a probabilistic model is beneficial to find the correct mutation operator to patch a bug faster and with higher accuracy. We can also infer that when using the probabilistic model the search space is built in an informed manner, therefore the probabilities of obtaining the correct patch are higher due to the fact that this approach doesn't have to blindly look in all the search space as the equally distributed approach.
-
-
-\subsection{Single line bug repair}
-\label{sec:single}
 
 \begin{figure*}\centering
 \begin{tabular}{r|rr|rr|rr|rr|rr|rr}
