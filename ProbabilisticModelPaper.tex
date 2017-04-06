@@ -712,14 +712,17 @@ section of state-of-the-art techniques into two groups:
 \paragraph{Statement-Edit mutations}
 One family of repair approaches, including GenProg~\cite{legoues12}, 
 TrpAutoRepair~\cite{Qi13TrpAutoR}, and AE~\cite{Weimer13},
-create candidate 
-patches by applying coarse-grained mutation operators (such as \emph{append}, \emph{delete}, or 
-\emph{replace}) which modify source code. These prior techniques target the C programming language, where
+creates candidate 
+patches by applying coarse-grained mutation operators (usually \emph{append}, \emph{delete}, or 
+\emph{replace}) at the statement or block level. These prior techniques target the C programming language, where
 a statement is a grammar nonterminal corresponding intuitively to blocks,
 simple statements that terminate
 with a semicolon, or compound statements corresponding to control flow or
 loops. In Java, statements conceptually map to similar program elements, including blocks,  while loops, or single-line
-method calls. In these approaches, the statements being appended or replaced typically come from within the project being modified. This is grounded in the notion that source code has a high level of redundancy~\cite{Hindle12Naturalness}.
+method calls. In these approaches, the statements being appended or replaced
+typically come from within the project being modified. This is grounded in the
+notion that source code has a high level of
+redundancy~\cite{Hindle12Naturalness}. 
 
 \paragraph{Template-based mutations}
 Another family of approaches instantiates
@@ -734,10 +737,11 @@ created patches, from which human annotators abstracted 10 different templates t
 the most commonly-used changes in bug-fixing practice.
 The 10 considered templates are detailed in the top section of Figure~\ref{approachTemplates}. In the interest of completeness, we also include six extra templates 
 mentioned on the PAR website.\footnote{\url{https://sites.google.com/site/autofixhkust/home/fix-templates}} 
-These extra templates provide new mutation operators drawn from human edits, that help us compare and
-generalize to the other approaches; they are shown in the middle segment of
+These extra templates provide new mutation operators drawn from human edits,
+that help us compare to and
+generalize the other approaches; they are shown in the middle segment of
 Figure~\ref{approachTemplates}. 
-The SPR and Prophet approaches make use of a set of transformation schemas,
+SPR and Prophet use a set of transformation schemas,
 shown in the Bottom section of Figure~\ref{approachTemplates}.
 
 \begin{figure}[ht]
@@ -780,6 +784,10 @@ seen as a subset of \emph{Sequence Exchanger};
 \emph{Value Replacement} can be seen as a superset of \emph{Method 
 Replacer}, \emph{Parameter Replacer}, \emph{Castee Mutator} and \emph{Expression Changer}; and \emph{Copy 
 and Replace} can be matched to \emph{Expression Adder}. 
+These operators similarly generalize those used in semantics-based approaches~\cite{examples},
+which replace expressions used either in conditions or on the right-hand-side of
+assignments (the operators are the same; the difference lies in how the fix code
+is selected/constructed). 
 
 We also considered the program modification tool Kali~\cite{Qi15}, whose
 templates also correspond to subsets of certain PAR templates their extensions. 
@@ -788,7 +796,7 @@ a subset of \emph{Expression Changer}, and \emph{Insert Return} and \emph{Remove
 subsets of \emph{Expression Adder and Remover} accordingly. Similarly,
 many other mutation operators~\cite{Offutt06}, as used in
 APR~\cite{debroy10,xuan16} can be seen as subsets of the extensions of the 
-Par templates.
+Par templates.  
 
 To summarize, these approaches have significant similarities between their
 included templates.  We have chosen the PAR templates to represent this category for the following reasons: (1) PAR comprehends the other techniques' mutation operators, (2) it provides a concrete description of how the code is changed, enabling replication, and (3) it explicitly targets Java (note that SPR, Prophet and Kali target C programs). 
@@ -796,7 +804,9 @@ included templates.  We have chosen the PAR templates to represent this category
 \section{Building the model} \label{buildingTheModel}
 
 In this section we describe how we mined a probabilistic
-model of human bug-fixing edits from a large set of popular Java projects on GitHub. The intuition behind this model is to be able to apply human knowledge
+model of human bug-fixing edits from a large set of popular Java projects on
+GitHub. The intuition behind this model is to be able to apply human
+knowledge\todo{Mau: this sentence stops existing.}
 
 \subsection{Selecting the corpus}
 
