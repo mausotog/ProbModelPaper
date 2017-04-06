@@ -1044,22 +1044,22 @@ Time 19 & 3650 & 75.4\% & 58.0\%
 \label{sec:generalize}
   
 
-\begin{figure}[ht]
-\tabcolsep=0.18cm
-\begin{tabular}{llllllllllllllllllllll}
-\hline
-As & Bl & Br & Cl & Co & Do & Em & EF & Ex & Fo & If \\
-0\%&2\%&0\%&2\%&5\%&0\%&0\%&0\%&43\%&0\%&22\% \\
-\hline 
-La & Re & SC & Ca & Sw & Sy & Th & Tr & TD & VD & Wh \\
-0\%&0\%&2\%&2\%&0\%&0\%&3\%&2\%&0\%&19\%&0\% \\
-\hline
-\end{tabular}
-\\
-\caption{Example of the Return Statement row of a sub-model created from 
-the training data. Replacee probabillities of the replacer ReturnStatement. The acronyms represent the statement kinds detailed in footnote \ref{stmtNames} \todo{The notes said to remove this, but we can't explain the following section without it, so I am keeping it for now}}
- \label{fig:exPredReturn} 
-\end{figure} 
+%\begin{figure}[ht]
+%\tabcolsep=0.18cm
+%\begin{tabular}{llllllllllllllllllllll}
+%\hline
+%As & Bl & Br & Cl & Co & Do & Em & EF & Ex & Fo & If \\
+%0\%&2\%&0\%&2\%&5\%&0\%&0\%&0\%&43\%&0\%&22\% \\
+%\hline 
+%La & Re & SC & Ca & Sw & Sy & Th & Tr & TD & VD & Wh \\
+%0\%&0\%&2\%&2\%&0\%&0\%&3\%&2\%&0\%&19\%&0\% \\
+%\hline
+%\end{tabular}
+%\\
+%\caption{Example of the Return Statement row of a sub-model created from 
+%the training data. Replacee probabillities of the replacer ReturnStatement. The acronyms represent the statement kinds detailed in footnote \ref{stmtNames} \todo{The notes said to remove this, but we can't explain the following section without it, so I am keeping it for now}}
+% \label{fig:exPredReturn} 
+%\end{figure} 
 
 In this section we want to evaluate the consistency of the corpus and provide internal validity to our results by performing a 10 fold cross validation over our model. We built the model with the 500
 projects in Github with the most stars.
@@ -1115,7 +1115,7 @@ The developer has replaced the original \texttt{return} with an
 assuming the selected mutation operator 
 is \emph{replace}, how often will an \emph{IfStatement} be predicted as the
 replacer? If it is returned in the first five instances in a model, the model
-correctly predicts this instance.  
+correctly predicts this instance. We aggregate correctly predicted instances over all folds.
 
 Each trained model describes the dataset via
 a distribution identifying the (normalized) frequency with which each statement is replaced 
@@ -1125,27 +1125,6 @@ where \emph{n} is the statement being replaced (replacee) and \emph{m} the state
 replaced by (replacer).  A predictive model $TP_{n,m}$, $\forall n,m: 1<=n<=22 \land 1<=m<=22$, 
 describes how often each statement is replaced by 
 other kinds of statements. 
-
-Assume for illustration a sub-model which contains a row describing the 
-probabilities for the different statements that could possibly replace a return 
-statement: $TP_{13,m}$ (row 13 since \emph{ReturnStatment} is the 13th element 
-in our statement list), this row is shown in 
-Figure~\ref{fig:exPredReturn}.
-
-%
-For our example, the most
-likely statement chosen to replace a Return Statement according to this row in 
-this fictional sub-model would be an Expression Statement (Ex) $TP_{13,9} = 43\%$. 
-The second-most likely candidate is indeed an If statement (If) $TP_{13,11} = 22\%$,
-meaning we count this as a correct prediction for this model (as it appears in
-the top-5 prediction list). 
-
-To contrast this with the equally distributed approach,
-we assign all statements the same probability of being chosen to replace 
-a statement under analysis:
-$TE_{n,m}$, where $\forall n,m: 1<=n<=22 \land 1<=m<=22 \land TE_{n,m} = 4.54\%$. 
-For the top five choices in a prediction scheem, we choose five uniformly choices at
-random for each prediction. 
 
 %For example, if the approach picks at random the statements: Assert Statement 
 %$TE_{13,1}$, 
