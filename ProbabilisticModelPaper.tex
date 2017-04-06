@@ -981,8 +981,8 @@ dataset, matched as described in Section~\ref{sec:mining}, and then apply Laplac
 \subsection{Multiple edit association rule mining} 
 \label{multEdit}
 
-Although such single-edit patches can be
-sufficient to repair non-trivial bugs in real software, the majority of bug fixes in real
+Although single-edit patches can
+repair non-trivial bugs in real software, the majority of bug fixes in real
 software require multiple edits~\cite{zhong15,Soto16}. The combination of possible mutation
  operators to apply in a sequence increases exponentially as we add more source
  code changes, motivating a more precise mechanism to navigate the vast search
@@ -996,20 +996,17 @@ to model chains of single edit changes, capturing the way humans create these ki
 
 Association rules are if/then statements that show relationships between elements in a dataset which happen frequently together. We use the 
 well-known association rule mining algorithm
-Apriori~\cite{Agrawal94}, which identifies frequent 
-individual items in sets of transactions (commits, in our context).  We extend these sets into 
-larger sets that appear often in the transactions. We mine association rules from each of the models described in Section~\ref{armRes} by transforming each of the mutation operator count and replacement count from 
-each of the commits studied into a \emph{transaction} to be analyzed. 
-
-Two other basic concepts critical to the Apriori method are \emph{Confidence} and \emph{Support}.
+Apriori~\cite{Agrawal94}. 
+%
+Two basic concepts critical to this method are \emph{Confidence} and \emph{Support}.
 Formally, we define Confidence as:
 
 \begin{center}
 $conf(X \implies Y) = \dfrac{supp(X \cup Y)}{supp(X)}$ 
 \end{center}
 
-Where X and Y are possible items in a transaction (mutation operators and replacements in our
-context for the Mutation operator probabilistic model and the Replacements probabilistic model accordingly). Confidence is calculated according to its Support (\emph{supp}), 
+Where X and Y are possible items in a transaction (mutation operators or replacements, in our
+context). Confidence is calculated according to its Support (\emph{supp}), 
 an indication of how frequently the set of mutation operators or replacements (itemset) 
  occurs in the transaction base.
 Formally:
@@ -1019,14 +1016,13 @@ $supp(X) = \dfrac{|\{t \in T; X \subseteq t\}|}{|T|}$
 \end{center}
 
 Where X is the itemset and \emph{t} is each individual transaction in
-the database of transactions \emph{T}. Apriori identifies the frequent mutation
-operators and replacements that happen together, iteratively extending them to larger
+the database of transactions \emph{T}. Apriori identifies the mutation
+operators and replacements that frequently happen together, iteratively extending them to larger
 itemsets that appear often in the transactions as identified by these metrics.
 
-To create these association rules among several mutation operators, we mine the
-transactions made out of the commits created by humans in the corpus of projects
-studied and we look for rules that have at least 90\% Confidence, where
-Confidence is an indication of how often the rule has been found to be true.
+We mine association rules from each of the models described in Section~\ref{armRes} by transforming each of the mutation operator count and replacement count from 
+each of the commits studied into a \emph{transaction} to be analyzed. 
+We look for rules that have at least 90\% Confidence.
 
 
 \section{Evaluation} \label{evaluation}
