@@ -849,7 +849,7 @@ We extend an open-source implementation of the GenProg technique adapted for Jav
 by implementing the mutation operators from
 Section~\ref{categorization} as well as a mechanism that allows the tool to
 select between the mutation operators according to the probabilities described by
-a given model.\footnote{Hidden for double blind review} %\footnote{https://bitbucket.org/clegoues/genprog4java}  
+a given model. %\footnote{https://bitbucket.org/clegoues/genprog4java}  
 We construct a two-level model that effectively counts incidences of all considered
 mutation operators, and fix code used in replacements. The two-level probabilistic model generalizes previous work proposing a replacement-only model~\cite{Soto16}:
 
@@ -1021,7 +1021,7 @@ guides the search process.
 
 Figure~\ref{heldOut} describes the specifics of the held out test suites. We use Randoop~\cite{pacheco07}, an established
 automatic test suite generation tool for Java, to generate this second test
-suite. We run Randoop with a ten minute budget (six times the default value) to create the held-out test suites.\footnote{We will release our test suites post-review.}  We also use Cobertura\footnote{http://cobertura.github.io/cobertura/} to calculate the coverage of the test suite over the class that contains the human fix. 
+suite. We run Randoop with a ten minute budget (six times the default value) to create the held-out test suites. We also use Cobertura\footnote{http://cobertura.github.io/cobertura/} to calculate the coverage of the test suite over the class that contains the human fix. 
 
 \begin{figure}[]
 \centering
@@ -1439,7 +1439,7 @@ They are obtained with a 1\% support, which means that each of these rules
 individually appear in at least 1\% of all the transactions in the
 corpus. We show the top association rules for the mining of single edit 
 mutation operators to indicate the structure of the rules; and release the full set of mined
-rules with over 90\% Confidence and 0.1\% Support:\footnote{We will release the full list of mutation operator rules post blind-review.} %\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt}} 
+rules with over 90\% Confidence and 0.1\% Support:\footnote{We will release the full list of mutation operator and replacements rules post blind-review.} %\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt}} 
 
 %Minimum support: 0 (1 instances)
 %Minimum metric <confidence>: 0.9
@@ -1464,7 +1464,7 @@ rules.
 
 \paragraph {Replacement rules} We also analyzed association rules for the
 replacements model, obtaining
-the following rules with a 0.01\% Support and 90\% Confidence.\footnote{We will release the full list of replacement rules post blind-review.} %\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningReplacements.txt}} 
+the following rules with a 0.01\% Support and 90\% Confidence. %\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningReplacements.txt}} 
 The best rules we found are: \todo{we can shorten this to 5 if necessary}
 %Minimum support: 0.0001 (1 instances)
 %Minimum metric <confidence>: 0.9
