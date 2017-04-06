@@ -1253,7 +1253,9 @@ consider.\footnote{Note that, in this study we do not compare directly to
   SPR/Prophet~\cite{long16proph}, because they use machine learning to tune the
   probabilities to rank their schemas instantiation and are thus much more
   difficult to reimplement faithfully; additionally, as established, their
-  schemas are generlaized by the extended PAR templates we consider.}
+  schemas are generalized by the extended PAR templates we consider, which are
+  already tailored to Java, reducing the potentially subjective judgement required to
+  translate and reimplement them.}
 
 The open-source implementation of GenProg for Java that we use implements 
 the behavior and mutation operators of the first three approaches, translated
@@ -1301,9 +1303,8 @@ guides the search process. We generate a single held out suite for each buggy pr
 repairs.  We use Randoop~\cite{pacheco07}, an established automatic
 test suite generation tool for Java, to generate this second test suite. We run
 Randoop with a ten minute budget (six times the default value) to create the
-held-out test suites. We also use
-Cobertura\footnote{http://cobertura.github.io/cobertura/} to calculate the
-coverage of the test suite over the class that contains the human fix.\todo{Mau:
+held-out test suites. We calculate line 
+coverage of the generated test suite over the class that contains the human fix.\todo{Mau:
   pre-fix or after-fix?}
 
 \paragraph{Settings} For the genetic programming based techniques (including our own), our population
@@ -1553,11 +1554,17 @@ boolean staleInputs = false;
 \end{figure}
 
 
-Figure~\ref{stateOfTheArtComparison} shows results, including, for each patch,
-the number of held-out tests the patched program fails. Of the \todo{how many?}
+Figure~\ref{stateOfTheArtComparison} compares patching results for our
+probablistic model-based repair to GenProg, TrpAutoRepair, PAR, and Nopol.
+Unlike in Figure~\ref{tab:singleLineBugs}, we break out these results by unique
+patches found over multiple repair trials per technique (for those that use
+randomness, that is, every technique but Nopol).  We show 
+the number of held-out tests each patch fails; lower is better (again by
+contrast with Figure~\ref{tab:singleLineBugs}, where higher was better in the
+quality columns). Of the \todo{how many?}
 patches created by our approach, 
 five pass all held-out test suite (45.5\%). None of the GenProg,
-TRPAutorRepair, or PAR patches fully generalize; 25\% of Nopol's patches do.
+TRPAutoRepair, or PAR patches fully generalize; 25\% of Nopol's patches do.
 This gives us confidence that our approach produces high
 quality patches in comparison with the alternatives created by state-of-the-art
 tools. 
