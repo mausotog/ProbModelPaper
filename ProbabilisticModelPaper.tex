@@ -56,6 +56,8 @@
 % \documentclass[conference]{../sty/IEEEtran}
 
 \usepackage{booktabs}
+\usepackage{balance}
+
 \newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
 
 \usepackage[usenames,dvipsnames]{color}
@@ -679,7 +681,7 @@ Syntactic approaches (e.g.,~\cite{legoues12Genprog,long16proph,kim2013,xuan16}) 
 same function, module, file, or program.  Semantic approaches instead use synthesis to
 construct fix code.  
 In both cases, heuristics inform code selection.  For example, some syntactic approaches
-choose between fix code uniformly at random or using other set probability distributions~\cite{examples}; others used learned
+choose between fix code uniformly at random or using other set probability distributions~\cite{legoues12Genprog,kim2013}; others used learned
 models to do so~\cite{long16proph}.  Semantic approaches use heuristics to
 decide which program components should be made available to the synthesis
 engine~\cite{Mechtaev2016,xuanNopol}. 
@@ -816,12 +818,22 @@ determine how to reimplement and use them in our context.
 
 \section{Program repair via a learned probabilistic edit model} \label{buildingTheModel}
 
-In this section we describe how we mined a probabilistic
-model of human bug-fixing edits from a large set of popular Java projects on
-GitHub to analyze how developers apply different types of edits. The intuition behind this model is to be able to apply human
-knowledge to the automatic program repair process and create patches closer to how a human developer would do it. To do this, we select a corpus of popular GitHub projects and filter out their latest bug fixing commits. We then extract an instance count of each of the mutation operators and replacements used in these commits to use them in automatic program repair. Finally we analyze these edits and extract association rules of edits that happen often to be able to use this knowledge for multi-edit source code repairs.
+In this section, we describe how we mine a model of human
+bug-fixing edits from a large set of popular Java projects. The intuition is to
+use this model to
+apply human knowledge to the automatic program repair process, 
+creating patches inspired by how human developers do; the model is used
+explicitly in the patch creation step of a generate-and-validate repair process. To do this, we
+select a corpus of popular GitHub projects and filter out their latest bug
+fixing commits (Section~\ref{sec:corpus}).  We identify mutation operator and
+replacement incidence in this dataset  (Section~\ref{sec:mining}) to construct a two level probabilistic
+model used in a novel repair technique (Section~\ref{sec:modelrepair}). Finally we
+analyze these edits to extract association rules of 
+edits that happen together often, to potentially inform multi-edit source
+code repairs (Section~\ref{multEdit}).
 
 \subsection{Selecting the corpus}
+\label{sec:corpus}
 
 We cloned the 500 most-starred Java projects on Github 
 as of August 2016 and
@@ -918,6 +930,7 @@ instead aggregating results over a large dataset.
 
 
 \subsection{APR using a two-level probabilistic model}
+\label{sec:modelrepair} 
 
 \begin{figure}[!h]
  \centering
@@ -1270,7 +1283,7 @@ be less informative, and because Nopol expresses the time taken to produce each 
 We consider for repair a subset of the Defects4j~\cite{just14}
 benchmark, a database and extensible 
 framework of real bugs that enables reproducible studies in software testing and
-has been preivously used to evaluate APR~\cite{Durieux15}. 
+has been preivously used to evaluate APR~\cite{martinez2016}. 
 It currently contains 395 real bugs from 6
 open source programs, along with developer-provided test suites, cases that
 expose each bug,  and
