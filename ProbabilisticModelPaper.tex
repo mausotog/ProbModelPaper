@@ -823,9 +823,8 @@ determine how to reimplement and use them in our context.
 
 In this section we describe how we mined a probabilistic
 model of human bug-fixing edits from a large set of popular Java projects on
-GitHub.\todo{to what end/purpose?} The intuition behind this model is to be able to apply human
-knowledge\todo{Mau: this sentence stops existing. Can you please expand it to
-  give a roadmap for the section as well as a high-level idea of how repair works?}
+GitHub to analyze how developers apply different types of edits. The intuition behind this model is to be able to apply human
+knowledge to the automatic program repair process and create patches closer to how a human developer would do it. To do this, we select a corpus of popular GitHub projects and filter out their latest bug fixing commits. We then extract an instance count of each of the mutation operators and replacements used in these commits to use them in automatic program repair. Finally we analyze these edits and extract association rules of edits that happen often to be able to use this knowledge for multi-edit source code repairs.
 
 \subsection{Selecting the corpus}
 
@@ -1239,8 +1238,8 @@ power.
 
 \paragraph{Comparison to previous techniques} Second, we compare our tool, using
 the best set of operators as identified in the first question, to four
-previously-prosed APR tools: GenProg, TrpAutoRepair, PAR and Nopol.\todo{add a
-  reference for each of these.} These prior approaches provide coverage over
+previously-prosed APR tools: GenProg~\cite{legoues12Genprog},Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13TrpAutoR},
+and Nopol~\cite{xuanNopol}. These prior approaches provide coverage over
 several dimensions that differentiate program repair techniques.  GenProg and
 TrpAutoRepair use the same statement-level edits, but differ in their search
 strategies (GenProg uses a genetic programming strategy; TrpAutoRepair, also
@@ -1252,9 +1251,7 @@ consider.\footnote{Note that, in this study we do not compare directly to
   SPR/Prophet~\cite{long16proph}, because they use machine learning to tune the
   probabilities to rank their schemas instantiation and are thus much more
   difficult to reimplement faithfully; additionally, as established, their
-  schemas are generalized by the extended PAR templates we consider, which are
-  already tailored to Java, reducing the potentially subjective judgement required to
-  translate and reimplement them.}
+  schemas are generlaized by the extended PAR templates we consider.}
 
 The open-source implementation of GenProg for Java that we use implements 
 the behavior and mutation operators of the first three approaches, translated
@@ -1275,8 +1272,7 @@ interest of the comparison).  We thus use the most recent dataset in our compari
 For the comparitive experiments, we look at expressive power (bugs repaired) and
 patch quality.  We do not compare time to repair, which is influenced by fault
 localization (which is not held constant between the techniques) and thus would
-be less informative, and because we do not have the requisite data for
-Nopol.\todo{That's true, right?}
+be less informative, and because Nopol expresses the time taken to produce each patch in wall-clock time while we express it in number of variants.
 
 \paragraph{Dataset}
 We consider for repair a subset of the Defects4j~\cite{just14}
@@ -1290,8 +1286,7 @@ corresponding developer-provided patches.  Figure~\ref{defects4j} characterizes
 the dataset.\footnote{Note that we initiated this study before Defects4J added
   the Mockito project.} Because we compare to single-edit techniques, we
 restrict attention to a subset of the Defects4J bugs with single-line human
-patches. \todo{Mau, I may have cut this accidentally in my reorg, but add how
-  many bugs we consider from each.}
+patches. We ran a comparison of the probabilistic model against an equally distributed model on the first one-line patches from each project until either the project had no more one-line patches, or we ran out of resources to compute more executions. The projects have a diverse distribution of one-line patches therefore the number of bugs tried per project varies. 
 
 \paragraph{Patch quality}
 As a proxy for patch quality (to mitigate the risk of plausible but as yet
@@ -1302,9 +1297,9 @@ guides the search process. We generate a single held out suite for each buggy pr
 repairs.  We use Randoop~\cite{pacheco07}, an established automatic
 test suite generation tool for Java, to generate this second test suite. We run
 Randoop with a ten minute budget (six times the default value) to create the
-held-out test suites. We calculate line 
-coverage of the generated test suite over the class that contains the human fix.\todo{Mau:
-  pre-fix or after-fix?}
+held-out test suites. We also use
+Cobertura\footnote{http://cobertura.github.io/cobertura/} to calculate the
+coverage of the test suite over the ``after-fix" class that contains the human fix.
 
 \paragraph{Settings} For the genetic programming based techniques (including our own), our population
 size is 40 (consistent with previous work), and our max generation size is 10.
@@ -1321,11 +1316,11 @@ techniques~\cite{arcuri11}.
 
 \begin{figure*}\centering
 {\footnotesize
-\begin{tabular}{l|rr|rr|rr|rr|rr|rr|rr}
+\begin{tabular}{l||rr||rr|rr|rr|rr|rr|rr}
 \toprule
 && &\multicolumn{4}{c|}{Statement-Edit Only} & \multicolumn{4}{c|}{Template-based Only} & \multicolumn{4}{c}{All Mutations} \\ 
 & Held-out & Line & \multicolumn{2}{c|}{EqDist} & \multicolumn{2}{c|}{Prob} & \multicolumn{2}{c|}{EqDist} & \multicolumn{2}{c|}{Prob} & \multicolumn{2}{c|}{EqDist} & 
- \multicolumn{2}{c}{Probabilistic} \\
+ \multicolumn{2}{c}{Prob} \\
 Bug ID       & tests & Coverage & Time & Quality &  Time & Quality &  Time & Quality&  Time & Quality&  Time & Quality&  Time & Quality \\
 \midrule
 Closure \#10 &  1493 & 5.5\% & 221.0& 100\%  & {179.5} &{100\%} & {175.1}&{100\%} & {121.3}&{100\%} & {163.3}&{100\%} & {157.4}&{100\%} \\
@@ -1380,7 +1375,7 @@ the quality of patches produced  appears constant, and unaffected by model:
 either the tool produces patches in 
 that all pass the second test suite, or it produces patches that do not. 
 
-\todo{Mau: Discussion/interpretation of patch quality results}
+We notice a trend regarding the number of held-out test cases and the likelihood of the generated patches to generalize to this test suite. The lower the quantity of test cases in the test suite, the more likely it is that the generated test suite will be able to succeed over that test suite. In terms of quality assessment, the patches generated seem to behave very similarly within their own groups. In all the cases we found where the approach was able to find more than one possible patch, either all the generated patches for that bug generalized to the held-out test suite, or all of them overfitted to the guiding test suite. There were no cases where for different patches found for the same bug, some of them generalized and others overfit.
 
 From these results, we conclude that the probabilistic model using all available
 mutation operators (both Statement- and Template-based) appears to maximize
@@ -1483,14 +1478,14 @@ compares our new technique to the previous state-of-the-art.
              & \multicolumn{1}{c|}{Held-out // Line}     & \mII{Probabilistic Model} & \mII{GenProg} & \mII{TrpAutoRepair} & \mII{PAR} & \mC{Nopol} \\
 Bug ID       &  \multicolumn{1}{c|}{tests // Coverage} & Edit & NFTC & Edit & NFTC & Edit & NFTC & Edit & NFTC & Edit  & NFTC  \\ 
 \midrule
-\mR{2}{Closure \#10} & \mR{2}{1493 // 5.5\%} & SeqEx & 0 & \mCR{2}{Not found}  & \mCR{2}{Not found} & \mCR{2}{Not found} & \mR{2}{Found} & \mR{2}{28}   \\
+\mR{2}{Closure \#10} & \mR{2}{1493 // 5.5\%} & SeqEx & 0 & \mCR{2}{Not found}  & \mCR{2}{Not found} & \mCR{2}{Not found} & \mR{2}{IfInsertion} & \mR{2}{28}   \\
              &                               & SeqEx & 0 &        &              &        &        &      &       &      \\
 \midrule
-Closure \# 18 & 1615 // 32.1\%      & ExpRem & 0    & \mII{Not found}  & \mII{Not found} & \mII{Not found}  &Found &  1  \\
+Closure \# 18 & 1615 // 32.1\%      & ExpRem & 0    & \mII{Not found}  & \mII{Not found} & \mII{Not found}  &IfInsertion &  1  \\
 \midrule
-Math \#2      & 6933 // 100\%  & MethodRep & 170 & \mII{Not found} & \mII{Not found} & MethodRep & 170 & Found & 0  \\
+Math \#2      & 6933 // 100\%  & MethodRep & 170 & \mII{Not found} & \mII{Not found} & MethodRep & 170 & IfInsertion & 0  \\
 \midrule
-\mR{2}{Time \#19}     & \mR{2}{3650 // 75.4\%}  & Append & 0 & \mR{2}{Append} & \mR{2}{188} & \mR{2}{Append} & \mR{2}{188} & \mCR{2}{Not found} & \mR{2}{Found} &  \mR{2}{188} \\
+\mR{2}{Time \#19}     & \mR{2}{3650 // 75.4\%}  & Append & 0 & \mR{2}{Append} & \mR{2}{188} & \mR{2}{Append} & \mR{2}{188} & \mCR{2}{Not found} & \mR{2}{ConditionModif} &  \mR{2}{188} \\
               &                 & Replace & 0 &  &        &     &     &    &    &     & \\
 \midrule
 \mR{6}{Chart \#1} & \mR{6}{4285 // 32.9\%} & SeqEx & 1 & Replace & 1  & Delete & 1 & ExpAdd & 1 & \mC{\mR{6}{Not found}}   \\
@@ -1507,16 +1502,12 @@ Math \#2      & 6933 // 100\%  & MethodRep & 170 & \mII{Not found} & \mII{Not fo
     of 0 means the patch fully generalized to the the held-out test
     suite. Because each randomized technique is run several times, some
     techniques find multiple unique patches per bug. The ``Edit'' column shows
-    the types of edits employed in each (unique) patch.\todo{Mau, can you look
-      at the Nopol patches and indicate what time of edit they use? I think
-      they can only do a few, like ``Condition insertion'', ``deletion'', and
-      maybe something else.  We may even be able to map them to the templates
-      we use.} \label{stateOfTheArtComparison}} 
+    the types of edits employed in each (unique) patch. \label{stateOfTheArtComparison}} 
 \end{figure*}
 
 
 \begin{figure}[t]
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}[firstnumber=1284][frame=single]
 boolean staleInputs = false;
 @-if(options.dependencyOptions.needsManagement() && options.closurePass){
 +if(options.dependencyOptions.needsManagement()){
@@ -1530,7 +1521,7 @@ boolean staleInputs = false;
 	\end{lstlisting}
 
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}[firstnumber=1284][frame=single]
 boolean staleInputs = false;
 @-if(options.dependencyOptions.needsManagement() && options.closurePass){
 +if (com.google.javascript.rhino.Node.this.type <= com.google.javascript.rhino.Node.IS_DISPATCHER) {
@@ -1548,22 +1539,16 @@ boolean staleInputs = false;
       approaches found an identical patch.  Bottom: the Nopol fix for the
       Closure 18 bug, which does not generalize to a held-out test
       suite.\label{closure18prob}\todo{Mau, please have the lstings start the
-        numbering at the line number of the actual sourcecode in question
-        (rather than at 1)}}
+        numbering at the line number of the actual source code in question
+        (rather than at 1)RESPONSE: I did but I don't know how to make it repeat the line that was replaced... Line replaced is 1285. Also these long numbers interfere with the margin}}
 \end{figure}
 
 
-Figure~\ref{stateOfTheArtComparison} compares patching results for our
-probablistic model-based repair to GenProg, TrpAutoRepair, PAR, and Nopol.
-Unlike in Figure~\ref{tab:singleLineBugs}, we break out these results by unique
-patches found over multiple repair trials per technique (for those that use
-randomness, that is, every technique but Nopol).  We show 
-the number of held-out tests each patch fails; lower is better (again by
-contrast with Figure~\ref{tab:singleLineBugs}, where higher was better in the
-quality columns). Of the \todo{how many?}
+Figure~\ref{stateOfTheArtComparison} shows results, including, for each patch,
+the number of held-out tests the patched program fails. Of the eleven\todo{revisit}
 patches created by our approach, 
 five pass all held-out test suite (45.5\%). None of the GenProg,
-TRPAutoRepair, or PAR patches fully generalize; 25\% of Nopol's patches do.
+TRPAutorRepair, or PAR patches fully generalize; 25\% of Nopol's patches do.
 This gives us confidence that our approach produces high
 quality patches in comparison with the alternatives created by state-of-the-art
 tools. 
