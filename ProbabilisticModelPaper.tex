@@ -516,7 +516,7 @@ infinite, introducing key tensions in APR
 technique design.  First, 
 techniques must manage the space carefully so as to traverse it in a scalable and
 effective manner.  One way that current techniques manage this problem is to
-only consider a limited set of of possible changes, or \emph{mutation operators}, 
+only consider a limited set of possible changes, or \emph{mutation operators}, 
 applied to potentially-fault code (typically identified using off-the-shelf fault 
 localization, e.g. Tarantula~\cite{Jones02}).  
 Techniques differ in the mutation operators they consider, and how those operators
@@ -613,8 +613,7 @@ The primary contributions of this paper thus are:
       several different mutation operators, and the probabilistic model
       discussed in this study.\footnote{We will release all artifacts, code, and
         data, including generated test suites, associated with this publication post blind-review.} %\footnote{https://bitbucket.org/clegoues/genprog4java}
-  \item \textbf{Comparative evaluation} of the new repair approach on real world bugs from well
-    known open source projects (independent of those used to inform model
+  \item \textbf{Comparative evaluation} of the new repair approach on real world bugs from well-known open source projects (independent of those used to inform model
     construction). We independently evaluate patch quality using a held-out test
     suite. We conclude that by creating candidate patches using human behavior
     we are able to find patches faster than a technique that does not use such
@@ -703,7 +702,7 @@ Patch quality is an important concern in APR research~\cite{Qi15}: Ideally,
 created patches will generalize beyond the test cases used to inform their
 construction~\cite{smith15}, and conform to other non-functional standards of
 acceptability~\cite{fry2010,kim2013}.  Although assessing patch quality is an
-unsolved reasearch problem~\cite{monperrus14critical}, one mechanism to evaluate functional patch
+unsolved research problem~\cite{monperrus14critical}, one mechanism to evaluate functional patch
 correctness is to evaluate generated patches on a held-out test suite~\cite{smith15,legoues12Genprog}, separate
 from the tests used to construct the patches. 
 If the generated patch allows the program to pass all held-out tests, it is more likely to
@@ -813,7 +812,7 @@ included templates.  We use the PAR templates to represent this category
 for the following reasons: (1) PAR includes the other techniques' mutation operators, (2) it
 provides a concrete description of how the code is changed, enabling
 replication, and (3) it explicitly targets Java (SPR, Prophet and Kali
-target C), reducing the extent to which we must apply subjective judgement to
+target C), reducing the extent to which we must apply subjective judgment to
 determine how to reimplement and use them in our context.
 
 \section{Program repair via a learned probabilistic edit model} \label{buildingTheModel}
@@ -1172,7 +1171,7 @@ predicted by the first five guesses from the training sub-model.
 
 Figure~\ref{results10fcv} shows results. For each fold, we show the instance
 count and percentage of correctly predicted instances within the top five
-guesses of both the equally distributed and the probablistic models for both the
+guesses of both the equally distributed and the probabilistic  models for both the
 Replacements and Mutations models. The \# columns 
 show the number of attempted instances per fold.  The ``Prob.'' columns show the
 accuracy (correct prediction rate) of the mined model on that fold, for each model; ``EqDist'',
@@ -1283,7 +1282,7 @@ be less informative, and because Nopol expresses the time taken to produce each 
 We consider for repair a subset of the Defects4j~\cite{just14}
 benchmark, a database and extensible 
 framework of real bugs that enables reproducible studies in software testing and
-has been preivously used to evaluate APR~\cite{martinez2016}. 
+has been previously used to evaluate APR~\cite{martinez2016}. 
 It currently contains 395 real bugs from 6
 open source programs, along with developer-provided test suites, cases that
 expose each bug,  and
@@ -1310,7 +1309,7 @@ coverage of the test suite over the ``after-fix" class that contains the human f
 size is 40 (consistent with previous work), and our max generation size is 10.
 For non-GP-based techniques, our maximum considered variant count is 400; for
 all techniques, we set a timeout of 4 hours per run.  These settings are
-conssitent with prior work.  We run 20 seeds per randomized repair trial, in
+consistent with prior work.  We run 20 seeds per randomized repair trial, in
 keeping with recommendations on the assessment of stochastic
 techniques~\cite{arcuri11}.
 
@@ -1503,7 +1502,7 @@ Math \#2      & 6933 // 100\%  & MethodRep & 170 & \mII{Not found} & \mII{Not fo
   \caption{Comparison between the probabilistic model-based repair and
     other state of the art approaches. The NFTC column shows Number of Failed
     Test Cases, for each patch, evaluated against the generated held-out test suites.  Lower is better; an NFTC
-    of 0 means the patch fully generalized to the the held-out test
+    of 0 means the patch fully generalized to the held-out test
     suite. Because each randomized technique is run several times, some
     techniques find multiple unique patches per bug. The ``Edit'' column shows
     the types of edits employed in each (unique) patch. \label{stateOfTheArtComparison}} 
@@ -1721,7 +1720,7 @@ of domains.
 
 Par~\cite{kim2013} describes a manual set of 10 templates of common behavior to
 create patches, showing that such templates result in patches of higher
-human-adjuded acceptability than statement-edit-based patches.  Our study takes 
+human-adjudged acceptability than statement-edit-based patches.  Our study takes 
 into consideration a superset
 of these templates, provides steps towards
 accounting for multi-edit source code changes, an understudied problem, and,
@@ -1799,7 +1798,7 @@ of multi-edit repairs.
 
 % use section* for acknowledgment
 \section*{Acknowledgments}
-The acknowledgments section will be added for the camera ready version. 
+The acknowledgments section will be added for the camera ready version.
 
 
 
