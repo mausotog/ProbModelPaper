@@ -492,7 +492,7 @@ the software development process~\cite{Weiss07,Tassey02,Britton13}, especially f
 Significant recent research effort has been dedicated to
 building automatic program repair (APR) tools that are able to address
 bugs in 
-programs (e.g.~\cite{legoues12,kim2013,Weimer13,fan15SPR,long16proph,debroy10,perkins09,wei10}).
+programs (e.g.~\cite{legoues12,kim2013,Weimer13,long15SPR,long16proph,debroy10,perkins09,wei10}).
 
 One well-known class of repair techniques follows a 
 \emph{generate-and-validate} approach  (e.g. GenProg~\cite{legoues12}, 
@@ -525,7 +525,7 @@ delete program statements, replace one statement for another, or insert one
 statement after another; the ``fix'' statements are selected from elsewhere in
 the same program.  There is a broad diversity of such syntactic operators used
 by other APR techniques, including more complicated templated modifications~\cite{kim2013} and transformation 
-schemas~\cite{long16proph,fan15SPR}.  Semantically-informed
+schemas~\cite{long16proph,long15SPR}.  Semantically-informed
 techniques~\cite{nguyen13,Mechtaev2016,xuanNopol} differ in that they use synthesis to
 construct the fix code used in instantiating program modifications.  
 Regardless, any such technique uses heuristics or heuristically-informed
@@ -714,7 +714,7 @@ the test suite used to guide the repair.
 \label{categorization}
 
 We categorize mutation operators used to create patches from a cross
-section of state-of-the-art approaches in two groups: 
+section of state-of-the-art approaches into two groups: 
 
 \paragraph{Statement-Edit mutations}
 One family of repair approaches, including GenProg~\cite{legoues12}, 
@@ -734,7 +734,7 @@ redundancy~\cite{Hindle12Naturalness}.
 \paragraph{Template-based mutations}
 Another family of approaches instantiates
 predetermined templates, more complex than those in the first family, at applicable code locations.  This family includes PAR~\cite{kim2013}, 
-SPR~\cite{fan15SPR}, and 
+SPR~\cite{long15SPR}, and 
 Prophet~\cite{long16proph}.
 
 PAR is the product of a study of a large number of 
@@ -1082,7 +1082,7 @@ all repair experiments in Section~\ref{sec:repairSetup}.
 \toprule
    &\multicolumn{3}{c|}{Replacements} &\multicolumn{3}{c}{Mutations} \\
 \midrule
-Fold	& Inst &Prob& EqDist& Inst&Prob& EqDist \\
+Fold	& \# &Prob& EqDist& \# &Prob& EqDist \\
 \midrule
 1	& 155&70\%&	25\% &17313&  95\% & 64\%   \\
 2	& 86&100\%&	25\%  & 17232& 93\% & 63\%   \\
@@ -1160,16 +1160,17 @@ predicted by the first five guesses from the training sub-model.
 Figure~\ref{results10fcv} shows results. For each fold, we show the instance
 count and percentage of correctly predicted instances within the top five
 guesses of both the equally distributed and the probablistic models for both the
-Replacements and Mutations models. The ``Inst" columns 
+Replacements and Mutations models. The \# columns 
 show the number of attempted instances per fold.  The ``Prob.'' columns show the
 accuracy (correct prediction rate) of the mined model on that fold, for each model; ``EqDist'',
 the accuracy of the equally distributed model.  For the Replacements model,
 the average accuracy of the Probabilistic model is 63\% higher than the EqDist
 model; the difference is 56.4\% for the Mutations model.
+Two sample t-tests as applied to the results for both mutation and replacement
+predictions indicate that both differences in means are statistically significant
+($\alpha<0.05$). 
 
-When we applied a Two sample t-test for means to the different sets of results when predicting replacements, we obtain a p-value of 0.00000003 which is far below our alpha level of 5\% which means there is a very marked statistical significance between the two populations. When applying the same test to the results of predicting mutation operators, we obtain a p-value of 0.00012 which is still far below 5\% meaning that there is a strong statistical significance.
-
-This indicates that the probabilistic approach is
+These results suggest that the probabilistic approach is
 significantly more accurate than an equally-distributed baseline (used in
 several syntactic APR approaches) in predicting bug-fixing edits.  This suggests
 that the model, incorporated into an APR approach, may be more likely to produce
@@ -1196,7 +1197,7 @@ Joda-Time & Time & 4130 & 3\\
 \bottomrule
 \end{tabular}
 \center
-  \caption{Description of projects that comprise Defects4j \todo{re visit the number in the last column to see if we have found a new patch}  \label{defects4j}}
+  \caption{Description of projects that comprise Defects4j. \label{defects4j}}
 \end{figure} 
 
 
@@ -1532,9 +1533,10 @@ boolean staleInputs = false;
 \end{figure}
 
 
-Figure~\ref{stateOfTheArtComparison} shows the edit performed and
-the number of held-out tests each patched program fails. Of the eleven
-patches created by our approach, 
+Figure~\ref{stateOfTheArtComparison} shows
+results, including, for each patch, a description of the edit included and
+the number of held-out tests the patched program fails. Of the
+ eleven patches created by our approach, 
 five pass all held-out test suite (45.5\%). None of the GenProg,
 TRPAutorRepair, or PAR patches fully generalize; 25\% of Nopol's patches do.
 This gives us confidence that our approach produces high
