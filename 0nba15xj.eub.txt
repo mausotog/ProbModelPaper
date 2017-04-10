@@ -1,0 +1,15 @@
+﻿Extended deadline ICSME 2017
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# Date:      Sun Apr 9 22:29:51 2017 -0400
+#
+# On branch master
+# Your branch is ahead of 'origin/master' by 1 commit.
+#   (use "git push" to publish your local commits)
+#
+# Changes to be committed:
+#	modified:   ProbabilisticModelPaper.tex
+#
+
