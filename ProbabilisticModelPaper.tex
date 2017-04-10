@@ -1201,9 +1201,9 @@ correct patches.  We directly address this question next.
  Project & ID & Test cases & considered \\
 \midrule
 JFreechart & Chart & 2205 & 3\\
-Closure compiler & Closure & 7927 & 4\\
-Apache commons-lang & Lang  & 2245 & 4\\
-Apache commons-math & Math & 3602 & 4\\
+Closure compiler & Closure & 7927 & 6\\
+Apache commons-lang & Lang  & 2245 & 6\\
+Apache commons-math & Math & 3602 & 6\\
 %Mockito &	Mockito	 & Mocking framework for junit tests & \todo{I can't find this data} & 0 \\
 Joda-Time & Time & 4130 & 3\\
 \bottomrule
@@ -1223,13 +1223,13 @@ How does our model-informed APR tool compare to the
 \paragraph{Validation of models in context} We first we evaluate the utility of our models in the
 context of several different sets of mutation operators.  We do this to
 independently validate that the models are useful in context (rather than simply
-as predictors, as established in the previous subsections), and second to
+as predictors, as established in the previous subsections). Second to
 identify which sets of syntactic mutation operators appear most useful in
 practice. We
 instantiate our tool with each of 
 two models (the Equally Distributed baseline from Section~\ref{sec:generalize}
-and the learned Probabilistic models), and three different operator sets: (1) Statement-Edit mutations only (2)
-Template-based mutations only, and (3) All mutations. We evaluate each version
+and the learned Probabilistic models), and three different operator sets: (1) Statement-Edit mutations (2)
+Template-based mutations, and (3) All mutations. We evaluate each version
 for expressive power (in terms of bugs fixed), variants to repair (a machine-
 and test suite-independent proxy for time), and quality of the produced patches
 (evaluated as described below). 
