@@ -1,0 +1,170 @@
+
+----------------------- REVIEW 1 ---------------------
+PAPER: 134
+TITLE: Using a probabilistic model to predict bug fixes
+AUTHORS: Mauricio Soto and Claire Le Goues
+
+
+----------- Overall evaluation -----------
+1. Paper summary
+
+At their core, automated program repair (APR) approaches apply mutations of a code base to automatically correct program behaviour. They use test suites to guide a search of the mutation space, (hopefully) converging on a solution that causes failing tests to pass before a time limit is reached. This paper argues that the frequency of mutation operations in past bug-fixing changes should inform the exploration of the mutation space. Using a distribution that was constructed from historical bug fixes, the paper shows that we can guide APR to converge on a solution in fewer iterations. Also, the paper uses association rule mining to detect common co-occurrences of mutation operations in bug fixing changes in order to encourage APR researchers to explore multi-edit bug-fixing changes as well.
+
+2. Points for the paper
+
++ A pair of interesting and well-motivated problems
++ A (relatively) large evaluation
++ Well-written submission
+
+3. Points against the paper
+
+- Uniformly selected random baseline seems inappropriate and unnecessary
+- The two studies (historically-informed mutations, association rule mining) appear to be disparate and incohesive.
+- Analysis of association rules should be deepened
+
+4. Supporting argumentation for your points
+
+- I did not understand why we need the evaluation that compares against a uniformly selected random baseline. The only way that I can think of for a heuristic search that is informed by historical mutation behaviour to underperform with respect to technique that randomly applies mutations would be if bug-fixing behaviour is itself a random process.
+
+- I found that the historically-informed mutations and the association rule mining studies are not clearly connected. The paper feels like two separate studies that have been merged into a single paper. This is usually not a problem, but the studies have different motivations and different solutions. I would highly recommend to separate the studies, if you consider improving the association rule mining evaluation as I recommend below.
+
+- The outcome of the association rule mining analysis a little underwhelming. On page 8, we read that: "Association rules provide an intuition of which common patterns of behavior developers use. These rules tell us what edits happen frequently together, which will help us further understand multi-edit source code changes, an understudied area that covers the majority of real life patches." I agree that this would provide the foundation for a nice study, but the rules themselves need to be evaluated in order for them to become a contribution. How many of these rules are actually useful for your use case? Did you miss any useful rules by setting your thresholds too strictly?
+
+5. Suggested paper improvements (Minor)
+
+My primary recommendation is to separate the historical distribution analysis from the association rule mining results. They do not seem to fit together under a single theme. Really, they are disparate topics and each topic needs a full evaluation of its own.
+
+a. Please use the table environment for Figures 2, 4, 5, 6, and 7. These are tables.
+
+b. Please double check the values in Figure 4. The mean, stdev, and sum in the Replacements columns are certainly incorrect.
+
+c. There are several thresholds that are mentioned without analysis (e.g., confidence of 90%). Demonstrating the sensitivity of these threshold values would be useful.
+
+d. Avoid contractions in formal writing.
+
+e. "All the data gathered, tools and test suites used in this study are publicly available for open peer review and scrutiny." Unfortunately, much of this material was not available for peer review due to DBR.
+
+Typos:
+
+p1
+"TrpAutoRepair [34]" -> "TrpAutoRepair [34],"
+"potentially-fault" -> "potentially-faulty"
+"operators they consider" -> "operators that they consider"
+
+p2
+"Github" -> "GitHub" (fix everywhere)
+"human behavior we" -> "human behavior, we"
+
+p3
+"operators they" -> "operators that they"
+"the Bottom section" -> "the bottom section"
+
+p6
+"We first we evaluate"
+"previously-prosed"
+"[20],Par"
+
+p7
+"available results available"
+"most “March 2017” version"
+
+p8
+There are lots of problems with this extremely long paragraph/sentence: "One example demonstrating the quality improvement afforded by the probabilistic model-based approach is evident for the Clousre 18 bug. in which we can very clearly see the success of our approach when applying the probabilistic model is Closure 18 as seen in Figure 8 where, not only did our approach created the exact same patch as the human did, but also our approach was able to find the patch within the time frame specified before the execution is shutdown by one of the constraints per execution while other approaches that are able to create this patch, couldn’t because they ran out of time."
+
+p10
+"Defects4j.Finally"
+
+
+----------------------- REVIEW 2 ---------------------
+PAPER: 134
+TITLE: Using a probabilistic model to predict bug fixes
+AUTHORS: Mauricio Soto and Claire Le Goues
+
+
+----------- Overall evaluation -----------
+1. Summary
+The paper presents a study and approach to improve existing auto-repair approaches using a probabilistic model of mutation operators and templates. The probabilistic model is obtained by mining the code changes of the 100 most recent bug fixes from the 500 most-starred Java projects on GitHub and mapping them to statement-edit and template-based mutation operators. The results of the evaluation show that the probabilistic model built into the existing auto-repair tool GenProg can find the correct mutation operator to patch single-edit bugs faster than four state-of-the art approaches. Furthermore, the resulting patches generalize better. Finally, the paper also presents first results to address the problem of fixing bugs that require multiple edit operations.
+
+2. Points for
++ large dataset to compute the probabilistic model
+
+3. Points against
+- details on the matching approach and results are missing
+- key results are only based on 5 bugs that could be fixed
+- approach and evaluation of multi-edit approach are not ready for publication
+
+4. Detailed review
+Several parts of the paper are very well done and I enjoyed reading them. But unfortunately, several other parts suffer from issues that need to be addressed before the paper can be published. In the following I detail my issues and provide further comments.
+
+The introduction explains the two major problems and challenges of existing auto-repair approaches: 1) the large search space and 2) the quality of the generated patches. Both problems are well described and motivated.
+
+Section 2 is well done. I appreciated reading the background on the auto-repair paradigms, corresponding approaches, and the generate and validate mutation operators. 
+
+Section 3 presents the probabilistic edito model for the statement-edit and template-based mutations that are used by current auto-repair approaches. The amount of data, 100 recent bug fixed from the 500 top-starred GitHub Java projects sounds impressive. 
+
+The restriction to bugs that max. modify three files is motivated. Still, it would be interesting how many commits are not considered because of this restriction.
+
+The paper misses to present a number of important details on the model and how it has been computed. The authors rely on an improved version of GumTree to extract the code changes which then are mapped to mutation operators. From my experience, I know that GumTree outputs a number of extra edits (i.e., false negatives) that might impact the resulting model. Did you validate the edit scripts output by GumTree in this regard? How did you handle the extra edits when matching them to the mutation operators?
+
+One of my main issues concerns the greedy matching of edits to mutation operators. How exactly was this done? Was it done manually or also with the support of tools? How were the results from the matching validated (e.g., manually by whom)? The authors need to present all the details since the probabilistic model is the key contribution of this paper and also the key component to improve existing auto-repair tools.
+
+Furthermore related to the probabilistic model, the authors need to present the results of the matching (I did not understand why they have been omitted). How many instances of each mutation operation did you find in the bug-fixing commits? How many edit operations output by GumTree did they cover? How many edit operations could not be matched, why? The paper only describes  that the template-based mutations comprise 29.26% of the corpus; statement-edit mutations make up 70.74% of the corpus. The same problem applies to the replacement probabilistic model. 
+
+The evaluation comparing the model with an uniform distributed baseline using 10-fold cross validation sounds good to me. As expected it indicates that the probabilistic model can improve the selection of the next mutation operator. 
+
+Regarding the dataset used for the comparison with 4 existing auto-repair approaches, please add the concrete number of testcases also in the text in Paragraph 4.B.c. From Figure 5, I understand that the dataset used for the evaluation comprises 24 defects. Do these 24 bugs present all the single-edit bugs from the set of 395 bugs in Defects4J or is this only a subset?
+
+The evaluation of the patch quality using Randoop to generate held-out tests sounds good to me. 
+
+The results presented for the mutation operators and model utility show that the probabilistic models can provide fixes for 5 out of the 18 bugs. But, the dataset in Figure 5 states 24 bugs (what happened to the other 6 bugs?) 
+
+The evaluation of the probabilistic models is only based on 5 bugs. This allows the authors to provide only initial evidence that the combination of statement-edit and tamplate-based mutations outperforms each single mutation. However, the amount of 5 bugs is not sufficient to allow any generalization of the results. 
+
+Furthermore, the results of this comparison presented in Figure 6 contradict the findings from before that the probabilistic model outperforms a uniform distribution model (presented in Section 4.C). According to the results there is no difference in using the probabilistic model or a uniform distribution model. Again, this might be attributed to the small amount of bugs that are not representative to allow drawing conclusions. 
+
+Section 4.D presents the results of the comparison with four state-of-the-art approaches. The results show that the probabilistic models improve the quality of created patches. This is a relevant finding, however, it is currently only based on 5 bugs. First, again this number of bugs is not sufficient to obtain results that can be generalized to other bugs. Second, this evaluation might favor the presented approach since only the bugs for which the presented approach could create patches are considered. Did the other approaches create patches for some of the other bugs (out of the 24 bugs mentioned in Figure 5)? 
+
+Concerning the association rule mining, the approach and its evaluation are not ready for publication. The paper only presents some initial results in Section 4.E, but it is currently not clear what the reader should learn from these results and what these results mean for the research on auto-repair approaches. Instead of these results, I suggest the authors to use this space for addressing the issues listed above. If addressed, I am convinced that this paper can make a strong contribution to the field of auto-repair.
+
+# Typos:
+* general: use "PAR" (instead of sometimes Par)
+* general: label Tables with Table (and not Figure)
+* p7,c2: ... rarely applied by ...
+* p8,c2: ... is evident for the Closure 18 bug. As seen in Figure 8 ...
+* p8,c2: ... did our approach create ...
+* p8,c2: ... includes a mutation ...
+* p9,c1: ... in all the top mined ...
+* p10,c1: ... using a graph-based ...
+
+
+5. Suggested improvements
+See my detailed comments
+
+
+----------------------- REVIEW 3 ---------------------
+PAPER: 134
+TITLE: Using a probabilistic model to predict bug fixes
+AUTHORS: Mauricio Soto and Claire Le Goues
+
+
+----------- Overall evaluation -----------
+1. Paper summary
+In this paper, the authors analyze the automatic software repair approaches. Firstly, the authors study the mutation operators used in the state of the art approaches. Then, they create a model to describe the likelihood of the choices of bug-fixing mutation operators, and evaluate their proposed approach using the state of the art approaches. Finally, they apply the mining association rules model to find the modification rules in the examined data.
+
+2. Points for the paper 
+- The paper conducts a deep analysis using two probabilistic models for suggesting the code to repair bugs.
+- This paper is well organized in the structure. The authors provide details of their experiments, and they use the public open source projects, which is possible for readers to replicate their experiments.
+- To demonstrate the contribution of the proposed approach, the authors compare with the state-of-the-art tools on the same data, which is convincing to sell the proposed approach.
+
+3. Points against the paper
+- When selecting the corpus, the authors did not show how they handle the testing code in the commits. It is possible that the developers commit testing code files (in java) to verify the bug fixes. The testing code files are not supposed to be considered as the corpus. However, the authors did discuss how they deal with such testing code files during data processing.
+- The authors did not explain the selected projects. For example, what are the characteristics of the 500 projects, such as the size of the code and the age? 
+- The authors did not explain why they only choose the most recent 100 bugs as experiment objects. I think each project has over 100 bugs with commits.  
+- The support value of the results of association rule mining is a little low. It affects the soundness of the findings in RQ4.  
+- The papers is a bit difficult for follow. It would help the readers to understand the paper if the mutation operators can be explained well in the introduction and a running example for the code repair can be added in the earlier part of the paper.
+
+4. Suggested paper improvements
+
+-The way for mining the commits message can be improved. Instead of using a set of pre-defined keywords, you can use the bug repositories (e.g, JIRA) and then identify the commits information for each bug. You can mine the commits information and connect it with the source code repositories using the mined commits. It is more accurate than the way you use (i.e., using regular expression to identify keywords “fix”,”bugs”,”issue”,”problem” etc., which might miss some interesting bugs)
+-  More details should be clarified in the paper. For example, why only choose the top 100 commits messages. Why you choose the 500 JAVA projects and what is the details of the subject projects.
+- It would be helpful to conduct a user survey on the quality of the repaired code.
