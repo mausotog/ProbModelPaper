@@ -498,7 +498,7 @@ programs (e.g.~\cite{legoues12,kim2013,Weimer13,long15SPR,long16proph,debroy10,p
 
 One well-known class of repair techniques follows a 
 \emph{generate-and-validate} approach (e.g., GenProg~\cite{legoues12}, 
-Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13TrpAutoR}
+Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13TrpAutoR},
 Prophet~\cite{long16proph}, HDRepair~\cite{xuan16}, Angelix~\cite{Mechtaev2016},
 Nopol~\cite{xuanNopol}), which takes as input a test suite, 
 including at
@@ -518,7 +518,7 @@ statements~\cite{legoues12}, applying templates~\cite{kim2013}, transformation
 schemas~\cite{long16proph,long15SPR}, semantically imphering code\cite{nguyen13,Mechtaev2016,xuanNopol}, etc.
 Given a potentially-faulty location, these
 generate-and-validate approaches (e.g., GenProg~\cite{legoues12}, 
-Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13TrpAutoR}
+Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13TrpAutoR},
 Prophet~\cite{long16proph}, HDRepair~\cite{xuan16}) use heuristics or
 heuristically-informed probability distributions to select between
 mutation operators
@@ -541,7 +541,7 @@ mutation operators in use in a number of
 state-of-the-art approaches~\cite{legoues12,Weimer13,kim2013,long16proph}.
 
 We mine bug fixing commits from 
-the 500 most popular Github Java projects to model the selection probability of
+the 500 most popular GitHub Java projects to model the selection probability of
 the possible mutation operators based on 
 empirical data that describes how human programmers fix their code.  We thus
 categorize, compare, and validate a superset of
@@ -575,7 +575,7 @@ The primary contributions of this paper thus are:
 \begin{itemize}
 \item \textbf{Empirical model of single-edit repairs to Java code} mined
       from the 100 most recent bug fixes from the 500 most popular Java projects on
-    Github. This study also provides a deeper
+    GitHub. This study also provides a deeper
     understanding of which mutation operators are used by programmers to fix
     errors in source code, and the frequency of each of the mutation operators
     analyzed. 
@@ -591,7 +591,7 @@ The primary contributions of this paper thus are:
         data, including generated test suites, associated with this publication post blind-review.} %\footnote{https://bitbucket.org/clegoues/genprog4java}
   \item \textbf{Comparative evaluation} of the new repair approach on real world bugs from well-known open source projects (independent of those used to inform model
     construction). We independently evaluate patch quality using a held-out test
-    suite. We conclude that by creating candidate patches using human behavior
+    suite. We conclude that by creating candidate patches using human behavior,
     we are able to find patches faster than a technique that does not use such
     mined probabilities, and that the patch creation
     process benefits from combining mutation operator categories. We compare to
@@ -644,7 +644,7 @@ localizes the error to a smaller set of
 candidate program statements (typically using an off-the-shelf statistical approach~\cite{Jones02}).  It
 then constructs one or more candidate patches that seek to fix the buggy
 behavior without breaking any previously-correct behavior.  
-Techniques vary in (1) the mutation operators they consider, (2) how they select
+Techniques vary in (1) the mutation operators that they consider, (2) how they select
 between those operators, and how they identify or
 construct the fix code used to instantiate them, and (3) how they traverse
 the search space otherwise.  
@@ -725,9 +725,9 @@ that help us compare to and
 generalize the other approaches; they are shown in the middle segment of
 Figure~\ref{approachTemplates}. 
 SPR and Prophet use a set of transformation schemas,
-shown in the Bottom section of Figure~\ref{approachTemplates}.
+shown in the bottom section of Figure~\ref{approachTemplates}.
 
-\begin{figure}[ht]
+\begin{table}[ht]
   \centering
 {\small
 \begin{tabular}{ll}
@@ -751,14 +751,15 @@ Sequence Exchanger & Off-by-one Mutator\\
 Condition Refinement & Insert Initialization \\
 Copy and Replace & Condition Control Flow Introduction  \\
 Value Replacement  & Condition Introduction \\
-\bottomrule
+
+\vspace{1pt}
 \end{tabular}
   \caption{(Top) PAR fix templates. (Middle) PAR ``extra'' templates. (Bottom)
     SPR transformation schemas. We use the templates in the top and middle
     portions of this table as representative of the class of Template-based mutations. \label{approachTemplates}}
 }
 
-\end{figure}
+\end{table}
 
 The SPR/Prophet transformation schema can be mapped to certain PAR 
 templates. For example, \emph{Condition Introduction} can be seen as a superset of 
@@ -781,7 +782,7 @@ a subset of \emph{Expression Changer}, and \emph{Insert Return} and \emph{Remove
 subsets of \emph{Expression Adder and Remover} accordingly. Similarly,
 many other operators from the field of mutation testing~\cite{Offutt06}, as used in
 APR~\cite{debroy10,xuan16} can be seen as subsets of the extensions of the 
-Par templates.  
+PAR templates.  
 
 To summarize, these approaches have significant similarities between their
 included templates.  We use the PAR templates to represent this category
@@ -810,7 +811,7 @@ code repairs (Section~\ref{multEdit}).
 \subsection{Selecting the corpus}
 \label{sec:corpus}
 
-We cloned the 500 most-starred Java projects on Github 
+We cloned the 500 most-starred Java projects on GitHub 
 as of August 2016 and
 identified the most recent 100 bug fixing commits per each project. Identifying
 such commits is a difficult
@@ -1063,7 +1064,7 @@ all repair experiments in Section~\ref{sec:repairSetup}.
 %\end{figure} 
 
 
-\begin{figure}[ht]
+\begin{table}[ht]
 {\footnotesize
 {\centering
 \begin{tabular}{l|rrr|rrr}
@@ -1083,11 +1084,11 @@ Fold	& \# &Prob& EqDist& \# &Prob& EqDist \\
 9	& 82&88\%	&8\%  & 14568& 93\%& 62\% \\
 10	& 116&100\%	&31\% & 19140 & 95\% & 6\% \\
 \midrule
-Mean	& 192.9 &87.7	&24.7& 15458.6  & 94.3 & 37.9  \\
+Mean	& 92.9 &87.7	&24.7& 15458.6  & 94.3 & 37.9  \\
 \midrule
-Std dev	& 320.23&9.33&	8.01 & 2530.27 & 0.94 & 30.49   \\
-\midrule
-Sum & 1929&877 & 247 &  154586& 943 & 379  \\
+Std dev	& 27.39&9.33&	8.01 & 2530.27 & 0.94 & 30.49   \\
+%\midrule
+%Sum & 1929&877 & 247 &  154586& 943 & 379  \\
 \bottomrule
 \end{tabular}
 \center
@@ -1098,12 +1099,12 @@ The replacement probabilistic model (left) predicts
     The mutations model (right) outperforms the equally-distributed model by 
     almost a factor of 3. The \# columns show raw instance count per fold. \label{results10fcv}} 
 }}
-\end{figure} 
+\end{table} 
 
 
 We begin by independently evaluating our models' predictive accuracy, to
 validate the underlying intuition.  We include all Statement-level and Templated
-mutations (taken from Par), as described in Section~\ref{categorization}.
+mutations (taken from PAR), as described in Section~\ref{categorization}.
 
 \subsubsection{Setup}
 Our high-level research question concerns whether 
@@ -1168,7 +1169,7 @@ correct patches.  We directly address this question next.
 \subsection{Repair experiment setup}
 \label{sec:repairSetup}
 
-\begin{figure}[ht]
+\begin{table}[ht]
 \centering
 
 \begin{tabular}{llrr}
@@ -1186,7 +1187,7 @@ Joda-Time & Time & 4130 & 3\\
 \end{tabular}
 \center
   \caption{Description of projects that comprise Defects4j. \label{defects4j}}
-\end{figure} 
+\end{table} 
 
 
 We have two high-level research concerns related to the utility of our
@@ -1196,7 +1197,7 @@ learned models for repair:
 How does our model-informed APR tool compare to the
     state-of-the-art in APR? (Section~\ref{sec:comparison})
 
-\paragraph{Validation of models in context} We first we evaluate the utility of our models in the
+\paragraph{Validation of models in context} We first evaluate the utility of our models in the
 context of several different sets of mutation operators.  We do this to
 independently validate that the models are useful in context (rather than simply
 as predictors, as established in the previous subsections). Second to
@@ -1219,7 +1220,7 @@ power.
 
 \paragraph{Comparison to previous techniques} Second, we compare our tool, using
 the best set of operators as identified in the first question, to four
-previously-prosed APR tools: GenProg~\cite{legoues12Genprog},Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13TrpAutoR},
+previously-proposed APR tools: GenProg~\cite{legoues12Genprog}, PAR~\cite{kim2013}, TrpAutoRepair~\cite{Qi13TrpAutoR},
 and Nopol~\cite{xuanNopol}. These prior approaches provide coverage over
 several dimensions that differentiate program repair techniques.  GenProg and
 TrpAutoRepair use the same statement-level edits, but differ in their search
@@ -1242,9 +1243,9 @@ by the Nopol authors on this same dataset, and do not rerun their experiments.
 The Nopol authors have created patches for the same benchmark used in
 this study~\cite{martinez2016} and made their results publicly
 available.\footnote{\url{https://github.com/Spirals-Team/defects4j-repair/tree/master/results/2017-march}}
-There are several sets of available results available on the Nopol GitHub page.
+There are several sets of results available on the Nopol GitHub page.
 Although we would prefer to compare to the published results, 
-the most ``March 2017'' version contains results for more of the defects we
+the most recent version (``March 2017'') contains results for more of the defects we
 consider in our subset (by contrast, if we use the 2015 results, there is only
 one patch repaired in common between our technique and Nopol, reducing the
 interest of the comparison).  We thus use the most recent dataset in our comparison.
@@ -1294,7 +1295,7 @@ techniques~\cite{arcuri11}.
 
 \newcommand\mII[1]{\multicolumn{2}{c|}{#1}}
 
-\begin{figure*}\centering
+\begin{table*}\centering
 {\footnotesize
 
 \begin{tabular}{l||c||rr|rr|rr|rr|rr|rr}
@@ -1319,7 +1320,7 @@ Chart \#1    & 4285 // 32.9\% & 1.8&{0\%} & {7.3}&{0\%} & {4.9}&{0\%} & {19.0}&{
   quality as the percentage of patches created for that bug that pass the
   held-out test suite (an average, if more than one patch is produced over the
   course of multiple random trials). \label{tab:singleLineBugs}}
-\end{figure*}
+\end{table*}
 
 Our modified APR
 techniques, using each of three sets of operators and each of two models to
@@ -1332,7 +1333,7 @@ Math \#2 and Time \#19, except for the cases where no patch was
 found. By contrast, for bugs Chart \#1 and Closure \#18, the equally
 distributed approach finds a patch faster on average. Investigating this case
 manually, we find that 
-these bugs are patched with mutations that are rarely to applied by developers (Expression Replace, and Replacement accordingly),
+these bugs are patched with mutations that are rarely applied by developers (Expression Replace, and Replacement accordingly),
 therefore it is more likely that the mutation operator will be chosen by a
 uniformly random selection than by the developer-informed model.
 
@@ -1449,7 +1450,7 @@ compares our new technique to the previous state-of-the-art.
 \newcommand\mR[2]{\multirow{#1}{*}{#2}}
 \newcommand\mCR[2]{\mII{\mR{#1}{#2}}}
 \newcommand \mC[1]{\multicolumn{2}{c}{#1}}
- \begin{figure*}
+ \begin{table*}
 \centering
 {\footnotesize
 \begin{tabular}{l|c|lr|lr|lr|lr|lr}
@@ -1482,10 +1483,10 @@ Math \#2      & 6933 // 100\%  & MethodRep & 170 & \mII{Not found} & \mII{Not fo
     suite. Because each randomized technique is run several times, some
     techniques find multiple unique patches per bug. The ``Edit'' column shows
     the types of edits employed in each (unique) patch. \label{stateOfTheArtComparison}} 
-\end{figure*}
+\end{table*}
 
 
-\begin{figure}[t]
+\begin{table}[t]
 \begin{lstlisting}[firstnumber=1284][frame=single]
 boolean staleInputs = false;
 @-if(options.dependencyOptions.needsManagement() && options.closurePass){
@@ -1518,7 +1519,7 @@ boolean staleInputs = false;
       approaches found an identical patch.  Bottom: the Nopol fix for the
       Closure 18 bug, which does not generalize to a held-out test
       suite.\label{closure18prob}}
-\end{figure}
+\end{table}
 
 
 Figure~\ref{stateOfTheArtComparison} shows
@@ -1531,18 +1532,16 @@ This gives us confidence that our approach produces high
 quality patches in comparison with the alternatives created by state-of-the-art
 tools. 
 
-One example demonstrating the quality improvement afforded by the probabilistic
-model-based approach is evident for the Clousre 18 bug.  in which we can very clearly see the success of our approach when
-applying the probabilistic model is Closure 18 as seen in
-Figure~\ref{closure18prob} where, not only did our approach created the exact
+One example demonstrating the quality improvement provided by the probabilistic
+model-based approach is seen in the Closure 18 bug. Figure~\ref{closure18prob} 
+shows that not only did our approach create the exact
 same patch as the human did, but also our approach was able to find the patch
-within the time frame specified before the execution is shutdown by one of the
-constraints per execution while other approaches that are able to create this
-patch, couldn't because they ran out of time.
+within the time frame specified. Other approaches that are able to create this
+patch, could not because they ran out of time.
 
 This example was fixed by the human by removing an expression from an
 \emph{IfStatement} as seen at the top of Figure~\ref{closure18prob}. 
-Although PAR includes this a mutation operator for this task, its uniform
+Although PAR includes a mutation operator for this task, its uniform
 weighting scheme appears less efficient than our probabilistic model. Nopol was
 able to create a patch for this example as shown at the bottom of 
 Figure~\ref{closure18prob}, but this patch is not able to generalize to a
@@ -1585,7 +1584,7 @@ rules with over 90\% Confidence and 0.1\% Support:\footnote{We will release the 
 \end{itemize}
 
 Append is the most common single edit mutation operator applied by developers. This behavior is
-reflected in the fact that it is the consequent in the all the top mined
+reflected in the fact that it is the consequent in all the top mined
 rules.  
 
 \paragraph {Replacement rules} We also analyzed association rules for the
@@ -1677,7 +1676,7 @@ uses fix history
 to assess patch suitability and fitness in the context of a genetic
 programming search strategy. The fitness of the generated
 fix candidates is determined by the frequency with which the changes included in
-a given patch occur in the corpus, using a Graph-based representation of the bug
+a given patch occur in the corpus, using a graph-based representation of the bug
 fixes.  Similarly, Prophet~\cite{long16proph} uses a
 probabilistic model of a subset of our considered mutation operators built on 
 the history of 8 different projects to rank candidate
@@ -1727,7 +1726,7 @@ program repair approaches select mutation operators to create candidate
 patches. We analyze, categorize and compare the mutation operators being used by 
 state of the art approaches. We analyzed the last 100 bug fixing commits from 
 the
-500 most-starred Java projects on Github, which is the largest corpus analyzed
+500 most-starred Java projects on GitHub, which is the largest corpus analyzed
 to date, to the best of our knowledge.  We created a two-level probabilistic 
 model describing
 the likelihood of selecting bug-fixing mutation operators, according to the
@@ -1741,7 +1740,7 @@ its predictive power (using 10 fold cross
 validation), by comparing the speed of the model by comparing it to an equally 
 distributed model and by
  running an APR tool using our model on 18 bugs using the database of bugs and extensible 
-framework Defects4j.Finally we compare the quality of the patches 
+framework Defects4j. Finally we compare the quality of the patches 
 generated against patches created for these same bugs by other state of the art 
 approaches. 
 
