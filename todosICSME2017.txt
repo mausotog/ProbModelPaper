@@ -1,11 +1,8 @@
 To do's:
-Say that we are not presenting the model because it is a pretty big matrix
-Deepen the idea of why are we comparing against a randomly-informed baseline
 Check the way this section describes the process: the greedy matching of edits to mutation operators
 Figure 5: Do these 24 bugs present all the single-edit bugs from the set of 395 bugs in Defects4J or is this only a subset?
 Check this inconsistency: The results presented for the mutation operators and model utility show that the probabilistic models can provide fixes for 5 out of the 18 bugs. But, the dataset in Figure 5 states 24 bugs (what happened to the other 6 bugs?) 
 Check why do we say that the quality improves in our patches if Fig 6 says that its the same?
-Give more credibility to the projects selected, like: stars are proxies for well-maintained, stablished, bigger projects.
 Why support value of 90%
 Evaluate association rules by how often they were applied in the fixes:
 -How many of these rules are actually useful for your use case? 

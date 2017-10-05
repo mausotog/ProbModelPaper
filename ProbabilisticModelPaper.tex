@@ -656,7 +656,7 @@ Syntactic approaches (e.g.,~\cite{legoues12Genprog,long16proph,kim2013,xuan16}) 
 same function, module, file, or program.  Semantic approaches instead use synthesis to
 construct fix code.  
 In both cases, heuristics inform code selection.  For example, some syntactic approaches
-choose between fix code uniformly at random or using other set probability distributions~\cite{legoues12Genprog,kim2013}; others used learned
+choose between fix code uniformly at random or using other set probability distributions~\cite{kim2013,legoues12Genprog}; others used learned
 models to do so~\cite{long16proph}.  Semantic approaches use heuristics to
 decide which program components should be made available to the synthesis
 engine~\cite{Mechtaev2016,xuanNopol}. 
@@ -718,14 +718,14 @@ PAR is the product of a study of a large number of
 human 
 created patches, from which human annotators abstracted 10 different templates to cover
 the most commonly-used changes in bug-fixing practice.
-The 10 considered templates are detailed in the top section of Figure~\ref{approachTemplates}. In the interest of completeness, we also include six extra templates 
+The 10 considered templates are detailed in the top section of Table~\ref{approachTemplates}. In the interest of completeness, we also include six extra templates 
 mentioned on the PAR website.\footnote{\url{https://sites.google.com/site/autofixhkust/home/fix-templates}} 
 These extra templates provide new mutation operators drawn from human edits,
 that help us compare to and
 generalize the other approaches; they are shown in the middle segment of
-Figure~\ref{approachTemplates}. 
+Table~\ref{approachTemplates}. 
 SPR and Prophet use a set of transformation schemas,
-shown in the bottom section of Figure~\ref{approachTemplates}.
+shown in the bottom section of Table~\ref{approachTemplates}.
 
 \begin{table}[ht]
   \centering
@@ -786,7 +786,7 @@ PAR templates.
 
 To summarize, these approaches have significant similarities between their
 included templates.  We use the PAR templates to represent this category
-for the following reasons: (1) PAR includes the other techniques' mutation operators, (2) it
+for the following reasons: (1) PAR broadly includes the other techniques' mutation operators, (2) it
 provides a concrete description of how the code is changed, enabling
 replication, and (3) it explicitly targets Java (SPR, Prophet and Kali
 target C), reducing the extent to which we must apply subjective judgment to
@@ -968,7 +968,8 @@ mutation operator model, based on replacer/replacee statement incidence.
 
 \vspace{1ex}
 To build both models we perform an incidence count of each mutation operator and replacement observed in our
-dataset, matched as described in Section~\ref{sec:mining}\footnote{Since the instance count that makes up the models is of notable size we have made it available through a link to our paper, which will be made available after the blind review process}, and then apply Laplace smoothing~\cite{Russell10} with $\alpha$ = 1 to account for 0 occurrences.
+dataset, matched as described in Section~\ref{sec:mining},\footnote{Since the instance count that makes up the models is of notable size, we have made it available through a link to our repository, which will be made available after the blind review process} %%\footnote{https://github.com/mausotog/ProbModelPaper/blob/master/Models.csv}
+and then apply Laplace smoothing~\cite{Russell10} with $\alpha$ = 1 to account for 0 occurrences.
 
 \subsection{Multiple edit association rule mining} 
 \label{multEdit}
@@ -1084,7 +1085,7 @@ Fold	& \# &Prob& EqDist& \# &Prob& EqDist \\
 9	& 82&88\%	&8\%  & 14568& 93\%& 62\% \\
 10	& 116&100\%	&31\% & 19140 & 95\% & 6\% \\
 \midrule
-Mean	& 92.9 &87.7	&24.7& 15458.6  & 94.3 & 37.9  \\
+Mean	& 92.90 &87.70	&24.70& 15458.60  & 94.30 & 37.90  \\
 \midrule
 Std dev	& 27.39&9.33&	8.01 & 2530.27 & 0.94 & 30.49   \\
 %\midrule
@@ -1111,7 +1112,10 @@ Our high-level research question concerns whether
 our mined models are likely to identify the correct fix code across a large
 dataset, suggesting their potential utility in a repair context.  We therefore
 compare the accuracy of the models to an \emph{equally distributed} baseline,
-which selects a mutation (or replacement) uniformly at random. 
+which selects a mutation (or replacement) uniformly at random. This is to contrast 
+the accuracy of the priorities assigned by our model to the way it is
+performed by current approaches, which pick mutations and replacements either
+uniformly at random, or using coarse grained heuristics~\cite{legoues12Genprog,kim2013,Qi13TrpAutoR,Weimer13}.
 We measure how often each model correctly predicts the mutation operator (or
 replacer statement, for a given replacee statement), within the top 5 produced
 choices. Perfect accuracy (correctness in the Top-1 most likely choice) is
@@ -1146,7 +1150,7 @@ predicted by the first five guesses from the training sub-model.
 
 \subsubsection{Results} 
 
-Figure~\ref{results10fcv} shows results. For each fold, we show the instance
+Table~\ref{results10fcv} shows results. For each fold, we show the instance
 count and percentage of correctly predicted instances within the top five
 guesses of both the equally distributed and the probabilistic  models for both the
 Replacements and Mutations models. The \# columns 
@@ -1177,10 +1181,10 @@ correct patches.  We directly address this question next.
          &     &            &  Defects\\
  Project & ID & Test cases & considered \\
 \midrule
-JFreechart & Chart & 2205 & 3\\
-Closure compiler & Closure & 7927 & 6\\
-Apache commons-lang & Lang  & 2245 & 6\\
-Apache commons-math & Math & 3602 & 6\\
+JFreechart & Chart & 2205 & 4\\
+Closure compiler & Closure & 7927 & 25\\
+Apache commons-lang & Lang  & 2245 & 13\\
+Apache commons-math & Math & 3602 & 18\\
 %Mockito &	Mockito	 & Mocking framework for junit tests & \todo{I can't find this data} & 0 \\
 Joda-Time & Time & 4130 & 3\\
 \bottomrule
@@ -1263,11 +1267,11 @@ has been previously used to evaluate APR~\cite{martinez2016}.
 It currently contains 395 real bugs from 6
 open source programs, along with developer-provided test suites, cases that
 expose each bug,  and
-corresponding developer-provided patches.  Figure~\ref{defects4j} characterizes
+corresponding developer-provided patches.  Table~\ref{defects4j} characterizes
 the dataset.\footnote{Note that we initiated this study before Defects4J added
  ``Mockito".} Because we compare to single-edit techniques, we
 restrict attention to a subset of the Defects4J bugs with single-line human
-patches. We ran a comparison of the probabilistic model against an equally distributed model on the first one-line patches from each project until either the project had no more one-line patches, or we ran out of resources to compute more executions. The projects have a diverse distribution of one-line patches therefore the number of bugs tried per project varies. 
+patches. We ran a comparison of the probabilistic model against an equally distributed model on the first one-line patches from each project until either the project had no more one-line patches, or we ran out of resources to compute more executions \todo{Check this sentence here}. The projects have a diverse distribution of one-line patches therefore the number of bugs tried per project varies. 
 
 \paragraph{Patch quality}
 As a proxy for patch quality (to mitigate the risk of plausible but as yet
@@ -1325,8 +1329,8 @@ Chart \#1    & 4285 // 32.9\% & 1.8&{0\%} & {7.3}&{0\%} & {4.9}&{0\%} & {19.0}&{
 Our modified APR
 techniques, using each of three sets of operators and each of two models to
 select between them, patched 5 of the 18 bugs, as shown in 
-Figure~\ref{tab:singleLineBugs}.
-The first row of Figure~\ref{tab:singleLineBugs} (Closure \#10) shows that the
+Table~\ref{tab:singleLineBugs}.
+The first row of Table~\ref{tab:singleLineBugs} (Closure \#10) shows that the
 probabilistic model outperforms the equally-distributed model for all three
 statement sets.  This happens as well for
 Math \#2 and Time \#19, except for the cases where no patch was
@@ -1474,11 +1478,41 @@ Math \#2      & 6933 // 100\%  & MethodRep & 170 & \mII{Not found} & \mII{Not fo
                   &                        & SeqEx & 1 & Delete & 1 & Delete   &1  &    & &  & \\
                   &                        & ExpReplace & 1 & Delete & 1 &    & &    &  &  & \\
                   &                        &    &       & Replace & 1 &  & &     &  & & \\
+\midrule
+\mR{17}{Closure \#86} & \mR{17}{1602 // 6.6\%} & SeqEx & 0 & \mC{\mR{17}{Not found}}   & Replace & 0 & \mC{\mR{17}{Not found}}  & \mC{\mR{17}{Not found}}   \\
+                  &                        & SeqEx & 0 & &   & Replace & 0 & &  & &   \\
+                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
+                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
+                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
+                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
+                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
+                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
+                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
+                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
+                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
+                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
+                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
+                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
+                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
+                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
+                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
+\midrule
+Math \# 75 & 5432 // 91.0\%      & MethodRep & 0    & \mII{Not found}  & \mII{Not found} & MethodRep & 0     & \mII{Not found}   \\
+\midrule
+\mR{8}{Math \#85} & \mR{8}{1730 // 68.4\%} & SeqEx & 0 & Delete & 0  & Delete  & 0 & ExpReplace & 0 & ConditionModif  & 0  \\
+                  &                        & SeqEx & 0 & Replace & 0 &Delete&0 & ExpReplace  & 0    & &   \\               
+                  &                        & Delete & 0 & Delete &0  & Replace  &0  &ExpReplace &0  & &   \\               
+                  &                        & Delete & 0 & Replace &0  &  &  & ExpAdder & 0 & &   \\               
+                  &                        &  &  &Delete &  0&  &  &ExpReplace &0   & &   \\               
+                  &                        &  &  &Replace &0  &  &  & ExpReplace &0   & &   \\               
+                  &                        &  &  &Replace &0  &  &  & ExpAdder &0   & &   \\            
+                  &                        &  &  &Replace &0  &  &  & ExpAdder&0  & &   \\            
+                  
        \bottomrule
 \end{tabular}}
   \caption{Comparison between the probabilistic model-based repair and
     other state of the art approaches. The NFTC column shows Number of Failed
-    Test Cases, for each patch, evaluated against the generated held-out test suites.  Lower is better; an NFTC
+    Test Cases, for each patch, evaluated against the generated held-out test suites, lower is better; an NFTC
     of 0 means the patch fully generalized to the held-out test
     suite. Because each randomized technique is run several times, some
     techniques find multiple unique patches per bug. The ``Edit'' column shows
@@ -1486,7 +1520,7 @@ Math \#2      & 6933 // 100\%  & MethodRep & 170 & \mII{Not found} & \mII{Not fo
 \end{table*}
 
 
-\begin{table}[t]
+\begin{figure}[t]
 \begin{lstlisting}[firstnumber=1284][frame=single]
 boolean staleInputs = false;
 @-if(options.dependencyOptions.needsManagement() && options.closurePass){
@@ -1514,20 +1548,19 @@ boolean staleInputs = false;
   }
 	\end{lstlisting}
 
-	\caption{Top: A snippet of the source code of the Closure 18 bug as fixed using the
-      probabilistic model, identically to the developer patch. None of the other
+	\caption{Top: a patch generated using the probabilistic model, this snippet of the source code is identical to the developer patch. None of the other
       approaches found an identical patch.  Bottom: the Nopol fix for the
       Closure 18 bug, which does not generalize to a held-out test
       suite.\label{closure18prob}}
-\end{table}
+\end{figure}
 
 
-Figure~\ref{stateOfTheArtComparison} shows
-results, including, for each patch, a description of the edit included and
+Table~\ref{stateOfTheArtComparison} shows
+results, including, for each patch, a description of the edit performed and
 the number of held-out tests the patched program fails. Of the
- eleven patches created by our approach, 
-five pass all held-out test suite (45.5\%). None of the GenProg,
-TRPAutorRepair, or PAR patches fully generalize; 25\% of Nopol's patches do.
+33 patches created by our approach, 
+27 pass all held-out test suite (81.8\%), while for the other state of the art approaches,
+53.3\% of GenProg's patches generalize, 50\% of TRPAutoRepair's, 75\% of PAR's and 40\% of Nopol's patches fully generalize to their held-out test suite.
 This gives us confidence that our approach produces high
 quality patches in comparison with the alternatives created by state-of-the-art
 tools. 
@@ -1559,12 +1592,15 @@ source code changes.
 We mine rules from our corpus as described in Section~\ref{multEdit}.  
 These rules are ranked by their confidence. In this case, the top 10 rules shown
 below have a confidence of 100\%, meaning that in 100\% of the cases
-studied, every transaction that showed the antecedent also showed the consequent.
+studied, every transaction that showed the antecedent also showed the consequent. The reason
+for this is that, to apply this concept to the automatic program repair process,
+we want to create rules which can help us navigate the search space by predicting 
+with high accuracy which edits to perform once we 
+have applied a set of edits already.
 They are obtained with a 1\% support, which means that each of these rules
 individually appear in at least 1\% of all the transactions in the
-corpus. We show the top association rules for the mining of single edit 
-mutation operators to indicate the structure of the rules; and release the full set of mined
-rules with over 90\% Confidence and 0.1\% Support:\footnote{We will release the full list of mutation operator and replacements rules post blind-review.} %\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt}} 
+corpus. We show the top association rules, and also release the full set of mined
+rules with over 90\% Confidence to provide more flexibility, and 0.1\% Support:\footnote{We will release the full list of mutation operator and replacements rules post blind-review.} %\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt}} 
 
 %Minimum support: 0 (1 instances)
 %Minimum metric <confidence>: 0.9
@@ -1727,7 +1763,7 @@ patches. We analyze, categorize and compare the mutation operators being used by
 state of the art approaches. We analyzed the last 100 bug fixing commits from 
 the
 500 most-starred Java projects on GitHub, which is the largest corpus analyzed
-to date, to the best of our knowledge.  We created a two-level probabilistic 
+to date, to the best of our knowledge. We picked the most-stared projects because stars in Github are seen as proxies for popularity, which usually entail well-maintained, well-stablished, mature projects, that are more likely to have more and better quality bug fixes. We created a two-level probabilistic 
 model describing
 the likelihood of selecting bug-fixing mutation operators, according to the
 observed incidence of their use by human developers. All the data gathered, 
@@ -1747,7 +1783,7 @@ approaches.
 For these bugs, we measured the number of variants it takes to find the 
 patch as well as the quality of produced patches, using a second 
 automatically-created held-out test suite.
-Note that in Figure~\ref{tab:singleLineBugs}, for the majority of bugs, the 
+Note that in Table~\ref{tab:singleLineBugs}, for the majority of bugs, the 
 equally distributed model performed better than their equally distributed 
 counterpart.
 
