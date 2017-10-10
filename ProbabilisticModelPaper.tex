@@ -1459,64 +1459,30 @@ compares our new technique to the previous state-of-the-art.
 {\footnotesize
 \begin{tabular}{l|c|lr|lr|lr|lr|lr}
 \toprule
+% Full results in https://docs.google.com/spreadsheets/d/1vyD7wH3VGf7X_pUxb4aN9EONO_L_fbIZXw3m9vP7MRc/edit#gid=0
              & Held-out // Line     & \mII{Prob. Model} & \mII{GenProg} & \mII{TrpAutoRepair} & \mII{PAR} & \mC{Nopol} \\
-Bug ID       & tests // Coverage & Edit & NFTC & Edit & NFTC & Edit & NFTC & Edit & NFTC & Edit  & NFTC  \\ 
+Bug ID       & tests // Coverage & Found & GTHTS & Found & GTHTS &Found & GTHTS &Found & GTHTS &Found & GTHTS   \\ 
 \midrule
-\mR{2}{Closure \#10} & \mR{2}{1493 // 5.5\%} & SeqEx & 0 & \mCR{2}{Not found}  & \mCR{2}{Not found} & \mCR{2}{Not found} & \mR{2}{IfInsertion} & \mR{2}{28}   \\
-             &                               & SeqEx & 0 &        &              &        &        &      &       &      \\
+Closure \#10 & 1493 // 5.5\% & 2 & 2 & \mII{Not found}  & \mII{Not found} & \mII{Not found} & 1 & 0   \\
 \midrule
-Closure \# 18 & 1615 // 32.1\%      & ExpRem & 0    & \mII{Not found}  & \mII{Not found} & \mII{Not found}  &IfInsertion &  1  \\
+Closure \# 18 & 1615 // 32.1\%      & 1 & 1    & \mII{Not found}  & \mII{Not found} & \mII{Not found}  &1 &  0  \\
 \midrule
-Math \#2      & 6933 // 100\%  & MethodRep & 170 & \mII{Not found} & \mII{Not found} & MethodRep & 170 & IfInsertion & 0  \\
+Math \#2      & 6933 // 100\%  & 1 & 0 & \mII{Not found} & \mII{Not found} & 1 & 0 & 1 & 1  \\
 \midrule
-\mR{2}{Time \#19}     & \mR{2}{3650 // 75.4\%}  & Append & 0 & \mR{2}{Append} & \mR{2}{188} & \mR{2}{Append} & \mR{2}{188} & \mCR{2}{Not found} & \mR{2}{ConditionModif} &  \mR{2}{188} \\
-              &                 & Replace & 0 &  &        &     &     &    &    &     & \\
+Time \#19     & 3650 // 75.4\%  & 2 & 2 & 1 & 0 & 1 & 0 & \mII{Not found} & 1 &  0 \\
 \midrule
-\mR{6}{Chart \#1} & \mR{6}{4285 // 32.9\%} & SeqEx & 1 & Replace & 1  & Delete & 1 & ExpAdd & 1 & \mC{\mR{6}{Not found}}   \\
-                  &                        & Delete & 1 & Delete & 1 & Replace &1  & ExpReplace & 1 &  & \\
-                  &                        & Delete & 1 & Replace & 1 & Delete & 1 &    & &  & \\
-                  &                        & SeqEx & 1 & Delete & 1 & Delete   &1  &    & &  & \\
-                  &                        & ExpReplace & 1 & Delete & 1 &    & &    &  &  & \\
-                  &                        &    &       & Replace & 1 &  & &     &  & & \\
+Chart \#1 & 4285 // 32.9\% & 5 & 0 & 6 & 0  & 4 & 0 & 2 & 0 & \mII{Not found}   \\
 \midrule
-\mR{17}{Closure \#86} & \mR{17}{1602 // 6.6\%} & SeqEx & 0 & \mC{\mR{17}{Not found}}   & Replace & 0 & \mC{\mR{17}{Not found}}  & \mC{\mR{17}{Not found}}   \\
-                  &                        & SeqEx & 0 & &   & Replace & 0 & &  & &   \\
-                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
-                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
-                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
-                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
-                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
-                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
-                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
-                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
-                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
-                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
-                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
-                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
-                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
-                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
-                  &                        & SeqEx & 0 & &  &  &  & &  & &   \\               
+Closure \#86 & 1602 // 6.6\% & 17 & 17 & \mII{Not found}   & 2 & 2 & \mII{Not found}  & \mII{Not found}   \\
 \midrule
-Math \# 75 & 5432 // 91.0\%      & MethodRep & 0    & \mII{Not found}  & \mII{Not found} & MethodRep & 0     & \mII{Not found}   \\
+Math \# 75 & 5432 // 91.0\%      & 1 & 1    & \mII{Not found}  & \mII{Not found} & 1 & 1     & \mII{Not found}   \\
 \midrule
-\mR{8}{Math \#85} & \mR{8}{1730 // 68.4\%} & SeqEx & 0 & Delete & 0  & Delete  & 0 & ExpReplace & 0 & ConditionModif  & 0  \\
-                  &                        & SeqEx & 0 & Replace & 0 &Delete&0 & ExpReplace  & 0    & &   \\               
-                  &                        & Delete & 0 & Delete &0  & Replace  &0  &ExpReplace &0  & &   \\               
-                  &                        & Delete & 0 & Replace &0  &  &  & ExpAdder & 0 & &   \\               
-                  &                        &  &  &Delete &  0&  &  &ExpReplace &0   & &   \\               
-                  &                        &  &  &Replace &0  &  &  & ExpReplace &0   & &   \\               
-                  &                        &  &  &Replace &0  &  &  & ExpAdder &0   & &   \\            
-                  &                        &  &  &Replace &0  &  &  & ExpAdder&0  & &   \\            
-                  
+Math \#85 & 1730 // 68.4\% & 4 & 4 & 8 & 8  & 3  & 3 & 8 & 8 & 1  & 1  \\       
        \bottomrule
 \end{tabular}}
   \caption{Comparison between the probabilistic model-based repair and
-    other state of the art approaches. The NFTC column shows Number of Failed
-    Test Cases, for each patch, evaluated against the generated held-out test suites, lower is better; an NFTC
-    of 0 means the patch fully generalized to the held-out test
-    suite. Because each randomized technique is run several times, some
-    techniques find multiple unique patches per bug. The ``Edit'' column shows
-    the types of edits employed in each (unique) patch. \label{stateOfTheArtComparison}} 
+    other state of the art approaches. The "Found'' column represents the number of patches found for this bug using the probabilistic approach, and the "GTHTS'' column represents the number of patches that Generalized To a Held-out Test Suite, higher is better;  Because each randomized technique is run several times, some
+    techniques find multiple patches per bug. \label{stateOfTheArtComparison}} 
 \end{table*}
 
 
@@ -1556,8 +1522,9 @@ boolean staleInputs = false;
 
 
 Table~\ref{stateOfTheArtComparison} shows
-results, including, for each patch, a description of the edit performed and
-the number of held-out tests the patched program fails. Of the
+results, including, the number of different patches found for each bug and how many of them generalized
+to a held-out test suite. The patches that did not generalize to the held out test suite failed one or 
+several tests in the held-out test suite. Of the
 33 patches created by our approach, 
 27 pass all held-out test suite (81.8\%), while for the other state of the art approaches,
 53.3\% of GenProg's patches generalize, 50\% of TRPAutoRepair's, 75\% of PAR's and 40\% of Nopol's patches fully generalize to their held-out test suite.
