@@ -1072,22 +1072,22 @@ all repair experiments in Section~\ref{sec:repairSetup}.
 \toprule
    &\multicolumn{3}{c|}{Replacements} &\multicolumn{3}{c}{Mutations} \\
 \midrule
-Fold	& \# &Prob& EqDist& \# &Prob& EqDist \\
+Fold	& \# &Prob (\%)& EqDist(\%)& \# &Prob(\%)& EqDist(\%) \\
 \midrule
-1	& 155&70\%&	25\% &17313&  95\% & 64\%   \\
-2	& 86&100\%&	25\%  & 17232& 93\% & 63\%   \\
-3	& 81&82\%	&23\%  & 16754& 95\% & 81\% \\
-4	& 101&81\%	&40\%  & 14159& 94\% & 9\%   \\
-5	& 99&90\%	&27\%  & 17022& 95\% & 2\%  \\
-6	& 75&84\%	&21\%  & 14945& 95\%& 58\%  \\
-7	& 79&86\%	&24\%  & 12901& 93\%& 7\%  \\
-8	& 55&96\%	&23\%  & 10552& 95\%& 27\%  \\
-9	& 82&88\%	&8\%  & 14568& 93\%& 62\% \\
-10	& 116&100\%	&31\% & 19140 & 95\% & 6\% \\
+1	& 155&70&	25 &17313&  95 & 64   \\
+2	& 86&100&	25  & 17232& 93 & 63   \\
+3	& 81&82	&23  & 16754& 95 & 81 \\
+4	& 101&81	&40  & 14159& 94 & 9   \\
+5	& 99&90	&27  & 17022& 95 & 2  \\
+6	& 75&84	&21  & 14945& 95& 58  \\
+7	& 79&86	&24  & 12901& 93& 7  \\
+8	& 55&96	&23  & 10552& 95& 27  \\
+9	& 82&88	&8  & 14568& 93& 62 \\
+10	& 116&100	&31 & 19140 & 95 & 6 \\
 \midrule
-Mean	& 92.90 &87.70	&24.70& 15458.60  & 94.30 & 37.90  \\
+Mean	& 92.9 &87.7	&24.7& 15458.6  & 94.3 & 37.9  \\
 \midrule
-Std dev	& 27.39&9.33&	8.01 & 2530.27 & 0.94 & 30.49   \\
+Std dev	& 27.39&9.3&	8.0 & 2530.3 & 0.9 & 30.5   \\
 %\midrule
 %Sum & 1929&877 & 247 &  154586& 943 & 379  \\
 \bottomrule
@@ -1101,7 +1101,7 @@ The replacement probabilistic model (left) predicts
     almost a factor of 3. The \# columns show raw instance count per fold. \label{results10fcv}} 
 }}
 \end{table} 
-
+\todo{in this table, I know we say that we should always have the same number of decimals, but I think it would be weird to place a ".0" next to all these numbers in the folds because they are like, number of instances that can't be divided. And if I round the mean and std deviation it would be inacurate, so I am leaving it like this unless Claire thinks it would be better differently}
 
 We begin by independently evaluating our models' predictive accuracy, to
 validate the underlying intuition.  We include all Statement-level and Templated
@@ -1603,8 +1603,8 @@ developers use. These rules tell us what edits happen frequently together, which
 will help us further understand multi-edit source code changes, an understudied 
 area that covers the majority of real life patches.
 
-\paragraph{Evaluation of Rules}
-To evaluate the effectiveness of the association rules in the context of the automatic program repair process, we first had to remove the section of the corpus where the number of edits performed is less than 3, since the association rules require at least two antecedents and one consequent, therefore by definition the patches with less than three edits can´t be created by the association rules. This removed 62.83\% of the corpus. On the remaining 37.17\% where association rules can be applied. We performed a 10-fold cross validation process as follows:
+\paragraph{Evaluation of Association Rules}
+To evaluate the effectiveness of the association rules in the context of the automatic program repair process, we first had to remove the section of the corpus where the number of edits performed is less than 3, since the association rules require at least two antecedents and one consequent, therefore by definition the patches with less than three edits can not be created by the association rules. This removed 62.83\% of the corpus. On the remaining 37.17\% where association rules can be applied. We performed a 10-fold cross validation process as follows:
 First we divide our corpus in 10 folds, these folds will be used as testing data.
 For each of the folds, we then group the complement of the fold used as testing data (the remaining 9 folds) and from 
 the complement we build the association rules using Apriori \todo{citation here of apriori}. We build the rules from
