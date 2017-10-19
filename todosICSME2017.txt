@@ -3,10 +3,6 @@ Check the way this section describes the process: the greedy matching of edits t
 Figure 5: Do these 24 bugs present all the single-edit bugs from the set of 395 bugs in Defects4J or is this only a subset?
 Check this inconsistency: The results presented for the mutation operators and model utility show that the probabilistic models can provide fixes for 5 out of the 18 bugs. But, the dataset in Figure 5 states 24 bugs (what happened to the other 6 bugs?) 
 Check why do we say that the quality improves in our patches if Fig 6 says that its the same?
-Why support value of 90%
-Evaluate association rules by how often they were applied in the fixes:
--How many of these rules are actually useful for your use case? 
--Did you miss any useful rules by setting your thresholds too strictly?
 Some questions to consider in the part where we describe how the model was built:
 -How many instances of each mutation operation did you find in the bug-fixing commits? 
 -How many edit operations output by GumTree did they cover? 
