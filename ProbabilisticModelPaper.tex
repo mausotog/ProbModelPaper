@@ -460,8 +460,8 @@ create a probabilistic model describing edit distributions.
 We categorize, compare and evaluate the different mutation operators used in 
 the state of the art approaches. Finally, we mine association rules to analyze context surrounding
 multi-edit source code changes, an understudied problem 
-that covers the majority of real source code changes. Our evaluation
-indicates that by applying the probabilistic model we can find
+that covers the majority of real source code changes. We validate the association rules by analyzing how much of the corpus can be built from them. Our evaluation
+indicates that 84.6\% of the multi-edit patches from the corpus can be built from the rules, while maintaining a 90\% confidence. We also find that by applying the probabilistic model we can find
 the correct mutation operator to patch bugs faster in the majority of bugs
 studied, and that using the superset of all mutation operators performs better than restricting the mutation operator pool to just one category. Finally, our evaluation shows that our patches generalize better than the ones produced by other state-of-the-art approaches.
 \end{abstract}
@@ -1656,7 +1656,7 @@ For each confidence threshold, we performed a standard 10-fold cross validation 
 
 \begin{figure}[!h]
   \centering
-    \includegraphics[width=\columnwidth]{10FoldXVal2}
+    \includegraphics[width=\columnwidth]{10FoldXVal4}
   \caption{10-fold cross validation, patch coverage by the association rules}
   \label{fig:generateandvalidate}
 \end{figure}

@@ -1,0 +1,336 @@
+python getRuleAccuracy.py ComplementRulesLB0.001C0.5NR10000/Complement1RulesLB0.001C0.5NR10000.csv UsefulFold1.csv,,,,,,,,,,
+fullyCoveredInstances,321,,,,,,,,,321
+partiallyCoveredInstances,2,,,,,,,,,2
+nonCoveredInstances,2,,,,,,,,,2
+instanceCount,325,,,,,,,,,325
+python getRuleAccuracy.py ComplementRulesLB0.001C0.5NR10000/Complement2RulesLB0.001C0.5NR10000.csv UsefulFold2.csv,,,,,,,,,,
+fullyCoveredInstances,297,,,,,,,,,618
+partiallyCoveredInstances,11,,,,,,,,,13
+nonCoveredInstances,4,,,,,,,,,6
+instanceCount,312,,,,,,,,,637
+python getRuleAccuracy.py ComplementRulesLB0.001C0.5NR10000/Complement3RulesLB0.001C0.5NR10000.csv UsefulFold3.csv,,,,,,,,,,
+fullyCoveredInstances,317,,,,,,,,,935
+partiallyCoveredInstances,2,,,,,,,,,15
+nonCoveredInstances,5,,,,,,,,,11
+instanceCount,324,,,,,,,,,961
+python getRuleAccuracy.py ComplementRulesLB0.001C0.5NR10000/Complement4RulesLB0.001C0.5NR10000.csv UsefulFold4.csv,,,,,,,,,,
+fullyCoveredInstances,300,,,,,,,,,1235
+partiallyCoveredInstances,6,,,,,,,,,21
+nonCoveredInstances,5,,,,,,,,,16
+instanceCount,311,,,,,,,,,1272
+python getRuleAccuracy.py ComplementRulesLB0.001C0.5NR10000/Complement5RulesLB0.001C0.5NR10000.csv UsefulFold5.csv,,,,,,,,,,
+fullyCoveredInstances,321,,,,,,,,,1556
+partiallyCoveredInstances,4,,,,,,,,,25
+nonCoveredInstances,2,,,,,,,,,18
+instanceCount,327,,,,,,,,,1599
+python getRuleAccuracy.py ComplementRulesLB0.001C0.5NR10000/Complement6RulesLB0.001C0.5NR10000.csv UsefulFold6.csv,,,,,,,,,,
+fullyCoveredInstances,316,,,,,,,,,1872
+partiallyCoveredInstances,8,,,,,,,,,33
+nonCoveredInstances,2,,,,,,,,,20
+instanceCount,326,,,,,,,,,1925
+python getRuleAccuracy.py ComplementRulesLB0.001C0.5NR10000/Complement7RulesLB0.001C0.5NR10000.csv UsefulFold7.csv,,,,,,,,,,
+fullyCoveredInstances,310,,,,,,,,,2182
+partiallyCoveredInstances,11,,,,,,,,,44
+nonCoveredInstances,1,,,,,,,,,21
+instanceCount,322,,,,,,,,,2247
+python getRuleAccuracy.py ComplementRulesLB0.001C0.5NR10000/Complement8RulesLB0.001C0.5NR10000.csv UsefulFold8.csv,,,,,,,,,,
+fullyCoveredInstances,314,,,,,,,,,2496
+partiallyCoveredInstances,3,,,,,,,,,47
+nonCoveredInstances,2,,,,,,,,,23
+instanceCount,319,,,,,,,,,2566
+python getRuleAccuracy.py ComplementRulesLB0.001C0.5NR10000/Complement9RulesLB0.001C0.5NR10000.csv UsefulFold9.csv,,,,,,,,,,
+fullyCoveredInstances,296,,,,,,,,,2792
+partiallyCoveredInstances,5,,,,,,,,,52
+nonCoveredInstances,2,,,,,,,,,25
+instanceCount,303,,,,,,,,,2869
+python getRuleAccuracy.py ComplementRulesLB0.001C0.5NR10000/Complement10RulesLB0.001C0.5NR10000.csv UsefulFold10.csv,,,,,,,,,,
+fullyCoveredInstances,308,,,,,,,,,3100
+partiallyCoveredInstances,7,,,,,,,,,59
+nonCoveredInstances,0,,,,,,,,,25
+instanceCount,315,,,,,,,,,3184
+,,,,,,,,,,
+python getRuleAccuracy.py ComplementRulesLB0.001C0.6NR10000/Complement1RulesLB0.001C0.6NR10000.csv UsefulFold1.csv,,,,,,,,,,
+fullyCoveredInstances,318,,,,,,,,,318
+partiallyCoveredInstances,1,,,,,,,,,1
+nonCoveredInstances,6,,,,,,,,,6
+instanceCount,325,,,,,,,,,325
+python getRuleAccuracy.py ComplementRulesLB0.001C0.6NR10000/Complement2RulesLB0.001C0.6NR10000.csv UsefulFold2.csv,,,,,,,,,,
+fullyCoveredInstances,291,,,,,,,,,609
+partiallyCoveredInstances,10,,,,,,,,,11
+nonCoveredInstances,11,,,,,,,,,17
+instanceCount,312,,,,,,,,,637
+python getRuleAccuracy.py ComplementRulesLB0.001C0.6NR10000/Complement3RulesLB0.001C0.6NR10000.csv UsefulFold3.csv,,,,,,,,,,
+fullyCoveredInstances,310,,,,,,,,,919
+partiallyCoveredInstances,6,,,,,,,,,17
+nonCoveredInstances,8,,,,,,,,,25
+instanceCount,324,,,,,,,,,961
+python getRuleAccuracy.py ComplementRulesLB0.001C0.6NR10000/Complement4RulesLB0.001C0.6NR10000.csv UsefulFold4.csv,,,,,,,,,,
+fullyCoveredInstances,295,,,,,,,,,1214
+partiallyCoveredInstances,9,,,,,,,,,26
+nonCoveredInstances,7,,,,,,,,,32
+instanceCount,311,,,,,,,,,1272
+python getRuleAccuracy.py ComplementRulesLB0.001C0.6NR10000/Complement5RulesLB0.001C0.6NR10000.csv UsefulFold5.csv,,,,,,,,,,
+fullyCoveredInstances,314,,,,,,,,,1528
+partiallyCoveredInstances,6,,,,,,,,,32
+nonCoveredInstances,7,,,,,,,,,39
+instanceCount,327,,,,,,,,,1599
+python getRuleAccuracy.py ComplementRulesLB0.001C0.6NR10000/Complement6RulesLB0.001C0.6NR10000.csv UsefulFold6.csv,,,,,,,,,,
+fullyCoveredInstances,311,,,,,,,,,1839
+partiallyCoveredInstances,7,,,,,,,,,39
+nonCoveredInstances,8,,,,,,,,,47
+instanceCount,326,,,,,,,,,1925
+python getRuleAccuracy.py ComplementRulesLB0.001C0.6NR10000/Complement7RulesLB0.001C0.6NR10000.csv UsefulFold7.csv,,,,,,,,,,
+fullyCoveredInstances,304,,,,,,,,,2143
+partiallyCoveredInstances,10,,,,,,,,,49
+nonCoveredInstances,8,,,,,,,,,55
+instanceCount,322,,,,,,,,,2247
+python getRuleAccuracy.py ComplementRulesLB0.001C0.6NR10000/Complement8RulesLB0.001C0.6NR10000.csv UsefulFold8.csv,,,,,,,,,,
+fullyCoveredInstances,314,,,,,,,,,2457
+partiallyCoveredInstances,1,,,,,,,,,50
+nonCoveredInstances,4,,,,,,,,,59
+instanceCount,319,,,,,,,,,2566
+python getRuleAccuracy.py ComplementRulesLB0.001C0.6NR10000/Complement9RulesLB0.001C0.6NR10000.csv UsefulFold9.csv,,,,,,,,,,
+fullyCoveredInstances,286,,,,,,,,,2743
+partiallyCoveredInstances,8,,,,,,,,,58
+nonCoveredInstances,9,,,,,,,,,68
+instanceCount,303,,,,,,,,,2869
+python getRuleAccuracy.py ComplementRulesLB0.001C0.6NR10000/Complement10RulesLB0.001C0.6NR10000.csv UsefulFold10.csv,,,,,,,,,,
+fullyCoveredInstances,301,,,,,,,,,3044
+partiallyCoveredInstances,8,,,,,,,,,66
+nonCoveredInstances,6,,,,,,,,,74
+instanceCount,315,,,,,,,,,3184
+,,,,,,,,,,
+python getRuleAccuracy.py ComplementRulesLB0.001C0.7NR10000/Complement1RulesLB0.001C0.7NR10000.csv UsefulFold1.csv,,,,,,,,,,
+fullyCoveredInstances,312,,,,,,,,,312
+partiallyCoveredInstances,2,,,,,,,,,2
+nonCoveredInstances,11,,,,,,,,,11
+instanceCount,325,,,,,,,,,325
+python getRuleAccuracy.py ComplementRulesLB0.001C0.7NR10000/Complement2RulesLB0.001C0.7NR10000.csv UsefulFold2.csv,,,,,,,,,,
+fullyCoveredInstances,284,,,,,,,,,596
+partiallyCoveredInstances,7,,,,,,,,,9
+nonCoveredInstances,21,,,,,,,,,32
+instanceCount,312,,,,,,,,,637
+python getRuleAccuracy.py ComplementRulesLB0.001C0.7NR10000/Complement3RulesLB0.001C0.7NR10000.csv UsefulFold3.csv,,,,,,,,,,
+fullyCoveredInstances,308,,,,,,,,,904
+partiallyCoveredInstances,4,,,,,,,,,13
+nonCoveredInstances,12,,,,,,,,,44
+instanceCount,324,,,,,,,,,961
+python getRuleAccuracy.py ComplementRulesLB0.001C0.7NR10000/Complement4RulesLB0.001C0.7NR10000.csv UsefulFold4.csv,,,,,,,,,,
+fullyCoveredInstances,289,,,,,,,,,1193
+partiallyCoveredInstances,7,,,,,,,,,20
+nonCoveredInstances,15,,,,,,,,,59
+instanceCount,311,,,,,,,,,1272
+python getRuleAccuracy.py ComplementRulesLB0.001C0.7NR10000/Complement5RulesLB0.001C0.7NR10000.csv UsefulFold5.csv,,,,,,,,,,
+fullyCoveredInstances,306,,,,,,,,,1499
+partiallyCoveredInstances,7,,,,,,,,,27
+nonCoveredInstances,14,,,,,,,,,73
+instanceCount,327,,,,,,,,,1599
+python getRuleAccuracy.py ComplementRulesLB0.001C0.7NR10000/Complement6RulesLB0.001C0.7NR10000.csv UsefulFold6.csv,,,,,,,,,,
+fullyCoveredInstances,308,,,,,,,,,1807
+partiallyCoveredInstances,5,,,,,,,,,32
+nonCoveredInstances,13,,,,,,,,,86
+instanceCount,326,,,,,,,,,1925
+python getRuleAccuracy.py ComplementRulesLB0.001C0.7NR10000/Complement7RulesLB0.001C0.7NR10000.csv UsefulFold7.csv,,,,,,,,,,
+fullyCoveredInstances,300,,,,,,,,,2107
+partiallyCoveredInstances,11,,,,,,,,,43
+nonCoveredInstances,11,,,,,,,,,97
+instanceCount,322,,,,,,,,,2247
+python getRuleAccuracy.py ComplementRulesLB0.001C0.7NR10000/Complement8RulesLB0.001C0.7NR10000.csv UsefulFold8.csv,,,,,,,,,,
+fullyCoveredInstances,303,,,,,,,,,2410
+partiallyCoveredInstances,5,,,,,,,,,48
+nonCoveredInstances,11,,,,,,,,,108
+instanceCount,319,,,,,,,,,2566
+python getRuleAccuracy.py ComplementRulesLB0.001C0.7NR10000/Complement9RulesLB0.001C0.7NR10000.csv UsefulFold9.csv,,,,,,,,,,
+fullyCoveredInstances,283,,,,,,,,,2693
+partiallyCoveredInstances,3,,,,,,,,,51
+nonCoveredInstances,17,,,,,,,,,125
+instanceCount,303,,,,,,,,,2869
+python getRuleAccuracy.py ComplementRulesLB0.001C0.7NR10000/Complement10RulesLB0.001C0.7NR10000.csv UsefulFold10.csv,,,,,,,,,,
+fullyCoveredInstances,294,,,,,,,,,2987
+partiallyCoveredInstances,8,,,,,,,,,59
+nonCoveredInstances,13,,,,,,,,,138
+instanceCount,315,,,,,,,,,3184
+,,,,,,,,,,
+python getRuleAccuracy.py ComplementRulesLB0.001C0.8NR10000/Complement1RulesLB0.001C0.8NR10000.csv UsefulFold1.csv,,,,,,,,,,
+fullyCoveredInstances,302,,,,,,,,,302
+partiallyCoveredInstances,2,,,,,,,,,2
+nonCoveredInstances,21,,,,,,,,,21
+instanceCount,325,,,,,,,,,325
+python getRuleAccuracy.py ComplementRulesLB0.001C0.8NR10000/Complement2RulesLB0.001C0.8NR10000.csv UsefulFold2.csv,,,,,,,,,,
+fullyCoveredInstances,275,,,,,,,,,577
+partiallyCoveredInstances,6,,,,,,,,,8
+nonCoveredInstances,31,,,,,,,,,52
+instanceCount,312,,,,,,,,,637
+python getRuleAccuracy.py ComplementRulesLB0.001C0.8NR10000/Complement3RulesLB0.001C0.8NR10000.csv UsefulFold3.csv,,,,,,,,,,
+fullyCoveredInstances,301,,,,,,,,,878
+partiallyCoveredInstances,3,,,,,,,,,11
+nonCoveredInstances,20,,,,,,,,,72
+instanceCount,324,,,,,,,,,961
+python getRuleAccuracy.py ComplementRulesLB0.001C0.8NR10000/Complement4RulesLB0.001C0.8NR10000.csv UsefulFold4.csv,,,,,,,,,,
+fullyCoveredInstances,283,,,,,,,,,1161
+partiallyCoveredInstances,4,,,,,,,,,15
+nonCoveredInstances,24,,,,,,,,,96
+instanceCount,311,,,,,,,,,1272
+python getRuleAccuracy.py ComplementRulesLB0.001C0.8NR10000/Complement5RulesLB0.001C0.8NR10000.csv UsefulFold5.csv,,,,,,,,,,
+fullyCoveredInstances,295,,,,,,,,,1456
+partiallyCoveredInstances,5,,,,,,,,,20
+nonCoveredInstances,27,,,,,,,,,123
+instanceCount,327,,,,,,,,,1599
+python getRuleAccuracy.py ComplementRulesLB0.001C0.8NR10000/Complement6RulesLB0.001C0.8NR10000.csv UsefulFold6.csv,,,,,,,,,,
+fullyCoveredInstances,301,,,,,,,,,1757
+partiallyCoveredInstances,3,,,,,,,,,23
+nonCoveredInstances,22,,,,,,,,,145
+instanceCount,326,,,,,,,,,1925
+python getRuleAccuracy.py ComplementRulesLB0.001C0.8NR10000/Complement7RulesLB0.001C0.8NR10000.csv UsefulFold7.csv,,,,,,,,,,
+fullyCoveredInstances,293,,,,,,,,,2050
+partiallyCoveredInstances,8,,,,,,,,,31
+nonCoveredInstances,21,,,,,,,,,166
+instanceCount,322,,,,,,,,,2247
+python getRuleAccuracy.py ComplementRulesLB0.001C0.8NR10000/Complement8RulesLB0.001C0.8NR10000.csv UsefulFold8.csv,,,,,,,,,,
+fullyCoveredInstances,295,,,,,,,,,2345
+partiallyCoveredInstances,6,,,,,,,,,37
+nonCoveredInstances,18,,,,,,,,,184
+instanceCount,319,,,,,,,,,2566
+python getRuleAccuracy.py ComplementRulesLB0.001C0.8NR10000/Complement9RulesLB0.001C0.8NR10000.csv UsefulFold9.csv,,,,,,,,,,
+fullyCoveredInstances,275,,,,,,,,,2620
+partiallyCoveredInstances,4,,,,,,,,,41
+nonCoveredInstances,24,,,,,,,,,208
+instanceCount,303,,,,,,,,,2869
+python getRuleAccuracy.py ComplementRulesLB0.001C0.8NR10000/Complement10RulesLB0.001C0.8NR10000.csv UsefulFold10.csv,,,,,,,,,,
+fullyCoveredInstances,285,,,,,,,,,2905
+partiallyCoveredInstances,6,,,,,,,,,47
+nonCoveredInstances,24,,,,,,,,,232
+instanceCount,315,,,,,,,,,3184
+,,,,,,,,,,
+python getRuleAccuracy.py ComplementRulesLB0.001C0.9NR10000/Complement1RulesLB0.001C0.9NR10000.csv UsefulFold1.csv,,,,,,,,,,
+fullyCoveredInstances,283,,,,,,,,,283
+partiallyCoveredInstances,1,,,,,,,,,1
+nonCoveredInstances,41,,,,,,,,,41
+instanceCount,325,,,,,,,,,325
+python getRuleAccuracy.py ComplementRulesLB0.001C0.9NR10000/Complement2RulesLB0.001C0.9NR10000.csv UsefulFold2.csv,,,,,,,,,,
+fullyCoveredInstances,248,,,,,,,,,531
+partiallyCoveredInstances,7,,,,,,,,,8
+nonCoveredInstances,57,,,,,,,,,98
+instanceCount,312,,,,,,,,,637
+python getRuleAccuracy.py ComplementRulesLB0.001C0.9NR10000/Complement3RulesLB0.001C0.9NR10000.csv UsefulFold3.csv,,,,,,,,,,
+fullyCoveredInstances,280,,,,,,,,,811
+partiallyCoveredInstances,4,,,,,,,,,12
+nonCoveredInstances,40,,,,,,,,,138
+instanceCount,324,,,,,,,,,961
+python getRuleAccuracy.py ComplementRulesLB0.001C0.9NR10000/Complement4RulesLB0.001C0.9NR10000.csv UsefulFold4.csv,,,,,,,,,,
+fullyCoveredInstances,257,,,,,,,,,1068
+partiallyCoveredInstances,5,,,,,,,,,17
+nonCoveredInstances,49,,,,,,,,,187
+instanceCount,311,,,,,,,,,1272
+python getRuleAccuracy.py ComplementRulesLB0.001C0.9NR10000/Complement5RulesLB0.001C0.9NR10000.csv UsefulFold5.csv,,,,,,,,,,
+fullyCoveredInstances,273,,,,,,,,,1341
+partiallyCoveredInstances,4,,,,,,,,,21
+nonCoveredInstances,50,,,,,,,,,237
+instanceCount,327,,,,,,,,,1599
+python getRuleAccuracy.py ComplementRulesLB0.001C0.9NR10000/Complement6RulesLB0.001C0.9NR10000.csv UsefulFold6.csv,,,,,,,,,,
+fullyCoveredInstances,288,,,,,,,,,1629
+partiallyCoveredInstances,5,,,,,,,,,26
+nonCoveredInstances,33,,,,,,,,,270
+instanceCount,326,,,,,,,,,1925
+python getRuleAccuracy.py ComplementRulesLB0.001C0.9NR10000/Complement7RulesLB0.001C0.9NR10000.csv UsefulFold7.csv,,,,,,,,,,
+fullyCoveredInstances,272,,,,,,,,,1901
+partiallyCoveredInstances,8,,,,,,,,,34
+nonCoveredInstances,42,,,,,,,,,312
+instanceCount,322,,,,,,,,,2247
+python getRuleAccuracy.py ComplementRulesLB0.001C0.9NR10000/Complement8RulesLB0.001C0.9NR10000.csv UsefulFold8.csv,,,,,,,,,,
+fullyCoveredInstances,272,,,,,,,,,2173
+partiallyCoveredInstances,3,,,,,,,,,37
+nonCoveredInstances,44,,,,,,,,,356
+instanceCount,319,,,,,,,,,2566
+python getRuleAccuracy.py ComplementRulesLB0.001C0.9NR10000/Complement9RulesLB0.001C0.9NR10000.csv UsefulFold9.csv,,,,,,,,,,
+fullyCoveredInstances,251,,,,,,,,,2424
+partiallyCoveredInstances,5,,,,,,,,,42
+nonCoveredInstances,47,,,,,,,,,403
+instanceCount,303,,,,,,,,,2869
+python getRuleAccuracy.py ComplementRulesLB0.001C0.9NR10000/Complement10RulesLB0.001C0.9NR10000.csv UsefulFold10.csv,,,,,,,,,,
+fullyCoveredInstances,269,,,,,,,,,2693
+partiallyCoveredInstances,3,,,,,,,,,45
+nonCoveredInstances,43,,,,,,,,,446
+instanceCount,315,,,,,,,,,3184
+,,,,,,,,,,
+python getRuleAccuracy.py ComplementRulesLB0.001C1NR10000/Complement1RulesLB0.001C1NR10000.csv UsefulFold1.csv,,,,,,,,,,
+fullyCoveredInstances,121,,,,,,,,,121
+partiallyCoveredInstances,1,,,,,,,,,1
+nonCoveredInstances,203,,,,,,,,,203
+instanceCount,325,,,,,,,,,325
+python getRuleAccuracy.py ComplementRulesLB0.001C1NR10000/Complement2RulesLB0.001C1NR10000.csv UsefulFold2.csv,,,,,,,,,,
+fullyCoveredInstances,97,,,,,,,,,218
+partiallyCoveredInstances,2,,,,,,,,,3
+nonCoveredInstances,213,,,,,,,,,416
+instanceCount,312,,,,,,,,,637
+python getRuleAccuracy.py ComplementRulesLB0.001C1NR10000/Complement3RulesLB0.001C1NR10000.csv UsefulFold3.csv,,,,,,,,,,
+fullyCoveredInstances,126,,,,,,,,,344
+partiallyCoveredInstances,3,,,,,,,,,6
+nonCoveredInstances,195,,,,,,,,,611
+instanceCount,324,,,,,,,,,961
+python getRuleAccuracy.py ComplementRulesLB0.001C1NR10000/Complement4RulesLB0.001C1NR10000.csv UsefulFold4.csv,,,,,,,,,,
+fullyCoveredInstances,177,,,,,,,,,521
+partiallyCoveredInstances,3,,,,,,,,,9
+nonCoveredInstances,131,,,,,,,,,742
+instanceCount,311,,,,,,,,,1272
+python getRuleAccuracy.py ComplementRulesLB0.001C1NR10000/Complement5RulesLB0.001C1NR10000.csv UsefulFold5.csv,,,,,,,,,,
+fullyCoveredInstances,106,,,,,,,,,627
+partiallyCoveredInstances,5,,,,,,,,,14
+nonCoveredInstances,216,,,,,,,,,958
+instanceCount,327,,,,,,,,,1599
+python getRuleAccuracy.py ComplementRulesLB0.001C1NR10000/Complement6RulesLB0.001C1NR10000.csv UsefulFold6.csv,,,,,,,,,,
+fullyCoveredInstances,123,,,,,,,,,750
+partiallyCoveredInstances,6,,,,,,,,,20
+nonCoveredInstances,197,,,,,,,,,1155
+instanceCount,326,,,,,,,,,1925
+python getRuleAccuracy.py ComplementRulesLB0.001C1NR10000/Complement7RulesLB0.001C1NR10000.csv UsefulFold7.csv,,,,,,,,,,
+fullyCoveredInstances,110,,,,,,,,,860
+partiallyCoveredInstances,5,,,,,,,,,25
+nonCoveredInstances,207,,,,,,,,,1362
+instanceCount,322,,,,,,,,,2247
+python getRuleAccuracy.py ComplementRulesLB0.001C1NR10000/Complement8RulesLB0.001C1NR10000.csv UsefulFold8.csv,,,,,,,,,,
+fullyCoveredInstances,117,,,,,,,,,977
+partiallyCoveredInstances,4,,,,,,,,,29
+nonCoveredInstances,198,,,,,,,,,1560
+instanceCount,319,,,,,,,,,2566
+python getRuleAccuracy.py ComplementRulesLB0.001C1NR10000/Complement9RulesLB0.001C1NR10000.csv UsefulFold9.csv,,,,,,,,,,
+fullyCoveredInstances,113,,,,,,,,,1090
+partiallyCoveredInstances,3,,,,,,,,,32
+nonCoveredInstances,187,,,,,,,,,1747
+instanceCount,303,,,,,,,,,2869
+python getRuleAccuracy.py ComplementRulesLB0.001C1NR10000/Complement10RulesLB0.001C1NR10000.csv UsefulFold10.csv,,,,,,,,,,
+fullyCoveredInstances,109,,,,,,,,,1199
+partiallyCoveredInstances,5,,,,,,,,,37
+nonCoveredInstances,201,,,,,,,,,1948
+instanceCount,315,,,,,,,,,3184
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+Transposed matrix,,,,,,,,,,
+Confidence Threshold,100,90,80,70,60,50,,,,
+Fully Covered,119.9,269.3,290.5,298.7,304.4,310,,,,
+Partially Covered,3.2,4.5,4.7,5.9,6.6,5.9,,,,
+Not Covered,194.8,44.6,23.2,13.8,7.4,2.5,,,,
+Total Instances,318.4,318.4,318.4,318.4,318.4,318.4,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+Instance counts,,,,,,,,,,
+Confidence Threshold,Fully Covered,Partially Covered,Not Covered,Total Instances,Number of Rules,,,,,
+100,119.9,3.2,194.8,318.4,185.4,,,,,
+90,269.3,4.5,44.6,318.4,251.4,,,,,
+80,290.5,4.7,23.2,318.4,358.2,,,,,
+70,298.7,5.9,13.8,318.4,438.7,,,,,
+60,304.4,6.6,7.4,318.4,551.8,,,,,
+50,310,5.9,2.5,318.4,701.8,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+Percentages,,,,,,,,,,
+Confidence Threshold,Fully Covered,Partially Covered,Not Covered,Total Instances,Number of Rules,,,,,
+50%,97.4,1.9,0.8,318.4,701.8,,,,,
+60%,95.6,2.1,2.3,318.4,551.8,,,,,
+70%,93.8,1.9,4.3,318.4,438.7,,,,,
+80%,91.2,1.5,7.3,318.4,358.2,,,,,
+90%,84.6,1.4,14.0,318.4,251.4,,,,,
+100%,37.7,1.0,61.2,318.4,185.4,,,,,
