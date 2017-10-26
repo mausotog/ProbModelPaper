@@ -1074,16 +1074,16 @@ all repair experiments in Section~\ref{sec:repairSetup}.
 \midrule
 Fold	& Count &Prob (\%)& EqDist(\%)& Count &Prob(\%)& EqDist(\%) \\
 \midrule
-1	& 155&70&	25 &17313&  95 & 64   \\
-2	& 86&100&	25  & 17232& 93 & 63   \\
-3	& 81&82	&23  & 16754& 95 & 81 \\
-4	& 101&81	&40  & 14159& 94 & 9   \\
-5	& 99&90	&27  & 17022& 95 & 2  \\
-6	& 75&84	&21  & 14945& 95& 58  \\
-7	& 79&86	&24  & 12901& 93& 7  \\
-8	& 55&96	&23  & 10552& 95& 27  \\
-9	& 82&88	&8  & 14568& 93& 62 \\
-10	& 116&100	&31 & 19140 & 95 & 6 \\
+1	& 155~~~&70~~~ &25~~~ &17313~~~&  95~~~ & 64~~~   \\
+2	& 86~~~&100~~~ &25~~~  & 17232~~~& 93~~~ & 63~~~   \\
+3	& 81~~~&82~~~	&23~~~  & 16754~~~& 95~~~ & 81~~~ \\
+4	& 101~~~&81~~~	&40~~~  & 14159~~~& 94~~~ & 9~~~   \\
+5	& 99~~~&90~~~	&27~~~  & 17022~~~& 95~~~ & 2~~~  \\
+6	& 75~~~&84~~~	&21~~~  & 14945~~~& 95~~~ & 58~~~  \\
+7	& 79~~~&86~~~	&24~~~  & 12901~~~& 93~~~ & 7~~~  \\
+8	& 55~~~&96~~~	&23~~~  & 10552~~~& 95~~~ & 27~~~  \\
+9	& 82~~~&88~~~	&8~~~  & 14568~~~& 93~~~ & 62~~~ \\
+10	& 116~~~&100~~~	&31~~~ & 19140~~~& 95~~~ & 6~~~ \\
 \midrule
 Mean	& 92.9 &87.7	&24.7& 15458.6  & 94.3 & 37.9  \\
 \midrule
@@ -1271,7 +1271,7 @@ corresponding developer-provided patches.  Table~\ref{defects4j} characterizes
 the dataset.\footnote{Note that we initiated this study before Defects4J added
  ``Mockito".} Because we compare to single-edit techniques, we
 restrict attention to a subset of the Defects4J bugs with single-line human
-patches. We ran a comparison of the probabilistic model against an equally distributed model on the first one-line patches from each project until either the project had no more one-line patches, or we ran out of resources to compute more executions \todo{Check this sentence here}. The projects have a diverse distribution of one-line patches therefore the number of bugs tried per project varies. 
+patches. We ran a comparison of the probabilistic model against an equally distributed model on the one-line patches from each project. The projects have a diverse distribution of one-line patches therefore the number of bugs tried per project varies. 
 
 \paragraph{Patch quality}
 As a proxy for patch quality (to mitigate the risk of plausible but as yet
@@ -1777,7 +1777,7 @@ importantly, mines and models these operators and their incidence automatically
 There exist a broad array of APR techniques proposed, especially recently; we
 survey many of them in Section~\ref{background}, focusing on heuristic or
 syntactic generate-and-validate techniques.  Semantic-based techniques use
-semantic analysis or reasoning~\cite{nguyen13,mechtaev15,Mechtaev2016}, or
+semantic analysis or reasoning~\cite{nguyen13,mechtaev15,Mechtaev2016,Bach17S3}, or
 semantic search~\cite{ke15} to construct candidate patches.  Similarly,
 synthesis-based repair is a family of techniques that uses constraints to build
 patches following the description of the constraints~\cite{jin11,wei10}. These constraints may be
