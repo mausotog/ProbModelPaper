@@ -1279,9 +1279,9 @@ incorrect patches~\cite{Qi15}), we evaluate patches using a held-out test
 suite~\cite{legoues12Genprog,smith15} by automatically building a second test
 suite that independently describes the same behavior as the test suite that
 guides the search process. We generate a single held out suite for each buggy program version that any technique
-repairs.  We use Randoop~\cite{pacheco07}, an established automatic
+repairs.  We use Evosuite~\cite{Fraser11Evosuite}, an established automatic
 test suite generation tool for Java, to generate this second test suite. We run
-Randoop with a ten minute budget (six times the default value) to create the
+Evosuite with a thirty minute budget to create the
 held-out test suites. We also use
 Cobertura\footnote{http://cobertura.github.io/cobertura/} to calculate the
 coverage of the test suite over the ``after-fix" class that contains the human fix.
@@ -1462,23 +1462,23 @@ compares our new technique to the previous state-of-the-art.
              & Held-out // Line     & \mII{Prob. Model} & \mII{GenProg} & \mII{TrpAutoRepair} & \mII{PAR} & \mC{Nopol} \\
 Bug ID       & tests // Coverage & Found & GTHTS & Found & GTHTS &Found & GTHTS &Found & GTHTS &Found & GTHTS   \\ 
 \midrule
-Closure \#10 & 1493 // 5.5\% & 2 & 2 & \mII{Not found}  & \mII{Not found} & \mII{Not found} & 1 & 0   \\
+Closure \# 10 &  472 // 60.2\% & 2 & 2 & \mII{Not found}  & \mII{Not found} & \mII{Not found} & 1 & 1   \\
 \midrule
-Closure \# 18 & 1615 // 32.1\%      & 1 & 1    & \mII{Not found}  & \mII{Not found} & \mII{Not found}  &1 &  0  \\
+Closure \# 18 & 106 // 73.4\%      & 1 & 1    & \mII{Not found}  & \mII{Not found} & \mII{Not found}  &1 &  1  \\
 \midrule
-Math \#2      & 6933 // 100\%  & 1 & 0 & \mII{Not found} & \mII{Not found} & 1 & 0 & 1 & 1  \\
+Math \# 2  & 13 // 100\%  & 1 & 1 & \mII{Not found} & \mII{Not found} & 1 & 1 & 1 & 1  \\
 \midrule
-Time \#19     & 3650 // 75.4\%  & 2 & 2 & 1 & 1 & 1 & 1 & \mII{Not found} & 1 &  1 \\
+Time \# 19 & 55 // 86\%  & 2 & 2 & 1 & 1 & 1 & 1 & \mII{Not found} & 1 &  1 \\
 \midrule
-Chart \#1 & 4285 // 32.9\% & 5 & 0 & 6 & 0  & 4 & 0 & 2 & 0 & \multicolumn{2}{c}{Not found}   \\
+Chart \# 1 & 93 // 74.4\% & 5 & 0 & 6 & 0  & 4 & 0 & 2 & 0 & \multicolumn{2}{c}{Not found}   \\
 \midrule
-Closure \#86 & 1602 // 6.6\% & 2 & 2 & \mII{Not found}   & 2 & 2 & \mII{Not found}  & \multicolumn{2}{c}{Not found}   \\
+Closure \# 86 & 435 // 64.8\% & 2 & 2 & \mII{Not found}   & 1 & 1 & \mII{Not found}  & \multicolumn{2}{c}{Not found}   \\
 \midrule
-Math \# 75 & 5432 // 91.0\%      & 1 & 1    & \mII{Not found}  & \mII{Not found} & 1 & 1     & \multicolumn{2}{c}{Not found}   \\
+Math \# 75 &  25 // 92.5\%      & 1 & 1    & \mII{Not found}  & \mII{Not found} & 1 & 1     & \multicolumn{2}{c}{Not found}   \\
 \midrule
-Math \#85 & 1730 // 68.4\% & 4 & 4 & 8 & 8  & 3  & 3 & 8 & 8 & 1  & 1  \\       
+Math \# 85 & 11 // 94.7\% & 4 & 0 & 8 & 0  & 3  & 0 & 8 & 0 & 1  & 1  \\       
 \midrule
-Lang \#33 &  3220 // 62.6\%  & 1 & 1 &  \mII{Not found}   &   \mII{Not found}  &1  & 1 &   \multicolumn{2}{c}{Not found}   \\       
+Lang \# 33 &  85 // 92.3\%  & 1 & 1 &  \mII{Not found}   &   \mII{Not found}  &1  & 1 &   \multicolumn{2}{c}{Not found}   \\       
        \bottomrule
 \end{tabular}}
   \caption{Comparison between the probabilistic model-based repair and
@@ -1527,11 +1527,18 @@ results, including, the number of different patches found for each bug and how m
 to a held-out test suite. The patches that did not generalize to the held out test suite failed one or 
 several tests in the held-out test suite. Of the
 19 distinct patches created by our approach, 
-\todo{XXX} pass all held-out test suite (\todo{XXX}\%), while for the other state of the art approaches,
-\todo{XXX}\% of GenProg's patches generalize, \todo{XXX}\% of TRPAutoRepair's, \todo{XXX}\% of PAR's and \todo{XXX}\% of Nopol's patches fully generalize to their held-out test suite.
+9 pass all held-out test suite (47.4\%), while for the other state of the art approaches,
+6.6\% of GenProg's patches generalize, 20\% of TRPAutoRepair's, 15.4\% of PAR's and 100\% of the 5 patches created by Nopol fully generalize to their held-out test suite.
 This gives us confidence that our approach produces high
 quality patches in comparison with the alternatives created by state-of-the-art
 tools. 
+
+A main takeaway to notice is that the approaches that select what edit to apply without a
+model, and therefore could benefit from a probabilistic model, performed worse than the
+alternative of using a probabilistic approach. Nopol, even though it performed better
+than the rest of the approaches, a probabilistic model as the one described in this
+study, could not be applied to the way patches are constructed in this tool. Therefore
+we can clearly see the benefit from applying a probabilistic model, in the approaches were a probabilistic model can be applied.
 
 One example demonstrating the quality improvement provided by the probabilistic
 model-based approach is seen in the Closure 18 bug. Figure~\ref{closure18prob} 
@@ -1608,7 +1615,7 @@ area that covers the majority of real life patches.
 \paragraph{Evaluation of Association Rules}
 To evaluate the effectiveness of the association rules in the context of the automatic program repair process, we first had to remove the section of the corpus where the number of edits performed is less than 3, since the association rules require at least two antecedents and one consequent, therefore by definition the patches with less than three edits can not be created by the association rules. This removed 62.83\% of the corpus. On the remaining 37.17\% where association rules can be applied, we performed a 10-fold cross validation process as follows:
 First we divide our corpus in 10 folds, these folds will be used as testing data.
-For each of the folds, we then group the complement of the fold used as testing data (the remaining 9 folds), and build the association rules using Apriori \todo{citation here of apriori}. We build the rules from
+For each of the folds, we then group the complement of the fold used as testing data (the remaining 9 folds), and build the association rules using Apriori~\cite{Agrawal94}. We build the rules from
 the complement of the fold used as testing data to maintain the principle of training and testing from non-overlapping
 data.
 Once we have the rules built from the complement, we analyze how many patches (instances in the fold used as testing data) can be built from applying the rules.
@@ -1637,6 +1644,7 @@ Finally, we performed this analysis with 6 different confidence thresholds (50,6
 
 For each confidence threshold, we performed a standard 10-fold cross validation process with all the instances and all the rules for each fold and finally, we aggregate the results from all the folds.
 
+\begin{comment}
 \begin{table}[ht]
 \centering
 
@@ -1655,16 +1663,24 @@ For each confidence threshold, we performed a standard 10-fold cross validation 
 \center
   \caption{10-fold cross validation with different confidence thresholds. \label{10FoldXValResults}}
 \end{table} 
+\end{comment}
+
 
 \begin{figure}[!h]
   \centering
     \includegraphics[width=\columnwidth]{10FoldXVal4}
-  \caption{10-fold cross validation, patch coverage by the association rules}
+  \caption{The wide bars use the left vertical axis to describe the percentage of patches covered (Fully, Partially or Not) by the association rules. The thin bars use the right vertical axis to describe the number of rules created for each confidence threshold.}
   \label{fig:generateandvalidate}
 \end{figure}
 
-As seen in Table~\ref{10FoldXValResults} the number of rules created augments as the confidence is reduced, due to the fact that the rules being created are less accurate (when the antecedent is present there is less probability that the consequent will be as well). We can also notice that the number of Fully Covered instances increases as the confidence goes down due to the fact that there are more rules, even if these rules are less accurate.
-We can see that there is a big difference between 100\% and 90\% confidence, where with a 100\% confidence we have slightly less rules and the number of Not Covered instances is very high. As opposed to a 90\% confidence, where there is a nice balance between having very high number of fully covered instances, while still having very high confidence rules. \todo{add to the repo the files with rules in differente thresholds}
+As seen in Figure~\ref{fig:generateandvalidate} the number of rules created augments as the confidence is reduced, due to the fact that the rules being created are less accurate (when the antecedent is present there is less probability that the consequent will be as well). We can also notice that the number of Fully Covered instances increases as the confidence goes down due to the fact that there are more rules, even if these rules are less accurate.
+
+APR would benefit from having a small number of very accurate (high confidence) rules that would describe what edit to perform next after a series of edits, but at the same time, it needs rules that are flexible enough that they can generalize to a big portion of the patches. 
+
+We find that a good tradeoff within this tension happens when we set the confidence threshold to 90\%. There is a big difference between 100\% and 90\% confidence regarding percentage of not covered instances a 100\% threshold provides rules that are very accurate, but can fully cover only a 37.7\% of the patches it was evaluated on. In contrast to 90\% confidence threshold where there are slightly more rules, but
+the rules generalize much more and are able to fully cover 84.6\% of the patches it was evaluated on, and still maintaining a high confidence threshold.
+
+\todo{add to the repo the files with rules in differente thresholds}
 
 
 
@@ -1710,9 +1726,9 @@ best known practice, since this way we provide an alternative to subjectively
 asking a biased human developer
 whether he/she considered the patch to be correct or not. 
 
-We also rely on Randoop~\cite{pacheco07} as our test suite generation mechanism 
+We also rely on Evosuite~\cite{Fraser11Evosuite} as our test suite generation mechanism 
 for the held-out test suite used for evaluation, and we acknowledge that the 
-test suites created by this tool may not be perfect, nor provide full coverage. 
+test suites created by this tool may not be perfect, nor provide full coverage for all cases. 
 Nonetheless, this is a state of the art test suite generation tool that mitigates the risk of bias in manually constructing evaluation test suites.
 
 \section{Related Work} \label{relatedWork}
