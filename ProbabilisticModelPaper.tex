@@ -999,7 +999,7 @@ Association rules are if/then statements that show relationships between element
 well-known association rule mining algorithm
 Apriori~\cite{Agrawal94}. 
 %
-We mine association rules from each of the models described in Section~\ref{armRes} by transforming each of the mutation operator count and replacement count from 
+We mine association rules from the Mutation operators model as described in Section~\ref{armRes} by transforming each of the mutation operator count from 
 each of the commits studied into a \emph{transaction} to be analyzed. We develop
 rule sets at difference \emph{Confidence} levels, defined as:
 
@@ -1267,8 +1267,7 @@ As a proxy for patch quality (to mitigate the risk of plausible but as yet
 incorrect patches~\cite{Qi15}), we evaluate patches using a held-out test
 suite~\cite{legoues12Genprog,smith15} by automatically building a second test
 suite that independently describes the same behavior as the test suite that
-guides the search process. We generate a single held out suite\todo{see the
-  github issue I assigned to you} for each buggy program version that any technique
+guides the search process. We generate a single held out suite for each buggy program version that any technique
 repairs.  We use Evosuite~\cite{Fraser11Evosuite}, an established automatic
 test suite generation tool for Java, to generate this second test suite. We run EvoSuite
 with a 30-minute budget, using the human-repaired ``after fix'' version of each Defects4J bug
@@ -1533,12 +1532,11 @@ shows our technique's patch, identical to the human patch.
 \subsection{Association Rule Mining} \label{armRes}
 
 We mined our corpus using the Association Rule Mining algorithm Apriori 
-to find rules of mutation operators and 
-replacements that commonly happen together providing an intuition regarding
+to find rules of mutation operators that commonly happen together providing an intuition regarding
 how to form multi-edit
 source code changes.
 
-\subsubsection{Mutation operator rules}
+\subsubsection{Mutation operator rules} \label{mutOpRules}
 We mine rules from our corpus as described in Section~\ref{multEdit}.  
 We created these association rules only with the Mutation operators corpus and leave out the Replacements corpus.
 This is because the Replacements model is used only when the Mutation operators model has chosen a "Replacement'' to
@@ -1556,8 +1554,7 @@ have applied a set of edits already.
 They are obtained with a 1\% support, which means that each of these rules
 individually appear in at least 1\% of all the transactions in the
 corpus, this is to obtain a large number of rules. We show the top association rules, and also release the full set of mined
-rules :\footnote{We will release the full list of mutation operator and replacements rules post blind-review.} 
-\todo{Update the document with all the rules, since currently it has the rules built with a 100\% confidence}
+rules :\footnote{We will release the full list of mutation operator rules post blind-review.} 
 %\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt}} 
 
 %Minimum support: 0 (1 instances)
@@ -1586,16 +1583,14 @@ developers use. These rules tell us what edits happen frequently together, which
 will help us further understand multi-edit source code changes, an understudied 
 area that covers the majority of real life patches.
 
-\todo{I will do my edit pass over this section when you address the questions
-  from the GH issues; please do that in the morning.}
 \subsubsection{Evaluation of Association Rules}
-To evaluate the effectiveness of the association rules in the context of the automatic program repair process, we first had to remove the section of the corpus where the number of edits performed is less than 3, since the association rules require at least two antecedents and one consequent, therefore by definition the patches with less than three edits can not be created by the association rules. This removed 62.83\% of the corpus. On the remaining 37.17\% where association rules can be applied, we performed a 10-fold cross validation process as follows:
+To evaluate the effectiveness of the association rules in the context of the automatic program repair process, we first had to remove the section of the corpus where the number of edits performed is less than 3, this is because all the rules created as a result of section~\ref{mutOpRules} require at least two antecedents and one consequent, therefore the patches with less than three edits can not be created by these association rules. This removed 62.83\% of the corpus. On the remaining 37.17\% where association rules can be applied, we performed a 10-fold cross validation process as follows:
 First we divide our corpus in 10 folds, these folds will be used as testing data.
 For each of the folds, we then group the complement of the fold used as testing data (the remaining 9 folds), and build the association rules using Apriori~\cite{Agrawal94}. We build the rules from
 the complement of the fold used as testing data to maintain the principle of training and testing from non-overlapping
 data.
 Once we have the rules built from the complement, we analyze how many patches (instances in the fold used as testing data) can be built from applying the rules.
-We categorize them in three different ways: \texttt{Fully covered}, \texttt{Partially covered}, and \texttt{Not covered}.
+We categorize them in three different ways: \emph{Fully covered}, \emph{Partially covered}, and \emph{Not covered}.
 
 Table~\ref{rulesandinstances} shows three instances of patches in the testing data, and three rules built from the complement. Instance 1 can be constructed from applying rules 1 and 3. This instances would be classified as Fully covered. For Instance 2, Rule 1 would cover the first three edits of this instance, but there is no way to cover the Replace ("Rep") mutation, therefore it would be classified as Partially covered. For Instance 3, even though Rule 3 contains two of the edits in the rule's antecedent, the instance does not contain the rule's consequent, therefore this and the other rules would not be able to be applied to this instance, therefore classifying it as Not covered.
 

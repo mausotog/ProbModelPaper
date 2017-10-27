@@ -1,3 +1,30 @@
+=== Run information ===
+
+Scheme:       weka.associations.Apriori -N 10000 -T 0 -C 1.0 -D 0.05 -U 1.0 -M 0.001 -S -1.0 -c -1
+Relation:     MutOperatorsTransactions
+Instances:    8540
+Attributes:   19
+              Replacements
+              Append
+              Delete
+              Template1
+              Template2
+              Template3
+              Template4
+              Template5
+              Template6
+              Template7
+              Template8
+              Template9
+              Template10
+              Template11
+              Template12
+              Template13
+              Template14
+              Template15
+              Template16
+=== Associator model (full training set) ===
+
 
 Apriori
 =======
@@ -199,8 +226,4 @@ Best rules found:
   175. Append=t Delete=t Template1=t Template2=t Template16=t 9 ==> Template15=t 9    <conf:(1)> lift:(10.25) lev:(0) [8] conv:(8.12)
   176. Delete=t Template1=t Template2=t Template16=t 9 ==> Append=t Template15=t 9    <conf:(1)> lift:(26.28) lev:(0) [8] conv:(8.66)
   177. Append=t Template1=t Template2=t Template16=t 9 ==> Delete=t Template15=t 9    <conf:(1)> lift:(32.35) lev:(0) [8] conv:(8.72)
-
-=== Evaluation ===
-
-Elapsed time: 0.338s
 

@@ -1,7 +1,7 @@
 === Run information ===
 
-Scheme:       weka.associations.Apriori -N 10000 -T 0 -C 0.9 -D 0.05 -U 1.0 -M 0.001 -S -1.0 -c -1
-Relation:     mut.operators.transactions
+Scheme:       weka.associations.Apriori -N 10000 -T 0 -C 0.8 -D 0.05 -U 1.0 -M 0.001 -S -1.0 -c -1
+Relation:     MutOperatorsTransactions
 Instances:    8540
 Attributes:   19
               Replacements
@@ -30,7 +30,7 @@ Apriori
 =======
 
 Minimum support: 0 (9 instances)
-Minimum metric <confidence>: 0.9
+Minimum metric <confidence>: 0.8
 Number of cycles performed: 20
 
 Generated sets of large itemsets:
@@ -303,4 +303,84 @@ Best rules found:
   252. Replacements=t Append=t Delete=t Template2=t Template16=t 10 ==> Template15=t 9    <conf:(0.9)> lift:(9.23) lev:(0) [8] conv:(4.51)
   253. Replacements=t Template2=t Template15=t Template16=t 10 ==> Append=t Delete=t 9    <conf:(0.9)> lift:(2.49) lev:(0) [5] conv:(3.19)
   254. Replacements=t Delete=t Template2=t Template16=t 10 ==> Append=t Template15=t 9    <conf:(0.9)> lift:(23.65) lev:(0) [8] conv:(4.81)
+  255. Template1=t Template3=t Template15=t 76 ==> Template2=t 68    <conf:(0.89)> lift:(3.55) lev:(0.01) [48] conv:(6.31)
+  256. Template3=t Template4=t Template15=t 56 ==> Template2=t 50    <conf:(0.89)> lift:(3.54) lev:(0) [35] conv:(5.98)
+  257. Append=t Template3=t Template14=t 45 ==> Delete=t 40    <conf:(0.89)> lift:(2.18) lev:(0) [21] conv:(4.44)
+  258. Append=t Template1=t Template4=t 27 ==> Delete=t 24    <conf:(0.89)> lift:(2.18) lev:(0) [12] conv:(4)
+  259. Template3=t Template16=t 44 ==> Template15=t 39    <conf:(0.89)> lift:(9.09) lev:(0) [34] conv:(6.62)
+  260. Delete=t 3480 ==> Append=t 3083    <conf:(0.89)> lift:(1.5) lev:(0.12) [1032] conv:(3.59)
+  261. Template1=t Template3=t Template16=t 17 ==> Template2=t 15    <conf:(0.88)> lift:(3.5) lev:(0) [10] conv:(4.24)
+  262. Template1=t Template4=t Template15=t 40 ==> Template2=t 35    <conf:(0.88)> lift:(3.47) lev:(0) [24] conv:(4.98)
+  263. Delete=t Template2=t Template16=t 24 ==> Template15=t 21    <conf:(0.88)> lift:(8.97) lev:(0) [18] conv:(5.41)
+  264. Append=t Delete=t Template2=t Template16=t 24 ==> Template15=t 21    <conf:(0.88)> lift:(8.97) lev:(0) [18] conv:(5.41)
+  265. Delete=t Template2=t Template16=t 24 ==> Append=t Template15=t 21    <conf:(0.88)> lift:(22.99) lev:(0) [20] conv:(5.77)
+  266. Append=t Template1=t Template3=t Template15=t 16 ==> Template2=t 14    <conf:(0.88)> lift:(3.47) lev:(0) [9] conv:(3.99)
+  267. Append=t Template3=t Template4=t Template15=t 16 ==> Template2=t 14    <conf:(0.88)> lift:(3.47) lev:(0) [9] conv:(3.99)
+  268. Delete=t Template1=t Template3=t Template15=t 16 ==> Template2=t 14    <conf:(0.88)> lift:(3.47) lev:(0) [9] conv:(3.99)
+  269. Delete=t Template3=t Template4=t Template15=t 16 ==> Template2=t 14    <conf:(0.88)> lift:(3.47) lev:(0) [9] conv:(3.99)
+  270. Template1=t Template3=t Template15=t Template16=t 16 ==> Template2=t 14    <conf:(0.88)> lift:(3.47) lev:(0) [9] conv:(3.99)
+  271. Append=t Delete=t Template1=t Template3=t Template15=t 16 ==> Template2=t 14    <conf:(0.88)> lift:(3.47) lev:(0) [9] conv:(3.99)
+  272. Delete=t Template1=t Template3=t Template15=t 16 ==> Append=t Template2=t 14    <conf:(0.88)> lift:(6.18) lev:(0) [11] conv:(4.58)
+  273. Append=t Template1=t Template3=t Template15=t 16 ==> Delete=t Template2=t 14    <conf:(0.88)> lift:(7.25) lev:(0) [12] conv:(4.69)
+  274. Append=t Delete=t Template3=t Template4=t Template15=t 16 ==> Template2=t 14    <conf:(0.88)> lift:(3.47) lev:(0) [9] conv:(3.99)
+  275. Delete=t Template3=t Template4=t Template15=t 16 ==> Append=t Template2=t 14    <conf:(0.88)> lift:(6.18) lev:(0) [11] conv:(4.58)
+  276. Append=t Template3=t Template4=t Template15=t 16 ==> Delete=t Template2=t 14    <conf:(0.88)> lift:(7.25) lev:(0) [12] conv:(4.69)
+  277. Replacements=t Template3=t 71 ==> Delete=t 62    <conf:(0.87)> lift:(2.14) lev:(0) [33] conv:(4.21)
+  278. Replacements=t Append=t Template3=t 71 ==> Delete=t 62    <conf:(0.87)> lift:(2.14) lev:(0) [33] conv:(4.21)
+  279. Replacements=t Template3=t 71 ==> Append=t Delete=t 62    <conf:(0.87)> lift:(2.42) lev:(0) [36] conv:(4.54)
+  280. Append=t Template2=t Template16=t 28 ==> Delete=t 24    <conf:(0.86)> lift:(2.1) lev:(0) [12] conv:(3.32)
+  281. Replacements=t Template15=t 69 ==> Delete=t 59    <conf:(0.86)> lift:(2.1) lev:(0) [30] conv:(3.72)
+  282. Replacements=t Append=t Template15=t 69 ==> Delete=t 59    <conf:(0.86)> lift:(2.1) lev:(0) [30] conv:(3.72)
+  283. Replacements=t Template15=t 69 ==> Append=t Delete=t 59    <conf:(0.86)> lift:(2.37) lev:(0) [34] conv:(4.01)
+  284. Append=t Template4=t Template14=t 20 ==> Delete=t 17    <conf:(0.85)> lift:(2.09) lev:(0) [8] conv:(2.96)
+  285. Template5=t Template15=t 13 ==> Template2=t 11    <conf:(0.85)> lift:(3.35) lev:(0) [7] conv:(3.24)
+  286. Append=t Template14=t Template16=t 13 ==> Delete=t 11    <conf:(0.85)> lift:(2.08) lev:(0) [5] conv:(2.57)
+  287. Template3=t Template4=t 134 ==> Template2=t 113    <conf:(0.84)> lift:(3.34) lev:(0.01) [79] conv:(4.55)
+  288. Template1=t Template2=t Template16=t 31 ==> Template15=t 26    <conf:(0.84)> lift:(8.6) lev:(0) [22] conv:(4.66)
+  289. Append=t Template3=t Template4=t 48 ==> Template2=t 40    <conf:(0.83)> lift:(3.3) lev:(0) [27] conv:(3.99)
+  290. Append=t Delete=t Template3=t Template4=t 48 ==> Template2=t 40    <conf:(0.83)> lift:(3.3) lev:(0) [27] conv:(3.99)
+  291. Append=t Template3=t Template4=t 48 ==> Delete=t Template2=t 40    <conf:(0.83)> lift:(6.91) lev:(0) [34] conv:(4.69)
+  292. Delete=t Template12=t 36 ==> Template14=t 30    <conf:(0.83)> lift:(15.54) lev:(0) [28] conv:(4.87)
+  293. Append=t Delete=t Template12=t 36 ==> Template14=t 30    <conf:(0.83)> lift:(15.54) lev:(0) [28] conv:(4.87)
+  294. Delete=t Template12=t 36 ==> Append=t Template14=t 30    <conf:(0.83)> lift:(25.15) lev:(0) [28] conv:(4.97)
+  295. Replacements=t Template15=t Template16=t 18 ==> Delete=t 15    <conf:(0.83)> lift:(2.05) lev:(0) [7] conv:(2.67)
+  296. Replacements=t Append=t Template15=t Template16=t 18 ==> Delete=t 15    <conf:(0.83)> lift:(2.05) lev:(0) [7] conv:(2.67)
+  297. Replacements=t Template15=t Template16=t 18 ==> Append=t Delete=t 15    <conf:(0.83)> lift:(2.31) lev:(0) [8] conv:(2.88)
+  298. Append=t Template3=t Template14=t Template15=t 12 ==> Template2=t 10    <conf:(0.83)> lift:(3.3) lev:(0) [6] conv:(2.99)
+  299. Delete=t Template3=t Template14=t Template15=t 12 ==> Template2=t 10    <conf:(0.83)> lift:(3.3) lev:(0) [6] conv:(2.99)
+  300. Append=t Delete=t Template3=t Template14=t Template15=t 12 ==> Template2=t 10    <conf:(0.83)> lift:(3.3) lev:(0) [6] conv:(2.99)
+  301. Delete=t Template3=t Template14=t Template15=t 12 ==> Append=t Template2=t 10    <conf:(0.83)> lift:(5.89) lev:(0) [8] conv:(3.43)
+  302. Append=t Template3=t Template14=t Template15=t 12 ==> Delete=t Template2=t 10    <conf:(0.83)> lift:(6.91) lev:(0) [8] conv:(3.52)
+  303. Append=t Template4=t 305 ==> Delete=t 254    <conf:(0.83)> lift:(2.04) lev:(0.02) [129] conv:(3.48)
+  304. Template4=t Template15=t 119 ==> Template2=t 99    <conf:(0.83)> lift:(3.3) lev:(0.01) [68] conv:(4.24)
+  305. Template1=t Template14=t Template15=t 29 ==> Template2=t 24    <conf:(0.83)> lift:(3.28) lev:(0) [16] conv:(3.61)
+  306. Template6=t 2289 ==> Append=t 1887    <conf:(0.82)> lift:(1.4) lev:(0.06) [538] conv:(2.33)
+  307. Replacements=t Template1=t Template3=t 17 ==> Delete=t 14    <conf:(0.82)> lift:(2.02) lev:(0) [7] conv:(2.52)
+  308. Replacements=t Append=t Template1=t Template3=t 17 ==> Delete=t 14    <conf:(0.82)> lift:(2.02) lev:(0) [7] conv:(2.52)
+  309. Replacements=t Template1=t Template3=t 17 ==> Append=t Delete=t 14    <conf:(0.82)> lift:(2.28) lev:(0) [7] conv:(2.72)
+  310. Template1=t Template3=t Template16=t 17 ==> Template2=t Template15=t 14    <conf:(0.82)> lift:(17.72) lev:(0) [13] conv:(4.05)
+  311. Replacements=t Template4=t 45 ==> Delete=t 37    <conf:(0.82)> lift:(2.02) lev:(0) [18] conv:(2.96)
+  312. Replacements=t Append=t Template4=t 45 ==> Delete=t 37    <conf:(0.82)> lift:(2.02) lev:(0) [18] conv:(2.96)
+  313. Replacements=t Template4=t 45 ==> Append=t Delete=t 37    <conf:(0.82)> lift:(2.28) lev:(0) [20] conv:(3.19)
+  314. Delete=t Template4=t Template15=t 33 ==> Template2=t 27    <conf:(0.82)> lift:(3.24) lev:(0) [18] conv:(3.52)
+  315. Template3=t Template14=t Template15=t 33 ==> Template2=t 27    <conf:(0.82)> lift:(3.24) lev:(0) [18] conv:(3.52)
+  316. Append=t Delete=t Template4=t Template15=t 33 ==> Template2=t 27    <conf:(0.82)> lift:(3.24) lev:(0) [18] conv:(3.52)
+  317. Delete=t Template4=t Template15=t 33 ==> Append=t Template2=t 27    <conf:(0.82)> lift:(5.78) lev:(0) [22] conv:(4.05)
+  318. Template4=t Template12=t 11 ==> Template14=t 9    <conf:(0.82)> lift:(15.26) lev:(0) [8] conv:(3.47)
+  319. Template3=t Template12=t Template15=t 11 ==> Template2=t 9    <conf:(0.82)> lift:(3.24) lev:(0) [6] conv:(2.74)
+  320. Replacements=t Template2=t Template16=t 11 ==> Delete=t Template15=t 9    <conf:(0.82)> lift:(26.47) lev:(0) [8] conv:(3.55)
+  321. Replacements=t Append=t Template2=t Template16=t 11 ==> Delete=t Template15=t 9    <conf:(0.82)> lift:(26.47) lev:(0) [8] conv:(3.55)
+  322. Replacements=t Template2=t Template16=t 11 ==> Append=t Delete=t Template15=t 9    <conf:(0.82)> lift:(26.77) lev:(0) [8] conv:(3.55)
+  323. Delete=t Template3=t Template4=t 49 ==> Template2=t 40    <conf:(0.82)> lift:(3.24) lev:(0) [27] conv:(3.66)
+  324. Delete=t Template3=t Template4=t 49 ==> Append=t Template2=t 40    <conf:(0.82)> lift:(5.77) lev:(0) [33] conv:(4.21)
+  325. Template1=t Template3=t 132 ==> Template2=t 107    <conf:(0.81)> lift:(3.21) lev:(0.01) [73] conv:(3.8)
+  326. Template4=t Template15=t Template16=t 21 ==> Template2=t 17    <conf:(0.81)> lift:(3.21) lev:(0) [11] conv:(3.14)
+  327. Template4=t Template16=t 26 ==> Template15=t 21    <conf:(0.81)> lift:(8.28) lev:(0) [18] conv:(3.91)
+  328. Template2=t Template16=t 88 ==> Template15=t 71    <conf:(0.81)> lift:(8.27) lev:(0.01) [62] conv:(4.41)
+  329. Append=t Template15=t 325 ==> Delete=t 261    <conf:(0.8)> lift:(1.97) lev:(0.02) [128] conv:(2.96)
+  330. Append=t Template4=t Template15=t 35 ==> Template2=t 28    <conf:(0.8)> lift:(3.17) lev:(0) [19] conv:(3.27)
+  331. Replacements=t Template2=t Template4=t 30 ==> Delete=t 24    <conf:(0.8)> lift:(1.96) lev:(0) [11] conv:(2.54)
+  332. Replacements=t Append=t Template2=t Template4=t 30 ==> Delete=t 24    <conf:(0.8)> lift:(1.96) lev:(0) [11] conv:(2.54)
+  333. Replacements=t Template2=t Template4=t 30 ==> Append=t Delete=t 24    <conf:(0.8)> lift:(2.22) lev:(0) [13] conv:(2.74)
+  334. Template1=t Template4=t Template14=t 15 ==> Template2=t 12    <conf:(0.8)> lift:(3.17) lev:(0) [8] conv:(2.8)
 
