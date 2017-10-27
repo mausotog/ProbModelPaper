@@ -1293,19 +1293,20 @@ techniques~\cite{arcuri11}.
 \begin{table*}\centering
 {\footnotesize
 
-\begin{tabular}{l||c||rr|rr|rr|rr|rr|rr}
+\begin{tabular}{l||l|l||rr|rr|rr|rr|rr|rr}
 \toprule
-& &\multicolumn{4}{c|}{Statement-Edit Only} & \multicolumn{4}{c|}{Template-based Only} & \multicolumn{4}{c}{All Mutations} \\ 
-            &  \multicolumn{1}{c|}{Held-out // Line} & \multicolumn{2}{c|}{EqDist} & \multicolumn{2}{c|}{Prob} & \multicolumn{2}{c|}{EqDist} & \multicolumn{2}{c|}{Prob} & \multicolumn{2}{c|}{EqDist} &  \multicolumn{2}{c}{Prob} \\
+\multicolumn{3}{c||}{} &\multicolumn{4}{c|}{Statement-Edit Only} & \multicolumn{4}{c|}{Template-based Only} & \multicolumn{4}{c}{All Mutations} \\ 
+  \midrule
+            & Held-out & Line & \multicolumn{2}{c|}{EqDist} & \multicolumn{2}{c|}{Prob} & \multicolumn{2}{c|}{EqDist} & \multicolumn{2}{c|}{Prob} & \multicolumn{2}{c|}{EqDist} &  \multicolumn{2}{c}{Prob} \\
 
-Bug ID       &  \multicolumn{1}{c|}{tests // Coverage} & Time & Quality &  Time & Quality &  Time & Quality&  Time & Quality&  Time & Quality&  Time & Quality \\
+Bug ID       &  tests & Coverage & Time & Quality &  Time & Quality &  Time & Quality&  Time & Quality&  Time & Quality&  Time & Quality \\
 
 \midrule
-Closure \#10 & 1493 // 5.5\% & 221.0& 100\%  & {179.5} &{100\%} & {175.1}&{100\%} & {121.3}&{100\%} & {163.3}&{100\%} & {157.4}&{100\%} \\
-Closure \#18 & 1615 // 32.1\% & \mII{Not found} & \mII{Not found} & {36.2}&{100\%} & {197.5}&{100\%} & {45.0}&{100\%} & {139.0}&{100\%} \\
-Math \#2     & 6933 // 100\%  & \mII{Not found} & \mII{Not found} & {109.4}&{0\%} & {39.6}&{0\%} & {109.4}&{0\%} & {39.6}&{0\%} \\
-Time \#19    & 3650 // 75.4\% & 94.1&{100\%} & {80.7}&{100\%} & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & {135.1}&{100\%} & {91.9}&{100\%} \\
-Chart \#1    & 4285 // 32.9\% & 1.8&{0\%} & {7.3}&{0\%} & {4.9}&{0\%} & {19.0}&{0\%} & {2.2}&{0\%} & {4.8}&{0\%} \\
+Closure \#10 & 1493 & 5.5\% & 221.0& 100\%  & {179.5} &{100\%} & {175.1}&{100\%} & {121.3}&{100\%} & {163.3}&{100\%} & {157.4}&{100\%} \\
+Closure \#18 & 1615 & 32.1\% & \mII{Not found} & \mII{Not found} & {36.2}&{100\%} & {197.5}&{100\%} & {45.0}&{100\%} & {139.0}&{100\%} \\
+Math \#2     & 6933 & 100\%  & \mII{Not found} & \mII{Not found} & {109.4}&{0\%} & {39.6}&{0\%} & {109.4}&{0\%} & {39.6}&{0\%} \\
+Time \#19    & 3650 & 75.4\% & 94.1&{100\%} & {80.7}&{100\%} & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & {135.1}&{100\%} & {91.9}&{100\%} \\
+Chart \#1    & 4285 & 32.9\% & 1.8&{0\%} & {7.3}&{0\%} & {4.9}&{0\%} & {19.0}&{0\%} & {2.2}&{0\%} & {4.8}&{0\%} \\
 \bottomrule
 \end{tabular}}
 \caption{Repair success of various models for three different operator sets.
@@ -1448,35 +1449,25 @@ all available mutations in our technique for the next experiment.
  \begin{table*}
 \centering
 {\footnotesize
-\begin{tabular}{l|c|lr|lr|lr|lr|lr}
+\begin{tabular}{l||l|l||rr|rr|rr|rr|rr}
 \toprule
 % Full results in https://docs.google.com/spreadsheets/d/1vyD7wH3VGf7X_pUxb4aN9EONO_L_fbIZXw3m9vP7MRc/edit#gid=0
-             & Held-out // Line     & \mII{Prob. Model} & \mII{GenProg} & \mII{TrpAutoRepair} & \mII{PAR} & \mC{Nopol} \\
-Bug ID       & tests // Coverage & Found & GTHTS & Found & GTHTS &Found & GTHTS &Found & GTHTS &Found & GTHTS   \\ 
+             & Held-out & Line     & \mII{Prob. Model} & \mII{GenProg} & \mII{TrpAutoRepair} & \mII{PAR} & \mC{Nopol} \\
+Bug ID       & tests & Coverage & Found & GTHTS & Found & GTHTS &Found & GTHTS &Found & GTHTS &Found & GTHTS   \\ 
 \midrule
-Closure \# 10 &  472 // 60.2\% & 2 & 2 & \mII{Not found}  & \mII{Not found} & \mII{Not found} & 1 & 1   \\
-\midrule
-Closure \# 18 & 106 // 73.4\%      & 1 & 1    & \mII{Not found}  & \mII{Not found} & \mII{Not found}  &1 &  1  \\
-\midrule
-Math \# 2  & 13 // 100\%  & 1 & 1 & \mII{Not found} & \mII{Not found} & 1 & 1 & 1 & 1  \\
-\midrule
-Time \# 19 & 55 // 86\%  & 2 & 2 & 1 & 1 & 1 & 1 & \mII{Not found} & 1 &  1 \\
-\midrule
-Chart \# 1 & 93 // 74.4\% & 5 & 0 & 6 & 0  & 4 & 0 & 2 & 0 & \multicolumn{2}{c}{Not found}   \\
-\midrule
-Closure \# 86 & 435 // 64.8\% & 2 & 2 & \mII{Not found}   & 1 & 1 & \mII{Not found}  & \multicolumn{2}{c}{Not found}   \\
-\midrule
-Math \# 75 &  25 // 92.5\%      & 1 & 1    & \mII{Not found}  & \mII{Not found} & 1 & 1     & \multicolumn{2}{c}{Not found}   \\
-\midrule
-Math \# 85 & 11 // 94.7\% & 4 & 0 & 8 & 0  & 3  & 0 & 8 & 0 & 1  & 1  \\       
-\midrule
-Lang \# 33 &  85 // 92.3\%  & 1 & 1 &  \mII{Not found}   &   \mII{Not found}  &1  & 1 &   \multicolumn{2}{c}{Not found}   \\       
+Closure \# 10 &  472 & 60.2\% & 2 & 100\% & \mII{Not found}  & \mII{Not found} & \mII{Not found} & 1 & 100\%   \\
+Closure \# 18 & 106 & 73.4\%      & 1 & 100\%    & \mII{Not found}  & \mII{Not found} & \mII{Not found}  &1 &  100\%  \\
+Math \# 2  & 13 & 100\%  & 1 & 100\% & \mII{Not found} & \mII{Not found} & 1 & 100\% & 1 & 100\%  \\
+Time \# 19 & 55 & 86\%  & 2 &100\% & 1 &100\% & 1 & 100\%& \mII{Not found} & 1 &  100\% \\
+Chart \# 1 & 93 & 74.4\% & 5 & 0\% & 6 & 0\%  & 4 & 0\% & 2 & 0\% & \multicolumn{2}{c}{Not found}   \\
+Closure \# 86 & 435 & 64.8\% & 2 & 100\% & \mII{Not found}   & 1 & 100\% & \mII{Not found}  & \multicolumn{2}{c}{Not found}   \\
+Math \# 75 &  25 & 92.5\%      & 1 & 100\%    & \mII{Not found}  & \mII{Not found} & 1 & 100\%     & \multicolumn{2}{c}{Not found}   \\
+Math \# 85 & 11 & 94.7\% & 4 & 0\% & 8 & 0\%  & 3  & 0\% & 8 & 0\% & 1  & 100\%  \\       
+Lang \# 33 &  85 & 92.3\%  & 1 & 100\% &  \mII{Not found}   &   \mII{Not found}  &1  & 100\% &   \multicolumn{2}{c}{Not found}   \\       
        \bottomrule
 \end{tabular}}
-  \caption{\todo{can this table use normal columns (ll instead of lr) for found
-      versus GTHS?} Comparison between the probabilistic model-based repair and
-    other state of the art approaches. The "Found'' column represents the number of patches found for this bug using the probabilistic approach, and the "GTHTS'' column represents the number of patches that Generalized To a Held-out Test Suite, higher is better;  Because each randomized technique is run several times, some
-    techniques find multiple patches per bug. \label{stateOfTheArtComparison}} 
+  \caption{Comparison between the probabilistic model-based repair and
+    other state of the art approaches. The "Found'' column represents the number of patches found for this bug using the different approaches, and the "GTHTS'' column represents the percentage of these patches that Generalized To a Held-out Test Suite, higher is better; because each randomized technique is run several times, some techniques find multiple patches per bug. \label{stateOfTheArtComparison}} 
 \end{table*}
 
 
@@ -1547,13 +1538,13 @@ replacements that commonly happen together providing an intuition regarding
 how to form multi-edit
 source code changes.
 
-\paragraph{Mutation operator rules}
+\subsubsection{Mutation operator rules}
 We mine rules from our corpus as described in Section~\ref{multEdit}.  
 We created these association rules only with the Mutation operators corpus and leave out the Replacements corpus.
-This is because the Replacements model is used only once the Mutation operators model has chosen a "Replacement'' to
+This is because the Replacements model is used only when the Mutation operators model has chosen a "Replacement'' to
 be the next edit to try. It it not useful to create rules that would chain series of replacements together since 
 "Replacement'' is one out of 19 possible mutation operators, and the association rules created need at least three operators, therefore the probability of having three consequent
-Replacements is 1 out of 6859, making association rules for the Replacements corpus and extremely rare case. 
+Replacements is 1 out of 6859, making association rules for the Replacements corpus an extremely rare case. 
 We therefore created association rules for the Mutation operator corpus.
 The rules described below are ranked by their confidence. In this case, the top 10 rules shown
 below have a confidence of 100\%, meaning that in 100\% of the cases
@@ -1566,7 +1557,7 @@ They are obtained with a 1\% support, which means that each of these rules
 individually appear in at least 1\% of all the transactions in the
 corpus, this is to obtain a large number of rules. We show the top association rules, and also release the full set of mined
 rules :\footnote{We will release the full list of mutation operator and replacements rules post blind-review.} 
-\todo{Update the document with all the rules, since currently it has the rules built with a 90\% confidence}
+\todo{Update the document with all the rules, since currently it has the rules built with a 100\% confidence}
 %\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt}} 
 
 %Minimum support: 0 (1 instances)
@@ -1597,7 +1588,7 @@ area that covers the majority of real life patches.
 
 \todo{I will do my edit pass over this section when you address the questions
   from the GH issues; please do that in the morning.}
-\paragraph{Evaluation of Association Rules}
+\subsubsection{Evaluation of Association Rules}
 To evaluate the effectiveness of the association rules in the context of the automatic program repair process, we first had to remove the section of the corpus where the number of edits performed is less than 3, since the association rules require at least two antecedents and one consequent, therefore by definition the patches with less than three edits can not be created by the association rules. This removed 62.83\% of the corpus. On the remaining 37.17\% where association rules can be applied, we performed a 10-fold cross validation process as follows:
 First we divide our corpus in 10 folds, these folds will be used as testing data.
 For each of the folds, we then group the complement of the fold used as testing data (the remaining 9 folds), and build the association rules using Apriori~\cite{Agrawal94}. We build the rules from
