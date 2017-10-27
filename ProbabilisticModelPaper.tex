@@ -1114,8 +1114,9 @@ dataset, suggesting their potential utility in a repair context.  We therefore
 compare the accuracy of the models to an \emph{equally distributed} baseline,
 which selects a mutation (or replacement) uniformly at random. This is to contrast 
 the accuracy of the priorities assigned by our model to the way it is
-performed by current approaches, which pick mutations and replacements either
-uniformly at random, or using coarse grained heuristics~\cite{legoues12Genprog,kim2013,Qi13TrpAutoR,Weimer13}.
+performed by current approaches, which pick mutation operators either
+uniformly at random, or using coarse grained
+heuristics~\cite{legoues12Genprog,kim2013,Qi13TrpAutoR,Weimer13}. 
 We measure how often each model correctly predicts the mutation operator (or
 replacer statement, for a given replacee statement), within the top 5 produced
 choices. Perfect accuracy (correctness in the Top-1 most likely choice) is
@@ -1142,25 +1143,18 @@ instances in a model, the model correctly predicts this instance.  For the
 equally distributed model, we select five operators/replacees at random. 
 
 We use 10-fold cross validation~\cite{kohavi95} to mitigate the risk
-of overfitting and avoid testing and training on the same data.  We segregated
-the projects in our corpus into 10 random folds. For each fold, we use one fold
-for testing, and the remaining nine for training. We aggregate the results over
-all 10 folds counting the number of testing instances that are correctly
-predicted by the first five guesses from the training sub-model.
+of overfitting and avoid testing and training on the same data.  We aggregate results over
+folds by summing the number of correctly predicted instances.
 
 \subsubsection{Results} 
 
-Table~\ref{results10fcv} shows results. For each fold, we show the instance
-count and percentage of correctly predicted instances within the top five
-guesses of both the equally distributed and the probabilistic  models for both the
-Replacements and Mutations models. The \# columns 
+Table~\ref{results10fcv} shows results.  The \# columns 
 show the number of attempted instances per fold.  The ``Prob.'' columns show the
 accuracy (correct prediction rate) of the mined model on that fold, for each model; ``EqDist'',
 the accuracy of the equally distributed model.  For the Replacements model,
 the average accuracy of the Probabilistic model is 63\% higher than the EqDist
 model; the difference is 56.4\% for the Mutations model.
-Two sample t-tests as applied to the results for both mutation and replacement
-predictions indicate that both differences in means are statistically significant
+Two sample t-tests indicate that both differences in means are statistically significant
 ($\alpha<0.05$). 
 
 These results suggest that the probabilistic approach is
@@ -1190,7 +1184,7 @@ Joda-Time & Time & 4130 & 3\\
 \bottomrule
 \end{tabular}
 \center
-  \caption{Description of projects that comprise Defects4j. \label{defects4j}}
+  \caption{Studied subjects, taken from Defects4j. \label{defects4j}}
 \end{table} 
 
 
@@ -1726,13 +1720,16 @@ best known practice, since this way we provide an alternative to subjectively
 asking a biased human developer
 whether he/she considered the patch to be correct or not. 
 
-We also rely on Evosuite~\cite{Fraser11Evosuite} as our test suite generation mechanism 
-for the held-out test suite used for evaluation, and we acknowledge that the 
-test suites created by this tool may not be perfect, nor provide full coverage for all cases. 
-Nonetheless, this is a state of the art test suite generation tool that mitigates the risk of bias in manually constructing evaluation test suites.
+We also rely on Evosuite~\cite{Fraser11Evosuite} as our test suite generation
+mechanism for the held-out test suite used for evaluation, and we acknowledge
+that the test suites created by this tool may not be perfect, nor provide full
+coverage for all cases.  Nonetheless, this is a state of the art test suite
+generation tool that mitigates the risk of bias in manually constructing
+evaluation test suites.
 
 \section{Related Work} \label{relatedWork}
 
+\todo{Check recent repair work; definitely add a reference to s3 in semantic repair.}
 There have been previous efforts to create a model based on human behavior.  
 Soto et al.~\cite{Soto16} 
 built a probabilistic model to describe the replace 
@@ -1804,27 +1801,18 @@ and scrutiny.
 
 We evaluated our approach in several ways: by performing an internal 
 evaluation of 
-its predictive power (using 10 fold cross 
-validation), by comparing the speed of the model by comparing it to an equally 
-distributed model and by
- running an APR tool using our model on 18 bugs using the database of bugs and extensible 
-framework Defects4j. Finally we compare the quality of the patches 
+its predictive power, and by
+ running an APR tool using our model on 18 bugs from
+Defects4j. Finally we compare the quality of the patches 
 generated against patches created for these same bugs by other state of the art 
-approaches. 
-
-For these bugs, we measured the number of variants it takes to find the 
-patch as well as the quality of produced patches, using a second 
-automatically-created held-out test suite.
+approaches. We measure both efficiency of patch production, and generalizability
+of the patches to a held-out test suite.  
 Note that in Table~\ref{tab:singleLineBugs}, for the majority of bugs, the 
 equally distributed model performed better than their equally distributed 
-counterpart.
-
-We also notice that applying different probabilities when constructing variants
-does not make the patches found in either of the models more likely to pass a
-second test suite for the studied bugs when compared to the equally distributed model. Overall, however, we found that automatic program repair appears to benefit
-from having a diverse mutation operator pool containing mutation operators from 
-both categories,
-rather than restricting their choices to just one category, increase in search
+counterpart.\todo{CLG doesn't understand the sentence right before here.}
+%
+Overall, we found that automatic program repair appears to benefit
+from having a diverse mutation operator pool, increase in search
 space size notwithstanding; future improvements in fault localization thus will
 serve to further benefit from more precise models of mutation selection. 
 
@@ -1832,12 +1820,10 @@ Multi-edit source code changes are understudied, but cover
 the vast majority of bug fixes in software systems. 
 To move towards advancing this area, we constructed a set of association rules 
 that describe 
-how often different sets of mutation operators can predict the change that will 
-come next, and how often subsets of mutation operators are applied together.
-
-Overall, this initial analysis of how single-edit source code changes can be 
-chained together 
-to become multi-edit source code changes by following human behavior provides a
+how subsets of mutation operators are applied together.
+%
+Overall, our initial analysis of how to chain single-edit changes by following
+human behavior provides a critical
 first step towards an efficient mechanism for traversing the large search space
 of multi-edit repairs.
 
