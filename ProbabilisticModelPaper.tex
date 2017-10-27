@@ -751,8 +751,7 @@ Sequence Exchanger & Off-by-one Mutator\\
 Condition Refinement & Insert Initialization \\
 Copy and Replace & Condition Control Flow Introduction  \\
 Value Replacement  & Condition Introduction \\
-
-\vspace{1pt}
+\bottomrule
 \end{tabular}
   \caption{(Top) PAR fix templates. (Middle) PAR ``extra'' templates. (Bottom)
     SPR transformation schemas. We use the templates in the top and middle
@@ -798,7 +797,7 @@ In this section, we describe how we mine a model of human
 bug-fixing edits from a large set of popular Java projects. The intuition is to
 use this model to
 apply human knowledge to the automatic program repair process, 
-creating patches inspired by how human developers do; the model is used
+creating patches inspired by what human developers do; the model is used
 explicitly in the patch creation step of a generate-and-validate repair process. To do this, we
 select a corpus of popular GitHub projects and filter out their latest bug
 fixing commits (Section~\ref{sec:corpus}).  We identify mutation operator and
@@ -829,7 +828,7 @@ We further only include commits
 that exclusively 
 modify Java source code, since we focus on such bugs. Additionally, we restrict our search to commits 
 that modify a maximum of three files. We do this to exclude
-big merges, such as pull requests or initial commits, and because
+big merges, and because
 large commits are more likely to include changes unrelated to a bug fix~\cite{Herzig13,Kawrykow11}.
 To our knowledge, this is the largest set of bug-fixing commits mined to inform
 program repair in the existing literature~\cite{long16proph,Soto16,zhong15,martinez15,xuan16}. 
@@ -920,26 +919,33 @@ from prior work first, in the range of mutation operators considered
 (Section~\ref{categorization}) and second, in how it chooses between those
 operators and instantiates them.  
 We instantiate this technique by extending an open-source implementation of
-GenProg~\cite{legoues12} adapted for Java.  We add the newly-considered mutation
+GenProg~\cite{legoues12} for Java\footnote{https://bitbucket.org/clegoues/genprog4java}  We add the newly-considered mutation
 operators, and a mechanism that allows the tool to
 select between the mutation operators according to the probabilities described by
 a model.\footnote{As with other artifacts, we will release a link to
-  this implementation post-blind review; the open-source repository in question contains
+  our implementation post-blind review; the open-source repository in question contains
   significant clues as to author identities.}
 
 
 Our approach uses a two-level model (Figure~\ref{fig:probModel}) in operator
 selection/instantiation.  The first level informs the selection of the given
 mutation operator, from a set of legal operators at a given potentially-faulty
-location (e.g. \emph{Parameter replacer} cannot be applied to a \emph{BreakStatement}).  If the operator selected is \emph{replace}, the second level informs the selection of the replacement code.  These two models are
-constructed as follows: 
+location (e.g. \emph{Parameter replacer} cannot be applied to a
+\emph{BreakStatement}).  If the operator selected is \emph{replace}, the second
+level informs the selection of the replacement code.  
+To build both models, we perform an incidence count of each mutation operator
+and replacement observed in our 
+dataset, matched as described in Section~\ref{sec:mining},
+%\footnote{Since the instance count that makes up the models is of notable size, we have made it available through a link to our repository, which will be made available after the blind review process} %%\footnote{https://github.com/mausotog/ProbModelPaper/blob/master/Models.csv}
+and then apply Laplace smoothing~\cite{Russell10} with $\alpha$ = 1 to account
+for 0 occurrences.  These two models in detail are as follows: 
 
 \subsubsection{Mutation operator probabilistic model}
 The \textit{Mutation operator probabilistic model} 
 describes the probabilities of choosing between the several different mutation 
 operators at a particular fault location.
 %
-To build the \textit{Mutation operator probabilistic model} 
+To build this model,
 we count the number of incidences of each mutation operator observed in our
 dataset, matched as described in Section~\ref{sec:mining}. Mutation operator probability is then
 weighted by its appearance in the dataset.  
@@ -954,8 +960,14 @@ another (``replacer"), thus informing the selection of replacement fix code.
 %\footnote{https://goo.gl/mMFbnQ
 We consider 
 the 22 different types detailed by the Eclipse
-JDT\footnote{AssertStatement, Block, BreakStatement, ConstructorInvocation, ContinueStatement, DoStatement, EmptyStatement, EnhancedForStatement, ExpressionStatement, ForStatement, IfStatement, LabeledStatement, ReturnStatement, SuperConstructorInvocation, SwitchCase, SwitchStatement, SynchronizedStatement, ThrowStatement, TryStatement, TypeDeclarationStatement, VariableDeclarationStatement, WhileStatement \label{stmtNames}} as
-direct known subclasses of the class \texttt{Statement}, and the incidence with which
+JDT
+%\footnote{AssertStatement, Block, BreakStatement, ConstructorInvocation,
+%ContinueStatement, DoStatement, EmptyStatement, EnhancedForStatement,
+%ExpressionStatement, ForStatement, IfStatement, LabeledStatement,
+%ReturnStatement, SuperConstructorInvocation, SwitchCase, SwitchStatement,
+%SynchronizedStatement, ThrowStatement, TryStatement, TypeDeclarationStatement,
+%VariableDeclarationStatement, WhileStatement \label{stmtNames}} 
+as direct known subclasses of the class \texttt{Statement}, and the incidence with which
 each 
 replaces another. For example: ``What is the observed incidence of a \texttt{For} loop 
 replacing a \texttt{While} loop?" Given 22 statement types, any of which may replace one
@@ -966,10 +978,6 @@ probability of a \texttt{While} loop replacing a \texttt{For} loop.
 This model is built analogously to the
 mutation operator model, based on replacer/replacee statement incidence. 
 
-\vspace{1ex}
-To build both models we perform an incidence count of each mutation operator and replacement observed in our
-dataset, matched as described in Section~\ref{sec:mining},\footnote{Since the instance count that makes up the models is of notable size, we have made it available through a link to our repository, which will be made available after the blind review process} %%\footnote{https://github.com/mausotog/ProbModelPaper/blob/master/Models.csv}
-and then apply Laplace smoothing~\cite{Russell10} with $\alpha$ = 1 to account for 0 occurrences.
 
 \subsection{Multiple edit association rule mining} 
 \label{multEdit}
@@ -991,16 +999,17 @@ Association rules are if/then statements that show relationships between element
 well-known association rule mining algorithm
 Apriori~\cite{Agrawal94}. 
 %
-Two basic concepts critical to this method are \emph{Confidence} and \emph{Support}.
-We define Confidence as:
+We mine association rules from each of the models described in Section~\ref{armRes} by transforming each of the mutation operator count and replacement count from 
+each of the commits studied into a \emph{transaction} to be analyzed. We develop
+rule sets at difference \emph{Confidence} levels, defined as:
 
 \begin{center}
 $conf(X \implies Y) = \dfrac{supp(X \cup Y)}{supp(X)}$ 
 \end{center}
 
-Where X and Y are possible items in a transaction (mutation operators or replacements, in our
+Where X and Y are possible items in a transaction (mutation operators, in our
 context). Confidence is calculated according to its Support (\emph{supp}), 
-an indication of how frequently the set of mutation operators or replacements (itemset) 
+an indication of how frequently the set of mutation operators (itemset) 
  occurs in the transaction base.
 Formally:
 
@@ -1010,12 +1019,8 @@ $supp(X) = \dfrac{|\{t \in T; X \subseteq t\}|}{|T|}$
 
 Where X is the itemset and \emph{t} is each individual transaction in
 the database of transactions \emph{T}. Apriori identifies the mutation
-operators and replacements that frequently happen together, iteratively extending them to larger
+operators that frequently happen together, iteratively extending them to larger
 itemsets that appear often in the transactions as identified by these metrics.
-
-We mine association rules from each of the models described in Section~\ref{armRes} by transforming each of the mutation operator count and replacement count from 
-each of the commits studied into a \emph{transaction} to be analyzed. 
-We look for rules that have at least 90\% Confidence.
 
 
 \section{Evaluation} \label{evaluation}
@@ -1231,7 +1236,7 @@ consider.\footnote{We do not compare directly to
   the Prophet  schemas are generalized by the extended PAR template set.}
 
 The open-source implementation of GenProg for
-Java\footnote{https://bitbucket.org/clegoues/genprog4java} implements  
+Java implements  
 the first three approaches.   We run these three techniques on the dataset using
 parameters described below.  For Nopol, we use patch results released
 by the Nopol authors on this same dataset, and do not rerun their experiments.
@@ -1590,6 +1595,8 @@ developers use. These rules tell us what edits happen frequently together, which
 will help us further understand multi-edit source code changes, an understudied 
 area that covers the majority of real life patches.
 
+\todo{I will do my edit pass over this section when you address the questions
+  from the GH issues; please do that in the morning.}
 \paragraph{Evaluation of Association Rules}
 To evaluate the effectiveness of the association rules in the context of the automatic program repair process, we first had to remove the section of the corpus where the number of edits performed is less than 3, since the association rules require at least two antecedents and one consequent, therefore by definition the patches with less than three edits can not be created by the association rules. This removed 62.83\% of the corpus. On the remaining 37.17\% where association rules can be applied, we performed a 10-fold cross validation process as follows:
 First we divide our corpus in 10 folds, these folds will be used as testing data.
