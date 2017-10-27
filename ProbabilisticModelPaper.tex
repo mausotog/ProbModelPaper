@@ -1195,12 +1195,9 @@ learned models for repair:
 How does our model-informed APR tool compare to the
     state-of-the-art in APR? (Section~\ref{sec:comparison})
 
-\paragraph{Validation of models in context} We first evaluate the utility of our models in the
-context of several different sets of mutation operators.  We do this to
-independently validate that the models are useful in context (rather than simply
-as predictors, as established in the previous subsections). Second to
-identify which sets of syntactic mutation operators appear most useful in
-practice. We
+\paragraph{Validation of models in context} We first compare the utility of the
+various sets of syntactic mutation operators to 
+identify which sets appears most useful in practice. We
 instantiate our tool with each of 
 two models (the Equally Distributed baseline from Section~\ref{sec:generalize}
 and the learned Probabilistic models), and three different operator sets: (1) Statement-Edit mutations (2)
@@ -1227,58 +1224,53 @@ known as RSRepair, a random walk). PAR uses GenProg's genetic programming search
 strategy, but a different set of templated mutation operators.  Nopol is a
 semantics-guided generate-and-validate repair approach that thus uses a fix code
 identification strategy that is quite different from the operators we
-consider.\footnote{Note that, in this study we do not compare directly to
-  SPR/Prophet~\cite{long16proph}, because they use machine learning to tune the
-  probabilities to rank their schemas instantiation and are thus much more
-  difficult to reimplement faithfully; additionally, as established, their
-  schemas are generlaized by the extended PAR templates we consider.}
+consider.\footnote{We do not compare directly to
+  SPR/Prophet~\cite{long16proph}, because it uses machine learning to tune the
+  probabilities and rank schema instantiation and is thus much more
+  difficult to reimplement faithfully for Java; additionally, as established,
+  the Prophet  schemas are generalized by the extended PAR template set.}
 
-The open-source implementation of GenProg for Java that we use implements 
-the behavior and mutation operators of the first three approaches, translated
-from their C versions (for GenProg and TRPAutoRepair) or online documentation
-and publication (for PAR, for which there is no publicly-available original implementation).  We use patch results released
+The open-source implementation of GenProg for
+Java\footnote{https://bitbucket.org/clegoues/genprog4java} implements  
+the first three approaches.   We run these three techniques on the dataset using
+parameters described below.  For Nopol, we use patch results released
 by the Nopol authors on this same dataset, and do not rerun their experiments.
 The Nopol authors have created patches for the same benchmark used in
 this study~\cite{martinez2016} and made their results publicly
 available.\footnote{\url{https://github.com/Spirals-Team/defects4j-repair/tree/master/results/2017-march}}
-There are several sets of results available on the Nopol GitHub page.
-Although we would prefer to compare to the published results, 
-the most recent version (``March 2017'') contains results for more of the defects we
-consider in our subset (by contrast, if we use the 2015 results, there is only
-one patch repaired in common between our technique and Nopol, reducing the
-interest of the comparison).  We thus use the most recent dataset in our comparison.
+We use results from the ``March 2017'' (most recent) release. 
 
 For the comparative experiments, we look at expressive power (bugs repaired) and
 patch quality.  We do not compare time to repair, which is influenced by fault
 localization (which is not held constant between the techniques) and thus would
-be less informative, and because Nopol expresses the time taken to produce each patch in wall-clock time while we express it in number of variants.
+be less informative, and because Nopol expresses the time taken to produce each
+patch in wall-clock time while we express it in number of variants. 
 
 \paragraph{Dataset}
 We consider for repair a subset of the Defects4j~\cite{just14}
 benchmark, a database and extensible 
 framework of real bugs that enables reproducible studies in software testing and
 has been previously used to evaluate APR~\cite{martinez2016}. 
-It currently contains 395 real bugs from 6
-open source programs, along with developer-provided test suites, cases that
-expose each bug,  and
-corresponding developer-provided patches.  Table~\ref{defects4j} characterizes
-the dataset.\footnote{Note that we initiated this study before Defects4J added
- ``Mockito".} Because we compare to single-edit techniques, we
-restrict attention to a subset of the Defects4J bugs with single-line human
-patches. We ran a comparison of the probabilistic model against an equally distributed model on the one-line patches from each project. The projects have a diverse distribution of one-line patches therefore the number of bugs tried per project varies. 
+Table~\ref{defects4j} characterizes the bugs from the dataset we
+consider. Because we compare to single-edit techniques, we 
+restrict attention to a subset of the Defects4J bugs with single-line human 
+patches.  The number of bugs attempted per project varies based on how many such
+bugs are available in the dataset.
 
 \paragraph{Patch quality}
 As a proxy for patch quality (to mitigate the risk of plausible but as yet
 incorrect patches~\cite{Qi15}), we evaluate patches using a held-out test
 suite~\cite{legoues12Genprog,smith15} by automatically building a second test
 suite that independently describes the same behavior as the test suite that
-guides the search process. We generate a single held out suite for each buggy program version that any technique
+guides the search process. We generate a single held out suite\todo{see the
+  github issue I assigned to you} for each buggy program version that any technique
 repairs.  We use Evosuite~\cite{Fraser11Evosuite}, an established automatic
-test suite generation tool for Java, to generate this second test suite. We run
-Evosuite with a thirty minute budget to create the
-held-out test suites. We also use
-Cobertura\footnote{http://cobertura.github.io/cobertura/} to calculate the
-coverage of the test suite over the ``after-fix" class that contains the human fix.
+test suite generation tool for Java, to generate this second test suite. We run EvoSuite
+with a 30-minute budget, using the human-repaired ``after fix'' version of each Defects4J bug
+as the behavioral oracle.  We use
+Cobertura\footnote{http://cobertura.github.io/cobertura/} to calculate test
+suite 
+coverage, again over the ``after-fix" class that contains the human fix.
 
 \paragraph{Settings} For the genetic programming based techniques (including our own), our population
 size is 40 (consistent with previous work), and our max generation size is 10.
@@ -1326,7 +1318,7 @@ select between them, patched 5 of the 18 bugs, as shown in
 Table~\ref{tab:singleLineBugs}.
 The first row of Table~\ref{tab:singleLineBugs} (Closure \#10) shows that the
 probabilistic model outperforms the equally-distributed model for all three
-statement sets.  This happens as well for
+edit sets.  This happens as well for
 Math \#2 and Time \#19, except for the cases where no patch was
 found. By contrast, for bugs Chart \#1 and Closure \#18, the equally
 distributed approach finds a patch faster on average. Investigating this case
@@ -1346,21 +1338,22 @@ that the expressive power afforded by an increased set of operators may
 outweight the commensurate increase in search space size, though it is safe to
 assume that this benefit must be supported by sufficiently accurate fault
 localization. 
-
+%
  %\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/tree/master/Randoop10MinHeldOutTestSuites}} 
-We noticed a
-constant behavior regarding the different sets of mutations. In this sample, if
-a model is able to find a patch faster, this appears independent of the mutation
+In this sample, how quickly a model finds a patch appears independent of the mutation
 set. 
 
-We notice a trend regarding the number of held-out test cases and the likelihood of the generated patches to generalize to this test suite. The lower the quantity of test cases in the test suite, the more likely it is that the generated test suite will be able to succeed over that test suite. In terms of quality assessment, the patches generated seem to behave very similarly within their own groups. In all the cases we found where the approach was able to find more than one possible patch, either all the generated patches for that bug generalized to the held-out test suite, or all of them overfitted to the guiding test suite. There were no cases where for different patches found for the same bug, some of them generalized and others overfit.
+In terms of
+quality assessment, the patches generated generally behave similarly within
+their own groups. In all cases where an approach found multiple
+patches, either all the generated patches 
+generalized to the held-out test suite, or none of them did. 
 
 From these results, we conclude that the probabilistic model using all available
 mutation operators (both Statement- and Template-based) appears to maximize
 expressive power without an unacceptable loss to efficiency.  In conjunction
-with our model assessment results (Section~\ref{sec:generalize}), we thus
-incorporate these features in our technique for our next experiment, which
-compares our new technique to the previous state-of-the-art.
+with our model assessment results (Section~\ref{sec:generalize}), we thus use
+all available mutations in our technique for the next experiment. 
 
 %\subsection{Bugs fixed with a multi line edit within a function}
 %Last evaluation with the bugs we found had a fix
@@ -1475,7 +1468,8 @@ Math \# 85 & 11 // 94.7\% & 4 & 0 & 8 & 0  & 3  & 0 & 8 & 0 & 1  & 1  \\
 Lang \# 33 &  85 // 92.3\%  & 1 & 1 &  \mII{Not found}   &   \mII{Not found}  &1  & 1 &   \multicolumn{2}{c}{Not found}   \\       
        \bottomrule
 \end{tabular}}
-  \caption{Comparison between the probabilistic model-based repair and
+  \caption{\todo{can this table use normal columns (ll instead of lr) for found
+      versus GTHS?} Comparison between the probabilistic model-based repair and
     other state of the art approaches. The "Found'' column represents the number of patches found for this bug using the probabilistic approach, and the "GTHTS'' column represents the number of patches that Generalized To a Held-out Test Suite, higher is better;  Because each randomized technique is run several times, some
     techniques find multiple patches per bug. \label{stateOfTheArtComparison}} 
 \end{table*}
@@ -1496,23 +1490,21 @@ boolean staleInputs = false;
 	\end{lstlisting}
 
 
-\begin{lstlisting}[firstnumber=1284][frame=single]
-boolean staleInputs = false;
-@-if(options.dependencyOptions.needsManagement() && options.closurePass){
-+if (com.google.javascript.rhino.Node.this.type <= com.google.javascript.rhino.Node.IS_DISPATCHER) {
-@  for (CompilerInput input : inputs) {
-    // Forward-declare all the provided types, so that they
-    // are not flagged even if they are dropped from the process.
-    for (String provide : input.getProvides()) {
-      getTypeRegistry().forwardDeclareType(provide);
-    }  
-  }
-	\end{lstlisting}
+% \begin{lstlisting}[firstnumber=1284][frame=single]
+% boolean staleInputs = false;
+% @-if(options.dependencyOptions.needsManagement() && options.closurePass){
+% +if (com.google.javascript.rhino.Node.this.type <= com.google.javascript.rhino.Node.IS_DISPATCHER) {
+% @  for (CompilerInput input : inputs) {
+%     // Forward-declare all the provided types, so that they
+%     // are not flagged even if they are dropped from the process.
+%     for (String provide : input.getProvides()) {
+%       getTypeRegistry().forwardDeclareType(provide);
+%     }  
+%   }
+%	\end{lstlisting}
 
-	\caption{Top: a patch generated using the probabilistic model, this snippet of the source code is identical to the developer patch. None of the other
-      approaches found an identical patch.  Bottom: the Nopol fix for the
-      Closure 18 bug, which does not generalize to a held-out test
-      suite.\label{closure18prob}}
+	\caption{A patch generated using the probabilistic model, identical to the
+      developer patch; No other approach found this identical patch.\label{closure18prob}}
 \end{figure}
 
 
@@ -1521,12 +1513,16 @@ results, including, the number of different patches found for each bug and how m
 to a held-out test suite. The patches that did not generalize to the held out test suite failed one or 
 several tests in the held-out test suite. Of the
 19 distinct patches created by our approach, 
-9 pass all held-out test suite (47.4\%), while for the other state of the art approaches,
-6.6\% of GenProg's patches generalize, 20\% of TRPAutoRepair's, 15.4\% of PAR's and 100\% of the 5 patches created by Nopol fully generalize to their held-out test suite.
-This gives us confidence that our approach produces high
-quality patches in comparison with the alternatives created by state-of-the-art
-tools. 
+9 pass all held-out test suite (47.4\%); 
+6.6\% of GenProg's patches generalize; 20\% of TRPAutoRepair's generalize;
+15.4\% of PAR's; and and 100\% of the 5 Nopol patches generalize to the held-out test suite.
 
+\todo{Hey, OK, I think this conclusion can be stronger.  Notably, Nopol can't
+  fix as many bugs as we can, and fixes slightly different ones, right?  So the
+  argument is more like, for heuristic templated approaches, this model is
+  important and improves quality of generated patches.  It also fixes bugs that
+  Nopol can't, and so is an important improvement over the state of the art.
+  Try to improve this paragraph to include that nuance.}
 A main takeaway to notice is that the approaches that select what edit to apply without a
 model, and therefore could benefit from a probabilistic model, performed worse than the
 alternative of using a probabilistic approach. Nopol, even though it performed better
@@ -1534,21 +1530,9 @@ than the rest of the approaches, a probabilistic model as the one described in t
 study, could not be applied to the way patches are constructed in this tool. Therefore
 we can clearly see the benefit from applying a probabilistic model, in the approaches were a probabilistic model can be applied.
 
-One example demonstrating the quality improvement provided by the probabilistic
-model-based approach is seen in the Closure 18 bug. Figure~\ref{closure18prob} 
-shows that not only did our approach create the exact
-same patch as the human did, but also our approach was able to find the patch
-within the time frame specified. Other approaches that are able to create this
-patch, could not because they ran out of time.
-
-\todo{if we pick the Evosuite test suites, then we have to change this parragraph because the patch from Nopol does generalize to the Evosuite test suite}
-This example was fixed by the human by removing an expression from an
-\emph{IfStatement} as seen at the top of Figure~\ref{closure18prob}. 
-Although PAR includes a mutation operator for this task, its uniform
-weighting scheme appears less efficient than our probabilistic model. Nopol was
-able to create a patch for this example as shown at the bottom of 
-Figure~\ref{closure18prob}, but this patch is not able to generalize to a
-held-out test suite.
+One example demonstrating the quality provided by the probabilistic
+model-based approach is seen in the Closure 18 bug; Figure~\ref{closure18prob} 
+shows our technique's patch, identical to the human patch.
 
 \subsection{Association Rule Mining} \label{armRes}
 
