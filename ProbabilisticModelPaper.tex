@@ -1264,15 +1264,15 @@ patch in wall-clock time while we express it in number of variants.
 Bug ID       &  tests & Coverage & Time & Quality &  Time & Quality &  Time & Quality&  Time & Quality&  Time & Quality&  Time & Quality \\
 
 \midrule
-Closure \#10 & 1493 & 5.5\% & 221.0& 100\%  & {179.5} &{100\%} & {175.1}&{100\%} & {121.3}&{100\%} & {163.3}&{100\%} & {157.4}&{100\%} \\
-Closure \#18 & 1615 & 32.1\% & \mII{Not found} & \mII{Not found} & {36.2}&{100\%} & {197.5}&{100\%} & {45.0}&{100\%} & {139.0}&{100\%} \\
-Math \#2     & 6933 & 100\%  & \mII{Not found} & \mII{Not found} & {109.4}&{0\%} & {39.6}&{0\%} & {109.4}&{0\%} & {39.6}&{0\%} \\
-Time \#19    & 3650 & 75.4\% & 94.1&{100\%} & {80.7}&{100\%} & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & {135.1}&{100\%} & {91.9}&{100\%} \\
-Chart \#1    & 4285 & 32.9\% & 1.8&{0\%} & {7.3}&{0\%} & {4.9}&{0\%} & {19.0}&{0\%} & {2.2}&{0\%} & {4.8}&{0\%} \\
+Closure \#10 & 472 & 60.2\% & 221.0& 100\%  & {179.5} &{100\%} & {175.1}&{100\%} & {121.3}&{100\%} & {163.3}&{100\%} & {157.4}&{100\%} \\
+Closure \#18 & 106 & 73.4\% & \mII{Not found} & \mII{Not found} & {36.2}&{100\%} & {197.5}&{100\%} & {45.0}&{100\%} & {139.0}&{100\%} \\
+Math \#2     & 13 & 100\%  & \mII{Not found} & \mII{Not found} & {109.4}&{100\%} & {39.6}&{100\%} & {109.4}&{100\%} & {39.6}&{100\%} \\
+Time \#19    & 55 & 86\% & 94.1&{100\%} & {80.7}&{100\%} & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & {135.1}&{100\%} & {91.9}&{100\%} \\
+Chart \#1    & 93 & 74.4\% & 1.8&{0\%} & {7.3}&{0\%} & {4.9}&{0\%} & {19.0}&{0\%} & {2.2}&{0\%} & {4.8}&{0\%} \\
 \bottomrule
 \end{tabular}}
 \caption{Repair success of various models for three different operator sets.
-  Columns 2 and 3 characterize the Randoop-generated, held-out tests for each
+  Columns 2 and 3 characterize the Evosuite-generated, held-out tests for each
   bug. 
   For each bug, we report time in terms of average variants evaluated to a repair, and
   quality as the percentage of patches created for that bug that pass the
@@ -1321,7 +1321,7 @@ Our modified APR
 techniques, using each of three sets of operators and each of two models to
 select between them, were evaluated in a subset of the bugs in Table~\ref{defects4j}. We compared these techniques in the first 6 defects considered from each project, as shown in 
 Table~\ref{tab:singleLineBugs}.
-The first row of Table~\ref{tab:singleLineBugs} (Closure \#10) shows that the
+The first row (Closure \#10) shows that the
 probabilistic model outperforms the equally-distributed model for all three
 edit sets.  This happens as well for
 Math \#2 and Time \#19, except for the cases where no patch was
@@ -1335,7 +1335,7 @@ uniformly random selection than by the developer-informed model.
 Our results suggest that considering all available mutation operators is
 preferable to 
 restricting the mutation operator pool to just one of the categories. For the
-Statement-Edit category, 3 out of 6 were fixed faster when combining it with
+Statement-Edit category, 3 out of 6 were fixed faster when combining this kind of mutations with
 Template-Based mutations, and 3 out of 6 were slower. For the Template-Based
 category: 4 out of 8 were fixed faster when combining it with Statemtent-Edit
 mutations, 2 out of 8 were the same, and 2 out of 8 were slower. This suggests
@@ -1687,10 +1687,9 @@ Defects4j. Finally we compare the quality of the patches
 generated against patches created for these same bugs by other state of the art 
 approaches. We measure both efficiency of patch production, and generalizability
 of the patches to a held-out test suite.  
-Note that in Table~\ref{tab:singleLineBugs}, for the majority of bugs, the 
-equally distributed model performed better than their equally distributed 
-counterpart.\todo{CLG doesn't understand the sentence right before here.}
-%
+Note that in Table~\ref{tab:singleLineBugs}, for the majority of bugs, when using the probabilistic
+model we obtained better results than their equally distributed 
+counterpart.
 Overall, we found that automatic program repair appears to benefit
 from having a diverse mutation operator pool, increase in search
 space size notwithstanding; future improvements in fault localization thus will
