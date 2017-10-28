@@ -1419,18 +1419,6 @@ several tests in the held-out test suite. Of the
 6.6\% of GenProg's patches generalize; 20\% of TRPAutoRepair's generalize;
 15.4\% of PAR's; and and 100\% of the 5 Nopol patches generalize to the held-out test suite.
 
-\todo{Hey, OK, I think this conclusion can be stronger.  Notably, Nopol can't
-  fix as many bugs as we can, and fixes slightly different ones, right?  So the
-  argument is more like, for heuristic templated approaches, this model is
-  important and improves quality of generated patches.  It also fixes bugs that
-  Nopol can't, and so is an important improvement over the state of the art.
-  Try to improve this paragraph to include that nuance. RESPONSE: So, not 
-necessarily we patch more bugs than them, because we are only comparing their 
-patches against the ones that we found. We are not reporting the ones that they 
-found and we didn't (because we are evaluating our approach and these are the 
-bugs we care about. I definitely can make the argument that Nopol can only fix 
-a certain kind of bugs and therefore our approach is able to generalize to several different kinds of defects, which I am 
-adding)}
 A main takeaway to notice is that the approaches that select what edit to apply 
 without a
 model, and therefore could benefit from a probabilistic model, performed worse 
