@@ -520,7 +520,7 @@ Given a potentially-faulty location, these
 generate-and-validate approaches (e.g., GenProg~\cite{legoues12}, 
 Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13TrpAutoR},
 Prophet~\cite{long16proph}, HDRepair~\cite{xuan16}) use heuristics or
-heuristically-informed probability distributions to select between
+heuristically-informed probability distributions to select
 mutation operators
 when constructing candidate patches.
 
@@ -566,8 +566,7 @@ scalable traversal of the multi-edit patch space.
 
 We evaluate the predictive power of our mined model on its own, in terms of its
 accuracy in predicting the operators used in real-world bug fixes. We demonstrate this algorithm both in terms of speed and quality with a full set of mutation
-operators on a subset of real-world single-line defects
-from Defects4j~\cite{just14}, and we validate the quality of the patches found by our approach
+operators on a subset of real-world single-line defects~\cite{just14}, and we validate the quality of the patches found by our approach
 in comparison to several previous state-of-the-art techniques. 
 
 %
@@ -576,8 +575,8 @@ The primary contributions of this paper thus are:
 \item \textbf{Empirical model of single-edit repairs to Java code} mined
       from the 100 most recent bug fixes from the 500 most popular Java projects on
     GitHub. This study also provides a deeper
-    understanding of which mutation operators are used by programmers to fix
-    errors in source code, and the frequency of each of the mutation operators
+    understanding of which mutation operators are used to fix
+    errors in source code, and the frequency of the mutation operators
     analyzed. 
 	\item \textbf{New Repair Approach}, which uses mutation operators
     from multiple state-of-the-art approaches and
@@ -690,7 +689,7 @@ the test suite used to guide the repair.
 \subsection{Generate-and-validate mutation operators} 
 \label{categorization}
 
-We categorize mutation operators used to create patches from a cross
+We categorize mutation operators used from a cross
 section of state-of-the-art approaches into two groups: 
 
 \paragraph{Statement-Edit mutations}
@@ -827,7 +826,7 @@ etc. following the guidelines of previous work~\cite{schroter06}.
 We further only include commits
 that exclusively 
 modify Java source code, since we focus on such bugs. Additionally, we restrict our search to commits 
-that modify a maximum of three files. We do this to exclude
+that modify a maximum of three files to exclude
 big merges, and because
 large commits are more likely to include changes unrelated to a bug fix~\cite{Herzig13,Kawrykow11}.
 To our knowledge, this is the largest set of bug-fixing commits mined to inform
@@ -950,8 +949,7 @@ we count the number of incidences of each mutation operator observed in our
 dataset, matched as described in Section~\ref{sec:mining}. Mutation operator probability is then
 weighted by its appearance in the dataset.  
 %
-In our dataset, the Template-Based mutations comprise 29.26\% of the corpus; Statement-Edit mutations make up 70.74\% of the 
-corpus.
+Our dataset is comprised by Template-Based and Statement-Edit mutations, 29.26\% and 70.74\% respectively.
 
 \subsubsection{Replacements probabilistic model}
 If the ``Replacement" mutation operator is 
@@ -959,7 +957,7 @@ selected, the \textit{Replacements probabilistic model} describes the probabilit
 another (``replacer"), thus informing the selection of replacement fix code.
 %\footnote{https://goo.gl/mMFbnQ
 We consider 
-the 22 different types detailed by the Eclipse
+the 22 different types detailed by Eclipse
 JDT
 %\footnote{AssertStatement, Block, BreakStatement, ConstructorInvocation,
 %ContinueStatement, DoStatement, EmptyStatement, EnhancedForStatement,
@@ -967,11 +965,10 @@ JDT
 %ReturnStatement, SuperConstructorInvocation, SwitchCase, SwitchStatement,
 %SynchronizedStatement, ThrowStatement, TryStatement, TypeDeclarationStatement,
 %VariableDeclarationStatement, WhileStatement \label{stmtNames}} 
-as direct known subclasses of the class \texttt{Statement}, and the incidence with which
+as direct subclasses of the class \texttt{Statement}, and the incidence with which
 each 
 replaces another. For example: ``What is the observed incidence of a \texttt{For} loop 
-replacing a \texttt{While} loop?" Given 22 statement types, any of which may replace one
-another, there are 484 possible combinations. 
+replacing a \texttt{While} loop?" Given 22 statement types, there are 484 possible combinations. 
 Note that the observed probabilities are not reciprocal, e.g. 
 that the probability of a \texttt{For} loop replacing a \texttt{While} loop is different from the 
 probability of a \texttt{While} loop replacing a \texttt{For} loop.
@@ -992,8 +989,8 @@ software require multiple edits~\cite{zhong15,Soto16}. The combination of possib
 As a first step towards mitigating this limitation, we propose 
 an initial analysis of multi-edit 
 source code changes by mining a more expressive model of common changes. In
-particular, we extract \emph{association rules} between single edits 
-to model chains of single edit changes, capturing the way humans create these kinds of fixes.
+particular, we extract \emph{association rules}
+to model chains of several edits, capturing the way humans create these kinds of fixes.
 
 Association rules are if/then statements that show relationships between elements in a dataset which happen frequently together. We use the 
 well-known association rule mining algorithm
@@ -1322,7 +1319,7 @@ techniques~\cite{arcuri11}.
 
 Our modified APR
 techniques, using each of three sets of operators and each of two models to
-select between them, patched 5 of the 18 bugs, as shown in 
+select between them, were evaluated in a subset of the bugs in Table~\ref{defects4j}. We compared these techniques in the first 6 defects considered from each project, as shown in 
 Table~\ref{tab:singleLineBugs}.
 The first row of Table~\ref{tab:singleLineBugs} (Closure \#10) shows that the
 probabilistic model outperforms the equally-distributed model for all three
@@ -1412,7 +1409,7 @@ boolean staleInputs = false;
       developer patch; No other approach found this identical patch.\label{closure18prob}}
 \end{figure}
 
-
+We then used our approach with the superset of mutation operators and using the probabilistic model, and we broaden our evaluation to all the remaining defects described in Table~\ref{defects4j}; finally, we compared the patches found for all these defects against other state of the art approaches.
 Table~\ref{stateOfTheArtComparison} shows
 results, including, the number of different patches found for each bug and how many of them generalized
 to a held-out test suite. The patches that did not generalize to the held out test suite failed one or 
