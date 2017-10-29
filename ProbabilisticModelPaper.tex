@@ -461,7 +461,7 @@ We categorize, compare and evaluate the different mutation operators used in
 the state of the art approaches. Finally, we mine association rules to analyze context surrounding
 multi-edit source code changes, an understudied problem 
 that covers the majority of real source code changes. We validate the association rules by analyzing how much of the corpus can be built from them. Our evaluation
-indicates that 84.6\% of the multi-edit patches from the corpus can be built from the rules, while maintaining a 90\% confidence. We also find that by applying the probabilistic model we can find
+indicates that 84.6\% of the multi-edit patches from the corpus can be built from the association rules, while maintaining 90\% confidence. We also find that by applying the probabilistic model we can find
 the correct mutation operator to patch bugs faster in the majority of bugs
 studied, and that using the superset of all mutation operators performs better than restricting the mutation operator pool to just one category. Finally, our evaluation shows that our patches generalize better than the ones produced by other state-of-the-art approaches.
 \end{abstract}
@@ -526,7 +526,7 @@ when constructing candidate patches.
 
 Even with these efforts, the search space for possible edits remains vastly large. Our intuition is that, in bug-fixing reality, human developers use certain mutation operators 
 much more often than 
-others (e.g. adding an \emph{IfStatement} is more common than adding a \emph{TypeDeclarationStatement}~\cite{Soto16}), and we can use that knowledge to drive our search. In this paper, we therefore study and then simulate the behavior of human
+others (e.g. adding an \emph{IfStatement} is more common than adding a \emph{TypeDeclarationStatement}~\cite{Soto16}\todo{I think here a better example is the one where we say: it is more common to delete a line than to create a new class. People are more familiar with these concepts}), and we can use that knowledge to drive our search. In this paper, we therefore study and then simulate the behavior of human
 developers to create patches. Our key supposition is that our approach can scalably support a richer
 search space constructed via more expressive mutation operators that are more
 likely to produce high-quality patches.
@@ -559,7 +559,7 @@ patch candidates are actually created.
 Furthermore, we propose and initially validate a new approach for modeling
 multi-edit repairs based on mining previous rules from historical edit data, 
 predicting from a given 
-single-edit mutation which operation should be applied
+set of edits which operation should be applied
 next.  This serves  as a first step towards
 scalable traversal of the multi-edit patch space. 
 
@@ -604,7 +604,7 @@ The primary contributions of this paper thus are:
 
 The rest of this paper proceeds as follows: We first outline
 generate-and-validate repair and, in particular, 
-categorize and generalize the mutation operators used in state of the art
+categorize and compare the mutation operators used in state of the art
 approaches (Section~\ref{background}). Section~\ref{buildingTheModel}
 describes our approach to building probabilistic models of human 
 edits for both single- and multi-edit bug fixes. Section~\ref{evaluation}
@@ -615,8 +615,7 @@ related work; Section~\ref{conclusion} talks about the conclusions found in this
 \label{background}
 
 In this section, we outline generate and validate repair at a high level
-(Section~\ref{sec-paradigm}), to provide the necessary background to understand our
-work.\footnote{We focus on relevant background in this section, and describe
+(Section~\ref{sec-paradigm}), to provide the necessary background to understand this study.\footnote{We focus on relevant background in this section, and describe
   other techniques for automatic program repair in Section~\ref{relatedWork}.}
   We then detail and categorize the mutation operators used in prior approaches
   for syntactic program repair and that we model, mine, and leverage in our approach
@@ -627,8 +626,8 @@ work.\footnote{We focus on relevant background in this section, and describe
 \label{sec-paradigm}
 
 
-Figure~\ref{fig:generateandvalidate} outlines the general paradigm for generate-and-validate repair. This approach starts with source code with one or more bugs, and a test suite. The test suite contains passing
-test cases to witness the correct program behavior, and one or more failing test 
+Figure~\ref{fig:generateandvalidate} outlines the general paradigm for generate-and-validate repair. This approach begins with two elements: buggy source code and a test suite. The test suite is comprised of passing
+test cases to describe the correct program behavior, and failing test 
 cases to expose the behavior to be repaired.
 
 \begin{figure}[!h]
@@ -697,11 +696,11 @@ One family of repair approaches, including GenProg~\cite{legoues12},
 TrpAutoRepair~\cite{Qi13TrpAutoR}, and AE~\cite{Weimer13},
 creates candidate 
 patches by applying coarse-grained mutation operators (e.g. \emph{append}, \emph{delete}, or 
-\emph{replace}) at the statement level. These prior techniques target the C programming language, where
+\emph{replace}) at the statement level. These prior techniques historically target the C programming language, where
 a statement is a grammar nonterminal corresponding intuitively to blocks,
 simple statements that terminate
 with a semicolon, or compound statements corresponding to control flow or
-loops. In Java, statements conceptually map to similar program elements, including blocks,  while loops, or single-line
+loops. In Java, statements conceptually map to similar program elements, e.g. blocks,  while loops, or single-line
 method calls. In these approaches, the statements being appended or replaced
 typically come from within the project being modified. This is grounded in the
 notion that source code has a high level of
@@ -782,13 +781,11 @@ many other operators from the field of mutation testing~\cite{Offutt06}, as used
 APR~\cite{debroy10,xuan16} can be seen as subsets of the extensions of the 
 PAR templates.  
 
-To summarize, these approaches have significant similarities between their
-included templates.  We use the PAR templates to represent this category
+To summarize, these approaches have significant similarities between them.  We use the PAR templates to represent this category
 for the following reasons: (1) PAR broadly includes the other techniques' mutation operators, (2) it
 provides a concrete description of how the code is changed, enabling
 replication, and (3) it explicitly targets Java (SPR, Prophet and Kali
-target C), reducing the extent to which we must apply subjective judgment to
-determine how to reimplement and use them in our context.
+target C), reducing the extent to which we must apply subjective judgment to reimplement and use in our context.
 
 \section{Program repair via a learned probabilistic edit model} \label{buildingTheModel}
 
@@ -918,7 +915,7 @@ from prior work first, in the range of mutation operators considered
 (Section~\ref{categorization}) and second, in how it chooses between those
 operators and instantiates them.  
 We instantiate this technique by extending an open-source implementation of
-GenProg~\cite{legoues12} for Java\footnote{https://bitbucket.org/clegoues/genprog4java}  We add the newly-considered mutation
+GenProg~\cite{legoues12} for Java.\footnote{https://bitbucket.org/clegoues/genprog4java}  We add the newly-considered mutation
 operators, and a mechanism that allows the tool to
 select between the mutation operators according to the probabilities described by
 a model.\footnote{As with other artifacts, we will release a link to
@@ -953,8 +950,8 @@ Our dataset is comprised by Template-Based and Statement-Edit mutations, 29.26\%
 
 \subsubsection{Replacements probabilistic model}
 If the ``Replacement" mutation operator is 
-selected, the \textit{Replacements probabilistic model} describes the probability of replacing one statement (``replacee") with
-another (``replacer"), thus informing the selection of replacement fix code.
+selected, the \textit{Replacements probabilistic model} describes the probability of replacing one statement (\emph{``replacee"}) with
+another (\emph{``replacer"}), thus informing the selection of replacement fix code.
 %\footnote{https://goo.gl/mMFbnQ
 We consider 
 the 22 different types detailed by Eclipse
@@ -996,18 +993,17 @@ Association rules are if/then statements that show relationships between element
 well-known association rule mining algorithm
 Apriori~\cite{Agrawal94}. 
 %
-We mine association rules from the Mutation operators model as described in Section~\ref{armRes} by transforming each of the mutation operator count from 
-each of the commits studied into a \emph{transaction} to be analyzed. We develop
-rule sets at difference \emph{Confidence} levels, defined as:
+We mine association rules from the Mutation operators model as described in Section~\ref{armRes} by analyzing the mutation operator count from the commits studied. We develop
+rule sets at different \emph{Confidence} levels, defined as:
 
 \begin{center}
 $conf(X \implies Y) = \dfrac{supp(X \cup Y)}{supp(X)}$ 
 \end{center}
 
-Where X and Y are possible items in a transaction (mutation operators, in our
+Where X and Y are items in a transaction (mutation operators, in our
 context). Confidence is calculated according to its Support (\emph{supp}), 
 an indication of how frequently the set of mutation operators (itemset) 
- occurs in the transaction base.
+ occurs in the corpus.
 Formally:
 
 \begin{center}
@@ -1101,13 +1097,13 @@ The replacement probabilistic model (left) predicts
     the correct replacement statement 87\% of the time,
     an improvement of almost a factor of 4 over the equally-distributed model. 
     The mutations model (right) outperforms the equally-distributed model by 
-    almost a factor of 3. The \# columns show raw instance count per fold. \label{results10fcv}} 
+    almost a factor of 3. \label{results10fcv}} 
 }}
 \end{table} 
 
 We begin by independently evaluating our models' predictive accuracy, to
-validate the underlying intuition.  We include all Statement-level and Templated
-mutations (taken from PAR), as described in Section~\ref{categorization}.
+validate the underlying intuition.  We include all Statement-edit and Template-based
+mutations, as described in Section~\ref{categorization}.
 
 \subsubsection{Setup}
 Our high-level research question concerns whether 
@@ -1243,10 +1239,8 @@ available.\footnote{\url{https://github.com/Spirals-Team/defects4j-repair/tree/m
 We use results from the ``March 2017'' (most recent) release. 
 
 For the comparative experiments, we look at expressive power (bugs repaired) and
-patch quality.  We do not compare time to repair, which is influenced by fault
-localization (which is not held constant between the techniques) and thus would
-be less informative, and because Nopol expresses the time taken to produce each
-patch in wall-clock time while we express it in number of variants. 
+patch quality.  We do not compare time to repair, which is influenced by CPU workload and thus would
+be less informative.
 
 
 
@@ -1299,7 +1293,7 @@ suite that independently describes the same behavior as the test suite that
 guides the search process. We generate a single held out suite for each buggy program version that any technique
 repairs.  We use Evosuite~\cite{Fraser11Evosuite}, an established automatic
 test suite generation tool for Java, to generate this second test suite. We run EvoSuite
-with a 30-minute budget, using the human-repaired ``after fix'' version of each Defects4J bug
+with a 30-minute budget, using the human-repaired ``after-fix'' version of each Defects4J bug
 as the behavioral oracle.  We use
 Cobertura\footnote{http://cobertura.github.io/cobertura/} to calculate test
 suite 
@@ -1329,8 +1323,8 @@ found. By contrast, for bugs Chart \#1 and Closure \#18, the equally
 distributed approach finds a patch faster on average. Investigating this case
 manually, we find that 
 these bugs are patched with mutations that are rarely applied by developers (Expression Replace, and Replacement accordingly),
-therefore it is more likely that the mutation operator will be chosen by a
-uniformly random selection than by the developer-informed model.
+therefore it is more likely that the mutation operators will be chosen by a
+random selection than by the developer-informed model.
 
 Our results suggest that considering all available mutation operators is
 preferable to 
@@ -1349,13 +1343,13 @@ In this sample, how quickly a model finds a patch appears independent of the mut
 set. 
 
 In terms of
-quality assessment, the patches generated generally behave similarly within
+quality assessment, the patches generated behave similarly within
 their own groups. In all cases where an approach found multiple
 patches, either all the generated patches 
-generalized to the held-out test suite, or none of them did. 
+generalized to the held-out test suite, or none did. 
 
 From these results, we conclude that the probabilistic model using all available
-mutation operators (both Statement- and Template-based) appears to maximize
+mutation operators (both Statement-Edit and Template-based) appears to maximize
 expressive power without an unacceptable loss to efficiency.  In conjunction
 with our model assessment results (Section~\ref{sec:generalize}), we thus use
 all available mutations in our technique for the next experiment. 
@@ -1386,10 +1380,36 @@ Math \# 85 & 11 & 94.7\% & 4 & 0\% & 8 & 0\%  & 3  & 0\% & 8 & 0\% & 1  & 100\% 
 Lang \# 33 &  85 & 92.3\%  & 1 & 100\% &  \mII{Not found}   &   \mII{Not found}  &1  & 100\% &   \multicolumn{2}{c}{Not found}   \\       
        \bottomrule
 \end{tabular}}
-  \caption{Comparison between the probabilistic model-based repair and
-    other state of the art approaches. The "Found'' column represents the number of patches found for this bug using the different approaches, and the "GTHTS'' column represents the percentage of these patches that Generalized To a Held-out Test Suite, higher is better; because each randomized technique is run several times, some techniques find multiple patches per bug. \label{stateOfTheArtComparison}} 
+  \caption{Comparison between the probabilistic model-based repair and other state of the art approaches. The "Found'' column represents the number of patches found for this bug. Because each randomized technique is run several times, some techniques find multiple patches per bug. The "GTHTS'' column represents the percentage of these patches that Generalized To a Held-out Test Suite. \label{stateOfTheArtComparison}} 
 \end{table*}
 
+
+
+
+We then used our approach using the probabilistic model over the superset of mutation operators, and we broaden our evaluation to all the remaining defects described in Table~\ref{defects4j}; finally, we compared the patches found for all these defects against other state of the art approaches. We do not show all the patches found by the other approaches but just the subset that directly compare to the ones found by our approach.
+Table~\ref{stateOfTheArtComparison} shows
+results, including, the number of different patches found for each bug and how many of them generalized
+to a held-out test suite. The patches that did not generalize, failed one or 
+several tests in the held-out test suite. Of the
+19 distinct patches created by our approach, 
+9 pass all held-out test suite (47.4\%); 
+6.6\% of GenProg's patches generalize; 20\% of TRPAutoRepair's;
+15.4\% of PAR's; and 100\% of the 5 Nopol patches generalize to the held-out test suite.
+
+A main takeaway to notice is that the approaches that select what edit to apply 
+without a
+model, and therefore could benefit from a probabilistic model, performed worse 
+than when using a probabilistic approach. Nopol, even though the 5 patches 
+created by this tool were able to generalize to the held out test suite, it 
+targets a specific kind of bugs and thus isn't as generalizable as our 
+approach, which works with course grain mutation operators and is able to generalize to different kinds of defects. Also, a probabilistic model as the one described in this
+study, could not be applied to the way patches are constructed in this tool.
+Therefore we can clearly see the benefit from applying a probabilistic model,
+ in the approaches were a probabilistic model can be applied.
+
+One example demonstrating the quality provided by the probabilistic
+model-based approach is seen in the Closure \#18 bug; Figure~\ref{closure18prob} 
+shows our technique's patch, identical to the human patch.
 
 \begin{figure}[t]
 \begin{lstlisting}[firstnumber=1284][frame=single]
@@ -1408,31 +1428,6 @@ boolean staleInputs = false;
 	\caption{A patch generated using the probabilistic model, identical to the
       developer patch; No other approach found this identical patch.\label{closure18prob}}
 \end{figure}
-
-We then used our approach with the superset of mutation operators and using the probabilistic model, and we broaden our evaluation to all the remaining defects described in Table~\ref{defects4j}; finally, we compared the patches found for all these defects against other state of the art approaches.
-Table~\ref{stateOfTheArtComparison} shows
-results, including, the number of different patches found for each bug and how many of them generalized
-to a held-out test suite. The patches that did not generalize to the held out test suite failed one or 
-several tests in the held-out test suite. Of the
-19 distinct patches created by our approach, 
-9 pass all held-out test suite (47.4\%); 
-6.6\% of GenProg's patches generalize; 20\% of TRPAutoRepair's generalize;
-15.4\% of PAR's; and and 100\% of the 5 Nopol patches generalize to the held-out test suite.
-
-A main takeaway to notice is that the approaches that select what edit to apply 
-without a
-model, and therefore could benefit from a probabilistic model, performed worse 
-than when using a probabilistic approach. Nopol, even though the 5 patches 
-created by this tool were able to generalize to the held out test suite, it 
-targets a specific kind of bugs and thus isn't as generalizable as our 
-approach, which works with course grain mutation operators and is able to generalize to different kinds of defects. Also, a probabilistic model as the one described in this
-study, could not be applied to the way patches are constructed in this tool.
-Therefore we can clearly see the benefit from applying a probabilistic model,
- in the approaches were a probabilistic model can be applied.
-
-One example demonstrating the quality provided by the probabilistic
-model-based approach is seen in the Closure 18 bug; Figure~\ref{closure18prob} 
-shows our technique's patch, identical to the human patch.
 
 \subsection{Association Rule Mining} \label{armRes}
 
@@ -1516,9 +1511,7 @@ Instances & Association Rules \\
 }
 \end{table}
 
-Finally, we performed this analysis with 6 different confidence thresholds (50,60,70,80,90,100). This is because if we set the confidence level very high, then we will obtain a small number of rules that are very accurate (when the antecedent is present, it is very likely that the consequent will be present as well), and if we set the confidence lower, we will make the opposite trade-off: a large set of rules where if the antecedent is present, it is less likely that the consequent will be present too. Therefore we explore this spectrum by showing the results with 6 different confidence thresholds. 
-
-For each confidence threshold, we performed a standard 10-fold cross validation process with all the instances and all the rules for each fold and finally, we aggregate the results from all the folds.
+Finally, we performed this analysis with 6 different confidence thresholds (50,60,70,80,90,100). This is because if we set the confidence level very high, then we will obtain a small number of rules that are very accurate (when the antecedent is present, it is very likely that the consequent will be present as well), and if we set the confidence lower, we will make the opposite trade-off: a large set of rules where if the antecedent is present, it is less likely that the consequent will be present too. Therefore we explore this spectrum by showing the results with 6 different confidence thresholds. For each confidence threshold, we performed a standard 10-fold cross validation process with all the instances and all the rules for each fold and finally, we aggregate the results from all the folds.
 
 \begin{comment}
 \begin{table}[ht]
@@ -1546,14 +1539,14 @@ For each confidence threshold, we performed a standard 10-fold cross validation 
   \centering
     \includegraphics[width=\columnwidth]{10FoldXVal4}
   \caption{The wide bars use the left vertical axis to describe the percentage of patches covered (Fully, Partially or Not) by the association rules. The thin bars use the right vertical axis to describe the number of rules created for each confidence threshold.}
-  \label{fig:generateandvalidate}
+  \label{fig:assocRulesEvaluation}
 \end{figure}
 
-As seen in Figure~\ref{fig:generateandvalidate} the number of rules created augments as the confidence is reduced, due to the fact that the rules being created are less accurate (when the antecedent is present there is less probability that the consequent will be as well). We can also notice that the number of Fully Covered instances increases as the confidence goes down due to the fact that there are more rules, even if these rules are less accurate.
+As seen in Figure~\ref{fig:assocRulesEvaluation} the number of rules created augments as the confidence is reduced, due to the fact that the rules being created are less accurate (when the antecedent is present there is less probability that the consequent will be as well). We can also notice that the number of Fully Covered instances increases as the confidence decreases due to the fact that there are more rules, even though these rules are less accurate.
 
 APR would benefit from having a small number of very accurate (high confidence) rules that would describe what edit to perform next after a series of edits, but at the same time, it needs rules that are flexible enough that they can generalize to a big portion of the patches. 
 
-We find that a good tradeoff within this tension happens when we set the confidence threshold to 90\%. There is a big difference between 100\% and 90\% confidence regarding percentage of not covered instances a 100\% threshold provides rules that are very accurate, but can fully cover only a 37.7\% of the patches it was evaluated on. In contrast to 90\% confidence threshold where there are slightly more rules, but
+We find that a good tradeoff within this tension happens when we set the confidence threshold to 90\%. There is a big difference between 100\% and 90\% confidence thresholds regarding percentage of not covered instances a 100\% threshold provides rules that are very accurate, but can fully cover only a 37.7\% of the patches it was evaluated on. In contrast to 90\% confidence threshold where there are slightly more rules, but
 the rules generalize much more and are able to fully cover 84.6\% of the patches it was evaluated on, and still maintaining a high confidence threshold.
 
 
@@ -1568,7 +1561,7 @@ targeting Java. We release our code, as well as our templates,
 independently-generated tests, and mined models for scrutiny and extension by other
 researchers, to mitigate the risk of errors in our implementation or approach. 
  We also use 10-fold cross validation in
-assessing our model, to reduce the risk of training and testing on the same
+assessing our model and association rules, to reduce the risk of training and testing on the same
 data.  
 %REMOVE THIS FOR CAMERA READY
 %in the project mentioned before 
@@ -1682,7 +1675,7 @@ and scrutiny.
 We evaluated our approach in several ways: by performing an internal 
 evaluation of 
 its predictive power, and by
- running an APR tool using our model on 18 bugs from
+ running an APR tool using our model on 63 bugs from
 Defects4j. Finally we compare the quality of the patches 
 generated against patches created for these same bugs by other state of the art 
 approaches. We measure both efficiency of patch production, and generalizability
@@ -1691,12 +1684,11 @@ Note that in Table~\ref{tab:singleLineBugs}, for the majority of bugs, when usin
 model we obtained better results than their equally distributed 
 counterpart.
 Overall, we found that automatic program repair appears to benefit
-from having a diverse mutation operator pool, increase in search
-space size notwithstanding; future improvements in fault localization thus will
+from having a diverse mutation operator pool; future improvements in fault localization thus will
 serve to further benefit from more precise models of mutation selection. 
 
 Multi-edit source code changes are understudied, but cover
-the vast majority of bug fixes in software systems. 
+a large portion of bug fixes in software systems. 
 To move towards advancing this area, we constructed a set of association rules 
 that describe 
 how subsets of mutation operators are applied together.
@@ -1704,7 +1696,7 @@ how subsets of mutation operators are applied together.
 Overall, our initial analysis of how to chain single-edit changes by following
 human behavior provides a critical
 first step towards an efficient mechanism for traversing the large search space
-of multi-edit repairs.
+of multi-edit repairs by showing that we can construct a large percentage of the corpus from the created rules while maintaining a 90\% confidence threshold.
 
 
 
