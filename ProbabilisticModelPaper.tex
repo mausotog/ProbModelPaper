@@ -725,7 +725,7 @@ Table~\ref{approachTemplates}.
 SPR and Prophet use a set of transformation schemas,
 shown in the bottom section of Table~\ref{approachTemplates}.
 
-\begin{table}[ht]
+\begin{figure}[ht]
   \centering
 {\small
 \begin{tabular}{ll}
@@ -751,12 +751,11 @@ Copy and Replace & Condition Control Flow Introduction  \\
 Value Replacement  & Condition Introduction \\
 \bottomrule
 \end{tabular}
+}
   \caption{(Top) PAR fix templates. (Middle) PAR ``extra'' templates. (Bottom)
     SPR transformation schemas. We use the templates in the top and middle
     portions of this table as representative of the class of Template-based mutations. \label{approachTemplates}}
-}
-
-\end{table}
+\end{figure}
 
 The SPR/Prophet transformation schema can be mapped to certain PAR 
 templates. For example, \emph{Condition Introduction} can be seen as a superset of 
@@ -1120,7 +1119,8 @@ heuristics~\cite{legoues12Genprog,kim2013,Qi13TrpAutoR,Weimer13}.
 We measure how often each model correctly predicts the mutation operator (or
 replacer statement, for a given replacee statement), within the top 5 produced
 choices. Perfect accuracy (correctness in the Top-1 most likely choice) is
-unnecessary, since our APR approach can iterate through several
+unnecessary, since an
+APR approach can iterate through several
 different candidates before a fix; 
 however, the noisy search problem suggests that a relatively tight bound (top-5)
 is likely appropriate.
@@ -1169,7 +1169,7 @@ correct patches.  We directly address this question next.
 
 \begin{table}[ht]
 \centering
-
+  \caption{Studied subjects, taken from Defects4j. \label{defects4j}}
 \begin{tabular}{llrr}
 \toprule
          &     &            &  Defects\\
@@ -1184,7 +1184,6 @@ Joda-Time & Time & 4130 & 3\\
 \bottomrule
 \end{tabular}
 \center
-  \caption{Studied subjects, taken from Defects4j. \label{defects4j}}
 \end{table} 
 
 
@@ -1248,7 +1247,7 @@ be less informative.
 
 \newcommand\mII[1]{\multicolumn{2}{c|}{#1}}
 
-\begin{table*}\centering
+\begin{figure*}\centering
 {\footnotesize
 
 \begin{tabular}{l||l|l||rr|rr|rr|rr|rr|rr}
@@ -1274,7 +1273,7 @@ Chart \#1    & 93 & 74.4\% & 1.8&{0\%} & {7.3}&{0\%} & {4.9}&{0\%} & {19.0}&{0\%
   quality as the percentage of patches created for that bug that pass the
   held-out test suite (an average, if more than one patch is produced over the
   course of multiple random trials). \label{tab:singleLineBugs}}
-\end{table*}
+\end{figure*}
 
 \paragraph{Dataset}
 We consider for repair a subset of the Defects4j~\cite{just14}
@@ -1299,7 +1298,7 @@ with a 30-minute budget, using the human-repaired ``after-fix'' version of each 
 as the behavioral oracle.  We use
 Cobertura\footnote{http://cobertura.github.io/cobertura/} to calculate test
 suite 
-coverage, again over the ``after-fix" class that contains the human fix.
+coverage, again over the ``after-fix'' class that contains the human fix.
 
 \paragraph{Settings} For the genetic programming based techniques (including our own), our population
 size is 40 (consistent with previous work), and our max generation size is 10.
@@ -1362,7 +1361,7 @@ all available mutations in our technique for the next experiment.
 \newcommand\mR[2]{\multirow{#1}{*}{#2}}
 \newcommand\mCR[2]{\mII{\mR{#1}{#2}}}
 \newcommand \mC[1]{\multicolumn{2}{c}{#1}}
- \begin{table*}
+ \begin{figure*}
 \centering
 {\footnotesize
 \begin{tabular}{l||l|l||rr|rr|rr|rr|rr}
@@ -1383,7 +1382,7 @@ Lang \# 33 &  85 & 92.3\%  & 1 & 100\% &  \mII{Not found}   &   \mII{Not found} 
        \bottomrule
 \end{tabular}}
   \caption{Comparison between the probabilistic model-based repair and other state of the art approaches. The "Found'' column represents the number of patches found for this bug. Because each randomized technique is run several times, some techniques find multiple patches per bug. The "GTHTS'' column represents the percentage of these patches that Generalized To a Held-out Test Suite. \label{stateOfTheArtComparison}} 
-\end{table*}
+\end{figure*}
 
 
 
@@ -1498,7 +1497,7 @@ Table~\ref{rulesandinstances} shows three instances of patches in the testing da
 
 \begin{table}[ht]
   \centering
-{\small
+  \caption{Patch instances (left); associated association rules (right). \label{rulesandinstances}}{\small
 \begin{tabular}{|l|l|}
 \toprule
 Instances & Association Rules \\
@@ -1509,7 +1508,7 @@ Instances & Association Rules \\
 \bottomrule
 
 \end{tabular}
-  \caption{Instances in the left, association rules in the right. \label{rulesandinstances}}
+
 }
 \end{table}
 
