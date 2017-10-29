@@ -787,7 +787,7 @@ provides a concrete description of how the code is changed, enabling
 replication, and (3) it explicitly targets Java (SPR, Prophet and Kali
 target C), reducing the extent to which we must apply subjective judgment to reimplement and use in our context.
 
-\section{Program repair via a learned probabilistic edit model} \label{buildingTheModel}
+\section{Program repair via a learned \\ probabilistic edit model} \label{buildingTheModel}
 
 In this section, we describe how we mine a model of human
 bug-fixing edits from a large set of popular Java projects. The intuition is to
@@ -977,11 +977,11 @@ mutation operator model, based on replacer/replacee statement incidence.
 \label{multEdit}
 
 Although single-edit patches can
-repair non-trivial bugs in real software, the majority of bug fixes in real
-software require multiple edits~\cite{zhong15,Soto16}. The combination of possible mutation
- operators to apply in a sequence increases exponentially as we add more source
- code changes, motivating a more precise mechanism to navigate the vast search
- space. 
+repair many non-trivial bugs in real software, the majority of bug fixes in real
+software require multiple edits~\cite{zhong15,Soto16}. The number of combinations of possible mutation 
+operators to apply in a sequence increases exponentially with number of combined source
+code changes.  This motivates a more precise mechanism to navigate the vast search
+space. 
 
 As a first step towards mitigating this limitation, we propose 
 an initial analysis of multi-edit 
@@ -993,7 +993,9 @@ Association rules are if/then statements that show relationships between element
 well-known association rule mining algorithm
 Apriori~\cite{Agrawal94}. 
 %
-We mine association rules from the Mutation operators model as described in Section~\ref{armRes} by analyzing the mutation operator count from the commits studied. We develop
+We mine association rules for the Mutation operators model
+(Section~\ref{sec:modelrepair}) by analyzing mutation operator count in
+the studied commits. We develop 
 rule sets at different \emph{Confidence} levels, defined as:
 
 \begin{center}
@@ -1012,7 +1014,8 @@ $supp(X) = \dfrac{|\{t \in T; X \subseteq t\}|}{|T|}$
 
 Where X is the itemset and \emph{t} is each individual transaction in
 the database of transactions \emph{T}. Apriori identifies the mutation
-operators that frequently happen together, iteratively extending them to larger
+operators that frequently happen together in a set of commits, iteratively
+extending them to larger 
 itemsets that appear often in the transactions as identified by these metrics.
 
 
@@ -1063,43 +1066,42 @@ all repair experiments in Section~\ref{sec:repairSetup}.
 %\end{figure} 
 
 
-\begin{table}[ht]
+\begin{figure}[ht]
 {\footnotesize
 {\centering
-\fontsize{7}{7}\selectfont
 \begin{tabular}{l|rrr|rrr}
 \toprule
    &\multicolumn{3}{c|}{Replacements} &\multicolumn{3}{c}{Mutations} \\
 \midrule
-Fold	& Count &Prob (\%)& EqDist(\%)& Count &Prob(\%)& EqDist(\%) \\
+Fold	& \# &Prob (\%)& Eq (\%)& \# &Prob(\%)& Eq (\%) \\
 \midrule
-1	& 155~~~&70~~~ &25~~~ &17313~~~&  95~~~ & 64~~~   \\
-2	& 86~~~&100~~~ &25~~~  & 17232~~~& 93~~~ & 63~~~   \\
-3	& 81~~~&82~~~	&23~~~  & 16754~~~& 95~~~ & 81~~~ \\
-4	& 101~~~&81~~~	&40~~~  & 14159~~~& 94~~~ & 9~~~   \\
-5	& 99~~~&90~~~	&27~~~  & 17022~~~& 95~~~ & 2~~~  \\
-6	& 75~~~&84~~~	&21~~~  & 14945~~~& 95~~~ & 58~~~  \\
-7	& 79~~~&86~~~	&24~~~  & 12901~~~& 93~~~ & 7~~~  \\
-8	& 55~~~&96~~~	&23~~~  & 10552~~~& 95~~~ & 27~~~  \\
-9	& 82~~~&88~~~	&8~~~  & 14568~~~& 93~~~ & 62~~~ \\
-10	& 116~~~&100~~~	&31~~~ & 19140~~~& 95~~~ & 6~~~ \\
+1	& 155~~&70~~&25~~& 17313~~& 95~~& 64~~   \\
+2	& 86~~&100~~&25~~& 17232~~& 93~~& 63~~   \\
+3	& 81~~&82~~&23~~& 16754~~& 95~~& 81~~ \\
+4	& 101~~&81~~&40~~& 14159~~& 94~~& 9~~   \\
+5	& 99~~&90~~&27~~& 17022~~& 95~~& 2~~  \\
+6	& 75~~&84~~&21~~& 14945~~& 95~~& 58~~  \\
+7	& 79~~&86~~&24~~& 12901~~& 93~~& 7~~  \\
+8	& 55~~&96~~&23~~& 10552~~& 95~~& 27~~  \\
+9	& 82~~&88~~&8~~& 14568~~& 93~~& 62~~ \\
+10	& 116~~&100~~&31~~& 19140~~& 95~~& 6~~ \\
 \midrule
 Mean	& 92.9 &87.7	&24.7& 15458.6  & 94.3 & 37.9  \\
 \midrule
-Std dev	& 27.39&9.3&	8.0 & 2530.3 & 0.9 & 30.5   \\
+$\sigma$ & 27.4&9.3&	8.0 & 2530.3 & 0.9 & 30.5   \\
 %\midrule
 %Sum & 1929&877 & 247 &  154586& 943 & 379  \\
 \bottomrule
 \end{tabular}
 \center
   \caption{Correctly predicted edits, across 10 folds of data.
-The replacement probabilistic model (left) predicts
+The replacement probabilistic model (center columns, left) predicts
     the correct replacement statement 87\% of the time,
-    an improvement of almost a factor of 4 over the equally-distributed model. 
-    The mutations model (right) outperforms the equally-distributed model by 
+    an improvement of almost a factor of 4 over the equally-distributed equivalent. 
+    The mutations model (right columns, left) outperforms the equally-distributed equivalent by 
     almost a factor of 3. \label{results10fcv}} 
 }}
-\end{table} 
+\end{figure} 
 
 We begin by independently evaluating our models' predictive accuracy, to
 validate the underlying intuition.  We include all Statement-edit and Template-based
