@@ -1444,25 +1444,29 @@ to find rules of mutation operators that commonly happen together providing an i
 how to form multi-edit
 source code changes.
 
-\subsubsection{Mutation operator rules} \label{mutOpRules}
-We mine rules from our corpus as described in Section~\ref{multEdit}.  
-We created these association rules only with the Mutation operators corpus and leave out the Replacements corpus.
-This is because the Replacements model is used only when the Mutation operators model has chosen a "Replacement'' to
-be the next edit to try. It it not useful to create rules that would chain series of replacements together since 
-"Replacement'' is one out of 19 possible mutation operators, and the association rules created need at least three operators, therefore the probability of having three consequent
-Replacements is 1 out of 6859, making association rules for the Replacements corpus an extremely rare case. 
-We therefore created association rules for the Mutation operator corpus.
-The rules described below are ranked by their confidence. In this case, the top 10 rules shown
-below have a confidence of 100\%, meaning that in 100\% of the cases
-studied, every transaction that showed the antecedent also showed the consequent. We picked a 100\%
-threshold because when applying association rules to the automatic program repair process,
-we want to use rules that help us navigate the search space by predicting 
-with high accuracy which edits to perform once we 
-have applied a set of edits already.
-They are obtained with a 1\% support, which means that each of these rules
-individually appear in at least 1\% of all the transactions in the
-corpus, this is to obtain a large number of rules. We show the top association rules, and also release the full set of mined
-rules:\footnote{We will release the full list of mutation operator rules post blind-review.} 
+\subsubsection{Mutation operator rules} \label{mutOpRules} We mine rules from
+our corpus as described in Section~\ref{multEdit}.  We created these association
+rules only with the Mutation operators corpus and leave out the Replacements
+corpus.  This is because the Replacements model is used only when the Mutation
+operators model has chosen a "Replacement'' to be the next edit to try. It it
+not useful to create rules that would chain series of replacements together
+since "Replacement'' is one out of 19 possible mutation operators, and the
+association rules created need at least three operators, therefore the
+probability of having three consequent Replacements is 1 out of 6859, making
+association rules for the Replacements corpus an extremely rare case.  We
+therefore created association rules for the Mutation operator corpus.  The rules
+described below are ranked by their confidence. In this case, the top 10 rules
+shown below have a confidence of 100\%, meaning that in 100\% of the cases
+studied, every transaction that showed the antecedent also showed the
+consequent. We picked a 100\% threshold because when applying association rules
+to the automatic program repair process, we want to use rules that help us
+navigate the search space by predicting with high accuracy which edits to
+perform once we have applied a set of edits already.  They are obtained with a
+1\% support, which means that each of these rules individually appear in at
+least 1\% of all the transactions in the corpus, this is to obtain a large
+number of rules. We show the top association rules, and also release the full
+set of mined rules:\footnote{We will release the full list of mutation operator
+  rules post blind-review.}
 %\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt}} 
 
 %Minimum support: 0 (1 instances)
@@ -1492,15 +1496,33 @@ will help us further understand multi-edit source code changes, an understudied
 area that covers the majority of real life patches.
 
 \subsubsection{Evaluation of Association Rules}
-To evaluate the effectiveness of the association rules in the context of the automatic program repair process, we first had to remove the section of the corpus where the number of edits performed is less than 3, this is because all the rules created as a result of section~\ref{mutOpRules} require at least two antecedents and one consequent, therefore the patches with less than three edits can not be created by these association rules. This removed 62.83\% of the corpus. On the remaining 37.17\% where association rules can be applied, we performed a 10-fold cross validation process as follows:
-First we divide our corpus in 10 folds, these folds will be used as testing data.
-For each of the folds, we then group the complement of the fold used as testing data (the remaining 9 folds), and build the association rules using Apriori~\cite{Agrawal94}. We build the rules from
-the complement of the fold used as testing data to maintain the principle of training and testing from non-overlapping
-data.
-Once we have the rules built from the complement, we analyze how many patches (instances in the fold used as testing data) can be built from applying the rules.
-We categorize them in three different ways: \emph{Fully covered}, \emph{Partially covered}, and \emph{Not covered}.
+To evaluate the effectiveness of the association rules in the context of the
+automatic program repair process, we first had to remove the section of the
+corpus where the number of edits performed is less than 3, this is because all
+the rules created as a result of section~\ref{mutOpRules} require at least two
+antecedents and one consequent, therefore the patches with less than three edits
+can not be created by these association rules. This removed 62.83\% of the
+corpus. On the remaining 37.17\% where association rules can be applied, we
+performed a 10-fold cross validation process as follows: First we divide our
+corpus in 10 folds, these folds will be used as testing data.  For each of the
+folds, we then group the complement of the fold used as testing data (the
+remaining 9 folds), and build the association rules using
+Apriori~\cite{Agrawal94}. We build the rules from the complement of the fold
+used as testing data to maintain the principle of training and testing from
+non-overlapping data.  Once we have the rules built from the complement, we
+analyze how many patches (instances in the fold used as testing data) can be
+built from applying the rules.  We categorize them in three different ways:
+\emph{Fully covered}, \emph{Partially covered}, and \emph{Not covered}.
 
-Table~\ref{rulesandinstances} shows three instances of patches in the testing data, and three rules built from the complement. Instance 1 can be constructed from applying rules 1 and 3. This instances would be classified as Fully covered. For Instance 2, Rule 1 would cover the first three edits of this instance, but there is no way to cover the Replace ("Rep") mutation, therefore it would be classified as Partially covered. For Instance 3, even though Rule 3 contains two of the edits in the rule's antecedent, the instance does not contain the rule's consequent, therefore this and the other rules would not be able to be applied to this instance, therefore classifying it as Not covered.
+Table~\ref{rulesandinstances} shows three instances of patches in the testing
+data, and three rules built from the complement. Instance 1 can be constructed
+from applying rules 1 and 3. This instances would be classified as Fully
+covered. For Instance 2, Rule 1 would cover the first three edits of this
+instance, but there is no way to cover the Replace ("Rep") mutation, therefore
+it would be classified as Partially covered. For Instance 3, even though Rule 3
+contains two of the edits in the rule's antecedent, the instance does not
+contain the rule's consequent, therefore this and the other rules would not be
+able to be applied to this instance, therefore classifying it as Not covered.
 
 \begin{table}[ht]
   \centering
@@ -1519,7 +1541,17 @@ Instances & Association Rules \\
 }
 \end{table}
 
-Finally, we performed this analysis with 6 different confidence thresholds (50,60,70,80,90,100). This is because if we set the confidence level very high, then we will obtain a small number of rules that are very accurate (when the antecedent is present, it is very likely that the consequent will be present as well), and if we set the confidence lower, we will make the opposite trade-off: a large set of rules where if the antecedent is present, it is less likely that the consequent will be present too. Therefore we explore this spectrum by showing the results with 6 different confidence thresholds. For each confidence threshold, we performed a standard 10-fold cross validation process with all the instances and all the rules for each fold and finally, we aggregate the results from all the folds.
+Finally, we performed this analysis with 6 different confidence thresholds
+(50,60,70,80,90,100). This is because if we set the confidence level very high,
+then we will obtain a small number of rules that are very accurate (when the
+antecedent is present, it is very likely that the consequent will be present as
+well), and if we set the confidence lower, we will make the opposite trade-off:
+a large set of rules where if the antecedent is present, it is less likely that
+the consequent will be present too. Therefore we explore this spectrum by
+showing the results with 6 different confidence thresholds. For each confidence
+threshold, we performed a standard 10-fold cross validation process with all the
+instances and all the rules for each fold and finally, we aggregate the results
+from all the folds.
 
 \begin{comment}
 \begin{table}[ht]
@@ -1550,12 +1582,26 @@ Finally, we performed this analysis with 6 different confidence thresholds (50,6
   \label{fig:assocRulesEvaluation}
 \end{figure}
 
-As seen in Figure~\ref{fig:assocRulesEvaluation} the number of rules created augments as the confidence is reduced, due to the fact that the rules being created are less accurate (when the antecedent is present there is less probability that the consequent will be as well). We can also notice that the number of Fully Covered instances increases as the confidence decreases due to the fact that there are more rules, even though these rules are less accurate.
+As seen in Figure~\ref{fig:assocRulesEvaluation} the number of rules created
+augments as the confidence is reduced, due to the fact that the rules being
+created are less accurate (when the antecedent is present there is less
+probability that the consequent will be as well). We can also notice that the
+number of Fully Covered instances increases as the confidence decreases due to
+the fact that there are more rules, even though these rules are less accurate.
 
-APR would benefit from having a small number of very accurate (high confidence) rules that would describe what edit to perform next after a series of edits, but at the same time, it needs rules that are flexible enough that they can generalize to a big portion of the patches. 
+APR would benefit from having a small number of very accurate (high confidence)
+rules that would describe what edit to perform next after a series of edits, but
+at the same time, it needs rules that are flexible enough that they can
+generalize to a big portion of the patches.
 
-We find that a good tradeoff within this tension happens when we set the confidence threshold to 90\%. There is a big difference between 100\% and 90\% confidence thresholds regarding percentage of not covered instances a 100\% threshold provides rules that are very accurate, but can fully cover only a 37.7\% of the patches it was evaluated on. In contrast to 90\% confidence threshold where there are slightly more rules, but
-the rules generalize much more and are able to fully cover 84.6\% of the patches it was evaluated on, and still maintaining a high confidence threshold.
+We find that a good tradeoff within this tension happens when we set the
+confidence threshold to 90\%. There is a big difference between 100\% and 90\%
+confidence thresholds regarding percentage of not covered instances a 100\%
+threshold provides rules that are very accurate, but can fully cover only a
+37.7\% of the patches it was evaluated on. In contrast to 90\% confidence
+threshold where there are slightly more rules, but the rules generalize much
+more and are able to fully cover 84.6\% of the patches it was evaluated on, and
+still maintaining a high confidence threshold.
 
 
 
