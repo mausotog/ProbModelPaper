@@ -1439,34 +1439,27 @@ boolean staleInputs = false;
 
 \subsection{Association Rule Mining} \label{armRes}
 
-We mined our corpus using the Association Rule Mining algorithm Apriori 
-to find rules of mutation operators that commonly happen together providing an intuition regarding
-how to form multi-edit
-source code changes.
+In this section, we
+describe and evaluate the mutation operator association rules produced by
+mining human patches to identify edits that commonly occur together in
+human-generated patches (Section~\ref{multEdit}).  The goal of these models is
+to provide intuition regarding how to form multi-edit source code changes.  Note
+that we create these association rules using strictly the Mutation Operator
+model corpus; the Replacements operator corpus is only informative when the
+``Replace'' operator is chosen, and thus does not apply to the
+question of chaining together edits to produce larger patches.
 
-\subsubsection{Mutation operator rules} \label{mutOpRules} We mine rules from
-our corpus as described in Section~\ref{multEdit}.  We created these association
-rules only with the Mutation operators corpus and leave out the Replacements
-corpus.  This is because the Replacements model is used only when the Mutation
-operators model has chosen a "Replacement'' to be the next edit to try. It it
-not useful to create rules that would chain series of replacements together
-since "Replacement'' is one out of 19 possible mutation operators, and the
-association rules created need at least three operators, therefore the
-probability of having three consequent Replacements is 1 out of 6859, making
-association rules for the Replacements corpus an extremely rare case.  We
-therefore created association rules for the Mutation operator corpus.  The rules
-described below are ranked by their confidence. In this case, the top 10 rules
-shown below have a confidence of 100\%, meaning that in 100\% of the cases
-studied, every transaction that showed the antecedent also showed the
-consequent. We picked a 100\% threshold because when applying association rules
-to the automatic program repair process, we want to use rules that help us
-navigate the search space by predicting with high accuracy which edits to
-perform once we have applied a set of edits already.  They are obtained with a
-1\% support, which means that each of these rules individually appear in at
-least 1\% of all the transactions in the corpus, this is to obtain a large
-number of rules. We show the top association rules, and also release the full
-set of mined rules:\footnote{We will release the full list of mutation operator
-  rules post blind-review.}
+\subsubsection{Mutation operator rules} \label{mutOpRules} Below, we list the
+top 10 rules identified with 100\% confidence in the dataset. This means that in
+100\% of the cases observed, every transaction that contained the antecedent of
+a rule also contained the consequent. A high threshhold like 100\% produces
+rules for APR that predict with high accuracy which edits to perform, given an
+initial set of edits.  These rules are obtained with a 1\% support, which means that
+each of these rules individually appear in at least 1\% of all the transactions
+in the corpus. We show only the top
+association rules, and also release the full set of mined rules to inform future
+studies in multi-edit repair:\footnote{We
+  will release the full list of mutation operator rules post blind-review.}
 %\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt}} 
 
 %Minimum support: 0 (1 instances)
@@ -1486,11 +1479,11 @@ set of mined rules:\footnote{We will release the full list of mutation operator
  \item Delete \& AddNullCheck \& ParamReplacer $\implies$ Append
 \end{itemize}
 
-Append is the most common single edit mutation operator applied by developers. This behavior is
-reflected in the fact that it is the consequent in all the top mined
-rules.  
-
-Association rules provide an intuition of which common patterns of behavior
+The key observation to draw from these rules is that ``Append'' is the most
+common single edit mutation operator applied by 
+developers. This behavior is reflected in the fact that it is the consequent in
+all the top mined rules.
+Overall, association rules provide an intuition of which common patterns of behavior
 developers use. These rules tell us what edits happen frequently together, which
 will help us further understand multi-edit source code changes, an understudied 
 area that covers the majority of real life patches.
@@ -1531,9 +1524,9 @@ able to be applied to this instance, therefore classifying it as Not covered.
 \toprule
 Instances & Association Rules \\
 \midrule
-1.Del, App, NullCheck, ObjInit & 1.Del \& App =$>$ NullCheck \\ 
-2.Del, App, NullCheck, Rep  & 2.App \& ParamRep =$>$ Rep \\  
-3.App, NullCheck, CastMut & 3.App \& NullCheck =$>$ ObjInit\\
+Del; App; NullCheck; ObjInit & Del $\wedge$ App $\rightarrow$ NullCheck \\ 
+Del, App, NullCheck, Rep  & 2.App \& ParamRep =$>$ Rep \\  
+App, NullCheck, CastMut & 3.App \& NullCheck =$>$ ObjInit\\
 \bottomrule
 
 \end{tabular}
