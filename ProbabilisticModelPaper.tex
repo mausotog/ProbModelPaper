@@ -515,7 +515,7 @@ applied to the source code, which we refer to as ``Mutation operators'' applied 
 localization, e.g. Tarantula~\cite{Jones02}). 
 There is a broad diversity of such operators used in automatic program repair, such as deleting or inserting 
 statements~\cite{legoues12}, applying templates~\cite{kim2013}, transformation 
-schemas~\cite{long16proph,long15SPR}, semantically imphering code\cite{nguyen13,Mechtaev2016,xuanNopol}, etc.
+schemas~\cite{long16proph,long15SPR}, semantically inferring code\cite{nguyen13,Mechtaev2016,xuanNopol}, etc.
 Given a potentially-faulty location, these
 generate-and-validate approaches (e.g., GenProg~\cite{legoues12}, 
 Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13TrpAutoR},
@@ -526,8 +526,8 @@ when constructing candidate patches.
 
 Even with these efforts, the search space for possible edits remains vastly large. Our intuition is that, in bug-fixing reality, human developers use certain mutation operators 
 much more often than 
-others (e.g. adding an \emph{IfStatement} is more common than adding a \emph{TypeDeclarationStatement}~\cite{Soto16}\todo{I think here a better example is the one where we say: it is more common to delete a line than to create a new class. People are more familiar with these concepts}), and we can use that knowledge to drive our search. In this paper, we therefore study and then simulate the behavior of human
-developers to create patches. Our key supposition is that our approach can scalably support a richer
+others (e.g. when fixing a bug, deleting a line is much more common than creating a new class), and we can use that knowledge to drive our search. In this paper, we therefore study and then simulate the behavior of human
+developers to create patches. Our key supposition is that our scalable approach can support a richer
 search space constructed via more expressive mutation operators that are more
 likely to produce high-quality patches.
 
@@ -716,14 +716,14 @@ PAR is the product of a study of a large number of
 human 
 created patches, from which human annotators abstracted 10 different templates to cover
 the most commonly-used changes in bug-fixing practice.
-The 10 considered templates are detailed in the top section of Table~\ref{approachTemplates}. In the interest of completeness, we also include six extra templates 
+The 10 considered templates are detailed in the top section of Figure~\ref{approachTemplates}. In the interest of completeness, we also include six extra templates 
 mentioned on the PAR website.\footnote{\url{https://sites.google.com/site/autofixhkust/home/fix-templates}} 
 These extra templates provide new mutation operators drawn from human edits,
 that help us compare to and
 generalize the other approaches; they are shown in the middle segment of
-Table~\ref{approachTemplates}. 
+Figure~\ref{approachTemplates}. 
 SPR and Prophet use a set of transformation schemas,
-shown in the bottom section of Table~\ref{approachTemplates}.
+shown in the bottom section of Figure~\ref{approachTemplates}.
 
 \begin{figure}[ht]
   \centering
@@ -784,7 +784,7 @@ To summarize, these approaches have significant similarities between them.  We u
 for the following reasons: (1) PAR broadly includes the other techniques' mutation operators, (2) it
 provides a concrete description of how the code is changed, enabling
 replication, and (3) it explicitly targets Java (SPR, Prophet and Kali
-target C), reducing the extent to which we must apply subjective judgment to reimplement and use in our context.
+target C), reducing the extent to which we must apply subjective judgment to re-implement and use in our context.
 
 \section{Program repair via a learned \\ probabilistic edit model} \label{buildingTheModel}
 
@@ -1003,7 +1003,7 @@ $conf(X \implies Y) = \dfrac{supp(X \cup Y)}{supp(X)}$
 
 Where X and Y are items in a transaction (mutation operators, in our
 context). Confidence is calculated according to its Support (\emph{supp}), 
-an indication of how frequently the set of mutation operators (itemset) 
+an indication of how frequently the set of mutation operators (item set) 
  occurs in the corpus.
 Formally:
 
@@ -1011,11 +1011,11 @@ Formally:
 $supp(X) = \dfrac{|\{t \in T; X \subseteq t\}|}{|T|}$
 \end{center}
 
-Where X is the itemset and \emph{t} is each individual transaction in
+Where X is the item set and \emph{t} is each individual transaction in
 the database of transactions \emph{T}. Apriori identifies the mutation
 operators that frequently happen together in a set of commits, iteratively
 extending them to larger 
-itemsets that appear often in the transactions as identified by these metrics.
+item sets that appear often in the transactions as identified by these metrics.
 
 
 \section{Evaluation} \label{evaluation}
@@ -1148,7 +1148,7 @@ folds by summing the number of correctly predicted instances.
 
 \subsubsection{Results} 
 
-Table~\ref{results10fcv} shows results.  The \# columns 
+Figure~\ref{results10fcv} shows results.  The \# columns 
 show the number of attempted instances per fold.  The ``Prob.'' columns show the
 accuracy (correct prediction rate) of the mined model on that fold, for each model; ``EqDist'',
 the accuracy of the equally distributed model.  For the Replacements model,
@@ -1226,7 +1226,7 @@ identification strategy that is quite different from the operators we
 consider.\footnote{We do not compare directly to
   SPR/Prophet~\cite{long16proph}, because it uses machine learning to tune the
   probabilities and rank schema instantiation and is thus much more
-  difficult to reimplement faithfully for Java; additionally, as established,
+  difficult to re-implement faithfully for Java; additionally, as established,
   the Prophet  schemas are generalized by the extended PAR template set.}
 
 The open-source implementation of GenProg for
@@ -1294,9 +1294,7 @@ suite that independently describes the same behavior as the test suite that
 guides the search process. We generate a single held out suite for each buggy program version that any technique
 repairs.  We use Evosuite~\cite{Fraser11Evosuite}, an established automatic
 test suite generation tool for Java, to generate this second test suite. We run EvoSuite
-with a 30-minute budget,\todo{One seed, right?  Or 10, combined?  I thought we
-  were using the same test suites as for the journal paper, and I thought those
-  were 10 combined seeds, no?} using the human-repaired ``after-fix'' version of each Defects4J bug
+with a 30-minute budget, using the human-repaired ``after-fix'' version of each Defects4J bug
 as the behavioral oracle.  We use
 Cobertura\footnote{http://cobertura.github.io/cobertura/} to calculate test
 suite 
@@ -1317,7 +1315,7 @@ techniques~\cite{arcuri11}.
 Our modified APR
 techniques, using each of three sets of operators and each of two models to
 select between them, were evaluated in a subset of the bugs in Table~\ref{defects4j}. We compared these techniques in the first 6 defects considered from each project, as shown in 
-Table~\ref{tab:singleLineBugs}.
+Figure~\ref{tab:singleLineBugs}.
 The first row (Closure \#10) shows that the
 probabilistic model outperforms the equally-distributed model for all three
 edit sets.  This happens as well for
@@ -1334,10 +1332,10 @@ preferable to
 restricting the mutation operator pool to just one of the categories. For the
 Statement-Edit category, 3 out of 6 were fixed faster when combining this kind of mutations with
 Template-Based mutations, and 3 out of 6 were slower. For the Template-Based
-category: 4 out of 8 were fixed faster when combining it with Statemtent-Edit
+category: 4 out of 8 were fixed faster when combining it with Statement-Edit
 mutations, 2 out of 8 were the same, and 2 out of 8 were slower. This suggests
 that the expressive power afforded by an increased set of operators may
-outweight the commensurate increase in search space size, though it is safe to
+outweigh the commensurate increase in search space size, though it is safe to
 assume that this benefit must be supported by sufficiently accurate fault
 localization. 
 %
@@ -1383,7 +1381,7 @@ Math \# 85 & 11 & 94.7\% & 4 & 0\% & 8 & 0\%  & 3  & 0\% & 8 & 0\% & 1  & 100\% 
 Lang \# 33 &  85 & 92.3\%  & 1 & 100\% &  \mII{Not found}   &   \mII{Not found}  &1  & 100\% &   \multicolumn{2}{c}{Not found}   \\       
        \bottomrule
 \end{tabular}}
-  \caption{Comparison between the probabilistic model-based repair and other state of the art approaches. The "Found'' column represents the number of patches found for this bug. Because each randomized technique is run several times, some techniques find multiple patches per bug. The "GTHTS'' column represents the percentage of these patches that Generalized To a Held-out Test Suite. \label{stateOfTheArtComparison}} 
+  \caption{Comparison between the probabilistic model-based repair and other state of the art approaches. The ``Found" column represents the number of patches found for this bug. Because each randomized technique is run several times, some techniques find multiple patches per bug. The ``GTHTS" column represents the percentage of these patches that Generalized To a Held-out Test Suite. \label{stateOfTheArtComparison}} 
 \end{figure*}
 
 
@@ -1394,7 +1392,7 @@ found for all these defects against those produced by other state of the art
 approaches. We do not 
 show all the patches found by the other approaches but just the subset that
 directly compare to the ones found by our approach. 
-Table~\ref{stateOfTheArtComparison} shows
+Figure~\ref{stateOfTheArtComparison} shows
 results, including, the number of different patches found for each bug and how many of them generalized
 to a held-out test suite. The patches that did not generalize, failed one or 
 several tests in the held-out test suite. Of the
@@ -1411,7 +1409,7 @@ Nopol produced 5 patches that all generalized to the held out test suite.  Howev
 targets a specific bug type,  and thus does not repair as many defects from this
 set as our technique does.  Our approach presents an important benefit for a
 broader array of bug types, particularly those to which a semantics-based
-approach like Nopol doesn't apply. Overall, these results demonstrate teh
+approach like Nopol doesn't apply. Overall, these results demonstrate the
 benefit of applying a probabilistic model for edit selection for those
 approaches to which such a selection process applies. 
 
@@ -1452,7 +1450,7 @@ question of chaining together edits to produce larger patches.
 \subsubsection{Mutation operator rules} \label{mutOpRules} Below, we list the
 top 10 rules identified with 100\% confidence in the dataset. This means that in
 100\% of the cases observed, every transaction that contained the antecedent of
-a rule also contained the consequent. A high threshhold like 100\% produces
+a rule also contained the consequent. A high threshold like 100\% produces
 rules for APR that predict with high accuracy which edits to perform, given an
 initial set of edits.  These rules are obtained with a 1\% support, which means that
 each of these rules individually appear in at least 1\% of all the transactions
@@ -1465,7 +1463,7 @@ studies in multi-edit repair:\footnote{We
 %Minimum support: 0 (1 instances)
 %Minimum metric <confidence>: 0.9
 %Number of cycles performed: 20
-
+\hfill
 \begin{itemize}
  \item Replace \& Delete $\implies$ Append
  \item Delete \& AddNullCheck $\implies$ Append
@@ -1478,6 +1476,7 @@ studies in multi-edit repair:\footnote{We
  \item Delete \& ExpressionAdder $\implies$ Append
  \item Delete \& AddNullCheck \& ParamReplacer $\implies$ Append
 \end{itemize}
+\hfill
 
 The key observation to draw from these rules is that ``Append'' is the most
 common single edit mutation operator applied by 
@@ -1727,7 +1726,7 @@ Defects4j. Finally we compare the quality of the patches
 generated against patches created for these same bugs by other state of the art 
 approaches. We measure both efficiency of patch production, and generalizability
 of the patches to a held-out test suite.  
-Note that in Table~\ref{tab:singleLineBugs}, for the majority of bugs, when using the probabilistic
+Note that in Figure~\ref{tab:singleLineBugs}, for the majority of bugs, when using the probabilistic
 model we obtained better results than their equally distributed 
 counterpart.
 Overall, we found that automatic program repair appears to benefit
