@@ -1461,7 +1461,7 @@ model-based approach is seen in the Closure \#18 bug; Figure~\ref{closure18prob}
 shows our technique's patch, identical to the human patch.
 
 \begin{figure}[t]
-\begin{lstlisting}[firstnumber=1284][frame=single]
+\begin{lstlisting}[firstnumber=1287][frame=single]
 boolean staleInputs = false;
 @-if(options.dependencyOptions.needsManagement() && options.closurePass){
 +if(options.dependencyOptions.needsManagement()){
