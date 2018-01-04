@@ -377,21 +377,16 @@ basicstyle=\ttfamily\bfseries\scriptsize,
 % use a multiple column layout for up to three different
 % affiliations
 
-\author{\IEEEauthorblockN{Authors hidden for the purposes of double blind review}
-\IEEEauthorblockA{\\
-\\
-\\}
 
-%REPLACE FOR CAMERA READY:
-%\author{\IEEEauthorblockN{Mauricio Soto}
-%\IEEEauthorblockA{Carnegie Mellon University\\
-%Pittsburgh PA\\
-%mauriciosoto@cmu.edu}
-%\and
-%\IEEEauthorblockN{Claire Le Goues}
-%\IEEEauthorblockA{Carnegie Mellon University\\
-%Pittsburgh PA\\
-%clegoues@cs.cmu.edu}
+\author{\IEEEauthorblockN{Mauricio Soto}
+\IEEEauthorblockA{Carnegie Mellon University\\
+Pittsburgh PA\\
+mauriciosoto@cmu.edu}
+\and
+\IEEEauthorblockN{Claire Le Goues}
+\IEEEauthorblockA{Carnegie Mellon University\\
+Pittsburgh PA\\
+clegoues@cs.cmu.edu}
 
 
 
@@ -448,7 +443,7 @@ bugs. Well-known state-of-the-art generate-and-validate
 APR approaches select between and instantiate various mutation operators
 to construct candidate patches, informed largely by heuristic probability
 distributions.  This may reduce effectiveness in terms of both efficiency and
-output quality: patches informed by the ways humans fix bugs may be considered
+output quality; patches informed by the ways humans fix bugs may be considered
 more acceptable.  In practice, human developers
 have many options in terms of how to edit code to fix bugs, some of which 
 are far more common than others (e.g., deleting a line of code is more common
@@ -586,8 +581,7 @@ The primary contributions of this paper thus are:
     \item \textbf{Development and integration} of this approach for the Java
       programming language in a tool, available online, which can apply the
       several different mutation operators, and the probabilistic model
-      discussed in this study.\footnote{We will release all artifacts, code, and
-        data, including generated test suites, associated with this publication post blind-review.} %\footnote{https://bitbucket.org/clegoues/genprog4java}
+      discussed in this study.\footnote{https://github.com/squaresLab/genprog4java}
   \item \textbf{Comparative evaluation} of the new repair approach on real world bugs from well-known open source projects (independent of those used to inform model
     construction). We independently evaluate patch quality using a held-out test
     suite. We conclude that by creating candidate patches using human behavior,
@@ -677,7 +671,7 @@ created patches will generalize beyond the test cases used to inform their
 construction~\cite{smith15}, and conform to other non-functional standards of
 acceptability~\cite{fry2010,kim2013}.  Although assessing patch quality is an
 unsolved research problem~\cite{monperrus14critical}, one mechanism to evaluate functional patch
-correctness is to evaluate generated patches on a held-out test suite~\cite{smith15,legoues12Genprog}, separate
+correctness while lowering human bias, is to evaluate generated patches on a held-out test suite~\cite{smith15,legoues12Genprog}, separate
 from the tests used to construct the patches. 
 If the generated patch allows the program to pass all held-out tests, it is more likely to
 \emph{generalize} to the desired but unwritten specification. If the patched
@@ -786,7 +780,7 @@ provides a concrete description of how the code is changed, enabling
 replication, and (3) it explicitly targets Java (SPR, Prophet and Kali
 target C), reducing the extent to which we must apply subjective judgment to re-implement and use in our context.
 
-\section{Program repair via a learned \\ probabilistic edit model} \label{buildingTheModel}
+\section{Program repair via a probabilistic edit model} \label{buildingTheModel}
 
 In this section, we describe how we mine a model of human
 bug-fixing edits from a large set of popular Java projects. The intuition is to
@@ -806,8 +800,10 @@ code repairs (Section~\ref{multEdit}).
 \label{sec:corpus}
 
 We cloned the 500 most-starred Java projects on GitHub 
-as of August 2016 and
-identified the most recent 100 bug fixing commits per each project. Identifying
+as of August 2016\footnote{https://github.com/squaresLab/ProbabilisticModelSaner2018/blob/master/\\analyzedRepos.txt} and
+identified the most recent 100 bug fixing commits per each project. If 
+the project had less than 100 bug fixing commits, we analyzed as many as found. 
+Identifying
 such commits is a difficult
 problem~\cite{Bird09}. We filter these by applying a
 regular expression to each commit message that looks for words such as \emph{``fix", ``bug", ``issue", ``problem",}
@@ -849,7 +845,8 @@ statement-based operators we consider.  That is, there is no one-to-one
 correspondence between the list of changes and the mutation operator
 identification. We thus greedily attempt to match the identified changes to the 
 studied
-mutation operators. We seek each of the mutation operators that can match a given set
+mutation operators. We seek each of the mutation operators that 
+can match a given set
 of edits.  For example, to identify
 a \emph{Null Checker} application, for each action describing a commit, we check
 if the manipulated node
@@ -868,7 +865,11 @@ is a node insertion.  If so, we check if the condition in the inserted
 % \\  
 \emph{Expression} to a
 \emph{NullLiteral}. If so, we count this sequence of
-actions as an instance of a \emph{Null Checker} mutation operator.  These rules are
+actions as an instance of a \emph{Null Checker} mutation operator. We
+created procedures as the one described before for all the mutation operators,
+and created scripts to automatically match and add these procedures to mutation
+operator counts.
+These strategies are
 necessarily heuristic, and we do not claim perfect soundness in our matching,
 instead aggregating results over a large dataset.  
 
@@ -914,12 +915,10 @@ from prior work first, in the range of mutation operators considered
 (Section~\ref{categorization}) and second, in how it chooses between those
 operators and instantiates them.  
 We instantiate this technique by extending an open-source implementation of
-GenProg~\cite{legoues12} for Java.\footnote{https://bitbucket.org/clegoues/genprog4java}  We add the newly-considered mutation
+GenProg~\cite{legoues12} for Java.\footnote{https://github.com/squaresLab/genprog4java}  We add the newly-considered mutation
 operators, and a mechanism that allows the tool to
 select between the mutation operators according to the probabilities described by
-a model.\footnote{As with other artifacts, we will release a link to
-  our implementation post-blind review; the open-source repository in question contains
-  significant clues as to author identities.}
+a model.
 
 
 Our approach uses a two-level model (Figure~\ref{fig:probModel}) in operator
@@ -931,7 +930,6 @@ level informs the selection of the replacement code.
 To build both models, we perform an incidence count of each mutation operator
 and replacement observed in our 
 dataset, matched as described in Section~\ref{sec:mining},
-%\footnote{Since the instance count that makes up the models is of notable size, we have made it available through a link to our repository, which will be made available after the blind review process} %%\footnote{https://github.com/mausotog/ProbModelPaper/blob/master/Models.csv}
 and then apply Laplace smoothing~\cite{Russell10} with $\alpha$ = 1 to account
 for 0 occurrences.  These two models in detail are as follows: 
 
@@ -945,7 +943,48 @@ we count the number of incidences of each mutation operator observed in our
 dataset, matched as described in Section~\ref{sec:mining}. Mutation operator probability is then
 weighted by its appearance in the dataset.  
 %
-Our dataset is comprised by Template-Based and Statement-Edit mutations, 29.26\% and 70.74\% respectively.
+\begin{figure}[]
+\centering
+\begin{tabular}{lr}
+\toprule
+Mutation operator & Edits found (\%) \\
+\midrule
+Replacement                                            & 0.60  \\
+Append                                                 & 61.03 \\
+Delete                                                 & 9.10  \\
+Null Check											   & 0.76  \\
+Param Replacer                                             & 5.93  \\
+Method Replacer                                            & 1.12  \\
+Param Add/Rem                                          & 3.15  \\
+Object Initializer                                               & 0.03  \\
+Sequence Exchance                                               & 15.76 \\
+Range Check                                            & 0.04  \\
+Size Check                                             & 0.07  \\
+Lower Bound Set                                            & 0.01  \\
+Upper Bound Set                                            & 0.00  \\
+Off by One                                             & 0.00  \\
+Cast Check                                             & 0.11  \\
+Caster Mutator                                             & 0.03  \\
+Castee Mutator                                             & 0.61  \\
+Expression Repl                                                & 1.28  \\
+Expression Add/Rem                                            & 0.37  \\ 
+\bottomrule
+\end{tabular}
+\caption{Mined distribution of mutation operators}
+\label{disOfMutOpsTable}
+\end{figure}
+
+\begin{figure}[!h]
+  \centering
+    \includegraphics[width=\columnwidth]{disOfMutOps}
+  \caption{Mined distribution of mutation operators}
+  \label{disOfMutOpsGraph}
+\end{figure}
+
+\todo{We need to pick one of these}
+
+Figure~\ref{disOfMutOpsTable}/Figure~\ref{disOfMutOpsGraph} describes the distribution of mutation operators
+as mined from the corpus. This dataset is comprised by Template-Based and Statement-Edit mutations, 29.26\% and 70.74\% respectively.
 
 \subsubsection{Replacements probabilistic model}
 If the ``Replacement" mutation operator is 
@@ -1070,7 +1109,7 @@ all repair experiments in Section~\ref{sec:repairSetup}.
 {\centering
 \begin{tabular}{l|rrr|rrr}
 \toprule
-   &\multicolumn{3}{c|}{Replacements} &\multicolumn{3}{c}{Mutations} \\
+   &\multicolumn{3}{c|}{Replacements} &\multicolumn{3}{c}{Mutation operators} \\
 \midrule
 Fold	& \# &Prob (\%)& Eq (\%)& \# &Prob(\%)& Eq (\%) \\
 \midrule
@@ -1102,7 +1141,7 @@ The replacement probabilistic model (center columns, left) predicts
 }}
 \end{figure} 
 
-We begin by independently evaluating our models' predictive accuracy, to
+We begin by independently evaluating our models' (Section~\ref{sec:modelrepair}) predictive accuracy, to
 validate the underlying intuition.  We include all Statement-edit and Template-based
 mutations, as described in Section~\ref{categorization}.
 
@@ -1252,17 +1291,17 @@ be less informative.
 
 \begin{tabular}{l||l|l||rr|rr|rr|rr|rr|rr}
 \toprule
-\multicolumn{3}{c||}{} &\multicolumn{4}{c|}{Statement-Edit Only} & \multicolumn{4}{c|}{Template-based Only} & \multicolumn{4}{c}{All Mutations} \\ 
+ & \multicolumn{2}{c||}{Held-out Test Suite} &\multicolumn{4}{c|}{Statement-Edit Only} & \multicolumn{4}{c|}{Template-based Only} & \multicolumn{4}{c}{All Mutations} \\ 
   \midrule
-            & Held-out & Line & \multicolumn{2}{c|}{EqDist} & \multicolumn{2}{c|}{Prob} & \multicolumn{2}{c|}{EqDist} & \multicolumn{2}{c|}{Prob} & \multicolumn{2}{c|}{EqDist} &  \multicolumn{2}{c}{Prob} \\
+ \multirow{3}{*}{Bug ID} & \multirow{3}{*}{\shortstack[l]{Held-out\\ tests}} & \multirow{3}{*}{\shortstack[l]{Line \\ coverage}} & \multicolumn{2}{c|}{EqDist} & \multicolumn{2}{c|}{Prob} & \multicolumn{2}{c|}{EqDist} & \multicolumn{2}{c|}{Prob} & \multicolumn{2}{c|}{EqDist} &  \multicolumn{2}{c}{Prob} \\ \cmidrule{4-15}
 
-Bug ID       &  tests & Coverage & Time & Quality &  Time & Quality &  Time & Quality&  Time & Quality&  Time & Quality&  Time & Quality \\
+            &   &  & Time & Quality &  Time & Quality &  Time & Quality&  Time & Quality&  Time & Quality&  Time & Quality \\
 
 \midrule
 Closure \#10 & 472 & 60.2\% & 221.0& 100\%  & {179.5} &{100\%} & {175.1}&{100\%} & {121.3}&{100\%} & {163.3}&{100\%} & {157.4}&{100\%} \\
-Closure \#18 & 106 & 73.4\% & \mII{Not found} & \mII{Not found} & {36.2}&{100\%} & {197.5}&{100\%} & {45.0}&{100\%} & {139.0}&{100\%} \\
-Math \#2     & 13 & 100\%  & \mII{Not found} & \mII{Not found} & {109.4}&{100\%} & {39.6}&{100\%} & {109.4}&{100\%} & {39.6}&{100\%} \\
-Time \#19    & 55 & 86\% & 94.1&{100\%} & {80.7}&{100\%} & \multicolumn{2}{c|}{Not found} & \multicolumn{2}{c|}{Not found} & {135.1}&{100\%} & {91.9}&{100\%} \\
+Closure \#18 & 106 & 73.4\% & \mII{No Patch Found} & \mII{No Patch Found} & {36.2}&{100\%} & {197.5}&{100\%} & {45.0}&{100\%} & {139.0}&{100\%} \\
+Math \#2     & 13 & 100\%  & \mII{No Patch Found} & \mII{No Patch Found} & {109.4}&{100\%} & {39.6}&{100\%} & {109.4}&{100\%} & {39.6}&{100\%} \\
+Time \#19    & 55 & 86\% & 94.1&{100\%} & {80.7}&{100\%} & \multicolumn{2}{c|}{No Patch Found} & \multicolumn{2}{c|}{No Patch Found} & {135.1}&{100\%} & {91.9}&{100\%} \\
 Chart \#1    & 93 & 74.4\% & 1.8&{0\%} & {7.3}&{0\%} & {4.9}&{0\%} & {19.0}&{0\%} & {2.2}&{0\%} & {4.8}&{0\%} \\
 \bottomrule
 \end{tabular}}
@@ -1364,24 +1403,28 @@ all available mutations in our technique for the next experiment.
  \begin{figure*}
 \centering
 {\footnotesize
-\begin{tabular}{l||l|l||rr|rr|rr|rr|rr}
+\begin{tabular}{l||r|r||lr|lr|lr|lr|lr}
 \toprule
 % Full results in https://docs.google.com/spreadsheets/d/1vyD7wH3VGf7X_pUxb4aN9EONO_L_fbIZXw3m9vP7MRc/edit#gid=0
-             & Held-out & Line     & \mII{Prob. Model} & \mII{GenProg} & \mII{TrpAutoRepair} & \mII{PAR} & \mC{Nopol} \\
-Bug ID       & tests & Coverage & Found & GTHTS & Found & GTHTS &Found & GTHTS &Found & GTHTS &Found & GTHTS   \\ 
+\multirow{3}{*}{Bug ID} & \multirow{3}{*}{Held-out tests} & \multirow{3}{*}{Line coverage} & \mII{Prob. Model} & \mII{GenProg} & \mII{TrpAutoRepair} & \mII{PAR} & \mC{Nopol} \\\cmidrule{4-13}
+       &  &  & Found & GTHTS & Found & GTHTS &Found & GTHTS &Found & GTHTS &Found & GTHTS   \\ 
 \midrule
-Closure \# 10 &  472 & 60.2\% & 2 & 100\% & \mII{Not found}  & \mII{Not found} & \mII{Not found} & 1 & 100\%   \\
-Closure \# 18 & 106 & 73.4\%      & 1 & 100\%    & \mII{Not found}  & \mII{Not found} & \mII{Not found}  &1 &  100\%  \\
-Math \# 2  & 13 & 100\%  & 1 & 100\% & \mII{Not found} & \mII{Not found} & 1 & 100\% & 1 & 100\%  \\
-Time \# 19 & 55 & 86\%  & 2 &100\% & 1 &100\% & 1 & 100\%& \mII{Not found} & 1 &  100\% \\
-Chart \# 1 & 93 & 74.4\% & 5 & 0\% & 6 & 0\%  & 4 & 0\% & 2 & 0\% & \multicolumn{2}{c}{Not found}   \\
-Closure \# 86 & 435 & 64.8\% & 2 & 100\% & \mII{Not found}   & 1 & 100\% & \mII{Not found}  & \multicolumn{2}{c}{Not found}   \\
-Math \# 75 &  25 & 92.5\%      & 1 & 100\%    & \mII{Not found}  & \mII{Not found} & 1 & 100\%     & \multicolumn{2}{c}{Not found}   \\
+Chart \# 1 & 93 & 74.4\% & 5 & 0\% & 6 & 0\%  & 4 & 0\% & 2 & 0\% & \multicolumn{2}{c}{No Patch Found}   \\
+Closure \# 10 &  472 & 60.2\% & 2 & 100\% & \mII{No Patch Found}  & \mII{No Patch Found} & \mII{No Patch Found} & 1 & 100\%   \\
+Closure \# 18 & 106 & 73.4\%      & 1 & 100\%    & \mII{No Patch Found}  & \mII{No Patch Found} & \mII{No Patch Found}  &1 &  100\%  \\
+Closure \# 86 & 435 & 64.8\% & 2 & 100\% & \mII{No Patch Found}   & 1 & 100\% & \mII{No Patch Found}  & \multicolumn{2}{c}{No Patch Found}   \\
+Lang \# 33 &  85 & 92.3\%  & 1 & 100\% &  \mII{No Patch Found}   &   \mII{No Patch Found}  &1  & 100\% &   \multicolumn{2}{c}{No Patch Found}   \\       
+Math \# 2  & 13 & 100\%  & 1 & 100\% & \mII{No Patch Found} & \mII{No Patch Found} & 1 & 100\% & 1 & 100\%  \\
+Math \# 75 &  25 & 92.5\%      & 1 & 100\%    & \mII{No Patch Found}  & \mII{No Patch Found} & 1 & 100\%     & \multicolumn{2}{c}{No Patch Found}   \\
 Math \# 85 & 11 & 94.7\% & 4 & 0\% & 8 & 0\%  & 3  & 0\% & 8 & 0\% & 1  & 100\%  \\       
-Lang \# 33 &  85 & 92.3\%  & 1 & 100\% &  \mII{Not found}   &   \mII{Not found}  &1  & 100\% &   \multicolumn{2}{c}{Not found}   \\       
-       \bottomrule
+Time \# 19 & 55 & 86\%  & 2 &100\% & 1 &100\% & 1 & 100\%& \mII{No Patch Found} & 1 &  100\% \\
+\bottomrule
 \end{tabular}}
-  \caption{Comparison between the probabilistic model-based repair and other state of the art approaches. The ``Found" column represents the number of patches found for this bug. Because each randomized technique is run several times, some techniques find multiple patches per bug. The ``GTHTS" column represents the percentage of these patches that Generalized To a Held-out Test Suite. \label{stateOfTheArtComparison}} 
+  \caption{Comparison between the probabilistic model-based repair and other state of the art 
+  approaches. The ``Found" column represents the number of patches found for this bug. Because 
+  each randomized technique is run several times, some techniques find multiple patches per bug. 
+  The ``GTHTS" column represents the percentage of these patches that Generalized To a Held-out 
+  Test Suite. \label{stateOfTheArtComparison}} 
 \end{figure*}
 
 
@@ -1435,6 +1478,20 @@ boolean staleInputs = false;
       developer patch; No other approach found this identical patch.\label{closure18prob}}
 \end{figure}
 
+
+From the 63 bugs that comprise our evaluation, our approach was able to find 
+patches for 9 of them. 
+GenProg was able to find patches for 8, PAR found patches
+for 12, Nopol for 25, and TRPAutoRepair for 7 of them.
+Since each tool is executed using several seeds, it is possible for the approaches to create
+several patches for each bug. 
+Our approach created 19 distinct patches for the aforementioned 9 bugs.
+From these 19 patches, 9 of them (47.4\%) pass the held-out test suites.
+Genprog created 46 distinct patches; 5 of them (10.9\%) pass the test suites.
+TRPAutoRepair created 31 patches; 4 of them (12.9\%) pass the test suites.
+PAR created 34 patches; 10 of them (29.4\%) pass the test suites. 
+Finally Nopol created 28 patches; 22 of them (78.6\%) pass the test suites.
+
 \subsection{Association Rule Mining} \label{armRes}
 
 In this section, we
@@ -1456,8 +1513,7 @@ initial set of edits.  These rules are obtained with a 1\% support, which means 
 each of these rules individually appear in at least 1\% of all the transactions
 in the corpus. We show only the top
 association rules, and also release the full set of mined rules to inform future
-studies in multi-edit repair:\footnote{We
-  will release the full list of mutation operator rules post blind-review.}
+studies in multi-edit repair:\footnote{https://github.com/squaresLab/ProbabilisticModelSaner2018}
 %\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt}} 
 
 %Minimum support: 0 (1 instances)
@@ -1752,7 +1808,7 @@ of multi-edit repairs by showing that we can construct a large percentage of the
 
 % use section* for acknowledgment
 \section*{Acknowledgments}
-The acknowledgments section will be added for the camera ready version.
+\todo{Add grants and what not}
 
 
 
