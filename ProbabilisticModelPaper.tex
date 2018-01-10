@@ -992,8 +992,8 @@ Expression Repl                                                & 1.28  \\
 Expression Add/Rem                                            & 0.37  \\ 
 \bottomrule
 \end{tabular}
-\caption{Mined distribution of mutation operators.\todo{put this in some
-    reasonable order.}}
+\caption{Mined distribution of mutation operators.\todo{put this in 
+    order.}}
 \label{disOfMutOpsTable}
 \end{figure}
 
@@ -1029,9 +1029,8 @@ Although single-edit patches can
 repair many non-trivial bugs in real software, the majority of bug fixes in real
 software require multiple edits~\cite{zhong15,Soto16}. The number of combinations of possible mutation 
 operators to apply in a sequence increases exponentially with number of combined source
-code changes.  This motivates a more precise mechanism to navigate the vast search
-space. 
-
+code changes.  
+%
 As a first step towards mitigating this limitation, we propose 
 an initial analysis of multi-edit 
 source code changes by mining a more expressive model of common changes. In
@@ -1190,7 +1189,7 @@ we ask, assuming the selected mutation operator
 is \emph{replace}, how often will an \emph{IfStatement} be predicted as the
 replacer for a \emph{ReturnStatement}? If it is returned in the first five
 instances in a model, the model correctly predicts this instance.  For the
-equally distributed model, we select five operators/replacees at random. 
+equally distributed model, we select five operators/replacees uniformly at random. 
 
 We use 10-fold cross validation~\cite{kohavi95} to mitigate the risk
 of overfitting and avoid testing and training on the same data.  We aggregate results over
@@ -1217,9 +1216,9 @@ correct patches.  We directly address this question next.
 \subsection{Repair experiment setup}
 \label{sec:repairSetup}
 
-\begin{table}[ht]
+\begin{table}[t]
 \centering
-  \caption{Studied subjects, taken from Defects4j. \label{defects4j}}
+  \caption{Studied subjects from Defects4j. \label{defects4j}}
 \begin{tabular}{llrr}
 \toprule
          &     &            &  Defects\\
@@ -1274,10 +1273,10 @@ strategy, but a different set of templated mutation operators.  Nopol is a
 semantics-guided generate-and-validate repair approach that thus uses a fix code
 identification strategy that is quite different from the operators we
 consider.\footnote{We do not compare directly to
-  SPR/Prophet~\cite{long16proph}, because it uses machine learning to tune the
-  probabilities and rank schema instantiation and is thus much more
-  difficult to re-implement faithfully for Java; additionally, as established,
-  the Prophet  schemas are generalized by the extended PAR template set.}
+  SPR/Prophet~\cite{long16proph}, because they use machine learning to tune the
+  probabilities and rank schema instantiation and are thus
+  difficult to re-implement faithfully for Java; as established,
+  their edit schemas are generalized by the extended PAR template set.}
 
 The open-source implementation of GenProg for
 Java implements  
@@ -1289,9 +1288,10 @@ this study~\cite{martinez2016} and made their results publicly
 available.\footnote{\url{https://github.com/Spirals-Team/defects4j-repair/tree/master/results/2017-march}}
 We use results from the ``March 2017'' (most recent) release. 
 
-For the comparative experiments, we look at expressive power (bugs repaired) and
-patch quality.  We do not compare time to repair, which is influenced by CPU workload and thus would
-be less informative.
+For these experiments, we focus on expressive power (bugs repaired) and
+patch quality rather than patch efficiency.  Although important, it efficiency
+is not central to our claims, and, given our use of previously-released results,
+is difficult to evaluate in a controlled fashion in our context.
 
 
 
@@ -1337,13 +1337,10 @@ patches.  The number of bugs attempted per project varies based on how many such
 bugs are available in the dataset.
 
 \paragraph{Patch quality}
-As a proxy for patch quality (to mitigate the risk of plausible but as yet
-incorrect patches~\cite{Qi15}), we evaluate patches using a held-out test
-suite~\cite{legoues12Genprog,smith15}. We automatically build a second test
-suite that independently describes the same behavior as the test suite that
-guides the search process. We generate a single held out suite for each buggy program version that any technique
-repairs.  We use Evosuite~\cite{Fraser11Evosuite}, an established automatic
-test suite generation tool for Java, to generate this second test suite. We run EvoSuite
+We evaluate patch quality using held-out test
+suites~\cite{legoues12Genprog,smith15}.  We automatically generate a single held out suite for each buggy program version that any technique
+repairs.  We use Evosuite~\cite{Fraser11Evosuite}, an established 
+test suite generation tool for Java, to generate these held-out tests. We run EvoSuite
 with a 30-minute budget, using the human-repaired ``after-fix'' version of each Defects4J bug
 as the behavioral oracle.  We use
 Cobertura\footnote{http://cobertura.github.io/cobertura/} to calculate test
@@ -1351,8 +1348,8 @@ suite
 coverage, again over the ``after-fix'' class that contains the human fix.
 
 \paragraph{Settings} For the genetic programming based techniques (including our own), our population
-size is 40 (consistent with previous work), and our max generation size is 10.
-For non-GP-based techniques, our maximum considered variant count is 400; for
+size is 40, and our max generation size is 10.
+For non-GP-based techniques, our maximum considered variant count is 400. For
 all techniques, we set a timeout of 4 hours per run.  These settings are
 consistent with prior work.  We run 20 seeds per randomized repair trial, in
 keeping with recommendations on the assessment of stochastic
@@ -1360,12 +1357,11 @@ techniques~\cite{arcuri11}.
 
 \subsection{Mutation operator and model utility} \label{sec:oputil}
 
-
-
-Our modified APR
+We evaluate our modified APR
 techniques, using each of three sets of operators and each of two models to
-select between them, were evaluated in a subset of the bugs in Table~\ref{defects4j}. We compared these techniques in the first 6 defects considered from each project, as shown in 
-Figure~\ref{tab:singleLineBugs}.
+select between them, on a subset of the bugs in Table~\ref{defects4j}.
+Specifically, we consider the first 6 defects from each project. 
+Figure~\ref{tab:singleLineBugs} shows results.
 The first row (Closure \#10) shows that the
 probabilistic model outperforms the equally-distributed model for all three
 edit sets.  This happens as well for
@@ -1716,7 +1712,7 @@ evaluation test suites.
 
 \section{Related Work} \label{relatedWork}
 
-There have been previous efforts to create a model based on human behavior.  
+There have been previous efforts to create a model\todo{of what?} based on human behavior.  
 Soto et al.~\cite{Soto16} 
 built a probabilistic model to describe the replace 
 operator only. They do not evaluate the model in the context of a repair
