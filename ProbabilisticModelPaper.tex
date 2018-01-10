@@ -803,26 +803,30 @@ use this model to
 apply human knowledge to the automatic program repair process, 
 creating patches inspired by what human developers do; the model is used
 explicitly in the patch creation step of a generate-and-validate repair process. To do this, we
-select a corpus of popular GitHub projects and filter out their latest bug
+select a corpus of popular GitHub projects and identify their most recent bug
+% "filter out" means the exact opposite of what we actually mean, hence the change
 fixing commits (Section~\ref{sec:corpus}).  We identify mutation operator and
 replacement incidence in this dataset  (Section~\ref{sec:mining}) to construct a two level probabilistic
-model used in a novel repair technique (Section~\ref{sec:modelrepair}). Finally we
-analyze these edits to extract association rules of 
+model used in a novel repair technique (Section~\ref{sec:modelrepair}). Finally, we
+analyze the corpus to extract association rules of 
 edits that happen together often, to potentially inform multi-edit source
 code repairs (Section~\ref{multEdit}).
 
 \subsection{Selecting the corpus}
 \label{sec:corpus}
 
+\looseness-1
 We cloned the 500 most-starred Java projects on GitHub 
-as of August 2016\footnote{https://github.com/squaresLab/ProbabilisticModelSaner2018/blob/master/\\analyzedRepos.txt} and
+as of August 2016 and
 identified the most recent 100 bug fixing commits per each project. If 
-the project had less than 100 bug fixing commits, we analyzed as many as found. 
+the project had fewer than 100 bug fixing commits, we analyzed as many as found. 
+% "fewer" for things that are countable (like this, by definition, since we give
+% an actual number). 
 Identifying
 such commits is a difficult
-problem~\cite{Bird09}. We filter these by applying a
+problem~\cite{Bird09}. We apply a
 regular expression to each commit message that looks for words such as \emph{``fix", ``bug", ``issue", ``problem",}
-etc. following the guidelines of previous work~\cite{schroter06}.
+etc. following guidelines from prior work~\cite{schroter06}.
 %\cite{schroter06,Cubranic05,Fischer03}. 
 %
 %\\
@@ -832,12 +836,12 @@ etc. following the guidelines of previous work~\cite{schroter06}.
 %\\
 We further only include commits
 that exclusively 
-modify Java source code, since we focus on such bugs. Additionally, we restrict our search to commits 
+modify Java source code, since we focus on such bugs. We restrict attention to commits 
 that modify a maximum of three files to exclude
 big merges, and because
 large commits are more likely to include changes unrelated to a bug fix~\cite{Herzig13,Kawrykow11}.
 To our knowledge, this is the largest set of bug-fixing commits mined to inform
-program repair in the existing literature~\cite{long16proph,Soto16,zhong15,martinez15,xuan16}. 
+program repair to date. %~\cite{long16proph,Soto16,zhong15,martinez15,xuan16}. 
 
 \subsection{Identifying mutations in developer commits}
 \label{sec:mining}
@@ -851,7 +855,7 @@ in the edits in our corpus.
 We used Gumtree~\cite{falleri14}, a source code tree
 differencing framework to identify deletions and insertions, as augmented by a
 component of QACrashFix~\cite{gao15}, which allows it to more accurately account for
-replacement edits. 
+replacements. 
 These tools create an AST representation of each program file, both before- and after-fix, and produce a set of 
 changes performed between them. 
 
@@ -881,9 +885,7 @@ is a node insertion.  If so, we check if the condition in the inserted
 \emph{Expression} to a
 \emph{NullLiteral}. If so, we count this sequence of
 actions as an instance of a \emph{Null Checker} mutation operator. We
-created procedures as the one described before for all the mutation operators,
-and created scripts to automatically match and add these procedures to mutation
-operator counts.
+created such an automated procedure for all the mutation operators.
 These strategies are
 necessarily heuristic, and we do not claim perfect soundness in our matching,
 instead aggregating results over a large dataset.  
@@ -948,17 +950,22 @@ dataset, matched as described in Section~\ref{sec:mining},
 and then apply Laplace smoothing~\cite{Russell10} with $\alpha$ = 1 to account
 for 0 occurrences.  These two models in detail are as follows: 
 
+
 \subsubsection{Mutation operator probabilistic model}
 The \textit{Mutation operator probabilistic model} 
 describes the probabilities of choosing between the several different mutation 
 operators at a particular fault location.
 %
 To build this model,
-we count the number of incidences of each mutation operator observed in our
+we count the incidence of each mutation operator observed in our
 dataset, matched as described in Section~\ref{sec:mining}. Mutation operator probability is then
-weighted by its appearance in the dataset.  
+weighted accordingly.
 %
-\begin{figure}[]
+Figure~\ref{disOfMutOpsTable} describes the distribution of mutation operators
+as mined from the corpus. Template-Based and Statement-Edit mutations contribute
+29.26\% and 70.74\% of the studied edits, respectively.
+
+\begin{figure}[t]
 \centering
 \begin{tabular}{lr}
 \toprule
@@ -985,21 +992,10 @@ Expression Repl                                                & 1.28  \\
 Expression Add/Rem                                            & 0.37  \\ 
 \bottomrule
 \end{tabular}
-\caption{Mined distribution of mutation operators}
+\caption{Mined distribution of mutation operators.\todo{put this in some
+    reasonable order.}}
 \label{disOfMutOpsTable}
 \end{figure}
-
-\begin{figure}[!h]
-  \centering
-    \includegraphics[width=\columnwidth]{disOfMutOps}
-  \caption{Mined distribution of mutation operators}
-  \label{disOfMutOpsGraph}
-\end{figure}
-
-\todo{We need to pick one of these}
-
-Figure~\ref{disOfMutOpsTable}/Figure~\ref{disOfMutOpsGraph} describes the distribution of mutation operators
-as mined from the corpus. This dataset is comprised by Template-Based and Statement-Edit mutations, 29.26\% and 70.74\% respectively.
 
 \subsubsection{Replacements probabilistic model}
 If the ``Replacement" mutation operator is 
