@@ -674,19 +674,21 @@ until it reaches a pre-defined resource limit.
 Here, too, search strategies vary: some techniques 
 are explicitly single-edit~\cite{Qi13TrpAutoR,Weimer13,xuanNopol}; others use
 random search strategies, like a random walk~\cite{debroy10} or genetic
-programming~\cite{kim2013,legoues12,xuan16}; etc. 
+programming~\cite{kim2013,legoues12,xuan16}.
 
+\looseness-1
 Patch quality is an important concern in APR research~\cite{Qi15}: Ideally,
 created patches will generalize beyond the test cases used to inform their
 construction~\cite{smith15}, and conform to other non-functional standards of
 acceptability~\cite{fry2010,kim2013}.  Although assessing patch quality is an
-unsolved research problem~\cite{monperrus14critical}, one mechanism to evaluate functional patch
-correctness while lowering human bias, is to evaluate generated patches on a held-out test suite~\cite{smith15,legoues12Genprog}, separate
+unsolved research problem~\cite{monperrus14critical}, one mechanism for
+objectively evaluating functional patch
+correctness is to evaluate generated patches on a held-out test suite~\cite{smith15,legoues12Genprog}, separate
 from the tests used to construct the patches. 
 If the generated patch allows the program to pass all held-out tests, it is more likely to
 \emph{generalize} to the desired but unwritten specification. If the patched
-program fails held-out tests, the patch is said to \emph{overfit} to 
-the test suite used to guide the repair. 
+program fails any held-out tests, the patch is said to \emph{overfit} to 
+the test suite that guided the repair. 
 
 
 \subsection{Generate-and-validate mutation operators} 
@@ -785,9 +787,9 @@ APR~\cite{debroy10,xuan16} can be seen as subsets of the extensions of the
 PAR templates.  
 
 To summarize, these approaches have significant similarities between them.  We use the PAR templates to represent this category
-for the following reasons: (1) PAR broadly includes the other techniques' mutation operators, (2) it
+because PAR (1) broadly includes the other techniques' mutation operators, (2) 
 provides a concrete description of how the code is changed, enabling
-replication, and (3) it explicitly targets Java (SPR, Prophet and Kali
+replication, and (3) explicitly targets Java (SPR, Prophet and Kali
 target C), reducing the extent to which we must apply subjective judgment to re-implement and use in our context.
 
 \section{Program repair via a probabilistic edit model} \label{buildingTheModel}
