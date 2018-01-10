@@ -488,15 +488,16 @@ indicates that 84.6\% of the multi-edit patches from the corpus can be built fro
 \section{Introduction} \label{introduction}
 
 % no \IEEEPARstart
-Repairing errors is one of the most 
-resource intensive tasks in 
-the software development process~\cite{Weiss07,Tassey02,Britton13}, especially for large, real-world systems~\cite{Liblit03,Anvik05}.
+\looseness-1
+Repairing bugs is one of the most 
+resource-intensive tasks in 
+software development~\cite{Weiss07,Tassey02,Britton13}.
 %
 Significant recent research effort has been dedicated to
 building automatic program repair (APR) tools that are able to address
 bugs in 
 programs (e.g.~\cite{legoues12,kim2013,Weimer13,long15SPR,long16proph,debroy10,perkins09,wei10}).
-
+%
 One well-known class of repair techniques follows a 
 \emph{generate-and-validate} approach (e.g., GenProg~\cite{legoues12}, 
 Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13TrpAutoR},
@@ -509,37 +510,42 @@ modified.  These approaches then \emph{generate} a large patch candidate space
 by applying 
 mutation operators to the original source code and \emph{validate} each by
 running the potentially patched program against the test suite, seeking a candidate that
-leads the program to pass all input test cases. 
+leads the program to pass all tests. 
 
-One key reason why this is challenging is because the search space of possible edits that can be applied to the original source code is infinite. To tackle this limitation, techniques define a set of possible changes to be
-applied to the source code, which we refer to as ``Mutation operators'' applied to potentially-faulty code (typically identified using off-the-shelf fault 
-localization, e.g. Tarantula~\cite{Jones02}). 
-There is a broad diversity of such operators used in automatic program repair, such as deleting or inserting 
-statements~\cite{legoues12}, applying templates~\cite{kim2013}, transformation 
-schemas~\cite{long16proph,long15SPR}, semantically inferring code\cite{nguyen13,Mechtaev2016,xuanNopol}, etc.
-Given a potentially-faulty location, these
-generate-and-validate approaches (e.g., GenProg~\cite{legoues12}, 
-Par~\cite{kim2013}, TrpAutoRepair~\cite{Qi13TrpAutoR},
-Prophet~\cite{long16proph}, HDRepair~\cite{xuan16}) use heuristics or
-heuristically-informed probability distributions to select
+One key reason this is challenging is that the search space of possible edits
+that can be applied to the original source code is infinite. To tackle this
+problem, techniques limit themselves to a set of possible change types,
+which we refer to broadly as ``Mutation operators''. 
+There is a broad diversity of such operators used in automatic program repair, including deleting or inserting 
+ statements~\cite{legoues12}, applying templates~\cite{kim2013}, transformation 
+ schemas~\cite{long16proph,long15SPR}, or semantically-inferred code~\cite{nguyen13,Mechtaev2016,xuanNopol}.
+ Given a potentially-faulty location (typically identified using off-the-shelf
+fault localization, e.g., Tarantula~\cite{Jones02}), these
+approaches then use heuristics or
+heuristically-informed probability distributions to select between
 mutation operators
-when constructing candidate patches.
+to construct candidate patches.
+%
+Even with these efforts, the search space for possible edits remains vast; not
+all bugs can be repaired; and many produced patches are of low quality.
 
-Even with these efforts, the search space for possible edits remains vastly large. Our intuition is that, in bug-fixing reality, human developers use certain mutation operators 
-much more often than 
-others (e.g. when fixing a bug, deleting a line is much more common than creating a new class), and we can use that knowledge to drive our search. In this paper, we therefore study and then simulate the behavior of human
-developers to create patches. Our key supposition is that our scalable approach can support a richer
+Our intuition is that, in bug-fixing reality, human developers use certain mutation operators 
+much more frequently than 
+others (e.g., deleting a line is much more common than creating a new class), and we can use that knowledge to drive our search. In this paper, we therefore study and then simulate the behavior of human
+developers to create patches. Our key supposition is that our approach can support a richer
 search space constructed via more expressive mutation operators that are more
 likely to produce high-quality patches.
-
+%
 Indeed, this idea has been
 leveraged manually in the past to create more human-acceptable mutation
-operators~\cite{kim2013} and to inform patch \emph{ranking} (rather than construction)~\cite{xuan16,long16proph}.
-The APR search space, including the various mutation
-operators used by different techniques, has been growing in a relatively ad hoc 
-manner by the different approaches created in the latest years. We mitigate this effect by categorizing and comparing a superset of
-mutation operators in use in a number of 
-state-of-the-art approaches~\cite{legoues12,Weimer13,kim2013,long16proph}.
+operators~\cite{kim2013} and to inform patch \emph{ranking} (rather than
+construction)~\cite{xuan16,long16proph}.
+
+% The APR search space, including the various mutation
+% operators used by different techniques, has been growing in a relatively ad hoc 
+% manner by the different approaches created in the latest years. We mitigate this effect by categorizing and comparing a superset of
+% mutation operators in use in a number of 
+% state-of-the-art approaches~\cite{legoues12,Weimer13,kim2013,long16proph}.
 
 We mine bug fixing commits from 
 the 500 most popular GitHub Java projects to model the selection probability of
@@ -589,13 +595,11 @@ The primary contributions of this paper thus are:
       several different mutation operators, and the probabilistic model
       discussed in this study.\footnote{https://github.com/squaresLab/genprog4java}
   \item \textbf{Comparative evaluation} of the new repair approach on real world bugs from well-known open source projects (independent of those used to inform model
-    construction). We independently evaluate patch quality using a held-out test
-    suite. We conclude that by creating candidate patches using human behavior,
-    we are able to find patches faster than a technique that does not use such
-    mined probabilities, and that the patch creation
-    process benefits from combining mutation operator categories. We compare to
-    other state-of-the-art tools on the same bugs, assessing expressiveness and
-    output quality. 
+    construction), as compared to several previous techniques. We independently evaluate patch quality using a held-out test
+    suite. We conclude a technique based on a model informed by human behavior,
+    finds patches more quickly than prior techniques that do not; that the
+    patches are of comparatively higher quality; and that patch creation
+    benefits from a diverse set of candidate mutation operators.
   \item \textbf{Multi-edit repair approach} A proposed technique, and an initial
     validation thereof, to construct 
     bug-fixing patches requiring several mutations by mining and then applying association
