@@ -379,13 +379,15 @@ basicstyle=\ttfamily\bfseries\scriptsize,
 
 
 \author{\IEEEauthorblockN{Mauricio Soto}
-\IEEEauthorblockA{Carnegie Mellon University\\
-Pittsburgh, USA\\
+\IEEEauthorblockA{School of Computer Science \\
+Carnegie Mellon University\\
+Pittsburgh, PA, USA\\
 mauriciosoto@cmu.edu}
 \and
 \IEEEauthorblockN{Claire Le Goues}
-\IEEEauthorblockA{Carnegie Mellon University\\
-Pittsburgh, USA\\
+\IEEEauthorblockA{School of Computer Science \\
+Carnegie Mellon University\\
+Pittsburgh, PA, USA\\
 clegoues@cs.cmu.edu}
 
 
@@ -439,26 +441,30 @@ clegoues@cs.cmu.edu}
 \begin{abstract}
 Automatic Software Repair (APR) has significant potential to reduce software
 maintenance costs by reducing the human effort required to localize and fix
-bugs. Well-known state-of-the-art generate-and-validate 
-APR approaches select between and instantiate various mutation operators
+bugs. State-of-the-art generate-and-validate 
+APR techniques select between and instantiate various mutation operators
 to construct candidate patches, informed largely by heuristic probability
 distributions.  This may reduce effectiveness in terms of both efficiency and
-output quality; patches informed by the ways humans fix bugs may be considered
-more acceptable.  In practice, human developers
+output quality.  In practice, human developers
 have many options in terms of how to edit code to fix bugs, some of which 
 are far more common than others (e.g., deleting a line of code is more common
 than adding a new class).
 We  
-mined the most recent 100 bug-fixing commits from each of the 500 most popular Java projects in GitHub (largest 
+mined the most recent 100 bug-fixing commits from each of the 500 most popular
+Java projects in GitHub (the largest 
 dataset to date) to
 create a probabilistic model describing edit distributions.
 We categorize, compare and evaluate the different mutation operators used in 
-the state of the art approaches. Finally, we mine association rules to analyze context surrounding
-multi-edit source code changes, an understudied problem 
-that covers the majority of real source code changes. We validate the association rules by analyzing how much of the corpus can be built from them. Our evaluation
-indicates that 84.6\% of the multi-edit patches from the corpus can be built from the association rules, while maintaining 90\% confidence. We also find that by applying the probabilistic model we can find
-the correct mutation operator to patch bugs faster in the majority of bugs
-studied, and that using the superset of all mutation operators performs better than restricting the mutation operator pool to just one category. Finally, our evaluation shows that our patches generalize better than the ones produced by other state-of-the-art approaches.
+state-of-the-art approaches. 
+We find that a probabilistic model-based APR approach 
+patches bugs more quickly in the majority of bugs
+studied, and that the resulting patches are of higher quality than those produced by
+previous approaches. 
+Finally, we mine association rules for
+multi-edit source code changes, an understudied but important problem. 
+We validate the
+association rules by analyzing how much of our corpus can be built from them. Our evaluation
+indicates that 84.6\% of the multi-edit patches from the corpus can be built from the association rules, while maintaining 90\% confidence. 
 \end{abstract}
 
 
@@ -598,7 +604,7 @@ The primary contributions of this paper thus are:
 
 The rest of this paper proceeds as follows: We first outline
 generate-and-validate repair and, in particular, 
-categorize and compare the mutation operators used in state of the art
+categorize and compare the mutation operators used in state-of-the-art
 approaches (Section~\ref{background}). Section~\ref{buildingTheModel}
 describes our approach to building probabilistic models of human 
 edits for both single- and multi-edit bug fixes. Section~\ref{evaluation}
@@ -1420,7 +1426,7 @@ Math \# 85 & 11 & 94.7\% & 4 & 0\% & 8 & 0\%  & 3  & 0\% & 8 & 0\% & 1  & 100\% 
 Time \# 19 & 55 & 86\%  & 2 &100\% & 1 &100\% & 1 & 100\%& \mII{No Patch Found} & 1 &  100\% \\
 \bottomrule
 \end{tabular}}
-  \caption{Comparison between the probabilistic model-based repair and other state of the art 
+  \caption{Comparison between the probabilistic model-based repair and other state-of-the-art 
   approaches. The ``Found" column represents the number of patches found for this bug. Because 
   each randomized technique is run several times, some techniques find multiple patches per bug. 
   The ``GTHTS" column represents the percentage of these patches that Generalized To a Held-out 
@@ -1431,7 +1437,7 @@ Time \# 19 & 55 & 86\%  & 2 &100\% & 1 &100\% & 1 & 100\%& \mII{No Patch Found} 
 Next, we use our APR approach, using the probabilistic model over the superset
 of mutation operators, to attempt to repair  
 defects described in Table~\ref{defects4j}. We compare the patches
-found for all these defects against those produced by other state of the art
+found for all these defects against those produced by other state-of-the-art
 approaches. We do not 
 show all the patches found by the other approaches but just the subset that
 directly compare to the ones found by our approach. 
@@ -1699,7 +1705,7 @@ whether he/she considered the patch to be correct or not.
 We also rely on Evosuite~\cite{Fraser11Evosuite} as our test suite generation
 mechanism for the held-out test suite used for evaluation, and we acknowledge
 that the test suites created by this tool may not be perfect, nor provide full
-coverage for all cases.  Nonetheless, this is a state of the art test suite
+coverage for all cases.  Nonetheless, this is a state-of-the-art test suite
 generation tool that mitigates the risk of bias in manually constructing
 evaluation test suites.
 
@@ -1761,10 +1767,10 @@ search space, and our approach is thus less immediately comparable.
 
 \section{Conclusion} \label{conclusion}
 
-In this paper, we analyze the way in which current state of the art automatic 
+In this paper, we analyze the way in which current state-of-the-art automatic 
 program repair approaches select mutation operators to create candidate 
 patches. We analyze, categorize and compare the mutation operators being used by 
-state of the art approaches. We analyzed the last 100 bug fixing commits from 
+state-of-the-art approaches. We analyzed the last 100 bug fixing commits from 
 the
 500 most-starred Java projects on GitHub, which is the largest corpus analyzed
 to date, to the best of our knowledge. We picked the most-stared projects because stars in Github are seen as proxies for popularity, which usually entail well-maintained, well-stablished, mature projects, that are more likely to have more and better quality bug fixes. We created a two-level probabilistic 
@@ -1779,7 +1785,7 @@ evaluation of
 its predictive power, and by
  running an APR tool using our model on 63 bugs from
 Defects4j. Finally we compare the quality of the patches 
-generated against patches created for these same bugs by other state of the art 
+generated against patches created for these same bugs by other state-of-the-art 
 approaches. We measure both efficiency of patch production, and generalizability
 of the patches to a held-out test suite.  
 Note that in Figure~\ref{tab:singleLineBugs}, for the majority of bugs, when using the probabilistic
