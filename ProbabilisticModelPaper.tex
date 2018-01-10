@@ -591,9 +591,9 @@ The primary contributions of this paper thus are:
     used by human developers.  We validate the use of this model, as well as a
     good set of operators to use for expressive, high-quality repair.
     \item \textbf{Development and integration} of this approach for the Java
-      programming language in a tool, available online, which can apply the
+      programming language in a publicly-available tool that can apply the
       several different mutation operators, and the probabilistic model
-      discussed in this study.\footnote{https://github.com/squaresLab/genprog4java}
+      discussed in this study.
   \item \textbf{Comparative evaluation} of the new repair approach on real world bugs from well-known open source projects (independent of those used to inform model
     construction), as compared to several previous techniques. We independently evaluate patch quality using a held-out test
     suite. We conclude a technique based on a model informed by human behavior,
@@ -604,16 +604,19 @@ The primary contributions of this paper thus are:
     validation thereof, to construct 
     bug-fixing patches requiring several mutations by mining and then applying association
     rules from a large set of historical bug fixes. 
+  \item \textbf{Code and data} that produced and were produced by our
+    experiments, available at \url{FIXME}, to support reproducibility and
+    extension. 
 \end{itemize}
 
 The rest of this paper proceeds as follows: We first outline
 generate-and-validate repair and, in particular, 
-categorize and compare the mutation operators used in state-of-the-art
+categorize the mutation operators used in state-of-the-art
 approaches (Section~\ref{background}). Section~\ref{buildingTheModel}
 describes our approach to building probabilistic models of human 
 edits for both single- and multi-edit bug fixes. Section~\ref{evaluation}
 describes our evaluation. Section~\ref{relatedWork} describes
-related work; Section~\ref{conclusion} talks about the conclusions found in this study. 
+related work; Section~\ref{conclusion} concludes. 
 
 \section{Generate-and-validate repair and operators} 
 \label{background}
