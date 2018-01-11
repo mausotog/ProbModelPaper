@@ -1435,34 +1435,21 @@ Time \# 19 & 55 & 86\%  & 2 &100\% & 1 &100\% & 1 & 100\%& \mII{No Patch Found} 
 \end{figure*}
 
 
-Next, we use our APR approach, using the probabilistic model over the superset
-of mutation operators, to attempt to repair  
-defects described in Table~\ref{defects4j}. We compare the patches
-found for all these defects against those produced by other state-of-the-art
-approaches. We do not 
-show all the patches found by the other approaches but just the subset that
-directly compare to the ones found by our approach. 
+Next, we use our new APR approach to attempt to repair the
+defects described in Table~\ref{defects4j}, comparing to other state-of-the-art
+approaches. 
 Figure~\ref{stateOfTheArtComparison} shows
-results, including, the number of different patches found for each bug and how many of them generalized
-to a held-out test suite. The patches that did not generalize, failed one or 
+results for the subset of bugs that our technique repairs (in the interest of
+space, we describe results
+for the remaining bugs in prose below). 
+Figure~\ref{stateOfTheArtComparison} shows the number of unique patches found
+for each bug and how many of them generalized 
+to a held-out test suite. The patches that did not generalize failed one or 
 several tests in the held-out test suite. Of the
 19 distinct patches created by our approach, 
 9 pass all held-out test suite (47.4\%); 
 6.6\% of GenProg's patches generalize; 20\% of TRPAutoRepair's;
 15.4\% of PAR's; and 100\% of the 5 Nopol patches generalize to the held-out test suite.
-
-A main takeaway to notice is that the heuristic approaches, which select
-syntactic edits to perform according to some distribution, all performed worse 
-than the probabilistic approach.  These techniques are those that \emph{could}
-benefit from a more informed edit distribution model.  
-Nopol produced 5 patches that all generalized to the held out test suite.  However, Nopol
-targets a specific bug type,  and thus does not repair as many defects from this
-set as our technique does.  Our approach presents an important benefit for a
-broader array of bug types, particularly those to which a semantics-based
-approach like Nopol doesn't apply. Overall, these results demonstrate the
-benefit of applying a probabilistic model for edit selection for those
-approaches to which such a selection process applies. 
-
 One example demonstrating the quality provided by the probabilistic
 model-based approach is seen in the Closure \#18 bug; Figure~\ref{closure18prob} 
 shows our technique's patch, identical to the human patch.
@@ -1485,15 +1472,25 @@ boolean staleInputs = false;
       developer patch; No other approach found this identical patch.\label{closure18prob}}
 \end{figure}
 
+A key takeaway from these results is that the probabilistic approach outperformed all the heuristic
+approaches.  This is important because these approaches by construction select
+syntactic edits to perform according to some distribution.  That is, these techniques are those that \emph{could}
+benefit from a more informed edit distribution model.  
+By contrast, Nopol produced 5 patches that all generalized to the held out test suite.  However, Nopol
+targets a specific bug type,  and does not repair as many defects from this
+set as our technique does.  Our approach therefore presents an important benefit for a
+broader array of bug types, particularly those to which a semantics-based
+approach like Nopol doesn't apply. Overall, these results demonstrate the
+benefit of applying a probabilistic model for edit selection for those
+approaches to which such a selection process applies. 
 
-From the 63 bugs that comprise our evaluation, our approach was able to find 
-patches for 9 of them. 
-GenProg was able to find patches for 8, PAR found patches
-for 12, Nopol for 25, and TRPAutoRepair for 7 of them.
-Since each tool is executed using several seeds, it is possible for the approaches to create
-several patches for each bug. 
+Our technique patched 9 of the the 63 bugs in our evaluation. 
+GenProg patched 8; Par, 12; Nopol, 25; and TRPAutoRepair, 7.\todo{Maybe
+  elaborate a bit on the overlap, i.e., did GenProg repair bugs that we didn't?}
+Many approaches can create several patches for each bug. 
 Our approach created 19 distinct patches for the aforementioned 9 bugs.
-From these 19 patches, 10 of them (52.6\%) pass the held-out test suites.
+Of these, 10 (52.6\%) pass the held-out test suites.\todo{!!!! THIS IS DIFFERENT
+  FROM WHAT YOU SAY ABOVE.  MAKE THEM BOTH BE TRUE, AND ALSO THE SAME.}
 Genprog created 46 distinct patches; 5 of them (10.9\%) pass the test suites.
 TRPAutoRepair created 31 patches; 4 of them (12.9\%) pass the test suites.
 PAR created 34 patches; 11 of them (32.4\%) pass the test suites. 
