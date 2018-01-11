@@ -971,29 +971,28 @@ as mined from the corpus. Template-Based and Statement-Edit mutations contribute
 \toprule
 Mutation operator & Edits found (\%) \\
 \midrule
-Replacement                                            & 0.60  \\
 Append                                                 & 61.03 \\
+Sequence Exchance                                      & 15.76 \\
 Delete                                                 & 9.10  \\
-Null Check											   & 0.76  \\
-Param Replacer                                             & 5.93  \\
-Method Replacer                                            & 1.12  \\
+Param Replacer                                         & 5.93  \\
 Param Add/Rem                                          & 3.15  \\
-Object Initializer                                               & 0.03  \\
-Sequence Exchance                                               & 15.76 \\
-Range Check                                            & 0.04  \\
-Size Check                                             & 0.07  \\
-Lower Bound Set                                            & 0.01  \\
-Upper Bound Set                                            & 0.00  \\
-Off by One                                             & 0.00  \\
+Expression Repl                                        & 1.28  \\
+Method Replacer                                        & 1.12  \\
+Null Check											   & 0.76  \\
+Castee Mutator                                         & 0.61  \\
+Replacement                                            & 0.60  \\
+Expression Add/Rem                                     & 0.37  \\ 
 Cast Check                                             & 0.11  \\
-Caster Mutator                                             & 0.03  \\
-Castee Mutator                                             & 0.61  \\
-Expression Repl                                                & 1.28  \\
-Expression Add/Rem                                            & 0.37  \\ 
+Size Check                                             & 0.07  \\
+Range Check                                            & 0.04  \\
+Object Initializer                                     & 0.03  \\
+Caster Mutator                                         & 0.03  \\
+Lower Bound Set                                        & 0.01  \\
+Upper Bound Set                                        & 0.00  \\
+Off by One                                             & 0.00  \\
 \bottomrule
 \end{tabular}
-\caption{Mined distribution of mutation operators.\todo{put this in 
-    order.}}
+\caption{Mined distribution of mutation operators.}
 \label{disOfMutOpsTable}
 \end{figure}
 
@@ -1447,9 +1446,9 @@ for each bug and how many of them generalized
 to a held-out test suite. The patches that did not generalize failed one or 
 several tests in the held-out test suite. Of the
 19 distinct patches created by our approach, 
-9 pass all held-out test suite (47.4\%); 
-6.6\% of GenProg's patches generalize; 20\% of TRPAutoRepair's;
-15.4\% of PAR's; and 100\% of the 5 Nopol patches generalize to the held-out test suite.
+10 pass all held-out test suite (52.6\%); 
+6.6\% of GenProg's patches generalize; 22.2\% of TRPAutoRepair's;
+23.1\% of PAR's; and 100\% of the 5 Nopol patches generalize to the held-out test suite.
 One example demonstrating the quality provided by the probabilistic
 model-based approach is seen in the Closure \#18 bug; Figure~\ref{closure18prob} 
 shows our technique's patch, identical to the human patch.
@@ -1477,24 +1476,25 @@ approaches.  This is important because these approaches by construction select
 syntactic edits to perform according to some distribution.  That is, these techniques are those that \emph{could}
 benefit from a more informed edit distribution model.  
 By contrast, Nopol produced 5 patches that all generalized to the held out test suite.  However, Nopol
-targets a specific bug type,  and does not repair as many defects from this
-set as our technique does.  Our approach therefore presents an important benefit for a
+targets a specific bug type and does not use a 
+heuristic approach.  Our approach therefore presents an important benefit for a
 broader array of bug types, particularly those to which a semantics-based
 approach like Nopol doesn't apply. Overall, these results demonstrate the
 benefit of applying a probabilistic model for edit selection for those
 approaches to which such a selection process applies. 
 
-Our technique patched 9 of the the 63 bugs in our evaluation. 
-GenProg patched 8; Par, 12; Nopol, 25; and TRPAutoRepair, 7.\todo{Maybe
-  elaborate a bit on the overlap, i.e., did GenProg repair bugs that we didn't?}
+Our technique patched 9 of the 63 bugs in our evaluation. 
+GenProg patched 9; Par, 16; Nopol, 27; and TRPAutoRepair, 8. There are 37 bugs for which at least one of the five evaluated approaches obtained a 
+patch. From these, 19 were patched by only one approach; 10 were patched by 
+two; 3 patched by three; 4 patched by four; and 1 patched by the five evaluated approaches.
+
 Many approaches can create several patches for each bug. 
 Our approach created 19 distinct patches for the aforementioned 9 bugs.
-Of these, 10 (52.6\%) pass the held-out test suites.\todo{!!!! THIS IS DIFFERENT
-  FROM WHAT YOU SAY ABOVE.  MAKE THEM BOTH BE TRUE, AND ALSO THE SAME.}
+Of these, 10 (52.6\%) pass the held-out test suites.
 Genprog created 46 distinct patches; 5 of them (10.9\%) pass the test suites.
-TRPAutoRepair created 31 patches; 4 of them (12.9\%) pass the test suites.
+TRPAutoRepair created 30 patches; 4 of them (13.3\%) pass the test suites.
 PAR created 34 patches; 11 of them (32.4\%) pass the test suites. 
-Finally Nopol created 28 patches; 22 of them (78.6\%) pass the test suites.
+Finally Nopol created 28 patches; 21 of them (75.0\%) pass the test suites.
 
 \subsection{Association Rule Mining} \label{armRes}
 
@@ -1709,7 +1709,7 @@ evaluation test suites.
 
 \section{Related Work} \label{relatedWork}
 
-There have been previous efforts to create a model\todo{of what?} based on human behavior.  
+There have been previous efforts to create an edit model based on human behavior.  
 Soto et al.~\cite{Soto16} 
 built a probabilistic model to describe the replace 
 operator only. They do not evaluate the model in the context of a repair
