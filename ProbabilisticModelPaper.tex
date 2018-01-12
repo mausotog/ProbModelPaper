@@ -1303,29 +1303,28 @@ is difficult to evaluate in a controlled fashion in our context.
 \begin{figure*}\centering
 {\footnotesize
 
-\begin{tabular}{l||r|r||rr|rr|rr|rr|rr|rr}
+\begin{tabular}{l||rr||rr|rr|rr|rr|rr|rr}
 \toprule
- &  &  &\multicolumn{4}{c|}{Statement-Edit Only} & \multicolumn{4}{c|}{Template-based Only} & \multicolumn{4}{c}{All Mutations} \\ 
-  \midrule
- \multirow{3}{*}{Bug ID} & \multirow{3}{*}{\shortstack[l]{Held-out\\ tests}} & \multirow{3}{*}{\shortstack[l]{Line \\ coverage}} & \multicolumn{2}{c|}{EqDist} & \multicolumn{2}{c|}{Prob} & \multicolumn{2}{c|}{EqDist} & \multicolumn{2}{c|}{Prob} & \multicolumn{2}{c|}{EqDist} &  \multicolumn{2}{c}{Prob} \\ \cmidrule{4-15}
-
-            &   &  & Time & Quality &  Time & Quality &  Time & Quality&  Time & Quality&  Time & Quality&  Time & Quality \\
+                             &   & &\multicolumn{4}{c|}{Statement Edits} & \multicolumn{4}{c|}{Templates} & \multicolumn{4}{c}{Both} \\ 
+                             & \multicolumn{1}{c}{Held-out} & \multicolumn{1}{c||}{Line}   & \multicolumn{2}{c|}{EqDist} & \multicolumn{2}{c|}{Prob} & \multicolumn{2}{c|}{EqDist} & \multicolumn{2}{c|}{Prob} & \multicolumn{2}{c|}{EqDist} &  \multicolumn{2}{c}{Prob} \\ \multicolumn{1}{c||}{Bug ID} &  \multicolumn{1}{c}{Tests} &   \multicolumn{1}{c||}{Coverage}  & Time & Gen? &  Time & Gen? &  Time & Gen? &  Time & Gen? &  Time & Gen? &  Time & Gen? \\
 
 \midrule
-Closure \#10 & 472 & 60.2\% & 221.0& 100\%  & {179.5} &{100\%} & {175.1}&{100\%} & {121.3}&{100\%} & {163.3}&{100\%} & {157.4}&{100\%} \\
-Closure \#18 & 106 & 73.4\% & \mII{--} & \mII{--} & {36.2}&{100\%} & {197.5}&{100\%} & {45.0}&{100\%} & {139.0}&{100\%} \\
-Math \#2     & 13 & 100\%  & \mII{--} & \mII{--} & {109.4}&{100\%} & {39.6}&{100\%} & {109.4}&{100\%} & {39.6}&{100\%} \\
-Time \#19    & 55 & 86\% & 94.1&{100\%} & {80.7}&{100\%} & \multicolumn{2}{c|}{--} & \multicolumn{2}{c|}{--} & {135.1}&{100\%} & {91.9}&{100\%} \\
-Chart \#1    & 93 & 74.4\% & 1.8&{0\%} & {7.3}&{0\%} & {4.9}&{0\%} & {19.0}&{0\%} & {2.2}&{0\%} & {4.8}&{0\%} \\
+Closure \#10 & 472 & 60.2\% & 221.0& $\checkmark$  & {179.5} &$\checkmark$ & {175.1}&$\checkmark$ & {121.3}&$\checkmark$ & {163.3}&$\checkmark$ & {157.4}&$\checkmark$ \\
+Closure \#18 & 106 & 73.4\% & \mII{--} & \mII{--} & {36.2}&$\checkmark$ & {197.5}&$\checkmark$ & {45.0}&$\checkmark$ & {139.0}&$\checkmark$ \\
+Math \#2     & 13 & 100\%  & \mII{--} & \mII{--} & {109.4}&$\checkmark$ & {39.6}&$\checkmark$ & {109.4}&$\checkmark$ & {39.6}&$\checkmark$ \\
+Time \#19    & 55 & 86\% & 94.1&$\checkmark$ & {80.7}&$\checkmark$ & \multicolumn{2}{c|}{--} & \multicolumn{2}{c|}{--} & {135.1}&$\checkmark$ & {91.9}&$\checkmark$ \\
+Chart \#1    & 93 & 74.4\% & 1.8&$\times$ & {7.3}&$\times$ & {4.9}&$\times$ & {19.0}&$\times$ & {2.2}&$\times$ & {4.8}&$\times$ \\
 \bottomrule
 \end{tabular}}
 \caption{Repair success of various models for three different operator sets.
   Columns 2 and 3 characterize the Evosuite-generated, held-out tests for each
   bug. 
-  For each bug, we report time in terms of average variants evaluated to a repair, and
-  quality as the percentage of patches created for that bug that pass the
-  held-out test suite (an average, if more than one patch is produced over the
-  course of multiple random trials). \label{tab:singleLineBugs}}
+  For each bug, we report time in terms of variants evaluated to a
+  repair (an average, if more than one patch is produced over the course of
+  multiple random trials), and whether all 
+  produced patches generalize (``Gen?'') to the held-out test suites ($\checkmark$) or not
+  ($\times$). ``--'' indicates no patch was found in the given configuration.
+ \label{tab:singleLineBugs}}
 \end{figure*}
 
 \paragraph{Dataset}
@@ -1414,24 +1413,25 @@ all available mutations in our technique for the next experiment.
 \toprule
 % Full results in https://docs.google.com/spreadsheets/d/1vyD7wH3VGf7X_pUxb4aN9EONO_L_fbIZXw3m9vP7MRc/edit#gid=0
             & \mI{Held-out} & \mI{Line} & \mII{Prob. Model} & \mII{GenProg} & \mII{TrpAutoRepair} & \mII{PAR} & \mC{Nopol} \\
-\multicolumn{1}{c||}{Bug ID} & \mI{tests}    & \mI{Coverage}  & Found & GTHTS & Found & GTHTS &Found & GTHTS &Found & GTHTS &Found & GTHTS   \\ 
+\multicolumn{1}{c||}{Bug ID} & \mI{tests}    & \mI{Coverage}  & Found & Gen? & Found & Gen? &Found & Gen? &Found & Gen? &Found & Gen?   \\ 
 \midrule
-Chart \# 1 & 93 & 74.4\% & 5 & 0\% & 6 & 0\%  & 4 & 0\% & 2 & 0\% & \multicolumn{2}{c}{--}   \\
-Closure \# 10 &  472 & 60.2\% & 2 & 100\% & \mII{--}  & \mII{--} & \mII{--} & 1 & 100\%   \\
-Closure \# 18 & 106 & 73.4\%      & 1 & 100\%    & \mII{--}  & \mII{--} & \mII{--}  &1 &  100\%  \\
-Closure \# 86 & 435 & 64.8\% & 2 & 100\% & \mII{--}   & 1 & 100\% & \mII{--}  & \multicolumn{2}{c}{--}   \\
-Lang \# 33 &  85 & 92.3\%  & 1 & 100\% &  \mII{--}   &   \mII{--}  &1  & 100\% &   \multicolumn{2}{c}{--}   \\       
-Math \# 2  & 13 & 100\%  & 1 & 100\% & \mII{--} & \mII{--} & 1 & 100\% & 1 & 100\%  \\
-Math \# 75 &  25 & 92.5\%      & 1 & 100\%    & \mII{--}  & \mII{--} & 1 & 100\%     & \multicolumn{2}{c}{--}   \\
-Math \# 85 & 11 & 94.7\% & 4 & 0\% & 8 & 0\%  & 3  & 0\% & 8 & 0\% & 1  & 100\%  \\       
-Time \# 19 & 55 & 86\%  & 2 &100\% & 1 &100\% & 1 & 100\%& \mII{--} & 1 &  100\% \\
+Chart \# 1 & 93 & 74.4\% & 5 &$\times$ & 6 &$\times$  & 4 &$\times$ & 2 &$\times$ & \multicolumn{2}{c}{--}   \\
+Closure \# 10 &  472 & 60.2\% & 2 & $\checkmark$ & \mII{--}  & \mII{--} & \mII{--} & 1 & $\checkmark$   \\
+Closure \# 18 & 106 & 73.4\%      & 1 & $\checkmark$    & \mII{--}  & \mII{--} & \mII{--}  &1 &  $\checkmark$  \\
+Closure \# 86 & 435 & 64.8\% & 2 & $\checkmark$ & \mII{--}   & 1 & $\checkmark$ & \mII{--}  & \multicolumn{2}{c}{--}   \\
+Lang \# 33 &  85 & 92.3\%  & 1 & $\checkmark$ &  \mII{--}   &   \mII{--}  &1  & $\checkmark$ &   \multicolumn{2}{c}{--}   \\       
+Math \# 2  & 13 & 100\%  & 1 & $\checkmark$ & \mII{--} & \mII{--} & 1 & $\checkmark$ & 1 & $\checkmark$  \\
+Math \# 75 &  25 & 92.5\%      & 1 & $\checkmark$    & \mII{--}  & \mII{--} & 1 & $\checkmark$     & \multicolumn{2}{c}{--}   \\
+Math \# 85 & 11 & 94.7\% & 4 &$\times$ & 8 &$\times$  & 3  &$\times$ & 8 &$\times$ & 1  & $\checkmark$  \\       
+Time \# 19 & 55 & 86\%  & 2 &$\checkmark$ & 1 &$\checkmark$ & 1 & $\checkmark$& \mII{--} & 1 &  $\checkmark$ \\
 \bottomrule
 \end{tabular}}
   \caption{Comparison between the probabilistic model-based repair and other state-of-the-art 
-  approaches. ``--'' indicates no patch found.  The ``Found" column represents the number of patches found for this bug. Because 
-  each randomized technique is run several times, some techniques find multiple patches per bug. 
-  The ``GTHTS" column represents the percentage of these patches that Generalized To a Held-out 
-  Test Suite. \label{stateOfTheArtComparison}} 
+  approaches. ``--'' indicates no patch found.  The ``Found" column indicate the
+  number of patches found per bug over the multiple random trials. ``Gen?''
+  indicates whether all produced patches generalize to the held-out test suites
+  ($\checkmark$) or not ($\times$). In our experiments, all produced patches for a bug, technique
+  pair either generalized, or not. \label{stateOfTheArtComparison}} 
 \end{figure*}
 
 
