@@ -1349,11 +1349,13 @@ Cobertura\footnote{http://cobertura.github.io/cobertura/} to calculate test
 suite 
 coverage, again over the ``after-fix'' class that contains the human fix.
 
-\paragraph{Settings} For the genetic programming based techniques (including our own), our population
-size is 40, and our max generation size is 10.
-For non-GP-based techniques, our maximum considered variant count is 400. For
-all techniques, we set a timeout of 4 hours per run.  These settings are
-consistent with prior work.  We run 20 seeds per randomized repair trial, in
+\looseness-1
+\paragraph{Settings} For the genetic programming based techniques (including
+ours), the population
+size is 40, and maximum generations is 10.
+For the other techniques, the maximum considered variant count is 400. We cap
+all runs at a timeout of 4 hours.  These settings are
+consistent with prior work.  We run 20 seeds per repair trial, in
 keeping with recommendations on the assessment of stochastic
 techniques~\cite{arcuri11}.
 
@@ -1484,9 +1486,10 @@ benefit of applying a probabilistic model for edit selection for those
 approaches to which such a selection process applies. 
 
 Our technique patched 9 of the 63 bugs in our evaluation. 
-GenProg patched 9; Par, 16; Nopol, 27; and TRPAutoRepair, 8. There are 37 bugs for which at least one of the five evaluated approaches obtained a 
+GenProg patched 9; Par, 16; Nopol, 27; and TRPAutoRepair, 8. There are 37 bugs
+for which at least one approach produced at least one patch.
 patch. From these, 19 were patched by only one approach; 10 were patched by 
-two; 3 patched by three; 4 patched by four; and 1 patched by the five evaluated approaches.
+two; 3 patched by three; 4 patched by four; and 1 patched by all five.
 
 Many approaches can create several patches for each bug. 
 Our approach created 19 distinct patches for the aforementioned 9 bugs.
@@ -1516,8 +1519,7 @@ rules for APR that predict with high accuracy which edits to perform, given an
 initial set of edits.  These rules are obtained with a 1\% support, which means that
 each of these rules individually appear in at least 1\% of all the transactions
 in the corpus. We show only the top
-association rules (the full set of rules, to inform future
-studies in multi-edit repair, are provided with the code and data associated
+association rules (the full set of rules is released with the code and data associated
 with this paper):
 %\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt}} 
 
@@ -1544,8 +1546,8 @@ common single edit mutation operator applied by
 developers. This behavior is reflected in the fact that it is the consequent in
 all the top mined rules.
 Overall, association rules provide an intuition of which common patterns of behavior
-developers use. These rules tell us what edits happen frequently together, which
-will help us further understand multi-edit source code changes, an understudied 
+developers use. These rules tell us which edits happen frequently together,
+supporting understanding of multi-edit source code changes, an understudied 
 area that covers the majority of real patches.
 
 \subsubsection{Evaluation of Association Rules}
@@ -1596,6 +1598,7 @@ is classified as Not covered.
 }
 \end{table}
 
+\looseness-1
 Finally, we performed this analysis at 6 different confidence thresholds
 (50\%, 60\%, 70\%, 80\%, 90\%, 100\%) to analyze the tradeoff between ruleset expressive
 power and size. A high confidence produces 
@@ -1607,7 +1610,7 @@ present, it is less likely that
 the consequent will be present too. For each confidence
 threshold, we performed a standard 10-fold cross validation process with all the
 instances and all the rules for each fold and finally, we aggregate the results
-from all the folds.
+from all folds.
 
 \begin{comment}
 \begin{table}[ht]
@@ -1648,14 +1651,12 @@ rules that would describe what edit to perform next after a series of edits, but
 at the same time, it needs rules that are flexible enough that they can
 generalize to a big portion of the patches.
 %
-We find that a good tradeoff within this tension happens when we set the
-confidence threshold to 90\%. There is a big difference between 100\% and 90\%
-confidence thresholds regarding percentage of Not Covered. The 100\%
-threshold provides very accurate rules, but can fully cover only a
-37.7\% of the patches it was evaluated on. By contrast, the 90\% confidence
-threshold produces slightly more rules, but the rules generalize much
-more and are able to fully cover 84.6\% of the patches, while 
-still maintaining a high confidence threshold.
+We find a good tradeoff at a 
+confidence threshold of 90\%. The 100\%
+threshold provides very accurate rules, but can fully cover only
+37.7\% of the evaluation patches. By contrast, the 90\% confidence
+threshold produces slightly more rules, but they are able to fully cover 84.6\%
+of the patches. 
 
 
 
@@ -1817,8 +1818,8 @@ replication and extension: \url{FIXME URL HERE}.
 % use section* for acknowledgment
 \section*{Acknowledgments}
 
-This work partially supported by the National Science Foundation (under award
-CCF-1563797) and the Air Force Research Laboratory (AFRL Contract
+This work partially supported by the National Science Foundation (CCF-1563797)
+and the Air Force Research Laboratory (AFRL Contract 
 No. FA8750-15-2-0075). Any findings or recommendations are those of the
 author(s) and do not necessarily reflect the views of the sponsoring agencies.
 The authors additionally wish to thank the anonymous reviewers, whose comments
