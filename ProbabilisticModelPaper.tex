@@ -1450,18 +1450,17 @@ several tests in the held-out test suite. Of the
 10 pass all held-out test suite (52.6\%); 
 6.6\% of GenProg's patches generalize; 22.2\% of TRPAutoRepair's;
 23.1\% of PAR's; and 100\% of the 5 Nopol patches generalize to the held-out test suite.
-One example demonstrating the quality provided by the probabilistic
-model-based approach is seen in the Closure \#18 bug; Figure~\ref{closure18prob} 
-shows our technique's patch, identical to the human patch.
+Figure~\ref{closure18prob} shows our technique's patch for the Closuer \#18 bug;
+it is identical to the human patch. 
 
 \begin{figure}[t]
-\begin{lstlisting}[firstnumber=1287][frame=single]
-boolean staleInputs = false;
-@-if(options.dependencyOptions.needsManagement() && options.closurePass){
+\begin{lstlisting}[firstnumber=1288][frame=single]
+@-if(options.dependencyOptions.needsManagement() 
+ -   && options.closurePass){
 +if(options.dependencyOptions.needsManagement()){
 @  for (CompilerInput input : inputs) {
-    // Forward-declare all the provided types, so that they
-    // are not flagged even if they are dropped from the process.
+ // Forward-declare all the provided types, so that they
+ // are not flagged even if they are dropped.
     for (String provide : input.getProvides()) {
       getTypeRegistry().forwardDeclareType(provide);
     }  
@@ -1517,8 +1516,9 @@ rules for APR that predict with high accuracy which edits to perform, given an
 initial set of edits.  These rules are obtained with a 1\% support, which means that
 each of these rules individually appear in at least 1\% of all the transactions
 in the corpus. We show only the top
-association rules, and also release the full set of mined rules to inform future
-studies in multi-edit repair:\footnote{https://github.com/squaresLab/ProbabilisticModelSaner2018}
+association rules (the full set of rules, to inform future
+studies in multi-edit repair, are provided with the code and data associated
+with this paper):
 %\footnote{\url{https://github.com/mausotog/ReplacementsEmpiricalStudy/blob/master/ResultsAssociationRuleMiningMutOperators.txt}} 
 
 %Minimum support: 0 (1 instances)
@@ -1546,7 +1546,7 @@ all the top mined rules.
 Overall, association rules provide an intuition of which common patterns of behavior
 developers use. These rules tell us what edits happen frequently together, which
 will help us further understand multi-edit source code changes, an understudied 
-area that covers the majority of real life patches.
+area that covers the majority of real patches.
 
 \subsubsection{Evaluation of Association Rules}
 To evaluate the effectiveness of the association rules in the context of the
@@ -1801,9 +1801,12 @@ that describe
 how subsets of mutation operators are applied together.
 %
 Overall, our initial analysis of how to chain single-edit changes by following
-human behavior provides a critical
+human behavior provides a 
 first step towards an efficient mechanism for traversing the large search space
-of multi-edit repairs by showing that we can construct a large percentage of the corpus from the created rules while maintaining a 90\% confidence threshold.
+of multi-edit repairs. 
+
+All code and data associated with these experiments are available for
+replication and extension: \url{FIXME URL HERE}.
 
 
 
