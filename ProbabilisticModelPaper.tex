@@ -1456,19 +1456,20 @@ Figure~\ref{closure18prob} shows our technique's patch for the Closure \#18 bug;
 it is identical to the human patch. 
 
 \begin{figure}[t]
-\begin{lstlisting}[firstnumber=1288][frame=single]
+\hbox{\hspace{2em}
+\begin{lstlisting}[firstnumber=1288,linewidth=8cm,frame=lines]
 @-if(options.dependencyOptions.needsManagement() 
  -   && options.closurePass){
 +if(options.dependencyOptions.needsManagement()){
 @  for (CompilerInput input : inputs) {
- // Forward-declare all the provided types, so that they
- // are not flagged even if they are dropped.
+ // Forward-declare all the provided types, so that
+ // they are not flagged even if they are dropped.
     for (String provide : input.getProvides()) {
       getTypeRegistry().forwardDeclareType(provide);
     }  
   }
-	\end{lstlisting}
-
+\end{lstlisting}
+}
 	\caption{A patch generated using the probabilistic model, identical to the
       developer patch; No other approach found this identical patch.\label{closure18prob}}
 \end{figure}
