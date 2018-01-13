@@ -605,7 +605,7 @@ The primary contributions of this paper thus are:
     bug-fixing patches requiring several mutations by mining and then applying association
     rules from a large set of historical bug fixes. 
   \item \textbf{Code and data} that produced and were produced by our
-    experiments, available at \url{FIXME}, to support reproducibility and
+    experiments, available at \url{https://github.com/squaresLab/ProbabilisticModelSaner2018}, to support reproducibility and
     extension. 
 \end{itemize}
 
@@ -1311,8 +1311,8 @@ is difficult to evaluate in a controlled fashion in our context.
 \midrule
 Closure \#10 & 472 & 60.2\% & 221.0& $\checkmark$  & {179.5} &$\checkmark$ & {175.1}&$\checkmark$ & {121.3}&$\checkmark$ & {163.3}&$\checkmark$ & {157.4}&$\checkmark$ \\
 Closure \#18 & 106 & 73.4\% & \mII{--} & \mII{--} & {36.2}&$\checkmark$ & {197.5}&$\checkmark$ & {45.0}&$\checkmark$ & {139.0}&$\checkmark$ \\
-Math \#2     & 13 & 100\%  & \mII{--} & \mII{--} & {109.4}&$\checkmark$ & {39.6}&$\checkmark$ & {109.4}&$\checkmark$ & {39.6}&$\checkmark$ \\
-Time \#19    & 55 & 86\% & 94.1&$\checkmark$ & {80.7}&$\checkmark$ & \multicolumn{2}{c|}{--} & \multicolumn{2}{c|}{--} & {135.1}&$\checkmark$ & {91.9}&$\checkmark$ \\
+Math \#2     & 13 & 100.0\%  & \mII{--} & \mII{--} & {109.4}&$\checkmark$ & {39.6}&$\checkmark$ & {109.4}&$\checkmark$ & {39.6}&$\checkmark$ \\
+Time \#19    & 55 & 86.0\% & 94.1&$\checkmark$ & {80.7}&$\checkmark$ & \multicolumn{2}{c|}{--} & \multicolumn{2}{c|}{--} & {135.1}&$\checkmark$ & {91.9}&$\checkmark$ \\
 Chart \#1    & 93 & 74.4\% & 1.8&$\times$ & {7.3}&$\times$ & {4.9}&$\times$ & {19.0}&$\times$ & {2.2}&$\times$ & {4.8}&$\times$ \\
 \bottomrule
 \end{tabular}}
@@ -1422,17 +1422,17 @@ Closure \# 10 &  472 & 60.2\% & 2 & $\checkmark$ & \mII{--}  & \mII{--} & \mII{-
 Closure \# 18 & 106 & 73.4\%      & 1 & $\checkmark$    & \mII{--}  & \mII{--} & \mII{--}  &1 &  $\checkmark$  \\
 Closure \# 86 & 435 & 64.8\% & 2 & $\checkmark$ & \mII{--}   & 1 & $\checkmark$ & \mII{--}  & \multicolumn{2}{c}{--}   \\
 Lang \# 33 &  85 & 92.3\%  & 1 & $\checkmark$ &  \mII{--}   &   \mII{--}  &1  & $\checkmark$ &   \multicolumn{2}{c}{--}   \\       
-Math \# 2  & 13 & 100\%  & 1 & $\checkmark$ & \mII{--} & \mII{--} & 1 & $\checkmark$ & 1 & $\checkmark$  \\
+Math \# 2  & 13 & 100.0\%  & 1 & $\checkmark$ & \mII{--} & \mII{--} & 1 & $\checkmark$ & 1 & $\checkmark$  \\
 Math \# 75 &  25 & 92.5\%      & 1 & $\checkmark$    & \mII{--}  & \mII{--} & 1 & $\checkmark$     & \multicolumn{2}{c}{--}   \\
 Math \# 85 & 11 & 94.7\% & 4 &$\times$ & 8 &$\times$  & 3  &$\times$ & 8 &$\times$ & 1  & $\checkmark$  \\       
-Time \# 19 & 55 & 86\%  & 2 &$\checkmark$ & 1 &$\checkmark$ & 1 & $\checkmark$& \mII{--} & 1 &  $\checkmark$ \\
+Time \# 19 & 55 & 86.0\%  & 2 &$\checkmark$ & 1 &$\checkmark$ & 1 & $\checkmark$& \mII{--} & 1 &  $\checkmark$ \\
 \bottomrule
 \end{tabular}}
   \caption{Comparison between the probabilistic model-based repair and other state-of-the-art 
   approaches. ``--'' indicates no patch found.  The ``Found" column indicate the
   number of patches found per bug over the multiple random trials. ``Gen?''
   indicates whether all produced patches generalize to the held-out test suites
-  ($\checkmark$) or not ($\times$). In our experiments, all produced patches for a bug, technique
+  ($\checkmark$) or not ($\times$). In these results, all produced patches for a bug, technique
   pair either generalized, or not. \label{stateOfTheArtComparison}} 
 \end{figure*}
 
@@ -1452,7 +1452,7 @@ several tests in the held-out test suite. Of the
 10 pass all held-out test suite (52.6\%); 
 6.6\% of GenProg's patches generalize; 22.2\% of TRPAutoRepair's;
 23.1\% of PAR's; and 100\% of the 5 Nopol patches generalize to the held-out test suite.
-Figure~\ref{closure18prob} shows our technique's patch for the Closuer \#18 bug;
+Figure~\ref{closure18prob} shows our technique's patch for the Closure \#18 bug;
 it is identical to the human patch. 
 
 \begin{figure}[t]
@@ -1807,7 +1807,7 @@ first step towards an efficient mechanism for traversing the large search space
 of multi-edit repairs. 
 
 All code and data associated with these experiments are available for
-replication and extension: \url{FIXME URL HERE}.
+replication and extension: \url{https://github.com/squaresLab/ProbabilisticModelSaner2018}.
 
 
 
